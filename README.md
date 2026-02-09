@@ -1,8 +1,7 @@
 # 🐾 Paws&Walks
 
 
-Paws&Walks es un proyecto académico de **Arquitectura de Software** orientado al diseño del **núcleo de negocio (Domain Design)** de una plataforma transaccional para servicios de cuidado de mascotas.  
-La solución se concibe como un **marketplace** que conecta dueños de mascotas con cuidadores verificados, permitiendo la **búsqueda, reserva, pago y calificación** de servicios dentro de una única plataforma.
+Paws&Walks es un proyecto académico de Arquitectura de Software que diseña el núcleo de negocio de una plataforma para servicios de cuidado de mascotas. La plataforma funciona como un marketplace que conecta dueños de mascotas con cuidadores verificados y permite buscar, reservar, pagar y calificar servicios.
 
 ---
 
