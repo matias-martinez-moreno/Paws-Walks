@@ -7,6 +7,6 @@ Paws&Walks es un proyecto académico de Arquitectura de Software que diseña el 
 
 ## Integrantes
 
-- Cristóbal Gutiérrez  
+- Cristóbal Gutiérrez Castro
 - Laura Sofía Aceros Monsalve  
-- Matías Martínez
+- Matías Martínez Moreno
