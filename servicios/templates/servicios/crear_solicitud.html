@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Crear Solicitud</title>
+</head>
+<body>
+    <h1>Crear Solicitud</h1>
+    <form method="post">
+        {% csrf_token %}
+        <p>Cuidador:<br>
+        <select name="idCuidador_id" id="cuidador_select" required>
+            <option value="">Seleccione un cuidador</option>
+            {% for c in cuidadores %}
+            <option value="{{ c.idUsuario }}" data-cuidador="{{ c.idUsuario }}">{{ c.nombre }}</option>
+            {% endfor %}
+        </select></p>
+        <p>Mascota:<br>
+        <select name="idMascota_id" required>
+            {% for m in mascotas %}
+            <option value="{{ m.idMascota }}">{{ m.nombreMascota }}</option>
+            {% endfor %}
+        </select></p>
+        <p>Tipo:<br>
+        <select name="tipoServicio" required>
+            <option value="paseo">Paseo</option>
+            <option value="guarderia">Guardería</option>
+            <option value="otro">Otro</option>
+        </select></p>
+        <p>Fecha:<br>
+        <input type="date" name="fecha" required></p>
+        <p>Bloque:<br>
+        <select name="idBloqueHorario_id" id="bloque_select" required>
+            <option value="">Seleccione primero un cuidador</option>
+        </select></p>
+        <button type="submit">Crear</button>
+    </form>
+    {% if error %}<p style="color:red;">{{ error }}</p>{% endif %}
+    {% if mensaje %}<p style="color:green;">{{ mensaje }}</p>{% endif %}
+    <script>
+        const bloquesData = JSON.parse('{{ bloques_por_cuidador|escapejs }}');
+        document.getElementById('cuidador_select').addEventListener('change', function() {
+            const cuidadorId = this.value;
+            const bloqueSelect = document.getElementById('bloque_select');
+            bloqueSelect.innerHTML = '<option value="">Seleccione un bloque</option>';
+            if (cuidadorId && bloquesData[cuidadorId]) {
+                bloquesData[cuidadorId].forEach(function(bloque) {
+                    const option = document.createElement('option');
+                    option.value = bloque.id;
+                    option.textContent = bloque.texto;
+                    bloqueSelect.appendChild(option);
+                });
+            }
+        });
+    </script>
+</body>
+</html>
+

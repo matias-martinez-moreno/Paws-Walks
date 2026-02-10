@@ -1,41 +1,18 @@
-"""
-Capa de Aplicación (Service Layer).
-Aquí reside el algoritmo de negocio.
-Orquesta al Builder y a la Factory.
-"""
+# capa de aplicación - aquí está la lógica de negocio
 from django.core.exceptions import ValidationError
-
 from servicios.domain.builder import SolicitudServicioBuilder
 from servicios.infra.factory import NotificadorFactory
 
 
 class SolicitudServicioService:
-    """
-    Service Layer para la lógica de negocio de SolicitudServicio.
-    Utiliza Inyección de Dependencias para el Notificador.
-    """
+    """service layer - orquesta builder y factory"""
 
     def __init__(self, notificador=None):
-        """
-        Args:
-            notificador: Inyección de dependencias. Si es None, usa NotificadorFactory.
-        """
+        # inyección de dependencias - permite pasar notificador o usar factory
         self.notificador = notificador or NotificadorFactory.crear()
 
     def crear_solicitud(self, datos):
-        """
-        Crea una solicitud de servicio siguiendo las reglas de negocio.
-        Usa el Builder para construir el objeto validado y la Factory para notificar.
-
-        Args:
-            datos: dict con idDueño, idCuidador_id, idMascota_id, tipoServicio, fecha, idBloqueHorario_id
-
-        Returns:
-            SolicitudServicio: La solicitud creada y guardada.
-
-        Raises:
-            ValidationError: Si alguna validación de negocio falla.
-        """
+        # usa builder para construir y validar
         solicitud = (
             SolicitudServicioBuilder()
             .para_dueño(datos['idDueño'])
@@ -47,11 +24,13 @@ class SolicitudServicioService:
             .build()
         )
         solicitud.save()
-
-        bloque_tiempo = solicitud.idBloqueHorario
-        bloque_tiempo.disponible = False
-        bloque_tiempo.save()
-
+        
+        # marca bloque como no disponible
+        bloque = solicitud.idBloqueHorario
+        bloque.disponible = False
+        bloque.save()
+        
+        # notifica usando factory
         self.notificador.enviar_confirmacion(solicitud)
-
+        
         return solicitud
