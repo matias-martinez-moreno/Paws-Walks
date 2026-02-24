@@ -1,5 +1,6 @@
-# builder pattern - construye objetos complejos paso a paso
+# builder: crea solicitud paso a paso
 from django.core.exceptions import ValidationError
+from datetime import date
 from servicios.models import (
     SolicitudServicio, Usuario, Mascota,
     BloqueTiempo, PrecioServicio, EstadoSolicitud,
@@ -8,20 +9,20 @@ from servicios.models import (
 
 
 class SolicitudServicioBuilder:
-    """builder con fluent interface - valida antes de construir"""
+    # valida datos antes de crear la solicitud
 
     def __init__(self):
         self._datos = {}
 
     def para_dueño(self, dueño):
-        # valida que sea instancia de usuario
+        # valida tipo de duenio
         if not isinstance(dueño, Usuario):
             raise ValidationError("el dueño debe ser una instancia de usuario")
         self._datos['idDueño'] = dueño
         return self
 
     def para_cuidador(self, cuidador_id):
-        # busca cuidador y valida que exista, sea cuidador y esté verificado
+        # valida cuidador existente y verificado
         try:
             cuidador = Usuario.objects.get(idUsuario=cuidador_id)
         except Usuario.DoesNotExist:
@@ -34,7 +35,7 @@ class SolicitudServicioBuilder:
         return self
 
     def para_mascota(self, mascota_id):
-        # valida que la mascota exista y pertenezca al dueño
+        # valida mascota del duenio
         dueño = self._datos.get('idDueño')
         if not dueño:
             raise ValidationError("debe especificar el dueño primero")
@@ -54,11 +55,14 @@ class SolicitudServicioBuilder:
         return self
 
     def en_fecha(self, fecha):
+        # regla: no permitir fecha pasada
+        if fecha < date.today():
+            raise ValidationError("La fecha del servicio no puede ser en el pasado.")
         self._datos['fecha'] = fecha
         return self
 
     def en_bloque(self, bloque_id):
-        # valida que el bloque exista, esté disponible y pertenezca al cuidador
+        # valida bloque disponible del cuidador
         cuidador = self._datos.get('idCuidador')
         if not cuidador:
             raise ValidationError("debe especificar el cuidador primero")
@@ -66,17 +70,17 @@ class SolicitudServicioBuilder:
             bloque = BloqueTiempo.objects.get(idBloque=bloque_id)
         except BloqueTiempo.DoesNotExist:
             raise ValidationError("el bloque no existe")
-        # primero valida disponibilidad (más común)
+        # valida disponibilidad
         if not bloque.disponible:
             raise ValidationError("el bloque no está disponible")
-        # luego valida que pertenezca al cuidador (comparar por ID)
+        # valida pertenencia al cuidador
         if bloque.idCuidador.idCuidador.idUsuario != cuidador.idUsuario:
             raise ValidationError("el bloque no pertenece al cuidador")
         self._datos['idBloqueHorario'] = bloque
         return self
 
     def _validar_precio_cuidador(self):
-        # valida que el cuidador tenga precio para el servicio
+        # valida tarifa activa del cuidador
         cuidador = self._datos.get('idCuidador')
         tipo_servicio = self._datos.get('tipoServicio')
         if not cuidador or not tipo_servicio:
@@ -91,14 +95,14 @@ class SolicitudServicioBuilder:
             raise ValidationError(f"el cuidador no tiene precio para {tipo_servicio}")
 
     def _validar_completo(self):
-        # verifica que todos los campos estén presentes
+        # valida campos obligatorios
         campos = ['idDueño', 'idCuidador', 'idMascota', 'tipoServicio', 'fecha', 'idBloqueHorario']
         faltantes = [c for c in campos if c not in self._datos]
         if faltantes:
             raise ValidationError(f"faltan campos: {', '.join(faltantes)}")
 
     def build(self):
-        # valida todo y construye el objeto
+        # ejecuta validaciones finales
         self._validar_completo()
         self._validar_precio_cuidador()
         return SolicitudServicio(

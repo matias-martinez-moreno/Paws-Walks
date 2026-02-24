@@ -1,8 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator, MaxValueValidator
+from django.core.exceptions import ValidationError
 from decimal import Decimal
 import uuid
+from datetime import date
 
 
 class TipoMascota(models.TextChoices):
@@ -96,9 +98,13 @@ class BloqueTiempo(models.Model):
     class Meta:
         unique_together = ['idCuidador', 'diaSemana', 'horaInicio', 'horaFin']
 
+    def clean(self):
+        # regla: hora fin debe ser mayor a hora inicio
+        if self.horaFin <= self.horaInicio:
+            raise ValidationError("La hora de fin debe ser mayor que la hora de inicio.")
+
     def __str__(self):
         return f"{self.idCuidador.idCuidador.nombre} - {self.diaSemana} {self.horaInicio}"
-
 
 class PrecioServicio(models.Model):
     idPrecio = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -126,6 +132,11 @@ class SolicitudServicio(models.Model):
     estado = models.CharField(max_length=20, choices=EstadoSolicitud.choices, default=EstadoSolicitud.PENDIENTE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def clean(self):
+        # regla: no permitir fechas pasadas
+        if self.fecha and self.fecha < date.today():
+            raise ValidationError("La fecha del servicio no puede ser en el pasado.")
 
     def __str__(self):
         return f"Solicitud {self.idSolicitud} - {self.idDueño.nombre} -> {self.idCuidador.nombre}"

@@ -1,57 +1,264 @@
+{% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-    <title>Crear Solicitud</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paws & Walks – Nueva Solicitud</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #f5f7fa;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 32px 16px;
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+            padding: 40px 44px;
+            width: 100%;
+            max-width: 520px;
+        }
+
+        .card-header {
+            margin-bottom: 28px;
+        }
+
+        .card-header h1 {
+            font-size: 1.6rem;
+            color: #1a1a2e;
+            font-weight: 700;
+        }
+
+        .card-header p {
+            color: #6b7280;
+            font-size: 0.9rem;
+            margin-top: 4px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 6px;
+            letter-spacing: 0.01em;
+        }
+
+        select, input[type="date"] {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1.5px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            color: #1a1a2e;
+            background: #f9fafb;
+            transition: border-color 0.2s;
+            appearance: none;
+            -webkit-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+        }
+
+        input[type="date"] {
+            background-image: none;
+        }
+
+        select:focus, input[type="date"]:focus {
+            outline: none;
+            border-color: #6366f1;
+            background: #fff;
+            box-shadow: 0 0 0 3px rgba(99,102,241,0.10);
+        }
+
+        select:disabled {
+            color: #9ca3af;
+            cursor: not-allowed;
+        }
+
+        .bloque-hint {
+            font-size: 0.78rem;
+            color: #9ca3af;
+            margin-top: 5px;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 12px;
+            background: #d0590a;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 8px;
+            transition: background 0.2s;
+        }
+
+        .btn-submit:hover {
+            background: #92552c;
+        }
+
+        .alert {
+            border-radius: 8px;
+            padding: 12px 16px;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        .alert-success {
+            background: #ecfdf5;
+            color: #065f46;
+            border: 1px solid #6ee7b7;
+        }
+
+        .alert-error {
+            background: #fef2f2;
+            color: #991b1b;
+            border: 1px solid #fca5a5;
+        }
+
+        .divider {
+            border: none;
+            border-top: 1.5px solid #f3f4f6;
+            margin: 24px 0;
+        }
+    </style>
 </head>
 <body>
-    <h1>Crear Solicitud</h1>
-    <form method="post">
-        {% csrf_token %}
-        <p>Cuidador:<br>
-        <select name="idCuidador_id" id="cuidador_select" required>
-            <option value="">Seleccione un cuidador</option>
-            {% for c in cuidadores %}
-            <option value="{{ c.idUsuario }}" data-cuidador="{{ c.idUsuario }}">{{ c.nombre }}</option>
-            {% endfor %}
-        </select></p>
-        <p>Mascota:<br>
-        <select name="idMascota_id" required>
-            {% for m in mascotas %}
-            <option value="{{ m.idMascota }}">{{ m.nombreMascota }}</option>
-            {% endfor %}
-        </select></p>
-        <p>Tipo:<br>
-        <select name="tipoServicio" required>
-            <option value="paseo">Paseo</option>
-            <option value="guarderia">Guardería</option>
-            <option value="otro">Otro</option>
-        </select></p>
-        <p>Fecha:<br>
-        <input type="date" name="fecha" required></p>
-        <p>Bloque:<br>
-        <select name="idBloqueHorario_id" id="bloque_select" required>
-            <option value="">Seleccione primero un cuidador</option>
-        </select></p>
-        <button type="submit">Crear</button>
-    </form>
-    {% if error %}<p style="color:red;">{{ error }}</p>{% endif %}
-    {% if mensaje %}<p style="color:green;">{{ mensaje }}</p>{% endif %}
+    <div class="card">
+        <!-- cabecera con logo -->
+        <div class="card-header">
+            <h1>
+                <img src="{% static 'servicios/img/logo.png' %}" alt="Paws & Walks" style="height:100px; vertical-align:middle; margin-right:20px;">
+                Solicitud de Servicio
+            </h1>
+            <p>Reserva un servicio con un cuidador verificado</p>
+        </div>
+
+        {% if mensaje %}
+        <div class="alert alert-success">✅ {{ mensaje }}</div>
+        {% endif %}
+
+        {% if error %}
+        <div class="alert alert-error">⚠️ {{ error }}</div>
+        {% endif %}
+
+        <form method="post">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label for="cuidador_select">Cuidador</label>
+                <select name="idCuidador_id" id="cuidador_select" required>
+                    <option value="">— Seleccione un cuidador —</option>
+                    {% for c in cuidadores %}
+                    <option value="{{ c.idUsuario }}">{{ c.nombre }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="mascota_select">Mascota</label>
+                <select name="idMascota_id" id="mascota_select" required>
+                    <option value="">— Seleccione una mascota —</option>
+                    {% for m in mascotas %}
+                    <option value="{{ m.idMascota }}"
+                        data-dueño="{{ m.idDueño.idUsuario }}">
+                        {{ m.nombreMascota }} ({{ m.tipo }})
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="tipo_select">Tipo de Servicio</label>
+                <select name="tipoServicio" id="tipo_select" required>
+                    <option value="">— Seleccione el tipo —</option>
+                    <option value="paseo">🦮 Paseo</option>
+                    <option value="guarderia">🏠 Guardería</option>
+                    <option value="otro">🐾 Otro</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="fecha_input">Fecha del Servicio</label>
+                <input type="date" name="fecha" id="fecha_input" required>
+            </div>
+
+            <hr class="divider">
+
+            <div class="form-group">
+                <label for="bloque_select">Bloque Horario Disponible</label>
+                <select name="idBloqueHorario_id" id="bloque_select" required disabled>
+                    <option value="">— Primero seleccione un cuidador —</option>
+                </select>
+                <p class="bloque-hint" id="bloque_hint">Los bloques se cargan al elegir el cuidador</p>
+            </div>
+
+            <button type="submit" class="btn-submit">Crear Solicitud →</button>
+        </form>
+    </div>
+
     <script>
+        // carga bloques por cuidador
         const bloquesData = JSON.parse('{{ bloques_por_cuidador|escapejs }}');
-        document.getElementById('cuidador_select').addEventListener('change', function() {
+        const cuidadorSelect = document.getElementById('cuidador_select');
+        const bloqueSelect = document.getElementById('bloque_select');
+        const bloqueHint = document.getElementById('bloque_hint');
+
+        const DIAS = {
+            lunes: 'Lunes', martes: 'Martes', miercoles: 'Miércoles',
+            jueves: 'Jueves', viernes: 'Viernes', sabado: 'Sábado', domingo: 'Domingo'
+        };
+
+        cuidadorSelect.addEventListener('change', function () {
             const cuidadorId = this.value;
-            const bloqueSelect = document.getElementById('bloque_select');
-            bloqueSelect.innerHTML = '<option value="">Seleccione un bloque</option>';
-            if (cuidadorId && bloquesData[cuidadorId]) {
-                bloquesData[cuidadorId].forEach(function(bloque) {
-                    const option = document.createElement('option');
-                    option.value = bloque.id;
-                    option.textContent = bloque.texto;
-                    bloqueSelect.appendChild(option);
-                });
+            bloqueSelect.innerHTML = '';
+            bloqueSelect.disabled = true;
+
+            if (!cuidadorId || !bloquesData[cuidadorId] || bloquesData[cuidadorId].length === 0) {
+                bloqueSelect.innerHTML = '<option value="">— Sin bloques disponibles —</option>';
+                bloqueHint.textContent = 'Este cuidador no tiene horarios disponibles';
+                return;
             }
+
+            const defaultOption = document.createElement('option');
+            defaultOption.value = '';
+            defaultOption.textContent = '— Seleccione un horario —';
+            bloqueSelect.appendChild(defaultOption);
+
+            bloquesData[cuidadorId].forEach(function (bloque) {
+                // texto base: lunes 08:00:00-10:00:00
+                const partes = bloque.texto.split(' ');
+                const dia = DIAS[partes[0]] || partes[0];
+                const horas = partes[1] ? partes[1].split('-') : ['', ''];
+                // formatea horas a hh:mm
+                const inicio = horas[0] ? horas[0].substring(0, 5) : '';
+                const fin = horas[1] ? horas[1].substring(0, 5) : '';
+
+                const option = document.createElement('option');
+                option.value = bloque.id;
+                option.textContent = `${dia}  •  ${inicio} – ${fin}`;
+                bloqueSelect.appendChild(option);
+            });
+
+            bloqueSelect.disabled = false;
+            bloqueHint.textContent = `${bloquesData[cuidadorId].length} horario(s) disponible(s)`;
         });
     </script>
 </body>
 </html>
-
