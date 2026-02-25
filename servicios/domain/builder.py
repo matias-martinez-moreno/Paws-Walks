@@ -1,6 +1,10 @@
 # builder: crea solicitud paso a paso
-from django.core.exceptions import ValidationError
 from datetime import date
+from servicios.domain.exceptions import (
+    ConflictError,
+    DomainValidationError,
+    ResourceNotFoundError,
+)
 from servicios.models import (
     SolicitudServicio, Usuario, Mascota,
     BloqueTiempo, PrecioServicio, EstadoSolicitud,
@@ -17,7 +21,7 @@ class SolicitudServicioBuilder:
     def para_dueño(self, dueño):
         # valida tipo de duenio
         if not isinstance(dueño, Usuario):
-            raise ValidationError("el dueño debe ser una instancia de usuario")
+            raise DomainValidationError("el dueño debe ser una instancia de usuario")
         self._datos['idDueño'] = dueño
         return self
 
@@ -26,11 +30,11 @@ class SolicitudServicioBuilder:
         try:
             cuidador = Usuario.objects.get(idUsuario=cuidador_id)
         except Usuario.DoesNotExist:
-            raise ValidationError("el cuidador no existe")
+            raise ResourceNotFoundError("el cuidador no existe")
         if cuidador.rol not in ['cuidador', 'ambos']:
-            raise ValidationError("el usuario no es cuidador")
+            raise DomainValidationError("el usuario no es cuidador")
         if not cuidador.verificado:
-            raise ValidationError("el cuidador no está verificado")
+            raise DomainValidationError("el cuidador no esta verificado")
         self._datos['idCuidador'] = cuidador
         return self
 
@@ -38,11 +42,13 @@ class SolicitudServicioBuilder:
         # valida mascota del duenio
         dueño = self._datos.get('idDueño')
         if not dueño:
-            raise ValidationError("debe especificar el dueño primero")
+            raise DomainValidationError("debe especificar el dueño primero")
         try:
-            mascota = Mascota.objects.get(idMascota=mascota_id, idDueño=dueño)
+            mascota = Mascota.objects.get(idMascota=mascota_id)
         except Mascota.DoesNotExist:
-            raise ValidationError("la mascota no existe o no pertenece al dueño")
+            raise ResourceNotFoundError("la mascota no existe")
+        if mascota.idDueño_id != dueño.idUsuario:
+            raise ConflictError("la mascota no pertenece al dueño")
         self._datos['idMascota'] = mascota
         return self
 
@@ -50,14 +56,14 @@ class SolicitudServicioBuilder:
         # valida tipo de servicio
         opciones = [choice[0] for choice in TipoServicio.choices]
         if tipo_servicio not in opciones:
-            raise ValidationError(f"tipo de servicio inválido: {tipo_servicio}")
+            raise DomainValidationError(f"tipo de servicio invalido: {tipo_servicio}")
         self._datos['tipoServicio'] = tipo_servicio
         return self
 
     def en_fecha(self, fecha):
         # regla: no permitir fecha pasada
         if fecha < date.today():
-            raise ValidationError("La fecha del servicio no puede ser en el pasado.")
+            raise DomainValidationError("la fecha del servicio no puede ser en el pasado")
         self._datos['fecha'] = fecha
         return self
 
@@ -65,17 +71,17 @@ class SolicitudServicioBuilder:
         # valida bloque disponible del cuidador
         cuidador = self._datos.get('idCuidador')
         if not cuidador:
-            raise ValidationError("debe especificar el cuidador primero")
+            raise DomainValidationError("debe especificar el cuidador primero")
         try:
             bloque = BloqueTiempo.objects.get(idBloque=bloque_id)
         except BloqueTiempo.DoesNotExist:
-            raise ValidationError("el bloque no existe")
+            raise ResourceNotFoundError("el bloque no existe")
         # valida disponibilidad
         if not bloque.disponible:
-            raise ValidationError("el bloque no está disponible")
+            raise ConflictError("el bloque no esta disponible")
         # valida pertenencia al cuidador
         if bloque.idCuidador.idCuidador.idUsuario != cuidador.idUsuario:
-            raise ValidationError("el bloque no pertenece al cuidador")
+            raise ConflictError("el bloque no pertenece al cuidador")
         self._datos['idBloqueHorario'] = bloque
         return self
 
@@ -92,14 +98,14 @@ class SolicitudServicioBuilder:
                 activo=True
             )
         except PrecioServicio.DoesNotExist:
-            raise ValidationError(f"el cuidador no tiene precio para {tipo_servicio}")
+            raise DomainValidationError(f"el cuidador no tiene precio para {tipo_servicio}")
 
     def _validar_completo(self):
         # valida campos obligatorios
         campos = ['idDueño', 'idCuidador', 'idMascota', 'tipoServicio', 'fecha', 'idBloqueHorario']
         faltantes = [c for c in campos if c not in self._datos]
         if faltantes:
-            raise ValidationError(f"faltan campos: {', '.join(faltantes)}")
+            raise DomainValidationError(f"faltan campos: {', '.join(faltantes)}")
 
     def build(self):
         # ejecuta validaciones finales

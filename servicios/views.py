@@ -1,9 +1,9 @@
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
-from django.core.exceptions import ValidationError
 from django.shortcuts import render
 
+from servicios.domain.exceptions import DomainError
 from servicios.services import CrearSolicitudServicioAppService
 
 
@@ -25,7 +25,7 @@ class CrearSolicitudServicioView(View):
             ctx = service.get_form_context()
             ctx["mensaje"] = f"Solicitud creada: {solicitud.idSolicitud}"
             return render(request, "servicios/crear_solicitud.html", ctx)
-        except ValidationError as e:
+        except DomainError as e:
             return self._render_error(request, str(e))
         except Exception as e:
             return self._render_error(request, str(e))

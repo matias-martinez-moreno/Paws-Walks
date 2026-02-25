@@ -162,6 +162,16 @@
             {% csrf_token %}
 
             <div class="form-group">
+                <label for="dueno_select">Dueño</label>
+                <select name="idDueño_id" id="dueno_select" required>
+                    <option value="">— Seleccione un dueño —</option>
+                    {% for d in dueños %}
+                    <option value="{{ d.idUsuario }}">{{ d.nombre }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
                 <label for="cuidador_select">Cuidador</label>
                 <select name="idCuidador_id" id="cuidador_select" required>
                     <option value="">— Seleccione un cuidador —</option>

@@ -6,6 +6,7 @@ from servicios.models import EstadoSolicitud, TipoServicio
 class SolicitudServicioCreateSerializer(serializers.Serializer):
     # valida solo formato y tipos de entrada
 
+    idDueño_id = serializers.UUIDField()
     idCuidador_id = serializers.UUIDField()
     idMascota_id = serializers.UUIDField()
     tipoServicio = serializers.ChoiceField(choices=[c[0] for c in TipoServicio.choices])
