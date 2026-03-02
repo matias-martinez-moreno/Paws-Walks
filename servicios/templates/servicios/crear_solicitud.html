@@ -224,19 +224,27 @@
     </div>
 
     <script>
-        // carga bloques por cuidador
+        // carga bloques por cuidador (cada bloque tiene id, dia, texto)
         const bloquesData = JSON.parse('{{ bloques_por_cuidador|escapejs }}');
         const cuidadorSelect = document.getElementById('cuidador_select');
         const bloqueSelect = document.getElementById('bloque_select');
         const bloqueHint = document.getElementById('bloque_hint');
+        const fechaInput = document.getElementById('fecha_input');
 
-        const DIAS = {
-            lunes: 'Lunes', martes: 'Martes', miercoles: 'Miércoles',
-            jueves: 'Jueves', viernes: 'Viernes', sabado: 'Sábado', domingo: 'Domingo'
-        };
+        // getDay(): 0=domingo, 1=lunes, ..., 6=sábado
+        const DIAS_SEMANA = ['domingo', 'lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado'];
 
-        cuidadorSelect.addEventListener('change', function () {
-            const cuidadorId = this.value;
+        function getDiaSemanaFromDate(dateStr) {
+            if (!dateStr) return null;
+            const d = new Date(dateStr + 'T12:00:00');
+            return DIAS_SEMANA[d.getDay()];
+        }
+
+        function fillBloques() {
+            const cuidadorId = cuidadorSelect.value;
+            const fechaStr = fechaInput.value;
+            const diaFecha = getDiaSemanaFromDate(fechaStr);
+
             bloqueSelect.innerHTML = '';
             bloqueSelect.disabled = true;
 
@@ -246,29 +254,47 @@
                 return;
             }
 
+            // Si hay fecha, solo bloques del mismo día de la semana
+            let bloques = bloquesData[cuidadorId];
+            if (diaFecha) {
+                bloques = bloques.filter(function (b) { return b.dia === diaFecha; });
+            }
+
+            if (bloques.length === 0) {
+                bloqueSelect.innerHTML = diaFecha
+                    ? '<option value="">— Sin horarios para ese día —</option>'
+                    : '<option value="">— Sin bloques disponibles —</option>';
+                bloqueHint.textContent = diaFecha
+                    ? 'Este cuidador no tiene horarios para el día seleccionado'
+                    : 'Este cuidador no tiene horarios disponibles';
+                return;
+            }
+
             const defaultOption = document.createElement('option');
             defaultOption.value = '';
             defaultOption.textContent = '— Seleccione un horario —';
             bloqueSelect.appendChild(defaultOption);
 
-            bloquesData[cuidadorId].forEach(function (bloque) {
-                // texto base: lunes 08:00:00-10:00:00
+            bloques.forEach(function (bloque) {
                 const partes = bloque.texto.split(' ');
-                const dia = DIAS[partes[0]] || partes[0];
                 const horas = partes[1] ? partes[1].split('-') : ['', ''];
-                // formatea horas a hh:mm
                 const inicio = horas[0] ? horas[0].substring(0, 5) : '';
                 const fin = horas[1] ? horas[1].substring(0, 5) : '';
 
                 const option = document.createElement('option');
                 option.value = bloque.id;
-                option.textContent = `${dia}  •  ${inicio} – ${fin}`;
+                option.textContent = `${inicio} – ${fin}`;
                 bloqueSelect.appendChild(option);
             });
 
             bloqueSelect.disabled = false;
-            bloqueHint.textContent = `${bloquesData[cuidadorId].length} horario(s) disponible(s)`;
-        });
+            bloqueHint.textContent = diaFecha
+                ? `${bloques.length} horario(s) para ese día`
+                : `${bloques.length} horario(s) — seleccione fecha para filtrar por día`;
+        }
+
+        cuidadorSelect.addEventListener('change', fillBloques);
+        fechaInput.addEventListener('change', fillBloques);
     </script>
 </body>
 </html>

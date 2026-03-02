@@ -77,6 +77,7 @@ class CrearSolicitudServicioAppService:
             bloques_por_cuidador.setdefault(cuidador_id, []).append(
                 {
                     "id": str(bloque.idBloque),
+                    "dia": bloque.diaSemana,
                     "texto": f"{bloque.diaSemana} {bloque.horaInicio}-{bloque.horaFin}",
                 }
             )
