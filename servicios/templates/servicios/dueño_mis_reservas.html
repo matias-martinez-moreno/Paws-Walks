@@ -1,0 +1,217 @@
+{% extends "servicios/base_dashboard.html" %}
+{% load servicios_extras %}
+{% block title %}Mis reservas{% endblock %}
+
+{% block top_greeting %}
+<h1 class="page-header__title">Mis reservas</h1>
+<p class="page-header__subtitle">Historial y reservas próximas</p>
+{% endblock %}
+
+{% block sidebar_links %}
+<div class="sidebar-section">Principal</div>
+<a class="nav-link" href="{% url 'dashboard_dueño' %}"><i class="bi bi-house-door"></i> Panel</a>
+<div class="sidebar-section">Gestión</div>
+<a class="nav-link" href="{% url 'dueño_nueva_reserva' %}"><i class="bi bi-plus-circle"></i> Hacer reserva</a>
+<a class="nav-link active" href="{% url 'dueño_mis_reservas' %}"><i class="bi bi-calendar3"></i> Mis reservas</a>
+<a class="nav-link" href="{% url 'dueño_mis_mascotas' %}"><i class="bi bi-heart"></i> Mis mascotas</a>
+<div class="sidebar-section">Cuenta</div>
+<a class="nav-link" href="{% url 'dueño_mi_perfil' %}"><i class="bi bi-person"></i> Mi perfil</a>
+{% endblock %}
+
+{% block content %}
+<div class="w-full space-y-6">
+<div class="bg-white rounded-2xl shadow-sm border border-slate-100/80 overflow-hidden">
+  <div class="px-6 py-4 border-b border-slate-100 font-semibold text-slate-800 flex items-center bg-slate-50/50"><i class="bi bi-calendar-check mr-2 text-pw-orange"></i>Próximas</div>
+  <div class="p-0">
+    {% if solicitudes_futuras %}
+    <div class="overflow-x-auto">
+      <table class="w-full mb-0">
+        <thead class="bg-slate-50"><tr><th class="text-left text-xs uppercase tracking-wide text-slate-500 font-medium py-3 px-4 border-b-2 border-slate-100">Mascota</th><th class="text-left text-xs uppercase tracking-wide text-slate-500 font-medium py-3 border-b-2 border-slate-100">Cuidador</th><th class="text-left text-xs uppercase tracking-wide text-slate-500 font-medium py-3 border-b-2 border-slate-100">Servicio</th><th class="text-left text-xs uppercase tracking-wide text-slate-500 font-medium py-3 border-b-2 border-slate-100">Inicio</th><th class="text-left text-xs uppercase tracking-wide text-slate-500 font-medium py-3 border-b-2 border-slate-100">Fin</th><th class="text-left text-xs uppercase tracking-wide text-slate-500 font-medium py-3 border-b-2 border-slate-100">Monto</th><th class="text-left text-xs uppercase tracking-wide text-slate-500 font-medium py-3 border-b-2 border-slate-100">Estado</th><th class="text-left text-xs uppercase tracking-wide text-slate-500 font-medium py-3 border-b-2 border-slate-100">Acciones</th></tr></thead>
+        <tbody>
+        {% for s in solicitudes_futuras %}
+        <tr class="hover:bg-slate-50 transition">
+          <td class="py-3 px-4 text-sm align-middle">{{ s.idMascota.nombreMascota }}</td>
+          <td class="py-3 text-sm align-middle">{{ s.idCuidador.nombre }}</td>
+          <td class="py-3 text-sm align-middle"><span class="inline-flex items-center rounded-full px-3 py-1 text-xs font-medium bg-slate-100 text-slate-800 border border-slate-200">{{ s.get_tipoServicio_display }}</span></td>
+          <td class="py-3 text-sm align-middle">{{ s.fecha|date:"d M Y" }}</td>
+          <td class="py-3 text-sm align-middle">{% if s.fechaFin %}{{ s.fechaFin|date:"d M Y" }}{% else %}—{% endif %}</td>
+          <td class="py-3 text-sm align-middle">{% if s.monto_pago %}${{ s.monto_pago|formato_cop }} COP{% else %}—{% endif %}<br><small class="text-slate-500">{% if s.estado_pago == 'pendiente' %}Pago pendiente{% else %}{{ s.get_estado_pago_display }}{% endif %}</small></td>
+          <td class="py-3 text-sm align-middle"><span class="inline-flex items-center rounded-full px-3 py-1 text-xs font-medium bg-blue-50 text-blue-700">{{ s.get_estado_display }}</span></td>
+          <td class="py-3 text-sm align-middle">
+            <a href="{% url 'ver_perfil_otro' s.idCuidador.idUsuario %}" class="border-2 border-slate-300 text-slate-600 hover:bg-slate-50 font-semibold rounded-lg px-3 py-1.5 text-sm transition inline-block mr-1"><i class="bi bi-person mr-1"></i>Ver perfil</a>
+            <button type="button" class="btnChat border-2 border-pw-orange text-pw-orange hover:bg-pw-orange hover:text-white font-semibold rounded-lg px-3 py-1.5 text-sm transition" data-solicitud="{{ s.idSolicitud }}" data-cuidador="{{ s.idCuidador.nombre }}"><i class="bi bi-chat-dots mr-1"></i>Chat</button>
+            <form method="post" class="inline ml-1" onsubmit="return confirm('¿Cancelar esta reserva?');">
+              {% csrf_token %}
+              <input type="hidden" name="action" value="cancelar">
+              <input type="hidden" name="solicitud_id" value="{{ s.idSolicitud }}">
+              <button type="submit" class="border-2 border-red-500 text-red-600 hover:bg-red-500 hover:text-white font-semibold rounded-lg px-3 py-1.5 text-sm transition"><i class="bi bi-x-circle mr-1"></i>Cancelar</button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+    <div class="text-center py-12">
+      <div class="w-16 h-16 rounded-full bg-slate-100 flex items-center justify-center mx-auto mb-3"><i class="bi bi-calendar-x text-2xl text-slate-400"></i></div>
+      <p class="text-slate-600 font-medium mb-1">Sin reservas próximas</p>
+      <a href="{% url 'dueño_nueva_reserva' %}" class="text-pw-orange font-semibold hover:underline text-sm">Crear reserva</a>
+    </div>
+    {% endif %}
+  </div>
+</div>
+
+<div class="bg-white rounded-2xl shadow-sm border border-slate-100/80 overflow-hidden">
+  <div class="px-6 py-4 border-b border-slate-100 font-semibold text-slate-800 flex items-center bg-slate-50/50"><i class="bi bi-clock-history mr-2 text-slate-500"></i>Historial</div>
+  <div class="p-0">
+    {% if solicitudes_pasadas %}
+    <div class="overflow-x-auto">
+      <table class="w-full mb-0">
+        <thead class="bg-slate-50"><tr><th class="text-left text-xs uppercase tracking-wide text-slate-500 font-medium py-3 px-4 border-b-2 border-slate-100">Mascota</th><th class="text-left text-xs uppercase tracking-wide text-slate-500 font-medium py-3 border-b-2 border-slate-100">Cuidador</th><th class="text-left text-xs uppercase tracking-wide text-slate-500 font-medium py-3 border-b-2 border-slate-100">Servicio</th><th class="text-left text-xs uppercase tracking-wide text-slate-500 font-medium py-3 border-b-2 border-slate-100">Inicio</th><th class="text-left text-xs uppercase tracking-wide text-slate-500 font-medium py-3 border-b-2 border-slate-100">Fin</th><th class="text-left text-xs uppercase tracking-wide text-slate-500 font-medium py-3 border-b-2 border-slate-100">Monto</th><th class="text-left text-xs uppercase tracking-wide text-slate-500 font-medium py-3 border-b-2 border-slate-100">Estado</th><th class="text-left text-xs uppercase tracking-wide text-slate-500 font-medium py-3 border-b-2 border-slate-100"></th></tr></thead>
+        <tbody>
+        {% for s in solicitudes_pasadas %}
+        <tr class="hover:bg-slate-50 transition">
+          <td class="py-3 px-4 text-sm align-middle">{{ s.idMascota.nombreMascota }}</td>
+          <td class="py-3 text-sm align-middle">{{ s.idCuidador.nombre }}</td>
+          <td class="py-3 text-sm align-middle"><span class="inline-flex items-center rounded-full px-3 py-1 text-xs font-medium bg-slate-100 text-slate-800 border border-slate-200">{{ s.get_tipoServicio_display }}</span></td>
+          <td class="py-3 text-sm align-middle">{{ s.fecha|date:"d M Y" }}</td>
+          <td class="py-3 text-sm align-middle">{% if s.fechaFin %}{{ s.fechaFin|date:"d M Y" }}{% else %}—{% endif %}</td>
+          <td class="py-3 text-sm align-middle">{% if s.monto_pago %}${{ s.monto_pago|formato_cop }} COP{% else %}—{% endif %}</td>
+          <td class="py-3 text-sm align-middle"><span class="inline-flex items-center rounded-full px-3 py-1 text-xs font-medium bg-slate-100 text-slate-600">{{ s.get_estado_display }}</span></td>
+          <td class="py-3 text-sm align-middle">
+            <a href="{% url 'ver_perfil_otro' s.idCuidador.idUsuario %}" class="border-2 border-slate-300 text-slate-600 hover:bg-slate-50 font-semibold rounded-lg px-3 py-1.5 text-sm transition inline-block mr-1"><i class="bi bi-person mr-1"></i>Ver perfil</a>
+            {% if s.estado == 'aceptado' %}
+            <button type="button" class="btnChat border-2 border-pw-orange text-pw-orange hover:bg-pw-orange hover:text-white font-semibold rounded-lg px-3 py-1.5 text-sm transition inline mr-1" data-solicitud="{{ s.idSolicitud }}" data-cuidador="{{ s.idCuidador.nombre }}"><i class="bi bi-chat-dots mr-1"></i>Chat</button>
+            <form method="post" class="inline mr-2">
+              {% csrf_token %}
+              <input type="hidden" name="action" value="completar">
+              <input type="hidden" name="solicitud_id" value="{{ s.idSolicitud }}">
+              <button type="submit" class="border-2 border-emerald-500 text-emerald-600 hover:bg-emerald-500 hover:text-white font-semibold rounded-lg px-3 py-1.5 text-sm transition"><i class="bi bi-check-circle mr-1"></i>Marcar completado</button>
+            </form>
+            {% endif %}
+            {% if s.estado == 'completado' and not s.calificacion %}
+            <button type="button" class="border-2 border-pw-orange text-pw-orange hover:bg-pw-orange hover:text-white font-semibold rounded-lg px-3 py-1.5 text-sm transition" data-modal="modalCalificar" data-solicitud="{{ s.idSolicitud }}">
+              <i class="bi bi-star mr-1"></i>Calificar
+            </button>
+            {% elif s.calificacion %}
+            <span class="text-emerald-600 text-sm"><i class="bi bi-star-fill mr-1"></i>{{ s.calificacion.estrellas }}/5</span>
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+    <div class="text-center py-12">
+      <div class="w-16 h-16 rounded-full bg-slate-100 flex items-center justify-center mx-auto mb-3"><i class="bi bi-clock-history text-2xl text-slate-400"></i></div>
+      <p class="text-slate-600 font-medium">Sin historial aún</p>
+    </div>
+    {% endif %}
+  </div>
+</div>
+
+<!-- Modal Calificar -->
+<div class="pw-modal fixed inset-0 z-50 hidden flex items-center justify-center p-4" id="modalCalificar" aria-hidden="true">
+  <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" data-modal-close="modalCalificar"></div>
+  <div class="relative bg-white rounded-2xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto p-6 z-10 border border-slate-100">
+    <div class="flex items-center justify-between mb-4">
+      <h5 class="font-bold text-slate-800"><i class="bi bi-star mr-2 text-amber-500"></i>Calificar servicio</h5>
+      <button type="button" class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-slate-100 text-slate-500" data-modal-close="modalCalificar" aria-label="Cerrar"><i class="bi bi-x-lg"></i></button>
+    </div>
+    <form method="post">
+      {% csrf_token %}
+      <input type="hidden" name="action" value="calificar">
+      <input type="hidden" name="solicitud_id" id="calificarSolicitudId" value="">
+      <div class="mb-4">
+        <label class="block text-sm font-semibold text-slate-700 mb-2">¿Cómo fue tu experiencia?</label>
+        <div class="flex gap-2 text-xl" id="estrellasGroup">
+          {% for i in "12345" %}
+          <label class="cursor-pointer text-amber-400 hover:text-amber-500 transition" title="{{ i }} estrella{{ i|pluralize }}">
+            <input type="radio" name="estrellas" value="{{ i }}" class="hidden" {% if forloop.counter == 5 %}checked{% endif %}>
+            <i class="bi bi-star-fill mr-1" data-val="{{ i }}"></i>
+          </label>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="mb-4">
+        <label class="block text-sm font-semibold text-slate-700 mb-1.5">Comentario (opcional)</label>
+        <textarea name="comentario" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" rows="3" placeholder="Cuéntanos más..." maxlength="500"></textarea>
+      </div>
+      <div class="flex gap-2 justify-end">
+        <button type="button" class="border border-slate-300 text-slate-600 hover:bg-slate-50 font-semibold rounded-lg px-4 py-2.5 text-sm transition" data-modal-close="modalCalificar">Cancelar</button>
+        <button type="submit" class="bg-pw-orange hover:bg-pw-orange-dark text-white font-semibold rounded-xl px-5 py-2.5 text-sm transition-all hover:shadow-lg hover:shadow-pw-orange/20"><i class="bi bi-send mr-1"></i>Enviar</button>
+      </div>
+    </form>
+  </div>
+</div>
+ </div>
+
+<!-- Modal Chat -->
+<div class="pw-modal fixed inset-0 z-50 hidden flex items-center justify-center p-4" id="chatModal" aria-hidden="true">
+  <div class="absolute inset-0 bg-black/40" data-modal-close="chatModal"></div>
+  <div class="relative bg-white rounded-2xl shadow-xl max-w-md w-full max-h-[85vh] flex flex-col z-10">
+    <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
+      <h5 class="font-bold text-slate-800" id="chatModalTitulo">Chat</h5>
+      <button type="button" class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-slate-100 text-slate-500" data-modal-close="chatModal"><i class="bi bi-x-lg"></i></button>
+    </div>
+    <div id="chatModalBody" class="flex-1 overflow-y-auto p-4 min-h-[200px] max-h-80 bg-slate-50 space-y-2"></div>
+    <form method="post" class="p-4 border-t border-slate-100">
+      {% csrf_token %}
+      <input type="hidden" name="action" value="enviar_mensaje">
+      <input type="hidden" name="solicitud_id" id="chatSolicitudId" value="">
+      <div class="flex gap-2">
+        <input name="mensaje" type="text" placeholder="Escribe un mensaje..." class="flex-1 rounded-xl border border-slate-200 px-4 py-2.5 focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" required maxlength="500">
+        <button type="submit" class="bg-pw-orange hover:bg-pw-orange-dark text-white font-semibold rounded-xl px-4 py-2.5 transition"><i class="bi bi-send"></i></button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('pw-modal-open', function(e) {
+  if (e.detail.modalId === 'modalCalificar' && e.detail.trigger && e.detail.trigger.dataset.solicitud) {
+    document.getElementById('calificarSolicitudId').value = e.detail.trigger.dataset.solicitud;
+  }
+});
+document.querySelectorAll('#modalCalificar [name="estrellas"]').forEach(function(r) {
+  r.closest('label')?.addEventListener('click', function() {
+    var val = parseInt(this.querySelector('input').value, 10);
+    this.closest('#estrellasGroup').querySelectorAll('i[data-val]').forEach(function(star) {
+      var starVal = parseInt(star.getAttribute('data-val'), 10);
+      star.classList.toggle('bi-star-fill', starVal <= val);
+      star.classList.toggle('bi-star', starVal > val);
+    });
+  });
+});
+
+var chatData = {};
+{% for s in solicitudes_futuras %}
+chatData["{{ s.idSolicitud }}"] = [{% for m in s.mensajes_chat.all %}{"de":"{{ m.idDe.nombre|escapejs }}","msg":"{{ m.mensaje|escapejs }}","yo":{% if m.idDe.idUsuario == usuario.idUsuario %}true{% else %}false{% endif %}}{% if not forloop.last %},{% endif %}{% endfor %}];
+{% endfor %}
+{% for s in solicitudes_pasadas %}
+chatData["{{ s.idSolicitud }}"] = [{% for m in s.mensajes_chat.all %}{"de":"{{ m.idDe.nombre|escapejs }}","msg":"{{ m.mensaje|escapejs }}","yo":{% if m.idDe.idUsuario == usuario.idUsuario %}true{% else %}false{% endif %}}{% if not forloop.last %},{% endif %}{% endfor %}];
+{% endfor %}
+document.querySelectorAll('.btnChat').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    var sid = this.getAttribute('data-solicitud');
+    var cuidador = this.getAttribute('data-cuidador');
+    document.getElementById('chatSolicitudId').value = sid;
+    document.getElementById('chatModalTitulo').textContent = 'Chat con ' + cuidador;
+    var body = document.getElementById('chatModalBody');
+    var msgs = chatData[sid] || [];
+    body.innerHTML = msgs.map(function(m) {
+      var align = m.yo ? 'justify-end' : 'justify-start';
+      var bg = m.yo ? 'bg-pw-orange text-white rounded-tr-none' : 'bg-white border border-slate-200 rounded-tl-none';
+      return '<div class="flex ' + align + '"><div class="max-w-[85%] ' + bg + ' rounded-2xl px-4 py-2 shadow-sm"><p class="text-sm">' + m.msg.replace(/</g,'&lt;') + '</p><span class="text-xs opacity-75">' + m.de + '</span></div></div>';
+    }).join('') || '<p class="text-slate-500 text-sm text-center py-4">Sin mensajes aún. Escribe el primero.</p>';
+    body.scrollTop = body.scrollHeight;
+    document.getElementById('chatModal').classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+  });
+});
+</script>
+{% endblock %}

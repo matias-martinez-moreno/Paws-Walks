@@ -1,0 +1,3 @@
+<div class="sidebar-section mt-4">Ayuda</div>
+<a class="nav-link {% if request.resolver_match.url_name == 'dueño_guia' %}active{% endif %}" href="{% url 'dueño_guia' %}"><i class="bi bi-book"></i> Guía de uso</a>
+<a class="nav-link {% if request.resolver_match.url_name == 'dueño_soporte' %}active{% endif %}" href="{% url 'dueño_soporte' %}"><i class="bi bi-chat-dots"></i> Soporte</a>

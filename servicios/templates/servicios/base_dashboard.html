@@ -1,0 +1,184 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Paws & Walks{% endblock %}</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            pw: { orange: '#e07a2e', 'orange-dark': '#c96a25', dark: '#333' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <style>
+    /* Nav links (usados en sidebar_links) */
+    .nav-link{display:flex;align-items:center;gap:.65rem;padding:.6rem 1.2rem;color:#64748b;text-decoration:none;font-size:.9rem;font-weight:500;border-left:3px solid transparent;border-radius:0 8px 8px 0;margin-left:4px;transition:all .2s ease}
+    .nav-link:hover{color:#334155;background:linear-gradient(90deg,rgba(224,122,46,.08),transparent)}
+    .nav-link.active{color:#e07a2e;background:linear-gradient(90deg,rgba(224,122,46,.12),rgba(224,122,46,.04));border-left-color:#e07a2e;font-weight:600}
+    .nav-link .bi{font-size:1.1rem;width:20px;text-align:center}
+    .sidebar-section{padding:0 1.2rem;font-size:.68rem;text-transform:uppercase;letter-spacing:1.2px;color:#94a3b8;margin-top:1rem;margin-bottom:.4rem;font-weight:600}
+    .sidebar-section:first-child{margin-top:0}
+    /* Transiciones sidebar show/collapse */
+    .sidebar{transition:transform .25s ease, box-shadow .25s ease}
+    .sidebar-edge-toggle{transition:left .25s ease, background .15s ease, border-color .15s ease, transform .15s ease}
+    .sidebar-edge-toggle .edge-line{transition:all .2s ease}
+    .sidebar-edge-toggle .edge-line::after{content:"";position:absolute;top:50%;left:4px;transform:translateY(-50%);border-top:3px solid transparent;border-bottom:3px solid transparent;border-left:5px solid #9ca3af;transition:all .2s ease}
+    @media (max-width: 991.98px){
+      .sidebar{transform:translateX(-100%);box-shadow:none}
+      .sidebar.show{transform:translateX(0);box-shadow:4px 0 20px rgba(0,0,0,.15)}
+      .sidebar-backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:1000;opacity:0;transition:opacity .25s}
+      .sidebar-backdrop.show{display:block;opacity:1}
+    }
+    @media (min-width: 992px){
+      body.sidebar-collapsed .sidebar{transform:translateX(-250px)}
+      body.sidebar-collapsed .main-content{margin-left:0;width:100%}
+      body.sidebar-collapsed .sidebar-edge-toggle{left:8px}
+      body.sidebar-collapsed .sidebar-edge-toggle .edge-line::after{left:auto;right:4px;border-left:none;border-right:6px solid #9ca3af}
+    }
+    @media (max-width: 991.98px){ .page-header__title{font-size:1.35rem} }
+    .page-header{position:relative;padding-left:1rem;border-left:4px solid #e07a2e}
+    .page-header__title{font-size:1.5rem;font-weight:800;letter-spacing:-0.03em;line-height:1.2;margin:0;color:#0f172a}
+    .page-header__subtitle{font-size:0.9rem;color:#64748b;margin:0.4rem 0 0;font-weight:500;letter-spacing:0.02em}
+  </style>
+  {% block extra_css %}{% endblock %}
+</head>
+<body class="m-0 font-sans bg-slate-50 antialiased">
+
+<!-- Backdrop para cerrar sidebar en móvil -->
+<div class="sidebar-backdrop hidden" id="sidebarBackdrop" aria-hidden="true"></div>
+
+<!-- Barra superior móvil -->
+<header class="lg:hidden fixed top-0 left-0 right-0 h-14 bg-white border-b border-slate-200 flex items-center px-4 z-[1000] gap-4">
+  <button type="button" class="border-none bg-transparent text-2xl text-slate-800 p-1" id="btnSidebarToggle" aria-label="Abrir menú"><i class="bi bi-list"></i></button>
+  <div class="flex items-center gap-2">
+    <img src="{% static 'servicios/img/logo.png' %}" alt="Paws & Walks" class="w-12 h-12 object-contain">
+  </div>
+</header>
+
+<!-- Sidebar -->
+<aside class="sidebar fixed top-0 left-0 bottom-0 w-[250px] bg-white border-r border-slate-200/80 flex flex-col z-[1001] overflow-y-auto shadow-sm" id="sidebar">
+  <div class="py-1.5 px-3 border-b border-slate-200 flex items-center justify-center">
+    <img src="{% static 'servicios/img/logo.png' %}" alt="Paws & Walks" class="w-[136px] max-h-[84px] h-auto object-contain block">
+  </div>
+  <nav class="flex-1 py-3 overflow-y-auto">
+    {% block sidebar_links %}{% endblock %}
+    {% block sidebar_extra %}
+    {% if usuario.rol == 'cuidador' %}{% include "servicios/includes/sidebar_cuidador_extra.html" %}
+    {% elif usuario.rol == 'dueño' %}{% include "servicios/includes/sidebar_dueño_extra.html" %}{% endif %}
+    {% endblock %}
+  </nav>
+  <div class="p-4 border-t border-slate-200 shrink-0">
+    <div class="pb-2.5 mb-2.5 border-b border-slate-200">
+      <div class="flex items-center gap-2.5">
+        {% if usuario.fotoPerfil %}
+          <img src="{{ usuario.fotoPerfil.url }}" alt="foto" class="w-8 h-8 rounded-full object-cover border border-slate-200 shrink-0">
+        {% else %}
+          <div class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center font-bold text-sm border border-slate-200 shrink-0 text-slate-600">{{ usuario.nombre|first|upper }}</div>
+        {% endif %}
+        <div class="min-w-0 overflow-hidden">
+          <div class="font-bold text-[0.82rem] truncate leading-tight">{{ usuario.nombre }} {{ usuario.apellido }}</div>
+          <div class="text-[0.68rem] text-slate-500 capitalize leading-tight">{{ usuario.get_rol_display }}</div>
+        </div>
+      </div>
+    </div>
+    <form method="post" action="{% url 'logout' %}">
+      {% csrf_token %}
+      <button type="submit" class="w-full border border-red-600 rounded-lg py-2.5 font-semibold text-sm bg-red-600 text-white cursor-pointer transition-all flex items-center justify-center gap-2 hover:bg-red-700 hover:border-red-700">
+        <i class="bi bi-box-arrow-left"></i> Cerrar sesión
+      </button>
+    </form>
+  </div>
+</aside>
+<button type="button" class="sidebar-edge-toggle fixed top-[76px] left-[236px] w-7 h-7 border border-slate-200 rounded-full bg-white flex items-center justify-center cursor-pointer z-[1002] shadow-sm hover:bg-slate-50 hover:border-slate-300 hover:scale-105 hidden lg:flex" id="btnSidebarDesktopToggle" aria-label="Plegar o desplegar menú">
+  <span class="edge-line w-0.5 h-3.5 bg-slate-400 rounded-full relative block" aria-hidden="true"></span>
+</button>
+
+<!-- Main -->
+<div class="main-content ml-0 lg:ml-[250px] w-full lg:w-[calc(100%-250px)] min-h-screen pt-14 lg:pt-0 transition-[margin-left,width] duration-300" id="mainContent">
+  <div class="flex items-center justify-between px-4 lg:px-8 py-5 bg-white/80 backdrop-blur-sm border-b border-slate-200/80 flex-wrap gap-2 sm:flex-row shadow-sm">
+    <div class="flex items-center gap-3">
+      <div class="page-header">
+        {% block top_greeting %}
+        <h1 class="page-header__title">Hola, {{ usuario.nombre }}</h1>
+        <p class="page-header__subtitle">Panel de control</p>
+        {% endblock %}
+      </div>
+    </div>
+  </div>
+
+  <div class="p-4 lg:p-8 min-h-[calc(100vh-80px)]">
+    {% if error %}
+    <div class="rounded-xl px-4 py-3 mb-4 bg-red-50/90 border border-red-200/80 text-red-800 flex items-center gap-3 shadow-sm"><i class="bi bi-exclamation-triangle-fill text-red-500 text-lg"></i><span>{{ error }}</span></div>
+    {% endif %}
+    {% if mensaje %}
+    <div class="rounded-xl px-4 py-3 mb-4 bg-emerald-50/90 border border-emerald-200/80 text-emerald-800 flex items-center gap-3 shadow-sm"><i class="bi bi-check-circle-fill text-emerald-500 text-lg"></i><span>{{ mensaje }}</span></div>
+    {% endif %}
+    {% for message in messages %}
+    <div class="rounded-xl px-4 py-3 mb-4 flex items-center gap-3 shadow-sm
+      {% if message.tags == 'error' or message.tags == 'danger' %}bg-red-50/90 border border-red-200/80 text-red-800
+      {% elif message.tags == 'success' %}bg-emerald-50/90 border border-emerald-200/80 text-emerald-800
+      {% elif message.tags == 'info' %}bg-blue-50/90 border border-blue-200/80 text-blue-800
+      {% elif message.tags == 'warning' %}bg-amber-50/90 border border-amber-200/80 text-amber-800
+      {% else %}bg-slate-50 border border-slate-200 text-slate-800{% endif %}">
+      <i class="bi bi-{% if message.tags == 'error' or message.tags == 'danger' %}exclamation-triangle-fill text-red-500{% elif message.tags == 'success' %}check-circle-fill text-emerald-500{% else %}info-circle-fill text-slate-500{% endif %} text-lg"></i><span>{{ message }}</span>
+    </div>
+    {% endfor %}
+    {% block content %}{% endblock %}
+  </div>
+</div>
+
+<script>
+(function(){
+  var sidebar=document.getElementById('sidebar');
+  var backdrop=document.getElementById('sidebarBackdrop');
+  var btn=document.getElementById('btnSidebarToggle');
+  var desktopBtn=document.getElementById('btnSidebarDesktopToggle');
+  if(!sidebar||!btn) return;
+  function openSidebar(){
+    sidebar.classList.add('show');
+    if(backdrop) backdrop.classList.add('show');
+    document.body.style.overflow='hidden';
+  }
+  function closeSidebar(){
+    sidebar.classList.remove('show');
+    if(backdrop) backdrop.classList.remove('show');
+    document.body.style.overflow='';
+  }
+  function toggle(){
+    if(sidebar.classList.contains('show')) closeSidebar();
+    else openSidebar();
+  }
+  btn.addEventListener('click',toggle);
+  if(desktopBtn){
+    desktopBtn.addEventListener('click',function(){
+      document.body.classList.toggle('sidebar-collapsed');
+    });
+  }
+  if(backdrop) backdrop.addEventListener('click',closeSidebar);
+  document.querySelectorAll('.sidebar .nav-link').forEach(function(link){
+    link.addEventListener('click',function(){ if(window.innerWidth<992) closeSidebar(); });
+  });
+})();
+(function(){
+  function openModal(id,trigger){ var m=document.getElementById(id); if(m){ document.dispatchEvent(new CustomEvent('pw-modal-open',{detail:{modalId:id,trigger:trigger||null}})); m.classList.remove('hidden'); m.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden'; }}
+  function closeModal(id){ var m=document.getElementById(id); if(m){ m.classList.add('hidden'); m.setAttribute('aria-hidden','true'); document.body.style.overflow=''; }}
+  document.querySelectorAll('[data-modal]').forEach(function(btn){
+    btn.addEventListener('click',function(){ openModal(btn.getAttribute('data-modal'),btn); });
+  });
+  document.querySelectorAll('[data-modal-close]').forEach(function(el){
+    el.addEventListener('click',function(){ var id=el.getAttribute('data-modal-close'); if(!id){ var m=el.closest('.pw-modal'); if(m&&m.id) id=m.id; } if(id) closeModal(id); });
+  });
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape') document.querySelectorAll('.pw-modal:not(.hidden)').forEach(function(m){ m.classList.add('hidden'); m.setAttribute('aria-hidden','true'); document.body.style.overflow=''; }); });
+})();
+</script>
+{% block extra_js %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,66 @@
+{% extends "servicios/base_dashboard.html" %}
+{% load servicios_extras %}
+{% block title %}Perfil de {{ otro.nombre }}{% endblock %}
+
+{% block top_greeting %}
+<h1 class="page-header__title">Perfil de {{ otro.nombre }}</h1>
+<p class="page-header__subtitle">Datos de contacto</p>
+{% endblock %}
+
+{% block sidebar_links %}
+{% if usuario.rol == 'cuidador' %}
+<div class="sidebar-section">Principal</div>
+<a class="nav-link" href="{% url 'dashboard_cuidador' %}"><i class="bi bi-house-door"></i> Panel</a>
+<div class="sidebar-section">Gestión</div>
+<a class="nav-link" href="{% url 'cuidador_calendario' %}"><i class="bi bi-calendar3"></i> Mi calendario</a>
+<a class="nav-link" href="{% url 'cuidador_servicios' %}"><i class="bi bi-gear-wide-connected"></i> Mis servicios</a>
+<div class="sidebar-section">Cuenta</div>
+<a class="nav-link" href="{% url 'cuidador_mi_perfil' %}"><i class="bi bi-person"></i> Mi perfil</a>
+{% else %}
+<div class="sidebar-section">Principal</div>
+<a class="nav-link" href="{% url 'dashboard_dueño' %}"><i class="bi bi-house-door"></i> Panel</a>
+<div class="sidebar-section">Gestión</div>
+<a class="nav-link" href="{% url 'dueño_nueva_reserva' %}"><i class="bi bi-plus-circle"></i> Hacer reserva</a>
+<a class="nav-link" href="{% url 'dueño_mis_reservas' %}"><i class="bi bi-calendar3"></i> Mis reservas</a>
+<a class="nav-link" href="{% url 'dueño_mis_mascotas' %}"><i class="bi bi-heart"></i> Mis mascotas</a>
+<div class="sidebar-section">Cuenta</div>
+<a class="nav-link" href="{% url 'dueño_mi_perfil' %}"><i class="bi bi-person"></i> Mi perfil</a>
+{% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto">
+  <div class="bg-white rounded-2xl shadow-sm border border-slate-100/80 overflow-hidden">
+    <div class="p-6">
+      <div class="flex flex-col gap-4 sm:flex-row sm:items-start">
+        <div class="shrink-0">
+          {% if otro.fotoPerfil %}
+            <img src="{{ otro.fotoPerfil.url }}" alt="foto" class="w-24 h-24 rounded-full object-cover border-2 border-slate-200">
+          {% else %}
+            <div class="w-24 h-24 rounded-full bg-pw-orange text-white inline-flex items-center justify-center text-2xl font-bold">{{ otro.nombre|first|upper }}</div>
+          {% endif %}
+        </div>
+        <div class="flex-1">
+          <h5 class="font-bold text-slate-800">{{ otro.nombre }} {{ otro.apellido }}</h5>
+          <span class="inline-flex items-center rounded-full px-3 py-1 text-xs font-medium bg-orange-50 text-pw-orange">{{ otro.get_rol_display }}</span>
+          {% if otro.verificado %}<span class="inline-flex items-center rounded-full px-3 py-1 text-xs font-medium bg-emerald-50 text-emerald-600 ml-1">Verificado</span>{% endif %}
+        </div>
+      </div>
+      <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-slate-700">
+        <div><strong class="text-slate-500 block mb-1">Correo</strong><a href="mailto:{{ otro.correo }}" class="text-pw-orange hover:underline">{{ otro.correo }}</a></div>
+        <div><strong class="text-slate-500 block mb-1">Teléfono</strong><a href="tel:{{ otro.telefono }}" class="text-pw-orange hover:underline">{{ otro.telefono }}</a></div>
+        <div><strong class="text-slate-500 block mb-1">Ciudad</strong>{{ otro.ciudad }}</div>
+      </div>
+      {% if perfil_cuidador %}
+      <div class="mt-6 pt-6 border-t border-slate-100">
+        <h6 class="font-semibold text-slate-800 mb-2">Servicios</h6>
+        <p class="text-slate-600 text-sm">{{ perfil_cuidador.descripcion|default:"Sin descripción" }}</p>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+  <div class="mt-4">
+    <a href="{% if usuario.rol == 'cuidador' %}{% url 'cuidador_calendario' %}{% else %}{% url 'dueño_mis_reservas' %}{% endif %}" class="text-pw-orange font-semibold hover:underline text-sm"><i class="bi bi-arrow-left mr-1"></i>Volver</a>
+  </div>
+</div>
+{% endblock %}

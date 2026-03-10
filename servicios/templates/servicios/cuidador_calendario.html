@@ -1,0 +1,198 @@
+{% extends "servicios/base_dashboard.html" %}
+{% load servicios_extras %}
+{% block title %}Mi calendario{% endblock %}
+
+{% block top_greeting %}
+<h1 class="page-header__title">Mi calendario</h1>
+<p class="page-header__subtitle">Citas programadas y completadas</p>
+{% endblock %}
+
+{% block sidebar_links %}
+<div class="sidebar-section">Principal</div>
+<a class="nav-link" href="{% url 'dashboard_cuidador' %}"><i class="bi bi-house-door"></i> Panel</a>
+<div class="sidebar-section">Gestión</div>
+<a class="nav-link active" href="{% url 'cuidador_calendario' %}"><i class="bi bi-calendar3"></i> Mi calendario</a>
+<a class="nav-link" href="{% url 'cuidador_servicios' %}"><i class="bi bi-gear-wide-connected"></i> Mis servicios</a>
+<div class="sidebar-section">Cuenta</div>
+<a class="nav-link" href="{% url 'cuidador_mi_perfil' %}"><i class="bi bi-person"></i> Mi perfil</a>
+{% endblock %}
+
+{% block content %}
+<div class="space-y-4">
+{% if solicitudes_pendientes %}
+<div class="bg-gradient-to-br from-amber-50 to-orange-50/30 rounded-2xl shadow-sm border border-amber-200/80 overflow-hidden">
+  <div class="px-6 py-4 border-b border-amber-200 font-semibold text-amber-900 flex items-center"><i class="bi bi-hourglass-split mr-2"></i>Solicitudes pendientes de confirmar</div>
+  <div class="p-0">
+    <div class="overflow-x-auto">
+      <table class="w-full mb-0">
+        <thead class="bg-amber-100/50"><tr><th class="text-left text-xs uppercase tracking-wide text-amber-800 font-medium py-3 px-4 border-b-2 border-amber-200">Dueño</th><th class="text-left text-xs uppercase tracking-wide text-amber-800 font-medium py-3 border-b-2 border-amber-200">Mascota</th><th class="text-left text-xs uppercase tracking-wide text-amber-800 font-medium py-3 border-b-2 border-amber-200">Servicio</th><th class="text-left text-xs uppercase tracking-wide text-amber-800 font-medium py-3 border-b-2 border-amber-200">Fecha</th><th class="text-left text-xs uppercase tracking-wide text-amber-800 font-medium py-3 border-b-2 border-amber-200">Hora</th><th class="text-left text-xs uppercase tracking-wide text-amber-800 font-medium py-3 border-b-2 border-amber-200">Monto</th><th class="text-left text-xs uppercase tracking-wide text-amber-800 font-medium py-3 border-b-2 border-amber-200">Acciones</th></tr></thead>
+        <tbody>
+        {% for a in solicitudes_pendientes %}
+        <tr class="hover:bg-amber-50/50 transition">
+          <td class="py-3 px-4 text-sm align-middle">{{ a.idDueño.nombre }}</td>
+          <td class="py-3 text-sm align-middle">{{ a.idMascota.nombreMascota }}</td>
+          <td class="py-3 text-sm align-middle"><span class="inline-flex items-center rounded-full px-3 py-1 text-xs font-medium bg-amber-100 text-amber-800 border border-amber-200">{{ a.get_tipoServicio_display }}</span></td>
+          <td class="py-3 text-sm align-middle">{{ a.fecha|date:"d M Y" }}{% if a.fechaFin %} – {{ a.fechaFin|date:"d M Y" }}{% endif %}</td>
+          <td class="py-3 text-sm align-middle">{% if a.fechaFin %}—{% elif a.horaRecogidaAsignada %}{{ a.horaRecogidaAsignada|hora_corta }}{% if a.ordenEnRuta %} ({{ a.ordenEnRuta }}.º en ruta){% endif %}{% elif a.idEvento %}{{ a.idEvento.horaInicio|hora_corta }} – {{ a.idEvento.horaFin|hora_corta }}{% elif a.idBloqueHorario %}{{ a.idBloqueHorario.horaInicio|hora_corta }} – {{ a.idBloqueHorario.horaFin|hora_corta }}{% elif a.idVentana %}{{ a.idVentana.horaInicio|hora_corta }} – {{ a.idVentana.horaFin|hora_corta }}{% else %}—{% endif %}</td>
+          <td class="py-3 text-sm align-middle">{% if a.monto_pago %}${{ a.monto_pago|formato_cop }} COP{% else %}—{% endif %}</td>
+          <td class="py-3 text-sm align-middle">
+            <form method="post" class="inline-flex gap-2" onsubmit="return confirm('¿Aceptar esta solicitud?');">
+              {% csrf_token %}
+              <input type="hidden" name="action" value="aceptar">
+              <input type="hidden" name="solicitud_id" value="{{ a.idSolicitud }}">
+              <button type="submit" class="border-2 border-emerald-500 text-emerald-600 hover:bg-emerald-500 hover:text-white font-semibold rounded-lg px-3 py-1.5 text-sm transition"><i class="bi bi-check-lg mr-1"></i>Aceptar</button>
+            </form>
+            <form method="post" class="inline-flex" onsubmit="return confirm('¿Rechazar esta solicitud?');">
+              {% csrf_token %}
+              <input type="hidden" name="action" value="rechazar">
+              <input type="hidden" name="solicitud_id" value="{{ a.idSolicitud }}">
+              <button type="submit" class="border-2 border-red-500 text-red-600 hover:bg-red-500 hover:text-white font-semibold rounded-lg px-3 py-1.5 text-sm transition"><i class="bi bi-x-lg mr-1"></i>Rechazar</button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endif %}
+<div class="bg-white rounded-2xl shadow-sm border border-slate-100/80 overflow-hidden">
+  <div class="px-6 py-4 border-b border-slate-100 font-semibold text-slate-800 flex items-center bg-slate-50/50"><i class="bi bi-calendar-check mr-2 text-pw-orange"></i>Citas como reuniones</div>
+  <div class="p-0">
+    <p class="text-slate-500 text-sm px-4 pt-2 mb-0">Tus paseos y guarderías programados</p>
+    {% if agendamientos_futuros %}
+    <div class="overflow-x-auto">
+      <table class="w-full mb-0">
+        <thead class="bg-slate-50"><tr><th class="text-left text-xs uppercase tracking-wide text-slate-500 font-medium py-3 px-4 border-b-2 border-slate-100">Dueño</th><th class="text-left text-xs uppercase tracking-wide text-slate-500 font-medium py-3 border-b-2 border-slate-100">Mascota</th><th class="text-left text-xs uppercase tracking-wide text-slate-500 font-medium py-3 border-b-2 border-slate-100">Servicio</th><th class="text-left text-xs uppercase tracking-wide text-slate-500 font-medium py-3 border-b-2 border-slate-100">Fecha</th><th class="text-left text-xs uppercase tracking-wide text-slate-500 font-medium py-3 border-b-2 border-slate-100">Hora</th><th class="text-left text-xs uppercase tracking-wide text-slate-500 font-medium py-3 border-b-2 border-slate-100">Monto</th><th class="text-left text-xs uppercase tracking-wide text-slate-500 font-medium py-3 border-b-2 border-slate-100">Estado</th><th class="text-left text-xs uppercase tracking-wide text-slate-500 font-medium py-3 border-b-2 border-slate-100">Acciones</th></tr></thead>
+        <tbody>
+        {% for a in agendamientos_futuros %}
+        <tr class="hover:bg-slate-50 transition">
+          <td class="py-3 px-4 text-sm align-middle">{{ a.idDueño.nombre }}</td>
+          <td class="py-3 text-sm align-middle">{{ a.idMascota.nombreMascota }}</td>
+          <td class="py-3 text-sm align-middle"><span class="inline-flex items-center rounded-full px-3 py-1 text-xs font-medium bg-slate-100 text-slate-800 border border-slate-200">{{ a.get_tipoServicio_display }}</span></td>
+          <td class="py-3 text-sm align-middle">{{ a.fecha|date:"d M Y" }}{% if a.fechaFin %} – {{ a.fechaFin|date:"d M Y" }}{% endif %}</td>
+          <td class="py-3 text-sm align-middle">{% if a.fechaFin %}—{% elif a.horaRecogidaAsignada %}{{ a.horaRecogidaAsignada|hora_corta }}{% if a.ordenEnRuta %} ({{ a.ordenEnRuta }}.º en ruta){% endif %}{% elif a.idEvento %}{{ a.idEvento.horaInicio|hora_corta }} – {{ a.idEvento.horaFin|hora_corta }}{% elif a.idBloqueHorario %}{{ a.idBloqueHorario.horaInicio|hora_corta }} – {{ a.idBloqueHorario.horaFin|hora_corta }}{% elif a.idVentana %}{{ a.idVentana.horaInicio|hora_corta }} – {{ a.idVentana.horaFin|hora_corta }}{% else %}—{% endif %}</td>
+          <td class="py-3 text-sm align-middle">{% if a.monto_pago %}${{ a.monto_pago|formato_cop }} COP{% else %}—{% endif %}</td>
+          <td class="py-3 text-sm align-middle"><span class="inline-flex items-center rounded-full px-3 py-1 text-xs font-medium bg-blue-50 text-blue-700">{{ a.get_estado_display }}</span></td>
+          <td class="py-3 text-sm align-middle">
+            <a href="{% url 'ver_perfil_otro' a.idDueño.idUsuario %}" class="border-2 border-slate-300 text-slate-600 hover:bg-slate-50 font-semibold rounded-lg px-3 py-1.5 text-sm transition inline-block mr-1"><i class="bi bi-person mr-1"></i>Ver perfil</a>
+            <button type="button" class="btnChat border-2 border-pw-orange text-pw-orange hover:bg-pw-orange hover:text-white font-semibold rounded-lg px-3 py-1.5 text-sm transition" data-solicitud="{{ a.idSolicitud }}" data-dueño="{{ a.idDueño.nombre }}"><i class="bi bi-chat-dots mr-1"></i>Chat</button>
+            <form method="post" class="inline ml-1" onsubmit="return confirm('¿Cancelar esta reserva?');">
+              {% csrf_token %}
+              <input type="hidden" name="action" value="cancelar">
+              <input type="hidden" name="solicitud_id" value="{{ a.idSolicitud }}">
+              <button type="submit" class="border-2 border-red-500 text-red-600 hover:bg-red-500 hover:text-white font-semibold rounded-lg px-3 py-1.5 text-sm transition"><i class="bi bi-x-circle mr-1"></i>Cancelar</button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+    <div class="text-center py-12">
+      <div class="w-16 h-16 rounded-full bg-slate-100 flex items-center justify-center mx-auto mb-3"><i class="bi bi-calendar-x text-2xl text-slate-400"></i></div>
+      <p class="text-slate-600 font-medium">Sin citas próximas</p>
+    </div>
+    {% endif %}
+  </div>
+</div>
+
+<div class="bg-white rounded-2xl shadow-sm border border-slate-100/80 overflow-hidden">
+  <div class="px-6 py-4 border-b border-slate-100 font-semibold text-slate-800 flex items-center bg-slate-50/50"><i class="bi bi-clock-history mr-2 text-slate-500"></i>Historial</div>
+  <div class="p-0">
+    {% if agendamientos_pasados %}
+    <div class="overflow-x-auto">
+      <table class="w-full mb-0">
+        <thead class="bg-slate-50"><tr><th class="text-left text-xs uppercase tracking-wide text-slate-500 font-medium py-3 px-4 border-b-2 border-slate-100">Dueño</th><th class="text-left text-xs uppercase tracking-wide text-slate-500 font-medium py-3 border-b-2 border-slate-100">Mascota</th><th class="text-left text-xs uppercase tracking-wide text-slate-500 font-medium py-3 border-b-2 border-slate-100">Servicio</th><th class="text-left text-xs uppercase tracking-wide text-slate-500 font-medium py-3 border-b-2 border-slate-100">Fecha</th><th class="text-left text-xs uppercase tracking-wide text-slate-500 font-medium py-3 border-b-2 border-slate-100">Hora</th><th class="text-left text-xs uppercase tracking-wide text-slate-500 font-medium py-3 border-b-2 border-slate-100">Monto</th><th class="text-left text-xs uppercase tracking-wide text-slate-500 font-medium py-3 border-b-2 border-slate-100">Estado</th><th class="text-left text-xs uppercase tracking-wide text-slate-500 font-medium py-3 border-b-2 border-slate-100"></th></tr></thead>
+        <tbody>
+        {% for a in agendamientos_pasados %}
+        <tr class="hover:bg-slate-50 transition">
+          <td class="py-3 px-4 text-sm align-middle">{{ a.idDueño.nombre }}</td>
+          <td class="py-3 text-sm align-middle">{{ a.idMascota.nombreMascota }}</td>
+          <td class="py-3 text-sm align-middle"><span class="inline-flex items-center rounded-full px-3 py-1 text-xs font-medium bg-slate-100 text-slate-800 border border-slate-200">{{ a.get_tipoServicio_display }}</span></td>
+          <td class="py-3 text-sm align-middle">{{ a.fecha|date:"d M Y" }}{% if a.fechaFin %} – {{ a.fechaFin|date:"d M Y" }}{% endif %}</td>
+          <td class="py-3 text-sm align-middle">{% if a.fechaFin %}—{% elif a.horaRecogidaAsignada %}{{ a.horaRecogidaAsignada|hora_corta }}{% if a.ordenEnRuta %} ({{ a.ordenEnRuta }}.º en ruta){% endif %}{% elif a.idEvento %}{{ a.idEvento.horaInicio|hora_corta }} – {{ a.idEvento.horaFin|hora_corta }}{% elif a.idBloqueHorario %}{{ a.idBloqueHorario.horaInicio|hora_corta }} – {{ a.idBloqueHorario.horaFin|hora_corta }}{% elif a.idVentana %}{{ a.idVentana.horaInicio|hora_corta }} – {{ a.idVentana.horaFin|hora_corta }}{% else %}—{% endif %}</td>
+          <td class="py-3 text-sm align-middle">{% if a.monto_pago %}${{ a.monto_pago|formato_cop }} COP{% else %}—{% endif %}</td>
+          <td class="py-3 text-sm align-middle"><span class="inline-flex items-center rounded-full px-3 py-1 text-xs font-medium bg-slate-100 text-slate-600">{{ a.get_estado_display }}</span></td>
+          <td class="py-3 text-sm align-middle">
+            <a href="{% url 'ver_perfil_otro' a.idDueño.idUsuario %}" class="border-2 border-slate-300 text-slate-600 hover:bg-slate-50 font-semibold rounded-lg px-3 py-1.5 text-sm transition inline-block mr-1"><i class="bi bi-person mr-1"></i>Ver perfil</a>
+            {% if a.estado == 'aceptado' %}
+            <button type="button" class="btnChat border-2 border-pw-orange text-pw-orange hover:bg-pw-orange hover:text-white font-semibold rounded-lg px-3 py-1.5 text-sm transition inline mr-1" data-solicitud="{{ a.idSolicitud }}" data-dueño="{{ a.idDueño.nombre }}"><i class="bi bi-chat-dots mr-1"></i>Chat</button>
+            <form method="post" class="inline">
+              {% csrf_token %}
+              <input type="hidden" name="action" value="completar">
+              <input type="hidden" name="solicitud_id" value="{{ a.idSolicitud }}">
+              <button type="submit" class="border-2 border-emerald-500 text-emerald-600 hover:bg-emerald-500 hover:text-white font-semibold rounded-lg px-3 py-1.5 text-sm transition"><i class="bi bi-check-circle mr-1"></i>Marcar completado</button>
+            </form>
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+    <div class="text-center py-12">
+      <div class="w-16 h-16 rounded-full bg-slate-100 flex items-center justify-center mx-auto mb-3"><i class="bi bi-clock-history text-2xl text-slate-400"></i></div>
+      <p class="text-slate-600 font-medium">Sin historial aún</p>
+    </div>
+    {% endif %}
+  </div>
+</div>
+</div>
+
+<!-- Modal Chat (único, se rellena según solicitud) -->
+<div class="pw-modal fixed inset-0 z-50 hidden flex items-center justify-center p-4" id="chatModal" aria-hidden="true">
+  <div class="absolute inset-0 bg-black/40" data-modal-close="chatModal"></div>
+  <div class="relative bg-white rounded-2xl shadow-xl max-w-md w-full max-h-[85vh] flex flex-col z-10">
+    <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
+      <h5 class="font-bold text-slate-800" id="chatModalTitulo">Chat</h5>
+      <button type="button" class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-slate-100 text-slate-500" data-modal-close="chatModal"><i class="bi bi-x-lg"></i></button>
+    </div>
+    <div id="chatModalBody" class="flex-1 overflow-y-auto p-4 min-h-[200px] max-h-80 bg-slate-50 space-y-2">
+      <!-- Mensajes se cargan por JS desde data -->
+    </div>
+    <form method="post" class="p-4 border-t border-slate-100">
+      {% csrf_token %}
+      <input type="hidden" name="action" value="enviar_mensaje">
+      <input type="hidden" name="solicitud_id" id="chatSolicitudId" value="">
+      <div class="flex gap-2">
+        <input name="mensaje" type="text" placeholder="Escribe un mensaje..." class="flex-1 rounded-xl border border-slate-200 px-4 py-2.5 focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" required maxlength="500">
+        <button type="submit" class="bg-pw-orange hover:bg-pw-orange-dark text-white font-semibold rounded-xl px-4 py-2.5 transition"><i class="bi bi-send"></i></button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+(function(){
+  var chatData = {};
+  {% for a in agendamientos_futuros %}
+  chatData["{{ a.idSolicitud }}"] = [{% for m in a.mensajes_chat.all %}{"de":"{{ m.idDe.nombre|escapejs }}","msg":"{{ m.mensaje|escapejs }}","yo":{% if m.idDe.idUsuario == usuario.idUsuario %}true{% else %}false{% endif %}}{% if not forloop.last %},{% endif %}{% endfor %}];
+  {% endfor %}
+  {% for a in agendamientos_pasados %}
+  chatData["{{ a.idSolicitud }}"] = [{% for m in a.mensajes_chat.all %}{"de":"{{ m.idDe.nombre|escapejs }}","msg":"{{ m.mensaje|escapejs }}","yo":{% if m.idDe.idUsuario == usuario.idUsuario %}true{% else %}false{% endif %}}{% if not forloop.last %},{% endif %}{% endfor %}];
+  {% endfor %}
+  document.querySelectorAll('.btnChat').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var sid = this.getAttribute('data-solicitud');
+      var dueño = this.getAttribute('data-dueño');
+      document.getElementById('chatSolicitudId').value = sid;
+      document.getElementById('chatModalTitulo').textContent = 'Chat con ' + dueño;
+      var body = document.getElementById('chatModalBody');
+      var msgs = chatData[sid] || [];
+      body.innerHTML = msgs.map(function(m) {
+        var align = m.yo ? 'justify-end' : 'justify-start';
+        var bg = m.yo ? 'bg-pw-orange text-white rounded-tr-none' : 'bg-white border border-slate-200 rounded-tl-none';
+        return '<div class="flex ' + align + '"><div class="max-w-[85%] ' + bg + ' rounded-2xl px-4 py-2 shadow-sm"><p class="text-sm">' + m.msg.replace(/</g,'&lt;') + '</p><span class="text-xs opacity-75">' + m.de + '</span></div></div>';
+      }).join('') || '<p class="text-slate-500 text-sm text-center py-4">Sin mensajes aún. Escribe el primero.</p>';
+      body.scrollTop = body.scrollHeight;
+      document.getElementById('chatModal').classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    });
+  });
+})();
+</script>
+{% endblock %}

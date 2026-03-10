@@ -1,0 +1,601 @@
+{% extends "servicios/base_dashboard.html" %}
+{% load servicios_extras %}
+{% block title %}Mis servicios – Cuidador{% endblock %}
+
+{% block top_greeting %}
+<h1 class="page-header__title">Mis servicios</h1>
+<p class="page-header__subtitle">Configura tus servicios, tarifas y horarios disponibles</p>
+{% endblock %}
+
+{% block sidebar_links %}
+<div class="sidebar-section">Principal</div>
+<a class="nav-link" href="{% url 'dashboard_cuidador' %}"><i class="bi bi-house-door"></i> Panel</a>
+<div class="sidebar-section">Gestión</div>
+<a class="nav-link" href="{% url 'cuidador_calendario' %}"><i class="bi bi-calendar3"></i> Mi calendario</a>
+<a class="nav-link active" href="{% url 'cuidador_servicios' %}"><i class="bi bi-gear-wide-connected"></i> Mis servicios</a>
+<div class="sidebar-section">Cuenta</div>
+<a class="nav-link" href="{% url 'cuidador_mi_perfil' %}"><i class="bi bi-person"></i> Mi perfil</a>
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+<style>
+  .svc-card { transition: box-shadow 0.2s ease; }
+  .svc-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,.08); }
+  .svc-card-header { border-left: 4px solid #e07a2e; }
+  .bloque-row:hover { background: #f8fafc; }
+  .empty-state { min-height: 120px; }
+  .toggle-switch { width: 2.75rem; height: 1.5rem; background: #e2e8f0; border-radius: 9999px; transition: background 0.2s; }
+  .toggle-switch.checked { background: var(--pw-orange); }
+  .toggle-switch .thumb { width: 1.25rem; height: 1.25rem; top: 0.125rem; left: 0.125rem; border-radius: 9999px; background: white; box-shadow: 0 1px 3px rgba(0,0,0,.2); transition: transform 0.2s; }
+  .toggle-switch.checked .thumb { transform: translateX(1.25rem); }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="max-w-6xl mx-auto">
+  {% if not editar_tipo %}
+  <!-- Vista lista: cards de servicios + agregar (zona de cobertura se edita dentro de cada servicio) -->
+  <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
+    <h3 class="text-lg font-bold text-slate-800">Mis servicios</h3>
+    <div class="flex flex-wrap gap-2">
+      <a href="{% url 'cuidador_servicios' %}?editar=paseo" class="inline-flex items-center gap-2 bg-amber-50 hover:bg-amber-100 text-amber-800 font-semibold rounded-xl px-4 py-2.5 text-sm transition border border-amber-200">
+        <i class="bi bi-paw-fill"></i> Agregar servicio de Paseo
+      </a>
+      <a href="{% url 'cuidador_servicios' %}?editar=guarderia" class="inline-flex items-center gap-2 bg-rose-50 hover:bg-rose-100 text-rose-800 font-semibold rounded-xl px-4 py-2.5 text-sm transition border border-rose-200">
+        <i class="bi bi-house-heart"></i> Agregar servicio de Guardería
+      </a>
+      <a href="{% url 'cuidador_servicios' %}?editar=entrenamiento" class="inline-flex items-center gap-2 bg-teal-50 hover:bg-teal-100 text-teal-800 font-semibold rounded-xl px-4 py-2.5 text-sm transition border border-teal-200">
+        <i class="bi bi-trophy"></i> Agregar servicio de Entrenamiento
+      </a>
+    </div>
+  </div>
+
+  <div class="grid gap-4 md:grid-cols-2">
+    {% if precios_activos.paseo %}
+    <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm hover:shadow-md transition-shadow border-l-4 border-l-amber-500">
+      <div class="flex items-start justify-between gap-3">
+        <div class="flex gap-3">
+          <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-amber-50 text-2xl text-amber-600"><i class="bi bi-paw-fill"></i></div>
+          <div>
+            <h4 class="font-bold text-slate-800">Paseo</h4>
+            <p class="text-sm text-slate-500 mt-0.5">${{ precios_activos.paseo.precioCOP|formato_cop }} COP/hora</p>
+            <p class="text-xs text-slate-500 mt-1">{{ total_horarios_paseo }} horario{{ total_horarios_paseo|pluralize }} configurado{{ total_horarios_paseo|pluralize }}</p>
+            {% if precios_activos.paseo.descripcion %}<p class="text-xs text-slate-600 mt-2 line-clamp-2">{{ precios_activos.paseo.descripcion|truncatewords:12 }}</p>{% endif %}
+          </div>
+        </div>
+        <div class="flex flex-col gap-2 shrink-0">
+          <a href="{% url 'cuidador_servicios' %}?editar=paseo" class="rounded-lg bg-pw-orange hover:bg-pw-orange-dark text-white font-semibold px-3 py-1.5 text-sm transition text-center"><i class="bi bi-eye me-1"></i>Ver detalle</a>
+          <a href="{% url 'cuidador_servicios' %}?editar=paseo" class="rounded-lg border-2 border-slate-300 text-slate-600 hover:border-pw-orange hover:text-pw-orange font-semibold px-3 py-1.5 text-sm transition text-center"><i class="bi bi-pencil me-1"></i>Editar</a>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+    {% if precios_activos.guarderia %}
+    <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm hover:shadow-md transition-shadow border-l-4 border-rose-500">
+      <div class="flex items-start justify-between gap-3">
+        <div class="flex gap-3">
+          <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-rose-50 text-2xl text-rose-600"><i class="bi bi-house-heart"></i></div>
+          <div>
+            <h4 class="font-bold text-slate-800">Guardería</h4>
+            <p class="text-sm text-slate-500 mt-0.5">${{ precios_activos.guarderia.precioCOP|formato_cop }} COP/día</p>
+            <p class="text-xs text-slate-500 mt-1">{{ total_horarios_guarderia }} lugar{{ total_horarios_guarderia|pluralize:"es" }} / horario{{ total_horarios_guarderia|pluralize }}</p>
+            {% if precios_activos.guarderia.descripcion %}<p class="text-xs text-slate-600 mt-2 line-clamp-2">{{ precios_activos.guarderia.descripcion|truncatewords:12 }}</p>{% endif %}
+          </div>
+        </div>
+        <div class="flex flex-col gap-2 shrink-0">
+          <a href="{% url 'cuidador_servicios' %}?editar=guarderia" class="rounded-lg bg-pw-orange hover:bg-pw-orange-dark text-white font-semibold px-3 py-1.5 text-sm transition text-center"><i class="bi bi-eye me-1"></i>Ver detalle</a>
+          <a href="{% url 'cuidador_servicios' %}?editar=guarderia" class="rounded-lg border-2 border-slate-300 text-slate-600 hover:border-pw-orange hover:text-pw-orange font-semibold px-3 py-1.5 text-sm transition text-center"><i class="bi bi-pencil me-1"></i>Editar</a>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+    {% if precios_activos.entrenamiento %}
+    <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm hover:shadow-md transition-shadow border-l-4 border-teal-500">
+      <div class="flex items-start justify-between gap-3">
+        <div class="flex gap-3">
+          <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-teal-50 text-2xl text-teal-600"><i class="bi bi-trophy"></i></div>
+          <div>
+            <h4 class="font-bold text-slate-800">Entrenamiento</h4>
+            <p class="text-sm text-slate-500 mt-0.5">${{ precios_activos.entrenamiento.precioCOP|formato_cop }} COP/sesión</p>
+            <p class="text-xs text-slate-500 mt-1">{% if precios_activos.entrenamiento.lugarEntrenamiento == 'cuidador' %}En mi lugar{% else %}En casa del dueño{% endif %}</p>
+            {% if precios_activos.entrenamiento.descripcion %}<p class="text-xs text-slate-600 mt-2 line-clamp-2">{{ precios_activos.entrenamiento.descripcion|truncatewords:12 }}</p>{% endif %}
+          </div>
+        </div>
+        <div class="flex flex-col gap-2 shrink-0">
+          <a href="{% url 'cuidador_servicios' %}?editar=entrenamiento" class="rounded-lg bg-pw-orange hover:bg-pw-orange-dark text-white font-semibold px-3 py-1.5 text-sm transition text-center"><i class="bi bi-eye me-1"></i>Ver detalle</a>
+          <a href="{% url 'cuidador_servicios' %}?editar=entrenamiento" class="rounded-lg border-2 border-slate-300 text-slate-600 hover:border-pw-orange hover:text-pw-orange font-semibold px-3 py-1.5 text-sm transition text-center"><i class="bi bi-pencil me-1"></i>Editar</a>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+
+  {% if not precios_activos.paseo and not precios_activos.guarderia and not precios_activos.entrenamiento %}
+  <div class="mt-6 rounded-2xl border-2 border-dashed border-slate-200 bg-slate-50/50 py-12 text-center">
+    <i class="bi bi-plus-circle text-4xl text-slate-400 mb-3"></i>
+    <p class="text-slate-600 font-medium mb-2">Aún no tienes servicios configurados</p>
+    <p class="text-sm text-slate-500 mb-4">Agrega Paseo, Guardería o Entrenamiento para que los dueños puedan reservar contigo.</p>
+    <div class="flex flex-wrap justify-center gap-3">
+      <a href="{% url 'cuidador_servicios' %}?editar=paseo" class="inline-flex items-center gap-2 bg-pw-orange hover:bg-pw-orange-dark text-white font-semibold rounded-xl px-5 py-2.5 transition"><i class="bi bi-paw-fill"></i> Agregar Paseo</a>
+      <a href="{% url 'cuidador_servicios' %}?editar=guarderia" class="inline-flex items-center gap-2 border-2 border-pw-orange text-pw-orange hover:bg-pw-orange hover:text-white font-semibold rounded-xl px-5 py-2.5 transition"><i class="bi bi-house-heart"></i> Agregar Guardería</a>
+      <a href="{% url 'cuidador_servicios' %}?editar=entrenamiento" class="inline-flex items-center gap-2 border-2 border-teal-500 text-teal-600 hover:bg-teal-500 hover:text-white font-semibold rounded-xl px-5 py-2.5 transition"><i class="bi bi-trophy"></i> Agregar Entrenamiento</a>
+    </div>
+  </div>
+  {% endif %}
+
+  {% else %}
+  <!-- Vista editar: formulario completo de un solo servicio (paseo o guarderia) -->
+  <div class="mb-4">
+    <a href="{% url 'cuidador_servicios' %}" class="inline-flex items-center gap-2 text-slate-600 hover:text-pw-orange font-semibold text-sm"><i class="bi bi-arrow-left"></i> Volver a mis servicios</a>
+  </div>
+
+  {% if editar_tipo == 'paseo' %}
+  {% include "servicios/includes/form_editar_paseo.html" %}
+  {% elif editar_tipo == 'guarderia' %}
+  {% include "servicios/includes/form_editar_guarderia.html" %}
+  {% elif editar_tipo == 'entrenamiento' %}
+  {% include "servicios/includes/form_editar_entrenamiento.html" %}
+  {% endif %}
+
+  {% endif %}
+</div>
+
+<!-- Modal agregar rápido Paseo -->
+<div class="pw-modal fixed inset-0 z-50 hidden flex items-center justify-center p-4" id="rapidoPaseoModal" aria-hidden="true">
+  <div class="absolute inset-0 bg-black/40" data-modal-close="rapidoPaseoModal"></div>
+  <div class="relative bg-white rounded-2xl shadow-xl max-w-lg w-full max-h-[90vh] overflow-y-auto p-6 z-10">
+    <div class="flex items-center justify-between mb-4">
+      <div class="flex items-center gap-2">
+        <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-amber-50 text-amber-600">
+          <i class="bi bi-paw-fill"></i>
+        </div>
+        <h5 class="font-bold text-slate-800" id="rapidoPaseoTitulo">Agregar horarios – Paseo</h5>
+      </div>
+      <button type="button" class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-slate-100 text-slate-500" data-modal-close="rapidoPaseoModal" aria-label="Cerrar"><i class="bi bi-x-lg"></i></button>
+    </div>
+        <form method="post" id="formRapidoPaseo">
+          {% csrf_token %}
+          <input type="hidden" name="action" value="agregar_rapido">
+          <input type="hidden" name="tipoServicio" value="paseo">
+          <input type="hidden" name="preset" id="rapidoPaseoPreset" value="todos">
+          <input type="hidden" name="latitud" id="rapidoPaseoLat" value="">
+          <input type="hidden" name="longitud" id="rapidoPaseoLng" value="">
+          <div class="mb-3 rounded-lg bg-slate-50 px-3 py-2 text-sm text-slate-600" id="rapidoPaseoDesc">
+            Se agregará el mismo horario para todos los días de la semana.
+          </div>
+          <div class="mb-3">
+            <label class="mb-1.5 block text-sm font-semibold text-slate-700">Lugar del paseo</label>
+            <input name="nombreLugar" type="text" placeholder="Ej: Parque Norte, Zona centro"
+                   class="w-full rounded-xl border border-slate-200 bg-white py-2.5 px-3 focus:border-[var(--pw-orange)] focus:outline-none focus:ring-2 focus:ring-orange-100">
+          </div>
+          <div class="mb-3">
+            <div class="flex items-center justify-between mb-1.5">
+              <span class="text-sm font-semibold text-slate-700">Ubicación en mapa</span>
+              <button type="button" id="btnGeoRapidoPaseo" class="text-xs text-pw-orange hover:underline"><i class="bi bi-geo-alt mr-1"></i>Mi ubicación</button>
+            </div>
+            <div id="mapRapidoPaseo" class="rounded-xl border border-slate-200 h-36 bg-slate-50"></div>
+          </div>
+          <div class="mb-3">
+            <label class="mb-1.5 block text-sm font-semibold text-slate-700">Precio por reunión (COP)</label>
+            <input name="precioCOP" type="number" min="1" placeholder="Usa tarifa global si vacío"
+                   class="w-full rounded-xl border border-slate-200 bg-white py-2.5 px-3 focus:border-[var(--pw-orange)] focus:outline-none focus:ring-2 focus:ring-orange-100">
+          </div>
+          <div class="mb-5 grid grid-cols-2 gap-4">
+            <div>
+              <label class="mb-1.5 block text-sm font-semibold text-slate-700">Hora inicio</label>
+              <input name="horaInicio" type="time" value="09:00" step="1800" required
+                     class="w-full rounded-xl border border-slate-200 bg-white py-2.5 px-3 focus:border-[var(--pw-orange)] focus:outline-none focus:ring-2 focus:ring-orange-100">
+            </div>
+            <div>
+              <label class="mb-1.5 block text-sm font-semibold text-slate-700">Hora fin</label>
+              <input name="horaFin" type="time" value="18:00" step="1800" required
+                     class="w-full rounded-xl border border-slate-200 bg-white py-2.5 px-3 focus:border-[var(--pw-orange)] focus:outline-none focus:ring-2 focus:ring-orange-100">
+            </div>
+          </div>
+          <button type="submit" class="w-full bg-pw-orange hover:bg-pw-orange-dark text-white font-semibold rounded-xl py-2.5 transition">
+            <i class="bi bi-calendar-plus mr-2"></i>Agregar horarios
+          </button>
+        </form>
+  </div>
+</div>
+
+<!-- Modal agregar ventana Paseo -->
+<div class="pw-modal fixed inset-0 z-50 hidden flex items-center justify-center p-4" id="addVentanaPaseoModal" aria-hidden="true">
+  <div class="absolute inset-0 bg-black/40" data-modal-close="addVentanaPaseoModal"></div>
+  <div class="relative bg-white rounded-2xl shadow-xl max-w-lg w-full max-h-[90vh] overflow-y-auto p-6 z-10">
+    <div class="flex items-center justify-between mb-4">
+      <div class="flex items-center gap-2">
+        <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-amber-50 text-amber-600">
+          <i class="bi bi-people"></i>
+        </div>
+        <h5 class="font-bold text-slate-800">Reunión con cupos – Paseo</h5>
+      </div>
+      <button type="button" class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-slate-100 text-slate-500" data-modal-close="addVentanaPaseoModal" aria-label="Cerrar"><i class="bi bi-x-lg"></i></button>
+    </div>
+        <p class="text-sm text-slate-600 mb-4">Cada reunión de paseo: lugar, horario y precio. Varios dueños pueden reservar en la misma reunión.</p>
+        <form method="post">
+          {% csrf_token %}
+          <input type="hidden" name="action" value="agregar_ventana">
+          <input type="hidden" name="tipoServicio" value="paseo">
+          <input type="hidden" name="latitud" id="ventanaPaseoLat" value="">
+          <input type="hidden" name="longitud" id="ventanaPaseoLng" value="">
+          <div class="mb-4">
+            <label class="mb-1.5 block text-sm font-semibold text-slate-700">Lugar del paseo</label>
+            <input name="nombreLugar" type="text" placeholder="Ej: Parque Norte, Zona centro"
+                   class="w-full rounded-xl border border-slate-200 bg-slate-50 py-2.5 px-3 focus:border-[var(--pw-orange)] focus:outline-none focus:ring-2 focus:ring-orange-100">
+          </div>
+          <div class="mb-4">
+            <div class="flex items-center justify-between mb-1.5">
+              <span class="text-sm font-semibold text-slate-700">Ubicación en mapa</span>
+              <button type="button" id="btnGeoVentana" class="text-xs text-pw-orange hover:underline"><i class="bi bi-geo-alt mr-1"></i>Mi ubicación</button>
+            </div>
+            <div id="mapVentanaPaseo" class="rounded-xl border border-slate-200 h-36 bg-slate-50"></div>
+          </div>
+          <div class="mb-4">
+            <label class="mb-1.5 block text-sm font-semibold text-slate-700">Precio por reunión (COP)</label>
+            <input name="precioCOP" type="number" min="1" placeholder="Usa tarifa global si vacío"
+                   class="w-full rounded-xl border border-slate-200 bg-slate-50 py-2.5 px-3 focus:border-[var(--pw-orange)] focus:outline-none focus:ring-2 focus:ring-orange-100">
+          </div>
+          <div class="mb-4">
+            <label class="mb-1.5 block text-sm font-semibold text-slate-700">Día</label>
+            <select name="diaSemana" required class="w-full rounded-xl border border-slate-200 bg-slate-50 py-2.5 px-3 focus:border-[var(--pw-orange)] focus:outline-none focus:ring-2 focus:ring-orange-100">
+              {% for val,label in dias_semana %}<option value="{{ val }}">{{ label }}</option>{% endfor %}
+            </select>
+          </div>
+          <div class="mb-4 grid grid-cols-2 gap-4">
+            <div>
+              <label class="mb-1.5 block text-sm font-semibold text-slate-700">Inicio</label>
+              <input name="horaInicio" type="time" value="09:00" step="1800" required class="w-full rounded-xl border border-slate-200 bg-slate-50 py-2.5 px-3 focus:border-[var(--pw-orange)] focus:outline-none focus:ring-2 focus:ring-orange-100">
+            </div>
+            <div>
+              <label class="mb-1.5 block text-sm font-semibold text-slate-700">Fin</label>
+              <input name="horaFin" type="time" value="12:00" step="1800" required class="w-full rounded-xl border border-slate-200 bg-slate-50 py-2.5 px-3 focus:border-[var(--pw-orange)] focus:outline-none focus:ring-2 focus:ring-orange-100">
+            </div>
+          </div>
+          <div class="mb-5 grid grid-cols-2 gap-4">
+            <div>
+              <label class="mb-1.5 block text-sm font-semibold text-slate-700">Duración slot (min)</label>
+              <input name="duracionSlotMinutos" type="number" value="30" min="15" max="120" step="15" class="w-full rounded-xl border border-slate-200 bg-slate-50 py-2.5 px-3 focus:border-[var(--pw-orange)] focus:outline-none focus:ring-2 focus:ring-orange-100">
+            </div>
+            <div>
+              <label class="mb-1.5 block text-sm font-semibold text-slate-700">Capacidad máx. (perros)</label>
+              <input name="capacidadMaxima" type="number" value="4" min="1" max="4" class="w-full rounded-xl border border-slate-200 bg-slate-50 py-2.5 px-3 focus:border-[var(--pw-orange)] focus:outline-none focus:ring-2 focus:ring-orange-100" title="Máximo 4 perros por reunión">
+            </div>
+          </div>
+          <button type="submit" class="w-full bg-pw-orange hover:bg-pw-orange-dark text-white font-semibold rounded-xl py-2.5 transition">
+            <i class="bi bi-people mr-2"></i>Agregar reunión con cupos
+          </button>
+        </form>
+  </div>
+</div>
+
+<!-- Modal agregar reunión única Paseo -->
+<div class="pw-modal fixed inset-0 z-50 hidden flex items-center justify-center p-4" id="addBlockPaseoModal" aria-hidden="true">
+  <div class="absolute inset-0 bg-black/40" data-modal-close="addBlockPaseoModal"></div>
+  <div class="relative bg-white rounded-2xl shadow-xl max-w-lg w-full max-h-[90vh] overflow-y-auto p-6 z-10">
+    <div class="flex items-center justify-between mb-4">
+      <div class="flex items-center gap-2">
+        <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-amber-50 text-amber-600">
+          <i class="bi bi-paw-fill"></i>
+        </div>
+        <h5 class="font-bold text-slate-800">Nueva reunión única – Paseo</h5>
+      </div>
+      <button type="button" class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-slate-100 text-slate-500" data-modal-close="addBlockPaseoModal" aria-label="Cerrar"><i class="bi bi-x-lg"></i></button>
+    </div>
+        <form method="post">
+          {% csrf_token %}
+          <input type="hidden" name="action" value="agregar">
+          <input type="hidden" name="tipoServicio" value="paseo">
+          <input type="hidden" name="latitud" id="blockPaseoLat" value="">
+          <input type="hidden" name="longitud" id="blockPaseoLng" value="">
+          <div class="mb-4">
+            <label class="mb-1.5 block text-sm font-semibold text-slate-700">Lugar del paseo</label>
+            <input name="nombreLugar" type="text" placeholder="Ej: Parque Norte, Zona centro"
+                   class="w-full rounded-xl border border-slate-200 bg-slate-50 py-2.5 px-3 focus:border-[var(--pw-orange)] focus:outline-none focus:ring-2 focus:ring-orange-100">
+          </div>
+          <div class="mb-4">
+            <div class="flex items-center justify-between mb-1.5">
+              <span class="text-sm font-semibold text-slate-700">Ubicación en mapa</span>
+              <button type="button" id="btnGeoBlock" class="text-xs text-pw-orange hover:underline"><i class="bi bi-geo-alt mr-1"></i>Mi ubicación</button>
+            </div>
+            <div id="mapBlockPaseo" class="rounded-xl border border-slate-200 h-36 bg-slate-50"></div>
+          </div>
+          <div class="mb-4">
+            <label class="mb-1.5 block text-sm font-semibold text-slate-700">Precio por reunión (COP)</label>
+            <input name="precioCOP" type="number" min="1" placeholder="Usa tarifa global si vacío"
+                   class="w-full rounded-xl border border-slate-200 bg-slate-50 py-2.5 px-3 focus:border-[var(--pw-orange)] focus:outline-none focus:ring-2 focus:ring-orange-100">
+          </div>
+          <div class="mb-4">
+            <label class="mb-1.5 block text-sm font-semibold text-slate-700">Día</label>
+            <select name="diaSemana" required
+                    class="w-full rounded-xl border border-slate-200 bg-slate-50 py-2.5 px-3 focus:border-[var(--pw-orange)] focus:outline-none focus:ring-2 focus:ring-orange-100">
+              {% for val,label in dias_semana %}<option value="{{ val }}">{{ label }}</option>{% endfor %}
+            </select>
+          </div>
+          <div class="mb-5 grid grid-cols-2 gap-4">
+            <div>
+              <label class="mb-1.5 block text-sm font-semibold text-slate-700">Inicio</label>
+              <input name="horaInicio" type="time" required
+                     class="w-full rounded-xl border border-slate-200 bg-slate-50 py-2.5 px-3 focus:border-[var(--pw-orange)] focus:outline-none focus:ring-2 focus:ring-orange-100">
+            </div>
+            <div>
+              <label class="mb-1.5 block text-sm font-semibold text-slate-700">Fin</label>
+              <input name="horaFin" type="time" required
+                     class="w-full rounded-xl border border-slate-200 bg-slate-50 py-2.5 px-3 focus:border-[var(--pw-orange)] focus:outline-none focus:ring-2 focus:ring-orange-100">
+            </div>
+          </div>
+          <button type="submit" class="w-full bg-pw-orange hover:bg-pw-orange-dark text-white font-semibold rounded-xl py-2.5 transition">
+            <i class="bi bi-plus-lg mr-2"></i>Agregar reunión
+          </button>
+        </form>
+  </div>
+</div>
+
+<!-- Modal agregar rápido Guardería -->
+<div class="pw-modal fixed inset-0 z-50 hidden flex items-center justify-center p-4" id="rapidoGuarderiaModal" aria-hidden="true">
+  <div class="absolute inset-0 bg-black/40" data-modal-close="rapidoGuarderiaModal"></div>
+  <div class="relative bg-white rounded-2xl shadow-xl max-w-lg w-full max-h-[90vh] overflow-y-auto p-6 z-10">
+    <div class="flex items-center justify-between mb-4">
+      <div class="flex items-center gap-2">
+        <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-rose-50 text-rose-600">
+          <i class="bi bi-house-heart"></i>
+        </div>
+        <h5 class="font-bold text-slate-800" id="rapidoGuarderiaTitulo">Agregar horarios – Guarderías</h5>
+      </div>
+      <button type="button" class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-slate-100 text-slate-500" data-modal-close="rapidoGuarderiaModal" aria-label="Cerrar"><i class="bi bi-x-lg"></i></button>
+    </div>
+    <form method="post" id="formRapidoGuarderia">
+      {% csrf_token %}
+      <input type="hidden" name="action" value="agregar_rapido">
+      <input type="hidden" name="tipoServicio" value="guarderia">
+      <input type="hidden" name="preset" id="rapidoGuarderiaPreset" value="todos">
+      <input type="hidden" name="latitud" id="rapidoGuarderiaLat" value="">
+      <input type="hidden" name="longitud" id="rapidoGuarderiaLng" value="">
+      <div class="mb-3 rounded-lg bg-slate-50 px-3 py-2 text-sm text-slate-600" id="rapidoGuarderiaDesc">
+        Se agregará el mismo horario para todos los días de la semana.
+      </div>
+      <div class="mb-3">
+        <label class="mb-1.5 block text-sm font-semibold text-slate-700">Nombre del lugar</label>
+        <input name="nombreLugar" type="text" placeholder="Ej: Casa norte, Apartamento centro"
+               class="w-full rounded-xl border border-slate-200 bg-white py-2.5 px-3 focus:border-[var(--pw-orange)] focus:outline-none focus:ring-2 focus:ring-orange-100">
+      </div>
+      <div class="mb-3">
+        <label class="mb-1.5 block text-sm font-semibold text-slate-700">Precio por día (COP)</label>
+        <input name="precioCOP" type="number" min="1" placeholder="Usa tarifa global si vacío"
+               class="w-full rounded-xl border border-slate-200 bg-white py-2.5 px-3 focus:border-[var(--pw-orange)] focus:outline-none focus:ring-2 focus:ring-orange-100">
+      </div>
+      <div class="mb-3">
+        <div class="flex items-center justify-between mb-1.5">
+          <span class="text-sm font-semibold text-slate-700">Marcar ubicación en el mapa</span>
+          <button type="button" id="btnGeoRapido" class="text-xs text-pw-orange hover:underline"><i class="bi bi-geo-alt mr-1"></i>Mi ubicación</button>
+        </div>
+        <div id="mapRapidoGuarderia" class="rounded-xl border border-slate-200 h-40 bg-slate-50"></div>
+      </div>
+      <div class="mb-5 grid grid-cols-2 gap-4">
+        <div>
+          <label class="mb-1.5 block text-sm font-semibold text-slate-700">Hora inicio</label>
+          <input name="horaInicio" type="time" value="09:00" step="1800" required
+                 class="w-full rounded-xl border border-slate-200 bg-white py-2.5 px-3 focus:border-[var(--pw-orange)] focus:outline-none focus:ring-2 focus:ring-orange-100">
+        </div>
+        <div>
+          <label class="mb-1.5 block text-sm font-semibold text-slate-700">Hora fin</label>
+          <input name="horaFin" type="time" value="18:00" step="1800" required
+                 class="w-full rounded-xl border border-slate-200 bg-white py-2.5 px-3 focus:border-[var(--pw-orange)] focus:outline-none focus:ring-2 focus:ring-orange-100">
+        </div>
+      </div>
+      <button type="submit" class="w-full bg-pw-orange hover:bg-pw-orange-dark text-white font-semibold rounded-xl py-2.5 transition">
+        <i class="bi bi-calendar-plus mr-2"></i>Agregar lugar
+      </button>
+    </form>
+  </div>
+</div>
+
+<!-- Modal agregar lugar Guardería -->
+<div class="pw-modal fixed inset-0 z-50 hidden flex items-center justify-center p-4" id="addBlockGuarderiaModal" aria-hidden="true">
+  <div class="absolute inset-0 bg-black/40" data-modal-close="addBlockGuarderiaModal"></div>
+  <div class="relative bg-white rounded-2xl shadow-xl max-w-lg w-full max-h-[90vh] overflow-y-auto p-6 z-10">
+    <div class="flex items-center justify-between mb-4">
+      <div class="flex items-center gap-2">
+        <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-rose-50 text-rose-600">
+          <i class="bi bi-house-heart"></i>
+        </div>
+        <h5 class="font-bold text-slate-800">Nuevo lugar – Guardería</h5>
+      </div>
+      <button type="button" class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-slate-100 text-slate-500" data-modal-close="addBlockGuarderiaModal" aria-label="Cerrar"><i class="bi bi-x-lg"></i></button>
+    </div>
+    <form method="post">
+      {% csrf_token %}
+      <input type="hidden" name="action" value="agregar">
+      <input type="hidden" name="tipoServicio" value="guarderia">
+      <input type="hidden" name="latitud" id="addBlockGuarderiaLat" value="">
+      <input type="hidden" name="longitud" id="addBlockGuarderiaLng" value="">
+      <div class="mb-4">
+        <label class="mb-1.5 block text-sm font-semibold text-slate-700">Día</label>
+        <select name="diaSemana" required
+                class="w-full rounded-xl border border-slate-200 bg-slate-50 py-2.5 px-3 focus:border-[var(--pw-orange)] focus:outline-none focus:ring-2 focus:ring-orange-100">
+          {% for val,label in dias_semana %}<option value="{{ val }}">{{ label }}</option>{% endfor %}
+        </select>
+      </div>
+      <div class="mb-4">
+        <label class="mb-1.5 block text-sm font-semibold text-slate-700">Nombre del lugar</label>
+        <input name="nombreLugar" type="text" placeholder="Ej: Casa norte, Apartamento centro"
+               class="w-full rounded-xl border border-slate-200 bg-slate-50 py-2.5 px-3 focus:border-[var(--pw-orange)] focus:outline-none focus:ring-2 focus:ring-orange-100">
+      </div>
+      <div class="mb-4">
+        <label class="mb-1.5 block text-sm font-semibold text-slate-700">Precio por día (COP)</label>
+        <input name="precioCOP" type="number" min="1" placeholder="Usa tarifa global si vacío"
+               class="w-full rounded-xl border border-slate-200 bg-slate-50 py-2.5 px-3 focus:border-[var(--pw-orange)] focus:outline-none focus:ring-2 focus:ring-orange-100">
+      </div>
+      <div class="mb-4">
+        <div class="flex items-center justify-between mb-1.5">
+          <span class="text-sm font-semibold text-slate-700">Marcar ubicación en el mapa</span>
+          <button type="button" id="btnGeoAddBlock" class="text-xs text-pw-orange hover:underline"><i class="bi bi-geo-alt mr-1"></i>Mi ubicación</button>
+        </div>
+        <div id="mapAddBlockGuarderia" class="rounded-xl border border-slate-200 h-40 bg-slate-50"></div>
+      </div>
+      <div class="mb-4 grid grid-cols-2 gap-4">
+        <div>
+          <label class="mb-1.5 block text-sm font-semibold text-slate-700">Inicio</label>
+          <input name="horaInicio" type="time" required
+                 class="w-full rounded-xl border border-slate-200 bg-slate-50 py-2.5 px-3 focus:border-[var(--pw-orange)] focus:outline-none focus:ring-2 focus:ring-orange-100">
+        </div>
+        <div>
+          <label class="mb-1.5 block text-sm font-semibold text-slate-700">Fin</label>
+          <input name="horaFin" type="time" required
+                 class="w-full rounded-xl border border-slate-200 bg-slate-50 py-2.5 px-3 focus:border-[var(--pw-orange)] focus:outline-none focus:ring-2 focus:ring-orange-100">
+        </div>
+      </div>
+      <div class="mb-5">
+        <label class="mb-1.5 block text-sm font-semibold text-slate-700">Capacidad máx. (mascotas)</label>
+        <input name="capacidadMaxima" type="number" value="1" min="1" max="5" class="w-full rounded-xl border border-slate-200 bg-slate-50 py-2.5 px-3 focus:border-[var(--pw-orange)] focus:outline-none focus:ring-2 focus:ring-orange-100" title="Máximo 5 por lugar">
+      </div>
+      <button type="submit" class="w-full bg-pw-orange hover:bg-pw-orange-dark text-white font-semibold rounded-xl py-2.5 transition">
+        <i class="bi bi-plus-lg mr-2"></i>Agregar lugar
+      </button>
+    </form>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script>
+(function(){
+  var latInput = document.getElementById('latitudServicios');
+  var lonInput = document.getElementById('longitudServicios');
+  var mapEl = document.getElementById('mapServicios');
+  if (mapEl && latInput && typeof L !== 'undefined') {
+    var hasCoords = latInput.value && lonInput.value;
+    var defaultLat = 6.2442, defaultLon = -75.5812;
+    var lat = parseFloat(latInput.value) || defaultLat;
+    var lon = parseFloat(lonInput.value) || defaultLon;
+    var map = L.map('mapServicios').setView([lat, lon], hasCoords ? 14 : 6);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '&copy; OpenStreetMap' }).addTo(map);
+    var marker = hasCoords ? L.marker([lat, lon], { draggable: true }).addTo(map) : null;
+    function updateInputs(latlng) { latInput.value = latlng.lat.toFixed(6); lonInput.value = latlng.lng.toFixed(6); }
+    function setMarker(ll) {
+      if (!marker) { marker = L.marker(ll, { draggable: true }).addTo(map); marker.on('dragend', function() { updateInputs(marker.getLatLng()); }); }
+      else marker.setLatLng(ll);
+      updateInputs(ll);
+    }
+    map.on('click', function(e) { setMarker(e.latlng); });
+    if (marker) marker.on('dragend', function() { updateInputs(marker.getLatLng()); });
+    document.getElementById('btnUbicacionServ')?.addEventListener('click', function() {
+      if (!navigator.geolocation) { alert('Tu navegador no soporta geolocalización'); return; }
+      this.disabled = true; this.innerHTML = '<span class="inline-block w-4 h-4 border-2 border-pw-orange border-t-transparent rounded-full animate-spin mr-1"></span>Buscando...';
+      navigator.geolocation.getCurrentPosition(
+        function(pos) { var ll = { lat: pos.coords.latitude, lng: pos.coords.longitude }; setMarker(ll); map.setView(ll, 15); document.getElementById('btnUbicacionServ').disabled = false; document.getElementById('btnUbicacionServ').innerHTML = '<i class="bi bi-geo-alt mr-1"></i>Usar mi ubicación'; },
+        function() { alert('No se pudo obtener tu ubicación'); document.getElementById('btnUbicacionServ').disabled = false; document.getElementById('btnUbicacionServ').innerHTML = '<i class="bi bi-geo-alt mr-1"></i>Usar mi ubicación'; }
+      );
+    });
+    document.getElementById('btnCentrarCiudadServ')?.addEventListener('click', function() {
+      var ciudad = document.getElementById('ciudadServicios')?.value?.trim();
+      if (!ciudad) { alert('Escribe tu ciudad primero'); return; }
+      this.disabled = true;
+      fetch('https://nominatim.openstreetmap.org/search?format=json&q=' + encodeURIComponent(ciudad + ', Colombia') + '&limit=1')
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+          if (data && data[0]) { var ll = { lat: parseFloat(data[0].lat), lng: parseFloat(data[0].lon) }; map.setView(ll, 12); setMarker(ll); }
+          else alert('Ciudad no encontrada');
+          document.getElementById('btnCentrarCiudadServ').disabled = false;
+        })
+        .catch(function() { document.getElementById('btnCentrarCiudadServ').disabled = false; });
+    });
+  }
+})();
+(function(){
+  var defaultLat = 6.2442, defaultLon = -75.5812;
+  function initMapPaseo(mapId, latInputId, lngInputId, geoBtnId) {
+    var mapEl = document.getElementById(mapId);
+    var latInput = document.getElementById(latInputId);
+    var lngInput = document.getElementById(lngInputId);
+    if (!mapEl || !latInput || !lngInput || typeof L === 'undefined') return null;
+    var lat = parseFloat(latInput.value) || defaultLat;
+    var lon = parseFloat(lngInput.value) || defaultLon;
+    var map = L.map(mapId).setView([lat, lon], 12);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '&copy; OpenStreetMap' }).addTo(map);
+    var marker = null;
+    function updateInputs(ll) { latInput.value = ll.lat.toFixed(6); lngInput.value = ll.lng.toFixed(6); }
+    function setMarker(ll) {
+      if (!marker) { marker = L.marker(ll, { draggable: true }).addTo(map); marker.on('dragend', function() { updateInputs(marker.getLatLng()); }); }
+      else marker.setLatLng(ll);
+      updateInputs(ll);
+    }
+    map.on('click', function(e) { setMarker(e.latlng); });
+    document.getElementById(geoBtnId)?.addEventListener('click', function() {
+      if (!navigator.geolocation) { alert('Tu navegador no soporta geolocalización'); return; }
+      this.disabled = true;
+      navigator.geolocation.getCurrentPosition(
+        function(pos) { var ll = { lat: pos.coords.latitude, lng: pos.coords.longitude }; setMarker(ll); map.setView(ll, 15); document.getElementById(geoBtnId).disabled = false; },
+        function() { alert('No se pudo obtener tu ubicación'); document.getElementById(geoBtnId).disabled = false; }
+      );
+    });
+    return map;
+  }
+  var mapVentanaInited = false, mapBlockInited = false, mapRapidoInited = false;
+  var mapAddBlockGuarderiaInited = false, mapRapidoGuarderiaInited = false;
+  document.addEventListener('pw-modal-open', function(e) {
+    if (e.detail.modalId === 'addVentanaPaseoModal' && !mapVentanaInited) {
+      setTimeout(function() { initMapPaseo('mapVentanaPaseo', 'ventanaPaseoLat', 'ventanaPaseoLng', 'btnGeoVentana'); mapVentanaInited = true; }, 100);
+    }
+    if (e.detail.modalId === 'addBlockPaseoModal' && !mapBlockInited) {
+      setTimeout(function() { initMapPaseo('mapBlockPaseo', 'blockPaseoLat', 'blockPaseoLng', 'btnGeoBlock'); mapBlockInited = true; }, 100);
+    }
+    if (e.detail.modalId === 'rapidoPaseoModal' && !mapRapidoInited) {
+      setTimeout(function() { initMapPaseo('mapRapidoPaseo', 'rapidoPaseoLat', 'rapidoPaseoLng', 'btnGeoRapidoPaseo'); mapRapidoInited = true; }, 100);
+    }
+    if (e.detail.modalId === 'addBlockGuarderiaModal' && !mapAddBlockGuarderiaInited) {
+      setTimeout(function() { initMapPaseo('mapAddBlockGuarderia', 'addBlockGuarderiaLat', 'addBlockGuarderiaLng', 'btnGeoAddBlock'); mapAddBlockGuarderiaInited = true; }, 100);
+    }
+    if (e.detail.modalId === 'rapidoGuarderiaModal' && !mapRapidoGuarderiaInited) {
+      setTimeout(function() { initMapPaseo('mapRapidoGuarderia', 'rapidoGuarderiaLat', 'rapidoGuarderiaLng', 'btnGeoRapido'); mapRapidoGuarderiaInited = true; }, 100);
+    }
+  });
+})();
+(function(){
+  var presetLabels = { todos: 'Todos los días', fines_semana: 'Fines de semana', entre_semana: 'Entre semana' };
+  var presetDescs = {
+    todos: 'Se agregará el mismo horario para los 7 días de la semana.',
+    fines_semana: 'Se agregará el mismo horario para sábado y domingo.',
+    entre_semana: 'Se agregará el mismo horario de lunes a viernes.'
+  };
+  document.addEventListener('pw-modal-open', function(e) {
+    if (e.detail.modalId !== 'rapidoPaseoModal') return;
+    var btn = e.detail.trigger;
+    var preset = btn && btn.getAttribute('data-preset') || 'todos';
+    var presetInput = document.getElementById('rapidoPaseoPreset');
+    var desc = document.getElementById('rapidoPaseoDesc');
+    var tit = document.getElementById('rapidoPaseoTitulo');
+    if (presetInput) presetInput.value = preset;
+    if (desc) desc.textContent = presetDescs[preset] || presetDescs.todos;
+    if (tit) tit.textContent = 'Agregar horarios – ' + (presetLabels[preset] || preset) + ' – Paseos';
+  });
+  // Sync toggle switch visual state with checkbox
+  document.querySelectorAll('.toggle-switch').forEach(function(sw) {
+    var id = sw.getAttribute('data-target');
+    var cb = document.getElementById(id);
+    if (!cb) return;
+    function update() { sw.classList.toggle('checked', cb.checked); }
+    update();
+    cb.addEventListener('change', update);
+  });
+  var presetLabelsG = { todos: 'Todos los días', fines_semana: 'Fines de semana', entre_semana: 'Entre semana' };
+  var presetDescsG = {
+    todos: 'Se agregará el mismo horario para los 7 días de la semana.',
+    fines_semana: 'Se agregará el mismo horario para sábado y domingo.',
+    entre_semana: 'Se agregará el mismo horario de lunes a viernes.'
+  };
+  document.addEventListener('pw-modal-open', function(e) {
+    if (e.detail.modalId !== 'rapidoGuarderiaModal') return;
+    var btn = e.detail.trigger;
+    var preset = btn && btn.getAttribute('data-preset') || 'todos';
+    document.getElementById('rapidoGuarderiaPreset').value = preset;
+    document.getElementById('rapidoGuarderiaDesc').textContent = presetDescsG[preset] || presetDescsG.todos;
+    var tit = document.getElementById('rapidoGuarderiaTitulo');
+    if (tit) tit.textContent = 'Agregar horarios – ' + (presetLabelsG[preset] || preset) + ' – Guarderías';
+  });
+})();
+</script>
+{% endblock %}

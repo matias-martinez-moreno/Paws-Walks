@@ -1,0 +1,39 @@
+{% extends "servicios/base_dashboard.html" %}
+{% block title %}Guía de uso – Dueño{% endblock %}
+
+{% block top_greeting %}
+<h1 class="page-header__title">Guía de uso</h1>
+<p class="page-header__subtitle">Cómo usar Paws & Walks como dueño de mascota</p>
+{% endblock %}
+
+{% block sidebar_links %}
+<div class="sidebar-section">Principal</div>
+<a class="nav-link" href="{% url 'dashboard_dueño' %}"><i class="bi bi-house-door"></i> Panel</a>
+<div class="sidebar-section">Gestión</div>
+<a class="nav-link" href="{% url 'dueño_nueva_reserva' %}"><i class="bi bi-plus-circle"></i> Hacer reserva</a>
+<a class="nav-link" href="{% url 'dueño_mis_reservas' %}"><i class="bi bi-calendar3"></i> Mis reservas</a>
+<a class="nav-link" href="{% url 'dueño_mis_mascotas' %}"><i class="bi bi-heart"></i> Mis mascotas</a>
+<div class="sidebar-section">Cuenta</div>
+<a class="nav-link" href="{% url 'dueño_mi_perfil' %}"><i class="bi bi-person"></i> Mi perfil</a>
+{% endblock %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto prose prose-slate">
+  <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 lg:p-8 space-y-6">
+    <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2"><i class="bi bi-1-circle text-pw-orange"></i>Registra tus mascotas</h2>
+    <p class="text-slate-600">En <strong>Mis mascotas</strong> agrega cada mascota con su nombre, tipo, raza, edad y foto. Necesitarás esta información para hacer reservas.</p>
+
+    <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2"><i class="bi bi-2-circle text-pw-orange"></i>Busca cuidadores</h2>
+    <p class="text-slate-600">En <strong>Hacer reserva</strong> elige el tipo de servicio (Paseo o Guardería), la mascota, fecha y horario. La app te mostrará cuidadores disponibles cerca de ti.</p>
+
+    <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2"><i class="bi bi-3-circle text-pw-orange"></i>Envía tu solicitud</h2>
+    <p class="text-slate-600">Selecciona un cuidador y envía la solicitud. El cuidador la revisará y la aceptará o rechazará. Puedes ver su perfil antes de reservar.</p>
+
+    <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2"><i class="bi bi-4-circle text-pw-orange"></i>Comunícate y coordina</h2>
+    <p class="text-slate-600">En <strong>Mis reservas</strong> verás cada reunión programada. Usa el chat para coordinar con el cuidador y el botón <strong>Ver perfil</strong> para ver sus datos de contacto.</p>
+
+    <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2"><i class="bi bi-5-circle text-pw-orange"></i>Califica el servicio</h2>
+    <p class="text-slate-600">Cuando el servicio se complete, podrás calificar al cuidador con estrellas y un comentario. ¡Tu opinión ayuda a otros dueños!</p>
+  </div>
+</div>
+{% endblock %}

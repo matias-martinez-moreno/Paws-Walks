@@ -1,0 +1,102 @@
+{% extends "servicios/base_dashboard.html" %}
+{% load servicios_extras %}
+{% block title %}Panel – Cuidador{% endblock %}
+
+{% block sidebar_links %}
+<div class="sidebar-section">Principal</div>
+<a class="nav-link active" href="{% url 'dashboard_cuidador' %}"><i class="bi bi-house-door"></i> Panel</a>
+<div class="sidebar-section">Gestión</div>
+<a class="nav-link" href="{% url 'cuidador_calendario' %}"><i class="bi bi-calendar3"></i> Mi calendario</a>
+<a class="nav-link" href="{% url 'cuidador_servicios' %}"><i class="bi bi-gear-wide-connected"></i> Mis servicios</a>
+<div class="sidebar-section">Cuenta</div>
+<a class="nav-link" href="{% url 'cuidador_mi_perfil' %}"><i class="bi bi-person"></i> Mi perfil</a>
+{% endblock %}
+
+{% block content %}
+{% if not usuario.verificado %}
+<div class="rounded-xl px-4 py-3 mb-4 bg-amber-50 border border-amber-200 text-amber-800 flex items-center gap-3" role="alert">
+  <i class="bi bi-exclamation-triangle-fill text-xl"></i>
+  <div>
+    <strong>Tu cuenta está en revisión.</strong> Los dueños no podrán reservar contigo hasta que un administrador verifique tu perfil.
+  </div>
+</div>
+{% endif %}
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+  <div class="bg-white rounded-2xl shadow-sm border border-slate-100/80 p-6 flex items-center gap-4 hover:shadow-md hover:border-slate-200 transition-all group">
+    <div class="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl bg-gradient-to-br from-orange-50 to-orange-100/50 text-pw-orange group-hover:scale-105 transition-transform"><i class="bi bi-calendar-check"></i></div>
+    <div><div class="text-2xl font-extrabold text-slate-800">{{ agendamientos_futuros|length|default:"0" }}</div><div class="text-sm text-slate-500">Citas próximas</div></div>
+  </div>
+  <div class="bg-white rounded-2xl shadow-sm border border-slate-100/80 p-6 flex items-center gap-4 hover:shadow-md hover:border-slate-200 transition-all group">
+    <div class="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl bg-gradient-to-br from-emerald-50 to-emerald-100/50 text-emerald-600 group-hover:scale-105 transition-transform"><i class="bi bi-check-circle"></i></div>
+    <div><div class="text-2xl font-extrabold text-slate-800">{{ agendamientos_pasados|length|default:"0" }}</div><div class="text-sm text-slate-500">Citas completadas</div></div>
+  </div>
+  <div class="bg-white rounded-2xl shadow-sm border border-slate-100/80 p-6 flex items-center gap-4 hover:shadow-md hover:border-slate-200 transition-all group">
+    <div class="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl bg-gradient-to-br from-amber-50 to-amber-100/50 text-pw-orange group-hover:scale-105 transition-transform"><i class="bi bi-currency-dollar"></i></div>
+    <div>
+      <div class="text-2xl font-extrabold text-slate-800">
+        {% if precios_activos.paseo or precios_activos.guarderia %}
+          ${% if precios_activos.paseo %}{{ precios_activos.paseo.precioCOP|formato_cop }}{% elif precios_activos.guarderia %}{{ precios_activos.guarderia.precioCOP|formato_cop }}{% else %}—{% endif %}{% if precios_activos.paseo %}/h{% else %}/día{% endif %}
+        {% else %}—{% endif %}
+      </div>
+      <div class="text-sm text-slate-500">Tarifa base</div>
+    </div>
+  </div>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+  <div class="lg:col-span-2 bg-white rounded-2xl shadow-sm border border-slate-100/80 overflow-hidden">
+    <div class="px-6 py-4 border-b border-slate-100 font-semibold text-slate-800 flex items-center justify-between bg-slate-50/50">
+      <span><i class="bi bi-calendar-check text-pw-orange mr-2"></i>Próximas citas</span>
+      <a href="{% url 'cuidador_calendario' %}" class="border-2 border-pw-orange text-pw-orange hover:bg-pw-orange hover:text-white font-semibold rounded-xl px-4 py-2 text-sm transition-all hover:shadow-lg hover:shadow-pw-orange/20">Ver todas</a>
+    </div>
+    <div class="p-0">
+      {% if agendamientos_futuros %}
+      <div class="overflow-x-auto">
+        <table class="w-full mb-0">
+          <thead class="bg-slate-50"><tr><th class="text-left text-xs uppercase tracking-wide text-slate-500 font-medium py-3 px-4 border-b-2 border-slate-100">Dueño</th><th class="text-left text-xs uppercase tracking-wide text-slate-500 font-medium py-3 border-b-2 border-slate-100">Mascota</th><th class="text-left text-xs uppercase tracking-wide text-slate-500 font-medium py-3 border-b-2 border-slate-100">Servicio</th><th class="text-left text-xs uppercase tracking-wide text-slate-500 font-medium py-3 border-b-2 border-slate-100">Fecha</th><th class="text-left text-xs uppercase tracking-wide text-slate-500 font-medium py-3 border-b-2 border-slate-100">Estado</th></tr></thead>
+          <tbody>
+          {% for a in agendamientos_futuros %}
+          <tr class="hover:bg-slate-50 transition">
+            <td class="py-3 px-4 text-sm align-middle">{{ a.idDueño.nombre }}</td>
+            <td class="py-3 text-sm align-middle">{{ a.idMascota.nombreMascota }}</td>
+            <td class="py-3 text-sm align-middle"><span class="inline-flex items-center rounded-full px-3 py-1 text-xs font-medium bg-slate-100 text-slate-800 border border-slate-200">{{ a.get_tipoServicio_display }}</span></td>
+            <td class="py-3 text-sm align-middle">{{ a.fecha|date:"d M Y" }}{% if a.fechaFin %} – {{ a.fechaFin|date:"d M Y" }}{% endif %}</td>
+            <td class="py-3 text-sm align-middle"><span class="inline-flex items-center rounded-full px-3 py-1 text-xs font-medium bg-blue-50 text-blue-700">{{ a.get_estado_display }}</span></td>
+          </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% else %}
+      <div class="text-center py-12">
+        <div class="w-16 h-16 rounded-full bg-slate-100 flex items-center justify-center mx-auto mb-3"><i class="bi bi-calendar-x text-2xl text-slate-400"></i></div>
+        <p class="text-slate-600 font-medium mb-1">No tienes citas próximas</p>
+        <a href="{% url 'cuidador_calendario' %}" class="text-pw-orange font-semibold hover:underline text-sm">Ver calendario</a>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+  <div class="bg-white rounded-2xl shadow-sm border border-slate-100/80 overflow-hidden">
+    <div class="px-6 py-4 border-b border-slate-100 font-semibold text-slate-800 bg-slate-50/50">Mi servicio</div>
+    <div class="p-4">
+      {% if perfil and precios_activos %}
+        <div class="mb-2 text-sm">
+          <strong class="text-slate-700">Servicios activos:</strong>
+          {% for tipo, precio in precios_activos.items %}
+            <span class="inline-flex items-center rounded-full px-3 py-1 text-xs font-medium bg-blue-50 text-blue-700 ml-1">{{ tipo|title }}</span>
+          {% endfor %}
+        </div>
+        <div class="mb-2 text-sm text-slate-600"><strong>Tarifa paseo:</strong> {% if precios_activos.paseo %}${{ precios_activos.paseo.precioCOP|formato_cop }} COP/hora{% else %}—{% endif %}</div>
+        <div class="mb-2 text-sm text-slate-600"><strong>Tarifa guarderías:</strong> {% if precios_activos.guarderia %}${{ precios_activos.guarderia.precioCOP|formato_cop }} COP/día{% else %}—{% endif %}</div>
+        {% if perfil.descripcion %}<div class="mb-2 text-sm text-slate-600"><strong>Descripción:</strong> {{ perfil.descripcion }}</div>{% endif %}
+        <div class="mt-2">
+          <a href="{% url 'cuidador_servicios' %}" class="block w-full text-center border-2 border-pw-orange text-pw-orange hover:bg-pw-orange hover:text-white font-semibold rounded-lg px-3 py-2 text-sm transition"><i class="bi bi-gear-wide-connected mr-1"></i>Mis servicios</a>
+        </div>
+      {% else %}
+        <p class="text-slate-600 mb-3 text-sm">No has configurado tu perfil de servicio.</p>
+        <a href="{% url 'cuidador_servicios' %}" class="block w-full text-center bg-pw-orange hover:bg-pw-orange-dark text-white font-semibold rounded-xl px-4 py-2.5 text-sm transition-all hover:shadow-lg hover:shadow-pw-orange/20"><i class="bi bi-gear mr-2"></i>Configurar</a>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

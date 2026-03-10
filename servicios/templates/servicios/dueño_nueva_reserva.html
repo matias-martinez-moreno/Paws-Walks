@@ -1,0 +1,183 @@
+{% extends "servicios/base_dashboard.html" %}
+{% load servicios_extras %}
+{% block title %}Nueva reserva{% endblock %}
+
+{% block top_greeting %}
+<h1 class="page-header__title">Nueva reserva</h1>
+<p class="page-header__subtitle">Solicita un servicio para tu mascota</p>
+{% endblock %}
+
+{% block sidebar_links %}
+<div class="sidebar-section">Principal</div>
+<a class="nav-link" href="{% url 'dashboard_dueño' %}"><i class="bi bi-house-door"></i> Panel</a>
+<div class="sidebar-section">Gestión</div>
+<a class="nav-link active" href="{% url 'dueño_nueva_reserva' %}"><i class="bi bi-plus-circle"></i> Hacer reserva</a>
+<a class="nav-link" href="{% url 'dueño_mis_reservas' %}"><i class="bi bi-calendar3"></i> Mis reservas</a>
+<a class="nav-link" href="{% url 'dueño_mis_mascotas' %}"><i class="bi bi-heart"></i> Mis mascotas</a>
+<div class="sidebar-section">Cuenta</div>
+<a class="nav-link" href="{% url 'dueño_mi_perfil' %}"><i class="bi bi-person"></i> Mi perfil</a>
+{% endblock %}
+
+{% block content %}
+<div class="w-full space-y-6">
+<div class="bg-white rounded-2xl shadow-sm border border-slate-100/80 p-6 lg:p-8">
+  <h6 class="font-bold mb-6 text-slate-800 text-lg flex items-center gap-2"><span class="w-8 h-8 rounded-lg bg-pw-orange/10 text-pw-orange flex items-center justify-center text-sm font-extrabold">1</span> Elige el tipo de servicio y completa los datos</h6>
+  <form method="post" id="formBusqueda">
+    {% csrf_token %}
+    <input type="hidden" name="action" value="buscar">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-4 items-end mb-4">
+      <div class="lg:col-span-2">
+        <label class="block text-sm font-semibold text-slate-700 mb-1.5">Tipo de servicio</label>
+        <select name="tipo_servicio" id="tipoServicio" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100/80 outline-none h-11 transition-all">
+            <option value="paseo" {% if not busqueda or busqueda.tipo_servicio == 'paseo' %}selected{% endif %}>Paseo</option>
+            <option value="guarderia" {% if busqueda and busqueda.tipo_servicio == 'guarderia' %}selected{% endif %}>Cuidado / Guardería</option>
+        </select>
+      </div>
+      <div class="lg:col-span-2">
+        <label class="block text-sm font-semibold text-slate-700 mb-1.5">Mascota</label>
+        <select name="mascota_id" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none h-11" required>
+            <option value="">Seleccionar...</option>
+            {% for m in mascotas %}<option value="{{ m.idMascota }}" {% if busqueda and busqueda.mascota_id == m.idMascota|stringformat:"s" %}selected{% endif %}>{{ m.nombreMascota }}</option>{% endfor %}
+        </select>
+      </div>
+      <!-- Campos paseo -->
+      <div id="camposPaseo" class="lg:col-span-4 flex flex-wrap gap-4 items-end">
+        <div>
+          <label class="block text-sm font-semibold text-slate-700 mb-1.5">Fecha</label>
+          <input type="date" name="fecha" id="fechaPaseo" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none h-11" value="{{ busqueda.fecha|default:'' }}">
+        </div>
+        <div>
+          <label class="block text-sm font-semibold text-slate-700 mb-1.5">Hora</label>
+          <input type="time" name="hora" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none h-11" value="{{ busqueda.hora|default:'09:00' }}" step="1800" min="00:00" max="23:30" title="Bloques de 30 min">
+        </div>
+        <div>
+          <label class="block text-sm font-semibold text-slate-700 mb-1.5">Duración</label>
+          <select name="duracion" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none h-11">
+              <option value="30" {% if busqueda.duracion == 30 or not busqueda %}selected{% endif %}>30 min</option>
+              <option value="60" {% if busqueda.duracion == 60 %}selected{% endif %}>1 hora</option>
+              <option value="90" {% if busqueda.duracion == 90 %}selected{% endif %}>1h 30min</option>
+              <option value="120" {% if busqueda.duracion == 120 %}selected{% endif %}>2 horas</option>
+          </select>
+        </div>
+      </div>
+      <!-- Campos cuidado/guardería -->
+      <div id="camposCuidado" class="lg:col-span-4 flex flex-wrap gap-4 items-end" style="display:none">
+        <div>
+          <label class="block text-sm font-semibold text-slate-700 mb-1.5">Fecha inicio</label>
+          <input type="date" name="fecha_inicio" id="fechaInicio" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none h-11" value="{{ busqueda.fecha_inicio|default:'' }}">
+        </div>
+        <div>
+          <label class="block text-sm font-semibold text-slate-700 mb-1.5">Fecha fin</label>
+          <input type="date" name="fecha_fin" id="fechaFin" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none h-11" value="{{ busqueda.fecha_fin|default:'' }}">
+        </div>
+      </div>
+      <div class="lg:col-span-2 flex items-end">
+        <label class="flex items-center gap-2 cursor-pointer text-sm">
+          <input type="hidden" name="solo_cercanos" value="0">
+          <input type="checkbox" class="rounded border-slate-300 text-pw-orange focus:ring-pw-orange" name="solo_cercanos" id="soloCercanos" value="1" {% if not busqueda or busqueda.solo_cercanos %}checked{% endif %}>
+          <span title="Filtrar por tu ciudad"><i class="bi bi-geo-alt mr-1"></i>Solo cercanos</span>
+        </label>
+      </div>
+      <div class="lg:col-span-2">
+        <button type="submit" class="w-full bg-pw-orange hover:bg-pw-orange-dark text-white font-semibold rounded-xl h-11 flex items-center justify-center gap-2 transition-all hover:shadow-lg hover:shadow-pw-orange/20"><i class="bi bi-search"></i>Buscar</button>
+      </div>
+    </div>
+  </form>
+    <script>
+    (function(){
+      var tipo = document.getElementById('tipoServicio');
+      var paseo = document.getElementById('camposPaseo');
+      var cuidado = document.getElementById('camposCuidado');
+      var fechaPaseo = document.getElementById('fechaPaseo');
+      var fechaInicio = document.getElementById('fechaInicio');
+      var fechaFin = document.getElementById('fechaFin');
+      function toggle(){
+        var isPaseo = tipo.value === 'paseo';
+        paseo.style.display = isPaseo ? '' : 'none';
+        cuidado.style.display = isPaseo ? 'none' : '';
+        fechaPaseo.required = isPaseo;
+        fechaInicio.required = !isPaseo;
+        fechaFin.required = !isPaseo;
+      }
+      tipo.addEventListener('change', toggle);
+      toggle();
+    })();
+  </script>
+</div>
+
+{% if cuidadores_disponibles is not None %}
+<div class="bg-white rounded-2xl shadow-sm border border-slate-100/80 overflow-hidden">
+  <div class="px-6 py-4 border-b border-slate-100 font-semibold text-slate-800 bg-slate-50/50 flex items-center gap-2">
+    Cuidadores disponibles
+    {% if busqueda %}
+    {% if busqueda.tipo_servicio == 'guarderia' %}
+      <span class="text-slate-500 font-normal ml-2">({{ busqueda.fecha_inicio }} a {{ busqueda.fecha_fin }})</span>
+    {% else %}
+      <span class="text-slate-500 font-normal ml-2">({{ busqueda.fecha }}, {{ busqueda.hora }}, {{ busqueda.duracion }} min)</span>
+    {% endif %}
+    {% endif %}
+  </div>
+  <div class="p-0">
+    {% if cuidadores_disponibles %}
+    <div class="divide-y divide-slate-100">
+      {% for item in cuidadores_disponibles %}
+      <div class="flex justify-between items-center flex-wrap gap-4 p-5 hover:bg-slate-50/80 transition-colors border-b border-slate-100 last:border-b-0">
+        <div class="flex items-center gap-3">
+          {% if item.cuidador.fotoPerfil %}
+            <img src="{{ item.cuidador.fotoPerfil.url }}" alt="" class="w-12 h-12 rounded-full object-cover">
+          {% else %}
+            <div class="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center font-bold text-slate-600">{{ item.cuidador.nombre|first }}</div>
+          {% endif %}
+          <div>
+            <strong class="text-slate-800">{{ item.cuidador.nombre }} {{ item.cuidador.apellido }}</strong>
+            <div class="text-slate-500 text-sm">{% if item.tipo_servicio == 'guarderia' %}Guardería{% else %}Paseo{% endif %}</div>
+            {% if item.calificacion_promedio %}<div class="text-sm text-amber-600"><i class="bi bi-star-fill mr-1"></i>{{ item.calificacion_promedio }} ({{ item.calificacion_count }} reseña{{ item.calificacion_count|pluralize }})</div>{% endif %}
+            {% if item.descripcion_servicio %}<div class="text-sm text-slate-600 mt-1">{{ item.descripcion_servicio|truncatewords:15 }}</div>{% endif %}
+          </div>
+        </div>
+        <div class="text-right">
+          <div class="font-bold text-slate-800">${{ item.tarifa_total|formato_cop }} COP</div>
+          {% if busqueda.tipo_servicio == 'guarderia' %}
+            <small class="text-slate-500 text-sm">${{ item.tarifa_dia|formato_cop }}/día · {{ item.num_dias }} {% if item.num_dias == 1 %}día{% else %}días{% endif %}</small>
+            {% if item.distancia_km %}<div class="text-slate-500 text-sm mt-1"><i class="bi bi-geo-alt mr-1"></i>{{ item.distancia_km }} km</div>{% endif %}
+          {% else %}
+            <small class="text-slate-500 text-sm">${{ item.tarifa_hora|formato_cop }}/hora · {{ item.duracion }} min</small>
+            {% if item.hora_sugerida %}<div class="text-emerald-600 text-sm mt-1"><i class="bi bi-clock mr-1"></i>Desde {{ item.hora_sugerida|hora_corta }}</div>{% endif %}
+            {% if item.distancia_km %}<div class="text-slate-500 text-sm mt-1"><i class="bi bi-geo-alt mr-1"></i>{{ item.distancia_km }} km</div>{% endif %}
+          {% endif %}
+          <form method="post" class="mt-2">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="confirmar">
+            <input type="hidden" name="tipo_servicio" value="{{ busqueda.tipo_servicio }}">
+            <input type="hidden" name="mascota_id" value="{{ busqueda.mascota_id }}">
+            {% if item.evento %}
+            <input type="hidden" name="evento_id" value="{{ item.evento.idEvento }}">
+            {% elif busqueda.tipo_servicio == 'paseo' and item.ventana %}
+            <input type="hidden" name="ventana_id" value="{{ item.ventana.idVentana }}">
+            {% elif item.bloque %}
+            <input type="hidden" name="bloque_id" value="{{ item.bloque.idBloque }}">
+            {% endif %}
+            <input type="hidden" name="fecha" value="{% if busqueda.tipo_servicio == 'guarderia' %}{{ busqueda.fecha_inicio }}{% else %}{{ busqueda.fecha }}{% endif %}">
+            {% if busqueda.tipo_servicio == 'guarderia' %}
+            <input type="hidden" name="fecha_fin" value="{{ busqueda.fecha_fin }}">
+            {% endif %}
+            <button type="submit" class="bg-pw-orange hover:bg-pw-orange-dark text-white font-semibold rounded-xl px-4 py-2.5 text-sm transition-all hover:shadow-lg hover:shadow-pw-orange/20"><i class="bi bi-check-lg mr-1"></i>Reservar</button>
+          </form>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="text-center py-16 px-6">
+      <div class="w-16 h-16 rounded-full bg-slate-100 flex items-center justify-center mx-auto mb-4">
+        <i class="bi bi-person-x text-3xl text-slate-400"></i>
+      </div>
+      <p class="text-slate-600 font-medium mb-1">No hay cuidadores disponibles</p>
+      <p class="text-slate-500 text-sm">Prueba con otras fechas u horarios.</p>
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endif %}
+ </div>
+{% endblock %}

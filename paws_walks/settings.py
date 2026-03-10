@@ -106,9 +106,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
 
-LANGUAGE_CODE = "en-us"
+LANGUAGE_CODE = "es"
 
-TIME_ZONE = "UTC"
+TIME_ZONE = "America/Bogota"
 
 USE_I18N = True
 
@@ -120,6 +120,9 @@ USE_TZ = True
 
 STATIC_URL = "/static/"
 
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
@@ -127,3 +130,15 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # ENV_TYPE: MOCK (consola) | REAL (emails reales). Usado por NotificadorFactory.
 ENV_TYPE = os.environ.get("ENV_TYPE", "MOCK")
+
+LOGIN_URL = "/api/login/"
+
+# Cache en memoria para sesiones: reduce latencia del login (sin escribir en BD en cada request)
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+        "OPTIONS": {"MAX_ENTRIES": 500},
+    }
+}
+SESSION_ENGINE = "django.contrib.sessions.backends.cache"
+SESSION_CACHE_ALIAS = "default"

@@ -1,0 +1,71 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Términos y condiciones – Paws & Walks</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            pw: { orange: '#e07a2e', 'orange-dark': '#c96a25', dark: '#333' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+</head>
+<body class="min-h-screen bg-gradient-to-br from-slate-50 via-white to-orange-50/20 font-sans text-slate-800 antialiased">
+  <div class="max-w-3xl mx-auto px-4 py-10">
+    <a href="{% url 'login' %}" class="inline-flex items-center gap-2 text-pw-orange font-semibold hover:text-pw-orange-dark hover:underline mb-6 transition-colors"><i class="bi bi-arrow-left"></i> Volver</a>
+    <div class="bg-white rounded-2xl shadow-lg border border-slate-100/80 p-6 md:p-10">
+      <h1 class="text-2xl font-extrabold text-pw-dark mb-2 pb-2 border-b-2 border-pw-orange"><i class="bi bi-file-text mr-2 text-slate-500"></i>Términos y condiciones</h1>
+      <p class="text-slate-600 text-sm mb-4">Última actualización: marzo 2026. Al usar Paws & Walks usted acepta los siguientes términos y el marco legal indicado.</p>
+
+      <div class="rounded-xl border border-pw-orange/50 bg-orange-50/80 p-4 mb-6 font-medium text-slate-800 shadow-sm">
+        <strong>Aviso importante:</strong> Paws & Walks actúa como intermediario entre dueños de mascotas y cuidadores. No somos responsables de los servicios prestados entre usuarios. El uso de la plataforma implica la aceptación de nuestros términos.
+      </div>
+
+      <h2 class="text-lg font-bold text-slate-800 mt-6 mb-2">1. Objeto y aceptación</h2>
+      <p class="text-slate-600 text-sm leading-relaxed mb-4">Los presentes términos y condiciones regulan el uso del sitio web y la aplicación de Paws & Walks ("la Plataforma"), operada en Colombia. Al registrarse, navegar o utilizar la Plataforma, el usuario acepta íntegramente estos términos y se obliga a cumplir la legislación colombiana aplicable.</p>
+
+      <h2 class="text-lg font-bold text-slate-800 mt-6 mb-2">2. Marco legal colombiano aplicable</h2>
+      <p class="text-slate-600 text-sm leading-relaxed mb-2">El servicio se ofrece en territorio colombiano y queda sujeto, entre otras, a las siguientes normas:</p>
+      <ul class="list-disc pl-6 mb-4 space-y-2 text-slate-600 text-sm leading-relaxed">
+        <li><strong>Ley 1581 de 2012</strong> y Decreto 1377 de 2013: Protección de datos personales. Los datos que el usuario proporcione serán tratados conforme a nuestra política de privacidad y solo para los fines del servicio.</li>
+        <li><strong>Ley 1480 de 2011</strong> (Estatuto del Consumidor): En lo que aplique a las relaciones entre usuarios y la información que la Plataforma pone a disposición.</li>
+        <li><strong>Código de Comercio (Decreto 410 de 1971)</strong>: En lo relativo a las obligaciones mercantiles derivadas del uso de la Plataforma como intermediario.</li>
+        <li><strong>Ley 527 de 1999</strong> y normas sobre comercio electrónico: Para los actos y mensajes de datos realizados a través de la Plataforma.</li>
+        <li><strong>Ley 1266 de 2008</strong>: En lo referente al tratamiento de datos personales en bases de datos financieras, crediticias o de servicios, cuando aplique.</li>
+      </ul>
+
+      <h2 class="text-lg font-bold text-slate-800 mt-6 mb-2">3. Naturaleza del servicio e intermediación</h2>
+      <p class="text-slate-600 text-sm leading-relaxed mb-4">Paws & Walks es una plataforma de intermediación que pone en contacto a dueños de mascotas con cuidadores que ofrecen servicios de paseo y guardería. La Plataforma no emplea a los cuidadores ni es responsable por la ejecución del servicio en el mundo real, los daños a mascotas o personas, ni por incumplimientos entre usuarios. Cualquier acuerdo, pago adicional o responsabilidad derivada del servicio es entre el dueño y el cuidador.</p>
+
+      <h2 class="text-lg font-bold text-slate-800 mt-6 mb-2">4. Registro y obligaciones del usuario</h2>
+      <p class="text-slate-600 text-sm leading-relaxed mb-4">El usuario debe ser mayor de edad (o contar con autorización de padre o tutor), proporcionar información veraz y actualizar sus datos. Es responsable de mantener la confidencialidad de su contraseña y de todas las actividades realizadas desde su cuenta. Queda prohibido usar la Plataforma para fines ilícitos, suplantar identidad o vulnerar derechos de terceros.</p>
+
+      <h2 class="text-lg font-bold text-slate-800 mt-6 mb-2">5. Protección de datos personales</h2>
+      <p class="text-slate-600 text-sm leading-relaxed mb-4">De conformidad con la Ley 1581 de 2012, el usuario conoce que sus datos personales serán almacenados y procesados para la gestión de la cuenta, la prestación del servicio de intermediación, el cumplimiento legal y, en su caso, comunicaciones comerciales autorizadas. El usuario puede ejercer sus derechos de conocer, actualizar, rectificar y suprimir sus datos, y revocar la autorización, conforme a nuestra política de privacidad y a la ley.</p>
+
+      <h2 class="text-lg font-bold text-slate-800 mt-6 mb-2">6. Limitación de responsabilidad</h2>
+      <p class="text-slate-600 text-sm leading-relaxed mb-4">En la máxima medida permitida por la ley colombiana, Paws & Walks no será responsable por daños indirectos, lucro cesante, daños a mascotas o personas, ni por incumplimientos entre usuarios. La responsabilidad por el servicio efectivamente prestado (paseo, cuidado, guardería) recae en el cuidador y, en lo que corresponda, en el dueño de la mascota.</p>
+
+      <h2 class="text-lg font-bold text-slate-800 mt-6 mb-2">7. Propiedad intelectual y uso de la Plataforma</h2>
+      <p class="text-slate-600 text-sm leading-relaxed mb-4">Los contenidos, marcas y elementos de la Plataforma son propiedad de Paws & Walks o de sus licenciantes. Queda prohibida la reproducción, distribución o uso comercial no autorizado.</p>
+
+      <h2 class="text-lg font-bold text-slate-800 mt-6 mb-2">8. Modificaciones y ley aplicable</h2>
+      <p class="text-slate-600 text-sm leading-relaxed mb-4">Nos reservamos el derecho de modificar estos términos; los cambios serán notificados por la Plataforma y el uso continuado constituye aceptación. Para todo lo no previsto rige la ley colombiana y los tribunales de la República de Colombia serán competentes.</p>
+
+      <h2 class="text-lg font-bold text-slate-800 mt-6 mb-2">9. Contacto</h2>
+      <p class="text-slate-600 text-sm leading-relaxed mb-4">Para ejercer derechos sobre sus datos, reportar incidencias o consultas sobre estos términos: <a href="mailto:contacto@pawswalks.co" class="text-pw-orange hover:underline">contacto@pawswalks.co</a> · +57 300 123 4567.</p>
+
+      <p class="mt-6 text-slate-500 text-sm">© 2026 Paws & Walks. Todos los derechos reservados.</p>
+    </div>
+  </div>
+</body>
+</html>

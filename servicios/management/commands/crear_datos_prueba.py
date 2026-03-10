@@ -51,7 +51,6 @@ class Command(BaseCommand):
         # crear perfil de cuidador
         perfil, _ = PerfilCuidador.objects.get_or_create(
             idCuidador=cuidador,
-            defaults={'tipoServicio': 'paseo'}
         )
         
         # crear precio de servicio
@@ -81,6 +80,7 @@ class Command(BaseCommand):
             for hora_inicio, hora_fin in horas:
                 bloque, created = BloqueTiempo.objects.get_or_create(
                     idCuidador=perfil,
+                    tipoServicio='paseo',
                     diaSemana=dia,
                     horaInicio=hora_inicio,
                     horaFin=hora_fin,

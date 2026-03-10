@@ -1,0 +1,208 @@
+{% extends "servicios/base_dashboard.html" %}
+{% block title %}Mi perfil{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+{% endblock %}
+
+{% block top_greeting %}
+<h1 class="page-header__title">Mi perfil</h1>
+<p class="page-header__subtitle">Información de tu cuenta</p>
+{% endblock %}
+
+{% block sidebar_links %}
+<div class="sidebar-section">Principal</div>
+<a class="nav-link" href="{% url 'dashboard_dueño' %}"><i class="bi bi-house-door"></i> Panel</a>
+<div class="sidebar-section">Gestión</div>
+<a class="nav-link" href="{% url 'dueño_nueva_reserva' %}"><i class="bi bi-plus-circle"></i> Hacer reserva</a>
+<a class="nav-link" href="{% url 'dueño_mis_reservas' %}"><i class="bi bi-calendar3"></i> Mis reservas</a>
+<a class="nav-link" href="{% url 'dueño_mis_mascotas' %}"><i class="bi bi-heart"></i> Mis mascotas</a>
+<div class="sidebar-section">Cuenta</div>
+<a class="nav-link active" href="{% url 'dueño_mi_perfil' %}"><i class="bi bi-person"></i> Mi perfil</a>
+{% endblock %}
+
+{% block content %}
+{% if not editing %}
+<!-- VIEW MODE -->
+<div class="w-full">
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+  <div class="lg:col-span-1 bg-white rounded-2xl shadow-sm border border-slate-100/80 text-center p-6">
+    {% if usuario.fotoPerfil %}
+      <img src="{{ usuario.fotoPerfil.url }}" alt="foto" class="w-[110px] h-[110px] rounded-full object-cover border-2 border-slate-200 mx-auto mb-3">
+    {% else %}
+      <div class="w-[110px] h-[110px] rounded-full bg-pw-orange text-white inline-flex items-center justify-center text-3xl font-bold mx-auto mb-3">{{ usuario.nombre|first|upper }}</div>
+    {% endif %}
+    <h5 class="font-bold mb-0 text-slate-800">{{ usuario.nombre }} {{ usuario.apellido }}</h5>
+    <small class="text-slate-500">@{{ usuario.username }}</small>
+    <div class="mt-2">
+      <span class="inline-flex items-center rounded-full px-3 py-1 text-xs font-medium bg-orange-50 text-pw-orange">{{ usuario.get_rol_display }}</span>
+      {% if usuario.verificado %}<span class="inline-flex items-center rounded-full px-3 py-1 text-xs font-medium bg-emerald-50 text-emerald-600 ml-1">Verificado</span>{% endif %}
+    </div>
+    <a href="?edit=1" class="block w-full mt-4 border-2 border-pw-orange text-pw-orange hover:bg-pw-orange hover:text-white font-semibold rounded-xl py-2.5 text-center transition-all hover:shadow-lg hover:shadow-pw-orange/20"><i class="bi bi-pencil mr-2"></i>Editar perfil</a>
+  </div>
+  <div class="lg:col-span-2 bg-white rounded-2xl shadow-sm border border-slate-100/80 overflow-hidden">
+    <div class="px-6 py-4 border-b border-slate-100 font-semibold text-slate-800">Información personal</div>
+    <div class="p-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-slate-700">
+        <div><strong class="text-slate-500 block mb-1">Nombre</strong>{{ usuario.nombre }}</div>
+        <div><strong class="text-slate-500 block mb-1">Apellido</strong>{{ usuario.apellido }}</div>
+        <div><strong class="text-slate-500 block mb-1">Correo</strong>{{ usuario.correo }}</div>
+        <div><strong class="text-slate-500 block mb-1">Teléfono</strong>{{ usuario.telefono }}</div>
+        <div><strong class="text-slate-500 block mb-1">Ciudad</strong>{{ usuario.ciudad }}</div>
+        <div><strong class="text-slate-500 block mb-1">Ubicación</strong>{% if usuario.latitud and usuario.longitud %}{{ usuario.latitud }}, {{ usuario.longitud }}{% else %}<span class="text-slate-500">No configurada</span>{% endif %}</div>
+        <div><strong class="text-slate-500 block mb-1">Cédula</strong>{{ usuario.cedula }}</div>
+        <div><strong class="text-slate-500 block mb-1">Fecha de nacimiento</strong>{{ usuario.fechaNacimiento|date:"d \d\e F \d\e Y" }}</div>
+        <div><strong class="text-slate-500 block mb-1">Usuario</strong>@{{ usuario.username }}</div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+{% else %}
+<!-- EDIT MODE -->
+<div class="w-full">
+<div class="bg-white rounded-2xl shadow-sm border border-slate-100/80 overflow-hidden">
+  <div class="px-6 py-4 border-b border-slate-100 font-semibold text-slate-800 flex items-center justify-between">
+    <span><i class="bi bi-pencil-square mr-2"></i>Editar perfil</span>
+    <a href="{% url 'dueño_mi_perfil' %}" class="border border-slate-300 text-slate-600 hover:bg-slate-50 font-semibold rounded-xl px-3 py-1.5 text-sm transition"><i class="bi bi-x-lg mr-1"></i>Cancelar</a>
+  </div>
+  <div class="p-4">
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+
+      <div class="text-center mb-4">
+        {% if usuario.fotoPerfil %}
+          <img src="{{ usuario.fotoPerfil.url }}" alt="foto" class="w-[100px] h-[100px] rounded-full object-cover border-2 border-slate-200 mb-2" id="previewImg">
+        {% else %}
+          <div class="w-[100px] h-[100px] rounded-full bg-pw-orange text-white inline-flex items-center justify-center text-2xl font-bold mb-2" id="placeholderAvatar">{{ usuario.nombre|first|upper }}</div>
+          <img src="" alt="foto" class="w-[100px] h-[100px] rounded-full object-cover border-2 border-slate-200 mb-2 hidden" id="previewImg">
+        {% endif %}
+        <div>
+          <label class="inline-flex items-center border-2 border-pw-orange text-pw-orange hover:bg-pw-orange hover:text-white font-semibold rounded-xl px-3 py-1.5 text-sm cursor-pointer transition" for="fotoInput"><i class="bi bi-camera mr-1"></i>Cambiar foto</label>
+          <input type="file" name="fotoPerfil" id="fotoInput" accept="image/*" class="hidden" onchange="previewFoto(this)">
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm font-semibold text-slate-700 mb-1.5">Nombre</label>
+          <input name="nombre" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" value="{{ usuario.nombre }}" maxlength="50" required>
+        </div>
+        <div>
+          <label class="block text-sm font-semibold text-slate-700 mb-1.5">Apellido</label>
+          <input name="apellido" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" value="{{ usuario.apellido }}" maxlength="50" required>
+        </div>
+        <div>
+          <label class="block text-sm font-semibold text-slate-700 mb-1.5">Correo</label>
+          <input name="correo" type="email" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" value="{{ usuario.correo }}" required>
+        </div>
+        <div>
+          <label class="block text-sm font-semibold text-slate-700 mb-1.5">Teléfono</label>
+          <input name="telefono" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" value="{{ usuario.telefono }}" maxlength="20">
+        </div>
+        <div>
+          <label class="block text-sm font-semibold text-slate-700 mb-1.5">Ciudad</label>
+          <input name="ciudad" id="ciudadInput" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" value="{{ usuario.ciudad }}" maxlength="100">
+        </div>
+        <div class="md:col-span-2">
+          <label class="block text-sm font-semibold text-slate-700 mb-1.5">Ubicación</label>
+          <p class="text-sm text-slate-500 mb-2">Haz clic en el mapa para marcar tu ubicación. Así los cuidadores cercanos podrán encontrarte.</p>
+          <div class="flex flex-wrap gap-2 mb-2">
+            <button type="button" class="border-2 border-pw-orange text-pw-orange hover:bg-pw-orange hover:text-white font-semibold rounded-lg px-3 py-1.5 text-sm transition" id="btnUbicacion">
+              <i class="bi bi-geo-alt mr-1"></i>Usar mi ubicación
+            </button>
+            <button type="button" class="border border-slate-300 text-slate-600 hover:bg-slate-50 font-semibold rounded-lg px-3 py-1.5 text-sm transition" id="btnCentrarCiudad">
+              <i class="bi bi-search mr-1"></i>Buscar por ciudad
+            </button>
+          </div>
+          <div id="mapPerfil" class="h-[280px] rounded-xl border border-slate-200"></div>
+          <input type="hidden" name="latitud" id="latitudInput" value="{{ usuario.latitud|default:'' }}">
+          <input type="hidden" name="longitud" id="longitudInput" value="{{ usuario.longitud|default:'' }}">
+        </div>
+      </div>
+
+      <div class="mt-4 p-3 rounded-xl bg-slate-50 text-slate-500 text-sm">
+        <i class="bi bi-lock mr-1"></i> Los campos <strong>cédula</strong>, <strong>nombre de usuario</strong>, <strong>fecha de nacimiento</strong> y <strong>rol</strong> no son editables.
+      </div>
+
+      <button type="submit" class="bg-pw-orange hover:bg-pw-orange-dark text-white font-semibold rounded-xl px-5 py-2.5 mt-4 transition-all hover:shadow-lg hover:shadow-pw-orange/20"><i class="bi bi-check-lg mr-2"></i>Guardar cambios</button>
+    </form>
+  </div>
+</div>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script>
+function previewFoto(input){
+  if(input.files && input.files[0]){
+    const reader = new FileReader();
+    reader.onload = function(e){
+      let img = document.getElementById('previewImg');
+      img.src = e.target.result;
+      img.style.display = '';
+      const ph = document.getElementById('placeholderAvatar');
+      if(ph) ph.style.display = 'none';
+    };
+    reader.readAsDataURL(input.files[0]);
+  }
+}
+(function(){
+  var latInput = document.getElementById('latitudInput');
+  var lonInput = document.getElementById('longitudInput');
+  var mapEl = document.getElementById('mapPerfil');
+  if(!mapEl || !latInput) return;
+  var hasCoords = latInput.value && lonInput.value;
+  var defaultLat = 6.2442, defaultLon = -75.5812;
+  var lat = parseFloat(latInput.value) || defaultLat;
+  var lon = parseFloat(lonInput.value) || defaultLon;
+  var map = L.map('mapPerfil').setView([lat, lon], hasCoords ? 14 : 6);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '&copy; OpenStreetMap' }).addTo(map);
+  var marker = hasCoords ? L.marker([lat, lon], { draggable: true }).addTo(map) : null;
+  function updateInputs(latlng){
+    latInput.value = latlng.lat.toFixed(6);
+    lonInput.value = latlng.lng.toFixed(6);
+  }
+  function setMarker(ll){
+    if(!marker){ marker = L.marker(ll, { draggable: true }).addTo(map); marker.on('dragend', function(){ updateInputs(marker.getLatLng()); }); }
+    else marker.setLatLng(ll);
+    updateInputs(ll);
+  }
+  map.on('click', function(e){ setMarker(e.latlng); });
+  if(marker) marker.on('dragend', function(){ updateInputs(marker.getLatLng()); });
+  document.getElementById('btnUbicacion')?.addEventListener('click', function(){
+    if(!navigator.geolocation){ alert('Tu navegador no soporta geolocalización'); return; }
+    this.disabled = true;
+    this.innerHTML = '<span class="inline-block w-4 h-4 border-2 border-pw-orange border-t-transparent rounded-full animate-spin mr-1"></span>Buscando...';
+    navigator.geolocation.getCurrentPosition(
+      function(pos){
+        var ll = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+        setMarker(ll);
+        map.setView(ll, 15);
+        document.getElementById('btnUbicacion').disabled = false;
+        document.getElementById('btnUbicacion').innerHTML = '<i class="bi bi-geo-alt mr-1"></i>Usar mi ubicación';
+      },
+      function(){ alert('No se pudo obtener tu ubicación'); document.getElementById('btnUbicacion').disabled = false; document.getElementById('btnUbicacion').innerHTML = '<i class="bi bi-geo-alt mr-1"></i>Usar mi ubicación'; }
+    );
+  });
+  document.getElementById('btnCentrarCiudad')?.addEventListener('click', function(){
+    var ciudad = document.getElementById('ciudadInput')?.value?.trim();
+    if(!ciudad){ alert('Escribe tu ciudad primero'); return; }
+    this.disabled = true;
+    fetch('https://nominatim.openstreetmap.org/search?format=json&q=' + encodeURIComponent(ciudad + ', Colombia') + '&limit=1')
+      .then(function(r){ return r.json(); })
+      .then(function(data){
+        if(data && data[0]){
+          var ll = { lat: parseFloat(data[0].lat), lng: parseFloat(data[0].lon) };
+          map.setView(ll, 12);
+          setMarker(ll);
+        } else { alert('Ciudad no encontrada'); }
+        document.getElementById('btnCentrarCiudad').disabled = false;
+      })
+      .catch(function(){ document.getElementById('btnCentrarCiudad').disabled = false; });
+  });
+})();
+</script>
+{% endblock %}
