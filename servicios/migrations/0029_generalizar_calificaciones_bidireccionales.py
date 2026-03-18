@@ -5,7 +5,7 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('servicios', '0028_reduce_radio_max_3km'),
+        ('servicios', '0026_mascota_condicionesmedicas_mascota_esterilizado_and_more'),
     ]
 
     operations = [

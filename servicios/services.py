@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+import logging
 import math
 from datetime import date, datetime, time, timedelta
 from decimal import Decimal
@@ -17,6 +18,7 @@ from django.utils import timezone
 from servicios.domain.builder import SolicitudServicioBuilder
 from servicios.domain.exceptions import (
     ConflictError,
+    DomainError,
     DomainValidationError,
     ResourceNotFoundError,
 )
@@ -52,6 +54,113 @@ ESTADOS_OCUPAN_CUPO = (
 )
 
 
+def _validar_tipo_servicio_solicitud(tipo_servicio: str) -> str:
+    tipo = str(tipo_servicio or "").strip()
+    if tipo not in (TipoServicio.PASEO, TipoServicio.GUARDERIA):
+        raise DomainValidationError("tipo de servicio inválido")
+    return tipo
+
+
+def _resolver_cuidador_verificado(cuidador_id) -> Usuario:
+    try:
+        cuidador = Usuario.objects.get(idUsuario=cuidador_id)
+    except Usuario.DoesNotExist:
+        raise ResourceNotFoundError("el cuidador no existe")
+    if cuidador.rol != "cuidador":
+        raise DomainValidationError("el usuario no es cuidador")
+    if not cuidador.verificado:
+        raise DomainValidationError("el cuidador no está verificado")
+    return cuidador
+
+
+def _resolver_mascota_de_dueño(dueño: Usuario, mascota_id) -> Mascota:
+    if not isinstance(dueño, Usuario):
+        raise DomainValidationError("el dueño debe ser un usuario válido")
+    try:
+        return Mascota.objects.get(idMascota=mascota_id, idDueño=dueño)
+    except Mascota.DoesNotExist:
+        raise ResourceNotFoundError("la mascota no existe o no te pertenece")
+
+
+def _validar_fechas_solicitud(fecha: date, fecha_fin: date | None = None) -> None:
+    if fecha < date.today():
+        raise DomainValidationError("la fecha del servicio no puede ser en el pasado")
+    if fecha_fin is None:
+        return
+    if fecha_fin < date.today():
+        raise DomainValidationError("la fecha fin no puede ser en el pasado")
+    if fecha_fin < fecha:
+        raise DomainValidationError("la fecha fin debe ser igual o posterior a la fecha de inicio")
+
+
+def _normalizar_duracion_guarderia_minutos(duracion_minutos) -> int | None:
+    if duracion_minutos is None or str(duracion_minutos).strip() == "":
+        return None
+    try:
+        minutos = int(duracion_minutos)
+    except (TypeError, ValueError):
+        raise DomainValidationError("la duración de guardería debe ser un número entero")
+    if minutos < 60:
+        raise DomainValidationError("la duración mínima de guardería es 1 hora")
+    if minutos % 30 != 0:
+        raise DomainValidationError("la duración de guardería debe ser en múltiplos de 30 minutos")
+    return minutos
+
+
+def _resolver_precio_activo(cuidador: Usuario, tipo_servicio: str) -> PrecioServicio:
+    precio = PrecioServicio.objects.filter(
+        idCuidador=cuidador,
+        tipoServicio=tipo_servicio,
+        activo=True,
+    ).first()
+    if not precio:
+        raise DomainValidationError("el cuidador no ofrece ese tipo de servicio")
+    return precio
+
+
+def _calcular_monto_pago_solicitud(
+    *,
+    tipo_servicio: str,
+    precio_base_hora: int,
+    fecha: date,
+    fecha_fin: date | None = None,
+    evento: Evento | None = None,
+    ventana: VentanaDisponibilidad | None = None,
+    bloque: BloqueTiempo | None = None,
+    duracion_guarderia_minutos: int | None = None,
+) -> int | None:
+    if tipo_servicio == TipoServicio.GUARDERIA:
+        if evento is not None:
+            duracion_min = duracion_guarderia_minutos
+            if duracion_min is None:
+                duracion_min = (_time_to_minutes(evento.horaFin) - _time_to_minutes(evento.horaInicio))
+            tarifa_hora = int(evento.precioCOP) if evento.precioCOP else int(precio_base_hora)
+            monto = int(tarifa_hora * (duracion_min / 60.0))
+            return monto if monto > 0 else None
+
+        if fecha_fin is None:
+            return None
+        num_days = (fecha_fin - fecha).days + 1
+        monto = int(int(precio_base_hora) * num_days)
+        return monto if monto > 0 else None
+
+    if evento is not None:
+        if evento.precioCOP:
+            return int(evento.precioCOP)
+        duracion_min = evento.duracionSlotMinutos
+        if duracion_min is None:
+            duracion_min = _time_to_minutes(evento.horaFin) - _time_to_minutes(evento.horaInicio)
+    elif ventana is not None:
+        duracion_min = int(ventana.duracionSlotMinutos)
+    elif bloque is not None:
+        duracion_min = _time_to_minutes(bloque.horaFin) - _time_to_minutes(bloque.horaInicio)
+    else:
+        return None
+
+    monto = int(int(precio_base_hora) * (duracion_min / 60.0))
+    return monto if monto > 0 else None
+
+
 class FormatearTelefonoService:
     """Normaliza y separa teléfonos para formularios de perfil."""
 
@@ -85,6 +194,46 @@ class FormatearTelefonoService:
         return f"{p}{n}" if n else ""
 
 
+class ConstruirDatosRegistroUsuarioFormularioService:
+    """Normaliza campos y payload del formulario de registro."""
+
+    def __init__(self, telefono_service: FormatearTelefonoService | None = None):
+        self._telefono_service = telefono_service or FormatearTelefonoService()
+
+    def construir(self, source) -> tuple[dict, dict]:
+        prefijo = source.get("prefijo", "+57")
+        telefono_local = source.get("telefono", "")
+        telefono = self._telefono_service.componer(prefijo, telefono_local)
+
+        campos = {
+            "nombre": source.get("nombre"),
+            "apellido": source.get("apellido"),
+            "username": source.get("username"),
+            "correo": source.get("correo"),
+            "cedula": source.get("cedula"),
+            "telefono": telefono_local,
+            "prefijo": prefijo,
+            "fechaNacimiento_str": source.get("fechaNacimiento"),
+            "ciudad": source.get("ciudad"),
+            "rol": source.get("rol"),
+        }
+
+        payload = {
+            "nombre": campos["nombre"],
+            "apellido": campos["apellido"],
+            "username": campos["username"],
+            "correo": campos["correo"],
+            "cedula": campos["cedula"],
+            "telefono": telefono,
+            "fechaNacimiento_str": campos["fechaNacimiento_str"],
+            "ciudad": campos["ciudad"],
+            "password1": source.get("password1"),
+            "password2": source.get("password2"),
+            "rol": campos["rol"],
+        }
+        return campos, payload
+
+
 class BuscarUsuarioPorIdentificadorService:
     """Busca un usuario por correo o username para flujos de recuperación."""
 
@@ -96,6 +245,135 @@ class BuscarUsuarioPorIdentificadorService:
             Usuario.objects.filter(correo=ident).first()
             or Usuario.objects.filter(username=ident).first()
         )
+
+
+class ResolverRutaPostLoginService:
+    """Resuelve la ruta de dashboard posterior al login según rol."""
+
+    _RUTAS_DASHBOARD = {
+        "dueño": "dashboard_dueño",
+        "cuidador": "dashboard_cuidador",
+    }
+
+    def resolver(self, usuario: Usuario) -> str:
+        ruta = self._RUTAS_DASHBOARD.get(usuario.rol)
+        if not ruta:
+            raise DomainValidationError("el rol del usuario no tiene dashboard configurado")
+        return ruta
+
+
+class ResolverRutaNotificacionesService:
+    """Resuelve la ruta de notificaciones según rol."""
+
+    _RUTAS_NOTIFICACIONES = {
+        "dueño": "dueño_notificaciones",
+        "cuidador": "cuidador_notificaciones",
+    }
+
+    def resolver(self, usuario: Usuario) -> str:
+        ruta = self._RUTAS_NOTIFICACIONES.get(usuario.rol)
+        if not ruta:
+            raise DomainValidationError("el rol del usuario no tiene notificaciones configuradas")
+        return ruta
+
+
+class ConstruirContextoRecuperacionPasswordService:
+    """Centraliza validación y mensajes del formulario de recuperación."""
+
+    def __init__(self, buscador: BuscarUsuarioPorIdentificadorService | None = None):
+        self._buscador = buscador or BuscarUsuarioPorIdentificadorService()
+
+    def construir(self, identificador: str | None) -> dict:
+        identificador_norm = str(identificador or "").strip()
+        ctx = {"identificador": identificador_norm}
+        if not identificador_norm:
+            ctx["error"] = "Escribe tu correo o usuario para continuar."
+            return ctx
+
+        usuario = self._buscador.buscar(identificador_norm)
+        if usuario:
+            ctx["success"] = "Usuario encontrado. Enviaremos instrucciones a tu correo para recuperar tu contraseña."
+        else:
+            ctx["error"] = "No encontramos ninguna cuenta con ese correo o usuario."
+        return ctx
+
+
+class ContarSlotsDisponiblesService:
+    """Cuenta slots disponibles por entidad sin usar lógica en modelos."""
+
+    @staticmethod
+    def para_evento(evento: Evento) -> int:
+        if not evento.duracionSlotMinutos:
+            return 0
+        return evento.slots.filter(disponible=True).count()
+
+    @staticmethod
+    def para_ventana(ventana: VentanaDisponibilidad) -> int:
+        return ventana.slots.filter(disponible=True).count()
+
+
+class ConstruirDatosPerfilUsuarioFormularioService:
+    """Normaliza payload de formularios de perfil para dueño y cuidador."""
+
+    def __init__(self, telefono_service: FormatearTelefonoService | None = None):
+        self._telefono_service = telefono_service or FormatearTelefonoService()
+
+    def construir_dueño(self, source, files) -> tuple[dict, str]:
+        telefono = self._telefono_service.componer(
+            source.get("prefijo", "+57"),
+            source.get("telefono"),
+        )
+        datos = {
+            "nombre": source.get("nombre"),
+            "apellido": source.get("apellido"),
+            "cedula": source.get("cedula"),
+            "correo": source.get("correo"),
+            "telefono": telefono,
+            "ciudad": source.get("ciudad"),
+            "direccion": source.get("direccion"),
+            "latitud": source.get("latitud"),
+            "longitud": source.get("longitud"),
+            "fotoPerfil": files.get("fotoPerfil") if files is not None else None,
+        }
+        return datos, telefono
+
+    def construir_cuidador(self, source, files) -> tuple[dict, str, str]:
+        telefono = self._telefono_service.componer(
+            source.get("prefijo", "+57"),
+            source.get("telefono"),
+        )
+        experiencia = (source.get("experiencia") or "").strip()
+        datos = {
+            "nombre": source.get("nombre"),
+            "apellido": source.get("apellido"),
+            "cedula": source.get("cedula"),
+            "correo": source.get("correo"),
+            "telefono": telefono,
+            "ciudad": source.get("ciudad"),
+            "direccion": source.get("direccion"),
+            "latitud": source.get("latitud"),
+            "longitud": source.get("longitud"),
+            "radioKm": source.get("radioKm"),
+            "fotoPerfil": files.get("fotoPerfil") if files is not None else None,
+            "experiencia": experiencia,
+        }
+        return datos, telefono, experiencia
+
+
+class ResolverAccionPerfilCuidadorService:
+    """Resuelve la acción permitida en POST de perfil de cuidador."""
+
+    @staticmethod
+    def resolver(source) -> dict:
+        action = str(source.get("action") or "").strip()
+        if action != "datos_personales":
+            return {
+                "modo": "redirect",
+                "ruta": "cuidador_mi_perfil",
+            }
+        return {
+            "modo": "continuar",
+        }
 
 
 class FiltrarHistorialSolicitudesService:
@@ -199,29 +477,54 @@ class SolicitudServicioService:
         self.notificador = notificador or NotificadorFactory.crear()
 
     def crear_solicitud(self, datos):
-        # construye y valida con builder (legacy: bloque)
-        with transaction.atomic():
-            builder = (
-                SolicitudServicioBuilder()
-                .para_dueño(datos["idDueño"])
-                .para_cuidador(datos["idCuidador_id"])
-                .para_mascota(datos["idMascota_id"])
-                .con_servicio(datos["tipoServicio"])
-                .en_fecha(datos["fecha"])
-                .en_bloque(datos["idBloqueHorario_id"])
-            )
-            if datos.get("fechaFin"):
-                builder = builder.en_fecha_fin(datos["fechaFin"])
-            solicitud = builder.build()
+        dueño = datos["idDueño"]
+        tipo_servicio = _validar_tipo_servicio_solicitud(datos.get("tipoServicio"))
+        fecha = datos["fecha"]
+        fecha_fin = datos.get("fechaFin")
+        _validar_fechas_solicitud(fecha, fecha_fin)
 
-            # bloquea el bloque para evitar carrera de reservas
-            bloque = BloqueTiempo.objects.select_for_update().get(
-                idBloque=solicitud.idBloqueHorario.idBloque
-            )
+        cuidador = _resolver_cuidador_verificado(datos.get("idCuidador_id"))
+        mascota = _resolver_mascota_de_dueño(dueño, datos.get("idMascota_id"))
+        precio = _resolver_precio_activo(cuidador, tipo_servicio)
+
+        with transaction.atomic():
+            try:
+                bloque = BloqueTiempo.objects.select_related("idCuidador__idCuidador").select_for_update().get(
+                    idBloque=datos["idBloqueHorario_id"]
+                )
+            except BloqueTiempo.DoesNotExist:
+                raise ResourceNotFoundError("el bloque no existe")
+
             if not bloque.disponible:
                 raise ConflictError("el bloque no esta disponible")
+            if bloque.idCuidador.idCuidador.idUsuario != cuidador.idUsuario:
+                raise ConflictError("el bloque no pertenece al cuidador")
+            if bloque.tipoServicio != tipo_servicio:
+                raise ConflictError("el bloque no corresponde al tipo de servicio solicitado")
 
-            solicitud.idBloqueHorario = bloque
+            monto_pago = _calcular_monto_pago_solicitud(
+                tipo_servicio=tipo_servicio,
+                precio_base_hora=precio.precioCOP,
+                fecha=fecha,
+                fecha_fin=fecha_fin,
+                bloque=bloque,
+            )
+
+            builder = (
+                SolicitudServicioBuilder()
+                .para_dueño(dueño)
+                .para_cuidador(cuidador)
+                .para_mascota(mascota)
+                .con_servicio(tipo_servicio)
+                .en_fecha(fecha)
+                .en_bloque(bloque)
+                .con_monto_pago(monto_pago)
+            )
+            if fecha_fin:
+                builder = builder.en_fecha_fin(fecha_fin)
+
+            solicitud = builder.build()
+
             solicitud.save()
             bloque.disponible = False
             bloque.save(update_fields=["disponible"])
@@ -233,38 +536,79 @@ class SolicitudServicioService:
 
     def crear_solicitud_evento(self, datos):
         """Crea solicitud usando Evento (nuevo flujo unificado)."""
-        with transaction.atomic():
-            builder = (
-                SolicitudServicioBuilder()
-                .para_dueño(datos["idDueño"])
-                .para_cuidador(datos["idCuidador_id"])
-                .para_mascota(datos["idMascota_id"])
-                .con_servicio(datos["tipoServicio"])
-                .en_fecha(datos["fecha"])
-                .en_evento(datos["idEvento_id"], datos.get("idSlotEvento_id"))
-            )
-            if datos.get("fechaFin"):
-                builder = builder.en_fecha_fin(datos["fechaFin"])
-            if datos.get("duracionMinutosSolicitados"):
-                builder = builder.con_duracion_guarderia(datos["duracionMinutosSolicitados"])
-            solicitud = builder.build()
+        dueño = datos["idDueño"]
+        tipo_servicio = _validar_tipo_servicio_solicitud(datos.get("tipoServicio"))
+        fecha = datos["fecha"]
+        fecha_fin = datos.get("fechaFin")
+        _validar_fechas_solicitud(fecha, fecha_fin)
 
-            evento = Evento.objects.select_for_update().get(idEvento=datos["idEvento_id"])
+        cuidador = _resolver_cuidador_verificado(datos.get("idCuidador_id"))
+        mascota = _resolver_mascota_de_dueño(dueño, datos.get("idMascota_id"))
+        precio = _resolver_precio_activo(cuidador, tipo_servicio)
+        duracion_guarderia = _normalizar_duracion_guarderia_minutos(datos.get("duracionMinutosSolicitados"))
+
+        with transaction.atomic():
+            try:
+                evento = Evento.objects.select_related("idCuidador__idCuidador").select_for_update().get(
+                    idEvento=datos["idEvento_id"]
+                )
+            except Evento.DoesNotExist:
+                raise ResourceNotFoundError("el evento no existe")
+
             if not evento.disponible:
                 raise ConflictError("el evento no está disponible")
+            if evento.idCuidador.idCuidador.idUsuario != cuidador.idUsuario:
+                raise ConflictError("el evento no pertenece al cuidador")
+            if evento.tipoServicio != tipo_servicio:
+                raise ConflictError("el evento no corresponde al tipo de servicio solicitado")
 
-            if solicitud.idSlotEvento_id:
-                slot = SlotEvento.objects.select_for_update().get(idSlot=solicitud.idSlotEvento_id)
+            slot = None
+            slot_id = datos.get("idSlotEvento_id")
+            if slot_id:
+                try:
+                    slot = SlotEvento.objects.select_for_update().get(idSlot=slot_id, idEvento=evento)
+                except SlotEvento.DoesNotExist:
+                    raise ResourceNotFoundError("el slot no existe o no pertenece al evento")
                 if not slot.disponible:
                     raise ConflictError("el slot no está disponible")
-                slot.disponible = False
-                slot.save(update_fields=["disponible"])
-            else:
-                cupos_disponibles, _ = _cupos_disponibles_evento_en_fecha(evento, solicitud.fecha)
+            elif evento.duracionSlotMinutos is not None:
+                raise DomainValidationError("este evento requiere seleccionar un slot")
+
+            if slot is None:
+                cupos_disponibles, _ = _cupos_disponibles_evento_en_fecha(evento, fecha)
                 if cupos_disponibles < 1:
                     raise ConflictError("el evento ya no tiene cupos disponibles para ese día")
 
+            monto_pago = _calcular_monto_pago_solicitud(
+                tipo_servicio=tipo_servicio,
+                precio_base_hora=precio.precioCOP,
+                fecha=fecha,
+                fecha_fin=fecha_fin,
+                evento=evento,
+                duracion_guarderia_minutos=duracion_guarderia,
+            )
+
+            builder = (
+                SolicitudServicioBuilder()
+                .para_dueño(dueño)
+                .para_cuidador(cuidador)
+                .para_mascota(mascota)
+                .con_servicio(tipo_servicio)
+                .en_fecha(fecha)
+                .en_evento(evento, slot)
+                .con_monto_pago(monto_pago)
+            )
+            if fecha_fin:
+                builder = builder.en_fecha_fin(fecha_fin)
+            if duracion_guarderia is not None:
+                builder = builder.con_duracion_guarderia(duracion_guarderia)
+
+            solicitud = builder.build()
+
             solicitud.save()
+            if slot is not None:
+                slot.disponible = False
+                slot.save(update_fields=["disponible"])
 
         self.notificador.enviar_nueva_solicitud(solicitud)
         return solicitud
@@ -280,33 +624,17 @@ class CrearSolicitudConAsignacionEventoService:
         dueño = datos["idDueño"]
         cuidador_id = datos["idCuidador_id"]
         mascota_id = datos["idMascota_id"]
-        tipo_servicio = datos["tipoServicio"]
+        tipo_servicio = _validar_tipo_servicio_solicitud(datos["tipoServicio"])
         fecha = datos["fecha"]
         id_evento = datos.get("idEvento_id")
+        _validar_fechas_solicitud(fecha, datos.get("fechaFin"))
 
         if tipo_servicio == TipoServicio.GUARDERIA:
             raise DomainValidationError("use el flujo de guardería para este tipo de servicio")
 
-        try:
-            cuidador = Usuario.objects.get(idUsuario=cuidador_id)
-        except Usuario.DoesNotExist:
-            raise ResourceNotFoundError("el cuidador no existe")
-        if cuidador.rol != "cuidador":
-            raise DomainValidationError("el usuario no es cuidador")
-        if not cuidador.verificado:
-            raise DomainValidationError("el cuidador no está verificado")
-
-        try:
-            mascota = Mascota.objects.get(idMascota=mascota_id, idDueño=dueño)
-        except Mascota.DoesNotExist:
-            raise ResourceNotFoundError("la mascota no existe o no te pertenece")
-
-        if not PrecioServicio.objects.filter(
-            idCuidador=cuidador,
-            tipoServicio=tipo_servicio,
-            activo=True,
-        ).exists():
-            raise DomainValidationError("el cuidador no ofrece ese tipo de servicio")
+        cuidador = _resolver_cuidador_verificado(cuidador_id)
+        mascota = _resolver_mascota_de_dueño(dueño, mascota_id)
+        precio = _resolver_precio_activo(cuidador, tipo_servicio)
 
         try:
             evento = Evento.objects.get(idEvento=id_evento, idCuidador__idCuidador=cuidador)
@@ -324,15 +652,24 @@ class CrearSolicitudConAsignacionEventoService:
             if not slot.disponible:
                 raise ConflictError("el slot ya no está disponible")
 
+            monto_pago = _calcular_monto_pago_solicitud(
+                tipo_servicio=tipo_servicio,
+                precio_base_hora=precio.precioCOP,
+                fecha=fecha,
+                fecha_fin=datos.get("fechaFin"),
+                evento=evento,
+            )
+
             builder = (
                 SolicitudServicioBuilder()
                 .para_dueño(dueño)
-                .para_cuidador(datos["idCuidador_id"])
-                .para_mascota(datos["idMascota_id"])
-                .con_servicio(datos["tipoServicio"])
-                .en_fecha(datos["fecha"])
-                .en_evento(str(evento.idEvento), str(slot.idSlot))
+                .para_cuidador(cuidador)
+                .para_mascota(mascota)
+                .con_servicio(tipo_servicio)
+                .en_fecha(fecha)
+                .en_evento(evento, slot)
                 .con_hora_asignada_evento(hora_asignada, orden_ruta, slot)
+                .con_monto_pago(monto_pago)
             )
             if datos.get("fechaFin"):
                 builder = builder.en_fecha_fin(datos["fechaFin"])
@@ -899,33 +1236,17 @@ class CrearSolicitudConAsignacionService:
         dueño = datos["idDueño"]
         cuidador_id = datos["idCuidador_id"]
         mascota_id = datos["idMascota_id"]
-        tipo_servicio = datos["tipoServicio"]
+        tipo_servicio = _validar_tipo_servicio_solicitud(datos["tipoServicio"])
         fecha = datos["fecha"]
         id_ventana = datos.get("idVentana_id")
+        _validar_fechas_solicitud(fecha, datos.get("fechaFin"))
 
         if tipo_servicio == TipoServicio.GUARDERIA:
             raise DomainValidationError("use el flujo de guardería para este tipo de servicio")
 
-        try:
-            cuidador = Usuario.objects.get(idUsuario=cuidador_id)
-        except Usuario.DoesNotExist:
-            raise ResourceNotFoundError("el cuidador no existe")
-        if cuidador.rol != "cuidador":
-            raise DomainValidationError("el usuario no es cuidador")
-        if not cuidador.verificado:
-            raise DomainValidationError("el cuidador no está verificado")
-
-        try:
-            mascota = Mascota.objects.get(idMascota=mascota_id, idDueño=dueño)
-        except Mascota.DoesNotExist:
-            raise ResourceNotFoundError("la mascota no existe o no te pertenece")
-
-        if not PrecioServicio.objects.filter(
-            idCuidador=cuidador,
-            tipoServicio=tipo_servicio,
-            activo=True,
-        ).exists():
-            raise DomainValidationError("el cuidador no ofrece ese tipo de servicio")
+        cuidador = _resolver_cuidador_verificado(cuidador_id)
+        mascota = _resolver_mascota_de_dueño(dueño, mascota_id)
+        precio = _resolver_precio_activo(cuidador, tipo_servicio)
 
         dia_semana = ["lunes", "martes", "miercoles", "jueves", "viernes", "sabado", "domingo"][fecha.weekday()]
 
@@ -955,15 +1276,24 @@ class CrearSolicitudConAsignacionService:
             if not slot.disponible:
                 raise ConflictError("el slot ya no está disponible")
 
+            monto_pago = _calcular_monto_pago_solicitud(
+                tipo_servicio=tipo_servicio,
+                precio_base_hora=precio.precioCOP,
+                fecha=fecha,
+                fecha_fin=datos.get("fechaFin"),
+                ventana=ventana,
+            )
+
             builder = (
                 SolicitudServicioBuilder()
                 .para_dueño(dueño)
-                .para_cuidador(datos["idCuidador_id"])
-                .para_mascota(datos["idMascota_id"])
-                .con_servicio(datos["tipoServicio"])
-                .en_fecha(datos["fecha"])
-                .en_ventana(ventana.idVentana)
+                .para_cuidador(cuidador)
+                .para_mascota(mascota)
+                .con_servicio(tipo_servicio)
+                .en_fecha(fecha)
+                .en_ventana(ventana)
                 .con_hora_asignada(hora_asignada, orden_ruta, slot)
+                .con_monto_pago(monto_pago)
             )
             if datos.get("fechaFin"):
                 builder = builder.en_fecha_fin(datos["fechaFin"])
@@ -1107,7 +1437,18 @@ class CancelarSolicitudService:
                 solicitud.save(update_fields=["estado", "updated_at"])
         except SolicitudServicio.DoesNotExist:
             raise ResourceNotFoundError("la solicitud no existe")
-        self.notificador.enviar_reserva_cancelada(solicitud, actor=actor)
+
+        receptor = solicitud.idDueño
+        if actor.idUsuario == solicitud.idDueño_id:
+            receptor = solicitud.idCuidador
+        destino = "/cuidador/calendario/" if receptor.rol == "cuidador" else "/dueño/mis-reservas/"
+
+        self.notificador.enviar_reserva_cancelada(
+            solicitud,
+            actor=actor,
+            receptor=receptor,
+            destino=destino,
+        )
         return solicitud
 
 
@@ -1184,6 +1525,46 @@ class ObtenerPerfilPublicoService:
         ).first()
 
 
+class ConstruirContextoPerfilPublicoService:
+    """Construye el contexto de visualización de perfil de terceros."""
+
+    def __init__(
+        self,
+        perfil_publico_service: ObtenerPerfilPublicoService | None = None,
+        listar_mascotas_service: ListarMascotasDeDueñoService | None = None,
+    ):
+        self._perfil_publico_service = perfil_publico_service or ObtenerPerfilPublicoService()
+        self._listar_mascotas_service = listar_mascotas_service or ListarMascotasDeDueñoService()
+
+    def construir(self, actor: Usuario, usuario_id, solicitud_id: str | None) -> dict:
+        otro = self._perfil_publico_service.obtener_usuario(usuario_id)
+        perfil_cuidador = self._perfil_publico_service.obtener_perfil_cuidador(otro)
+
+        mascota_asignada = None
+        solicitud_relacionada = None
+        solicitud_id_norm = str(solicitud_id or "").strip()
+
+        if solicitud_id_norm and actor.rol == "cuidador" and otro.rol == "dueño":
+            solicitud_relacionada = self._perfil_publico_service.obtener_solicitud_relacionada(
+                solicitud_id_norm,
+                cuidador=actor,
+                dueño=otro,
+            )
+            if solicitud_relacionada:
+                mascotas_dueño = self._listar_mascotas_service.listar(otro)
+                mascota_asignada = next(
+                    (mascota for mascota in mascotas_dueño if mascota.idMascota == solicitud_relacionada.idMascota_id),
+                    solicitud_relacionada.idMascota,
+                )
+
+        return {
+            "otro": otro,
+            "perfil_cuidador": perfil_cuidador,
+            "mascota_asignada": mascota_asignada,
+            "solicitud_relacionada": solicitud_relacionada,
+        }
+
+
 class ObtenerTipoServicioEventoService:
     """Resuelve tipo de servicio de un evento del cuidador para navegación UI."""
 
@@ -1202,213 +1583,6 @@ class ObtenerTipoServicioEventoService:
             "tipoServicio",
             flat=True,
         ).first()
-
-
-class CancelarSolicitudDesdeApiService:
-    """Orquesta el flujo API de cancelación: actor -> solicitud."""
-
-    def __init__(self, cancelar_service: CancelarSolicitudService | None = None):
-        self._cancelar_service = cancelar_service or CancelarSolicitudService()
-
-    def cancelar(self, solicitud_id: str, actor_id) -> SolicitudServicio:
-        if not actor_id:
-            raise DomainValidationError("actor_id es requerido")
-        try:
-            actor = Usuario.objects.get(idUsuario=actor_id)
-        except Usuario.DoesNotExist:
-            raise ResourceNotFoundError("el actor no existe")
-        return self._cancelar_service.cancelar(solicitud_id, actor)
-
-
-class CrearSolicitudServicioAppService:
-    # app service del flujo crear solicitud
-
-    def __init__(
-        self,
-        solicitud_service: SolicitudServicioService | None = None,
-        solicitud_con_asignacion: CrearSolicitudConAsignacionService | None = None,
-        solicitud_con_asignacion_evento: CrearSolicitudConAsignacionEventoService | None = None,
-    ):
-        self._solicitud_service = solicitud_service or SolicitudServicioService()
-        self._solicitud_con_asignacion = solicitud_con_asignacion or CrearSolicitudConAsignacionService()
-        self._solicitud_con_asignacion_evento = solicitud_con_asignacion_evento or CrearSolicitudConAsignacionEventoService()
-
-    def get_form_context(self) -> dict:
-        # carga datos para el formulario: eventos (principal), ventanas y bloques (legacy)
-        dueños = Usuario.objects.filter(rol="dueño")
-        cuidadores = Usuario.objects.filter(rol="cuidador", verificado=True)
-        mascotas = Mascota.objects.all()
-        eventos = Evento.objects.filter(disponible=True).select_related("idCuidador__idCuidador").prefetch_related("slots")
-        ventanas = VentanaDisponibilidad.objects.select_related("idCuidador__idCuidador").prefetch_related("slots")
-        bloques = BloqueTiempo.objects.filter(disponible=True).select_related("idCuidador__idCuidador")
-
-        eventos_por_cuidador: dict[str, dict[str, list[dict]]] = {}
-        for e in eventos:
-            cuidador_id = str(e.idCuidador.idCuidador.idUsuario)
-            if cuidador_id not in eventos_por_cuidador:
-                eventos_por_cuidador[cuidador_id] = {"paseo": [], "guarderia": []}
-            slots_libres = e.slots.filter(disponible=True).count() if e.duracionSlotMinutos else 0
-            texto = f"{e.diaSemana} {e.horaInicio}-{e.horaFin}"
-            if slots_libres:
-                texto += f" ({slots_libres} slots)"
-            eventos_por_cuidador[cuidador_id][e.tipoServicio].append({
-                "id": str(e.idEvento),
-                "dia": e.diaSemana,
-                "texto": texto,
-            })
-
-        ventanas_por_cuidador: dict[str, dict[str, list[dict]]] = {}
-        for v in ventanas:
-            cuidador_id = str(v.idCuidador.idCuidador.idUsuario)
-            if cuidador_id not in ventanas_por_cuidador:
-                ventanas_por_cuidador[cuidador_id] = {"paseo": [], "guarderia": []}
-            slots_libres = v.slots.filter(disponible=True).count()
-            ventanas_por_cuidador[cuidador_id][v.tipoServicio].append({
-                "id": str(v.idVentana),
-                "dia": v.diaSemana,
-                "texto": f"{v.diaSemana} {v.horaInicio}-{v.horaFin} ({slots_libres} slots)",
-            })
-
-        bloques_por_cuidador: dict[str, dict[str, list[dict[str, str]]]] = {}
-        for bloque in bloques:
-            cuidador_id = str(bloque.idCuidador.idCuidador.idUsuario)
-            if cuidador_id not in bloques_por_cuidador:
-                bloques_por_cuidador[cuidador_id] = {"paseo": [], "guarderia": []}
-            bloques_por_cuidador[cuidador_id][bloque.tipoServicio].append({
-                "id": str(bloque.idBloque),
-                "dia": bloque.diaSemana,
-                "texto": f"{bloque.diaSemana} {bloque.horaInicio}-{bloque.horaFin}",
-            })
-
-        return {
-            "dueños": dueños,
-            "cuidadores": cuidadores,
-            "mascotas": mascotas,
-            "eventos_por_cuidador": json.dumps(eventos_por_cuidador),
-            "ventanas_por_cuidador": json.dumps(ventanas_por_cuidador),
-            "bloques_por_cuidador": json.dumps(bloques_por_cuidador),
-        }
-
-    def crear_desde_form(self, post_data) -> object:
-        dueño = self._resolver_dueño(post_data.get("idDueño_id"))
-
-        fecha_str = post_data.get("fecha")
-        if not fecha_str:
-            raise DomainValidationError("fecha es requerida")
-
-        try:
-            fecha = datetime.strptime(fecha_str, "%Y-%m-%d").date()
-        except ValueError:
-            raise DomainValidationError("formato de fecha invalido, use yyyy-mm-dd")
-
-        tipo_servicio = post_data.get("tipoServicio")
-        fecha_fin_str = post_data.get("fechaFin")
-        fecha_fin = None
-        if fecha_fin_str:
-            try:
-                fecha_fin = datetime.strptime(fecha_fin_str, "%Y-%m-%d").date()
-            except ValueError:
-                raise DomainValidationError("formato de fecha fin invalido, use yyyy-mm-dd")
-
-        id_ventana = post_data.get("idVentana_id")
-        id_bloque = post_data.get("idBloqueHorario_id")
-        id_evento = post_data.get("idEvento_id")
-
-        if id_evento:
-            datos = {
-                "idDueño": dueño,
-                "idCuidador_id": post_data.get("idCuidador_id"),
-                "idMascota_id": post_data.get("idMascota_id"),
-                "tipoServicio": tipo_servicio,
-                "fecha": fecha,
-                "idEvento_id": id_evento,
-            }
-            if fecha_fin:
-                datos["fechaFin"] = fecha_fin
-            evento = Evento.objects.get(idEvento=id_evento)
-            if evento.duracionSlotMinutos is not None:
-                return self._solicitud_con_asignacion_evento.crear(datos)
-            return self._solicitud_service.crear_solicitud_evento(datos)
-
-        if tipo_servicio == TipoServicio.PASEO and id_ventana:
-            datos = {
-                "idDueño": dueño,
-                "idCuidador_id": post_data.get("idCuidador_id"),
-                "idMascota_id": post_data.get("idMascota_id"),
-                "tipoServicio": tipo_servicio,
-                "fecha": fecha,
-                "idVentana_id": id_ventana,
-            }
-            return self._solicitud_con_asignacion.crear(datos)
-
-        if id_bloque:
-            datos = {
-                "idDueño": dueño,
-                "idCuidador_id": post_data.get("idCuidador_id"),
-                "idMascota_id": post_data.get("idMascota_id"),
-                "tipoServicio": tipo_servicio,
-                "fecha": fecha,
-                "idBloqueHorario_id": id_bloque,
-            }
-            if fecha_fin:
-                datos["fechaFin"] = fecha_fin
-            return self._solicitud_service.crear_solicitud(datos)
-
-        if tipo_servicio == TipoServicio.PASEO:
-            datos = {
-                "idDueño": dueño,
-                "idCuidador_id": post_data.get("idCuidador_id"),
-                "idMascota_id": post_data.get("idMascota_id"),
-                "tipoServicio": tipo_servicio,
-                "fecha": fecha,
-            }
-            return self._solicitud_con_asignacion.crear(datos)
-
-        raise DomainValidationError("debes seleccionar un evento válido")
-
-    def crear_desde_api(self, validated_data: dict) -> SolicitudServicio:
-        dueño = self._resolver_dueño(validated_data.get("idDueño_id"))
-        tipo_servicio = validated_data.get("tipoServicio")
-        fecha_fin = validated_data.get("fechaFin")
-        id_evento = validated_data.get("idEvento_id")
-        if not id_evento:
-            raise DomainValidationError("debes indicar idEvento_id")
-
-        datos = {
-            "idDueño": dueño,
-            "idCuidador_id": validated_data.get("idCuidador_id"),
-            "idMascota_id": validated_data.get("idMascota_id"),
-            "tipoServicio": tipo_servicio,
-            "fecha": validated_data.get("fecha"),
-            "idEvento_id": id_evento,
-            "idSlotEvento_id": validated_data.get("idSlotEvento_id"),
-        }
-        if fecha_fin:
-            datos["fechaFin"] = fecha_fin
-
-        duracion_solicitada = validated_data.get("duracionMinutosSolicitados")
-        if duracion_solicitada is not None:
-            datos["duracionMinutosSolicitados"] = duracion_solicitada
-
-        try:
-            evento = Evento.objects.get(idEvento=id_evento)
-        except Evento.DoesNotExist:
-            raise ResourceNotFoundError("el evento no existe")
-        if evento.duracionSlotMinutos is not None:
-            return self._solicitud_con_asignacion_evento.crear(datos)
-        return self._solicitud_service.crear_solicitud_evento(datos)
-
-    def _resolver_dueño(self, dueño_id) -> Usuario:
-        # exige dueño explicito para evitar defaults ocultos
-        if not dueño_id:
-            raise DomainValidationError("idDueño_id es requerido")
-        try:
-            dueño = Usuario.objects.get(idUsuario=dueño_id)
-        except Usuario.DoesNotExist:
-            raise ResourceNotFoundError("el dueño no existe")
-        if dueño.rol != "dueño":
-            raise DomainValidationError("el usuario no tiene rol de dueño")
-        return dueño
 
 
 class CrearUsuarioAppService:
@@ -2407,74 +2581,6 @@ class BuscarDisponibilidadFormularioReservaService:
         return cuidadores, busqueda
 
 
-class BuscarDisponibilidadDesdeApiService:
-    """Orquesta búsqueda de disponibilidad para capa DRF sin lógica en views."""
-
-    def __init__(
-        self,
-        buscador: BuscarCuidadoresDisponiblesService | None = None,
-        filtro: FiltrarResultadosDisponibilidadService | None = None,
-    ):
-        self._buscador = buscador or BuscarCuidadoresDisponiblesService()
-        self._filtro = filtro or FiltrarResultadosDisponibilidadService()
-
-    def buscar(self, data: dict) -> list:
-        try:
-            dueño = Usuario.objects.get(idUsuario=data["idDueño_id"])
-        except Usuario.DoesNotExist:
-            raise ResourceNotFoundError("el dueño no existe")
-
-        tipo_servicio = data.get("tipoServicio")
-
-        if tipo_servicio == TipoServicio.PASEO:
-            fecha = data.get("fecha")
-            if fecha is None:
-                raise DomainValidationError("fecha es requerida para paseo")
-
-            duracion = data.get("duracionMinutos")
-            if duracion is None:
-                raise DomainValidationError("duracionMinutos es requerida para paseo")
-
-            resultados = self._buscador.buscar(
-                dueño=dueño,
-                mascota_id=str(data["idMascota_id"]),
-                fecha_o_str=fecha,
-                duracion_minutos=duracion,
-                solo_ciudad=True,
-                ciudad_referencia=data.get("ciudadPaseo"),
-                latitud_referencia=data.get("latitudPaseo"),
-                longitud_referencia=data.get("longitudPaseo"),
-            )
-        elif tipo_servicio == TipoServicio.GUARDERIA:
-            fecha_inicio = data.get("fechaInicioGuarderia")
-            if fecha_inicio is None:
-                raise DomainValidationError("fechaInicioGuarderia es requerida para guarderia")
-
-            fecha_fin = data.get("fechaFinGuarderia") or fecha_inicio
-            if fecha_fin < fecha_inicio:
-                raise DomainValidationError(
-                    "fechaFinGuarderia debe ser igual o posterior a fechaInicioGuarderia"
-                )
-
-            resultados = self._buscador.buscar_cuidado(
-                dueño=dueño,
-                mascota_id=str(data["idMascota_id"]),
-                fecha_inicio_str=fecha_inicio.isoformat(),
-                fecha_fin_str=fecha_fin.isoformat(),
-                solo_ciudad=True,
-            )
-        else:
-            raise DomainValidationError("tipoServicio inválido")
-
-        return self._filtro.filtrar(
-            resultados,
-            precio_min_hora=data.get("precioMinHora"),
-            precio_max_hora=data.get("precioMaxHora"),
-            hora_inicio=data.get("horaInicio"),
-            hora_fin=data.get("horaFin"),
-        )
-
-
 class CrearReservaDesdeSeleccionService:
     """Crea la solicitud cuando el dueño acepta un cuidador de la búsqueda."""
 
@@ -2694,6 +2800,47 @@ class ListarSolicitudesDueñoService:
             "reservas_totales": reservas_totales,
             "reservas_pendientes": reservas_pendientes,
             "reservas_aceptadas": reservas_aceptadas,
+        }
+
+
+class ProcesarAccionNuevaReservaDueñoService:
+    """Orquesta búsqueda o confirmación en el formulario de nueva reserva."""
+
+    def __init__(
+        self,
+        crear_reserva_service: CrearReservaDesdeSeleccionService | None = None,
+        buscar_disponibilidad_service: BuscarDisponibilidadFormularioReservaService | None = None,
+    ):
+        self._crear_reserva_service = crear_reserva_service or CrearReservaDesdeSeleccionService()
+        self._buscar_disponibilidad_service = (
+            buscar_disponibilidad_service or BuscarDisponibilidadFormularioReservaService()
+        )
+
+    def procesar(self, dueño: Usuario, source) -> dict:
+        action = str(source.get("action") or "buscar").strip().lower()
+        if action == "confirmar":
+            self._crear_reserva_service.crear(
+                dueño=dueño,
+                mascota_id=source.get("mascota_id"),
+                evento_id=source.get("evento_id") or None,
+                fecha_str=source.get("fecha", ""),
+                fecha_fin_str=source.get("fecha_fin") or None,
+                tipo_servicio=source.get("tipo_servicio", ""),
+                modo_guarderia=source.get("modo_guarderia") or None,
+                duracion_guarderia_minutos=source.get("duracion_guarderia_minutos") or None,
+                hora_inicio_guarderia_str=source.get("hora_inicio_guarderia") or None,
+                hora_fin_guarderia_str=source.get("hora_fin_guarderia") or None,
+            )
+            return {
+                "modo": "redirect",
+                "ruta": "dueño_mis_reservas",
+            }
+
+        cuidadores, busqueda = self._buscar_disponibilidad_service.buscar(dueño, source)
+        return {
+            "modo": "render_resultado",
+            "cuidadores_disponibles": cuidadores,
+            "busqueda": busqueda,
         }
 
 
@@ -2918,6 +3065,83 @@ class GestionNotificacionesUsuarioService:
             eliminada=True,
             updated_at=ahora,
         )
+
+
+class ProcesarAccionesNotificacionesService:
+    """Centraliza acciones POST de notificaciones del usuario."""
+
+    def __init__(
+        self,
+        filtros_service: NormalizarFiltrosNotificacionesService | None = None,
+        gestion_service: GestionNotificacionesUsuarioService | None = None,
+    ):
+        self._filtros_service = filtros_service or NormalizarFiltrosNotificacionesService()
+        self._gestion_service = gestion_service or GestionNotificacionesUsuarioService()
+
+    def procesar(self, usuario: Usuario, source) -> dict:
+        action = source.get("action")
+        categoria, estado = self._filtros_service.desde_source(source)
+        ids_seleccionados = self._filtros_service.parsear_ids(source.get("notificacion_ids"))
+
+        resultado = {
+            "categoria": categoria,
+            "estado": estado,
+        }
+
+        try:
+            if action == "marcar_leida":
+                self._gestion_service.marcar_leida(usuario, source.get("notificacion_id"))
+                return resultado
+
+            if action == "marcar_todas_leidas":
+                marcadas = self._gestion_service.marcar_todas_leidas(usuario, categoria=categoria)
+                return {
+                    **resultado,
+                    "nivel": "success",
+                    "mensaje": f"Se marcaron {marcadas} notificaciones como leídas.",
+                }
+
+            if action == "eliminar":
+                self._gestion_service.eliminar(usuario, source.get("notificacion_id"))
+                return resultado
+
+            if action == "eliminar_seleccionadas":
+                eliminadas = self._gestion_service.eliminar_seleccionadas(usuario, ids_seleccionados)
+                return {
+                    **resultado,
+                    "nivel": "success",
+                    "mensaje": f"Se eliminaron {eliminadas} notificaciones seleccionadas.",
+                }
+
+            if action == "eliminar_todas":
+                eliminadas = self._gestion_service.eliminar_todas(usuario, categoria=categoria, estado=estado)
+                return {
+                    **resultado,
+                    "nivel": "success",
+                    "mensaje": f"Se eliminaron {eliminadas} notificaciones visibles con este filtro.",
+                }
+
+            if action == "abrir":
+                notificacion = self._gestion_service.marcar_leida(usuario, source.get("notificacion_id"))
+                destino = str(notificacion.urlDestino or "").strip()
+                if destino.startswith("/"):
+                    return {
+                        **resultado,
+                        "destino": destino,
+                    }
+                return resultado
+        except DomainError as error:
+            return {
+                **resultado,
+                "nivel": "error",
+                "mensaje": str(error),
+            }
+
+        return {
+            **resultado,
+            "nivel": "error",
+            "mensaje": "Acción inválida.",
+        }
 
 
 def _calificacion_promedio_count(usuario_destino: Usuario) -> tuple[float | None, int]:
@@ -3173,6 +3397,187 @@ class CrearCalificacionMascotaService:
             estrellas=estrellas_num,
             comentario=(comentario or "").strip()[:500],
         )
+
+
+class ProcesarAccionesDueñoReservasService:
+    """Centraliza acciones POST de reservas del dueño."""
+
+    def __init__(
+        self,
+        calificacion_service: CrearCalificacionService | None = None,
+        cancelar_service: CancelarSolicitudService | None = None,
+        obtener_chat_service: ObtenerSolicitudParaChatService | None = None,
+        enviar_chat_service: EnviarMensajeChatService | None = None,
+    ):
+        self._calificacion_service = calificacion_service or CrearCalificacionService()
+        self._cancelar_service = cancelar_service or CancelarSolicitudService()
+        self._obtener_chat_service = obtener_chat_service or ObtenerSolicitudParaChatService()
+        self._enviar_chat_service = enviar_chat_service or EnviarMensajeChatService()
+
+    def procesar(self, dueño: Usuario, source) -> dict:
+        action = source.get("action")
+        solicitud_id = source.get("solicitud_id")
+
+        try:
+            if action in ("calificar", "calificar_cuidador"):
+                self._calificacion_service.crear(
+                    dueño,
+                    solicitud_id,
+                    source.get("estrellas", 5),
+                    source.get("comentario", ""),
+                )
+                return {
+                    "nivel": "success",
+                    "mensaje": "Calificación enviada. ¡Gracias!",
+                }
+
+            if action == "cancelar":
+                self._cancelar_service.cancelar(solicitud_id, dueño)
+                return {
+                    "nivel": "success",
+                    "mensaje": "Reserva cancelada.",
+                }
+
+            if action == "completar":
+                return {
+                    "nivel": "info",
+                    "mensaje": "El arrendamiento debe ser finalizado por el cuidador para habilitar calificación.",
+                }
+
+            if action == "enviar_mensaje":
+                mensaje = str(source.get("mensaje") or "").strip()
+                if mensaje and solicitud_id:
+                    solicitud = self._obtener_chat_service.obtener_para_dueño(solicitud_id, dueño)
+                    self._enviar_chat_service.enviar(solicitud, dueño, mensaje)
+                return {}
+        except DomainError as error:
+            return {
+                "nivel": "error",
+                "mensaje": str(error),
+            }
+
+        return {}
+
+
+class ProcesarAccionesCuidadorCalendarioService:
+    """Centraliza acciones POST del calendario del cuidador."""
+
+    _ACCIONES_VALIDAS = (
+        "aceptar",
+        "rechazar",
+        "completar",
+        "finalizar",
+        "finalizar_prueba",
+        "cancelar",
+        "enviar_mensaje",
+        "calificar",
+        "calificar_dueno",
+        "calificar_mascota",
+    )
+
+    def __init__(
+        self,
+        estado_service: CambiarEstadoSolicitudService | None = None,
+        completar_service: MarcarServicioCompletadoService | None = None,
+        cancelar_service: CancelarSolicitudService | None = None,
+        calificacion_service: CrearCalificacionService | None = None,
+        calificacion_mascota_service: CrearCalificacionMascotaService | None = None,
+        obtener_chat_service: ObtenerSolicitudParaChatService | None = None,
+        enviar_chat_service: EnviarMensajeChatService | None = None,
+    ):
+        self._estado_service = estado_service or CambiarEstadoSolicitudService()
+        self._completar_service = completar_service or MarcarServicioCompletadoService()
+        self._cancelar_service = cancelar_service or CancelarSolicitudService()
+        self._calificacion_service = calificacion_service or CrearCalificacionService()
+        self._calificacion_mascota_service = calificacion_mascota_service or CrearCalificacionMascotaService()
+        self._obtener_chat_service = obtener_chat_service or ObtenerSolicitudParaChatService()
+        self._enviar_chat_service = enviar_chat_service or EnviarMensajeChatService()
+
+    def procesar(self, cuidador: Usuario, source) -> dict:
+        action = source.get("action")
+        solicitud_id = source.get("solicitud_id")
+        if not solicitud_id or action not in self._ACCIONES_VALIDAS:
+            return {
+                "nivel": "error",
+                "mensaje": "Acción inválida.",
+            }
+
+        try:
+            if action == "aceptar":
+                self._estado_service.aceptar(solicitud_id, cuidador)
+                return {
+                    "nivel": "success",
+                    "mensaje": "Solicitud aceptada correctamente.",
+                }
+
+            if action == "rechazar":
+                self._estado_service.rechazar(solicitud_id, cuidador)
+                return {
+                    "nivel": "success",
+                    "mensaje": "Solicitud rechazada.",
+                }
+
+            if action in ("completar", "finalizar"):
+                self._completar_service.marcar(solicitud_id, cuidador)
+                return {
+                    "nivel": "success",
+                    "mensaje": "Arrendamiento finalizado correctamente.",
+                }
+
+            if action == "finalizar_prueba":
+                self._completar_service.marcar(solicitud_id, cuidador, forzar=True)
+                return {
+                    "nivel": "success",
+                    "mensaje": "Arrendamiento finalizado en modo prueba.",
+                }
+
+            if action == "cancelar":
+                self._cancelar_service.cancelar(solicitud_id, cuidador)
+                return {
+                    "nivel": "success",
+                    "mensaje": "Reserva cancelada.",
+                }
+
+            if action == "enviar_mensaje":
+                mensaje = str(source.get("mensaje") or "").strip()
+                if mensaje:
+                    solicitud = self._obtener_chat_service.obtener_para_cuidador(solicitud_id, cuidador)
+                    self._enviar_chat_service.enviar(solicitud, cuidador, mensaje)
+                return {}
+
+            if action in ("calificar", "calificar_dueno"):
+                self._calificacion_service.crear(
+                    cuidador,
+                    solicitud_id,
+                    source.get("estrellas", 5),
+                    source.get("comentario", ""),
+                )
+                return {
+                    "nivel": "success",
+                    "mensaje": "Reseña del dueño enviada. ¡Gracias!",
+                }
+
+            if action == "calificar_mascota":
+                self._calificacion_mascota_service.crear(
+                    cuidador,
+                    solicitud_id,
+                    source.get("estrellas", 5),
+                    source.get("comentario", ""),
+                )
+                return {
+                    "nivel": "success",
+                    "mensaje": "Reseña de la mascota enviada. ¡Gracias!",
+                }
+        except DomainError as error:
+            return {
+                "nivel": "error",
+                "mensaje": str(error),
+            }
+
+        return {
+            "nivel": "error",
+            "mensaje": "Acción inválida.",
+        }
 
 
 class ListarMascotasDeDueñoService:
@@ -3751,6 +4156,72 @@ class ActualizarFotoMascotaService:
         return mascota
 
 
+class ConstruirDatosMascotaFormularioService:
+    """Construye payload de mascota desde formulario web."""
+
+    @staticmethod
+    def construir(source, files=None, incluir_foto: bool = False) -> dict:
+        datos = {
+            "nombreMascota": source.get("nombreMascota"),
+            "tipo": source.get("tipo"),
+            "raza": source.get("raza", ""),
+            "sexo": source.get("sexo", ""),
+            "tamano": source.get("tamano", ""),
+            "edad": source.get("edad"),
+            "peso": source.get("peso"),
+            "esterilizado": source.get("esterilizado", ""),
+            "vacunasAlDia": source.get("vacunasAlDia", ""),
+            "condicionesMedicas": source.get("condicionesMedicas", ""),
+            "notas": source.get("notas", ""),
+        }
+        if incluir_foto:
+            datos["foto"] = files.get("foto") if files is not None else None
+        return datos
+
+
+class ProcesarAccionesDueñoMascotasService:
+    """Centraliza acciones POST del módulo de mascotas del dueño."""
+
+    def __init__(
+        self,
+        eliminar_service: EliminarMascotaService | None = None,
+        foto_service: ActualizarFotoMascotaService | None = None,
+        editar_service: EditarMascotaService | None = None,
+        agregar_service: AgregarMascotaService | None = None,
+        datos_service: ConstruirDatosMascotaFormularioService | None = None,
+    ):
+        self._eliminar_service = eliminar_service or EliminarMascotaService()
+        self._foto_service = foto_service or ActualizarFotoMascotaService()
+        self._editar_service = editar_service or EditarMascotaService()
+        self._agregar_service = agregar_service or AgregarMascotaService()
+        self._datos_service = datos_service or ConstruirDatosMascotaFormularioService()
+
+    def procesar(self, dueño: Usuario, action: str | None, source, files) -> dict:
+        action_norm = str(action or "").strip()
+        try:
+            if action_norm == "eliminar":
+                self._eliminar_service.eliminar(dueño, source.get("mascota_id"))
+                return {"ok": True}
+
+            if action_norm == "cambiar_foto":
+                self._foto_service.actualizar(dueño, source.get("mascota_id"), files.get("foto"))
+                return {"ok": True}
+
+            if action_norm == "editar":
+                datos = self._datos_service.construir(source)
+                self._editar_service.editar(dueño, source.get("mascota_id"), datos)
+                return {"ok": True}
+
+            datos = self._datos_service.construir(source, files=files, incluir_foto=True)
+            self._agregar_service.agregar(dueño, datos)
+            return {"ok": True}
+        except DomainError as error:
+            return {
+                "ok": False,
+                "error": str(error),
+            }
+
+
 class AgregarBloqueTiempoService:
 
     def agregar(self, cuidador: Usuario, datos: dict) -> BloqueTiempo:
@@ -4176,6 +4647,194 @@ class ProcesarBloquesPendientesService:
     def procesar(self, cuidador: Usuario, raw_payload: str | None) -> int:
         bloques = self._parser.parsear(raw_payload)
         return self._saver.guardar(cuidador, bloques)
+
+
+class GuardarConfiguracionServiciosCuidadorService:
+    """Encapsula la unidad de trabajo de configuración + bloques pendientes."""
+
+    def __init__(
+        self,
+        actualizar_perfil_service: ActualizarPerfilCuidadorService | None = None,
+        bloques_service: ProcesarBloquesPendientesService | None = None,
+    ):
+        self._actualizar_perfil_service = actualizar_perfil_service or ActualizarPerfilCuidadorService()
+        self._bloques_service = bloques_service or ProcesarBloquesPendientesService()
+
+    def guardar(self, cuidador: Usuario, datos_perfil: dict, bloques_pendientes_raw: str | None) -> int:
+        with transaction.atomic():
+            self._actualizar_perfil_service.actualizar(cuidador, datos_perfil)
+            return self._bloques_service.procesar(cuidador, bloques_pendientes_raw)
+
+
+class ProcesarAccionesCuidadorServiciosService:
+    """Centraliza acciones POST de configuración de servicios del cuidador."""
+
+    _TIPOS_EDITABLES = ("paseo", "guarderia")
+
+    def __init__(
+        self,
+        construir_datos_service: ConstruirDatosPerfilCuidadorFormularioService | None = None,
+        guardar_config_service: GuardarConfiguracionServiciosCuidadorService | None = None,
+        eliminar_servicio_service: EliminarServicioCuidadorService | None = None,
+        obtener_tipo_evento_service: ObtenerTipoServicioEventoService | None = None,
+        eliminar_evento_service: EliminarEventoService | None = None,
+        agregar_evento_service: ProcesarAgregarEventoCuidadorService | None = None,
+    ):
+        self._construir_datos_service = construir_datos_service or ConstruirDatosPerfilCuidadorFormularioService()
+        self._guardar_config_service = guardar_config_service or GuardarConfiguracionServiciosCuidadorService()
+        self._eliminar_servicio_service = eliminar_servicio_service or EliminarServicioCuidadorService()
+        self._obtener_tipo_evento_service = obtener_tipo_evento_service or ObtenerTipoServicioEventoService()
+        self._eliminar_evento_service = eliminar_evento_service or EliminarEventoService()
+        self._agregar_evento_service = agregar_evento_service or ProcesarAgregarEventoCuidadorService()
+
+    def procesar(self, cuidador: Usuario, source, perfil_actual: PerfilCuidador | None = None) -> dict:
+        action = source.get("action")
+
+        if action == "servicio":
+            editar_tipo = str(source.get("editar_tipo") or "").strip()
+            if editar_tipo not in self._TIPOS_EDITABLES:
+                editar_tipo = None
+
+            datos = self._construir_datos_service.construir(source, perfil_actual, editar_tipo)
+            try:
+                total_bloques_creados = self._guardar_config_service.guardar(
+                    cuidador,
+                    datos,
+                    source.get("bloquesPendientes"),
+                )
+            except DomainError as error:
+                return {
+                    "modo": "render_error",
+                    "error": str(error),
+                    "editar_tipo": editar_tipo,
+                }
+
+            if total_bloques_creados:
+                mensaje = (
+                    f"Configuración guardada y {total_bloques_creados} bloque(s) creados correctamente."
+                )
+            else:
+                mensaje = "Configuración guardada correctamente."
+            return {
+                "modo": "redirect",
+                "ruta": "cuidador_servicios",
+                "nivel": "success",
+                "mensaje": mensaje,
+            }
+
+        if action == "eliminar_servicio":
+            tipo = str(source.get("tipoServicio") or "").strip()
+            try:
+                resultado = self._eliminar_servicio_service.eliminar(cuidador, tipo)
+            except DomainError as error:
+                return {
+                    "modo": "redirect",
+                    "ruta": "cuidador_servicios",
+                    "nivel": "error",
+                    "mensaje": str(error),
+                }
+
+            mensaje = "Servicio eliminado correctamente."
+            if resultado.get("eventos_historicos"):
+                mensaje = (
+                    "Servicio eliminado. Los eventos con historial fueron desactivados para conservar trazabilidad."
+                )
+            return {
+                "modo": "redirect",
+                "ruta": "cuidador_servicios",
+                "nivel": "success",
+                "mensaje": mensaje,
+            }
+
+        if action == "eliminar_evento":
+            editar_tipo = str(source.get("editar_tipo") or "").strip()
+            if editar_tipo not in self._TIPOS_EDITABLES:
+                evento_tipo = self._obtener_tipo_evento_service.obtener(cuidador, source.get("evento_id"))
+                if evento_tipo in (TipoServicio.PASEO, TipoServicio.GUARDERIA):
+                    editar_tipo = evento_tipo
+                else:
+                    editar_tipo = None
+
+            try:
+                self._eliminar_evento_service.eliminar(cuidador, source.get("evento_id"))
+            except DomainError as error:
+                return {
+                    "modo": "render_error",
+                    "error": str(error),
+                    "editar_tipo": editar_tipo,
+                }
+
+            return {
+                "modo": "redirect",
+                "ruta": "cuidador_servicios",
+                "editar_tipo": editar_tipo,
+                "nivel": "success",
+                "mensaje": "Evento eliminado.",
+            }
+
+        if action == "agregar":
+            editar_tipo = str(source.get("editar_tipo") or source.get("tipoServicio") or "").strip()
+            if editar_tipo not in self._TIPOS_EDITABLES:
+                editar_tipo = None
+
+            datos = {
+                "tipoServicio": source.get("tipoServicio"),
+                "diaSemana": source.get("diaSemana"),
+                "diaSemanaFin": source.get("diaSemanaFin"),
+                "horaInicio": source.get("horaInicio"),
+                "horaFin": source.get("horaFin"),
+                "duracionMinutos": source.get("duracionMinutos"),
+                "capacidadMaxima": source.get("capacidadMaxima"),
+                "nombreLugar": source.get("nombreLugar"),
+                "latitud": source.get("latitud"),
+                "longitud": source.get("longitud"),
+                "precioCOP": source.get("precioCOP"),
+            }
+            preset = str(source.get("preset") or "").strip()
+            if preset:
+                datos["preset"] = preset
+
+            try:
+                resultado = self._agregar_evento_service.procesar(cuidador, datos)
+            except DomainError as error:
+                return {
+                    "modo": "render_error",
+                    "error": str(error),
+                    "editar_tipo": editar_tipo,
+                }
+
+            if resultado.get("modo") == "preset":
+                creados = resultado.get("creados") or 0
+                if creados:
+                    nivel = "success"
+                    mensaje = f"Se agregaron {creados} bloques correctamente."
+                else:
+                    nivel = "info"
+                    mensaje = "No se agregaron bloques nuevos porque ya existían."
+            elif resultado.get("modo") == "guarderia_rango":
+                creados = resultado.get("creados") or 0
+                if creados:
+                    nivel = "success"
+                    mensaje = f"Se agregaron {creados} bloque(s) de guardería."
+                else:
+                    nivel = "info"
+                    mensaje = "No se agregaron bloques porque ya existían para ese rango."
+            else:
+                nivel = "success"
+                mensaje = "Evento agregado correctamente."
+
+            return {
+                "modo": "redirect",
+                "ruta": "cuidador_servicios",
+                "editar_tipo": editar_tipo,
+                "nivel": nivel,
+                "mensaje": mensaje,
+            }
+
+        return {
+            "modo": "redirect",
+            "ruta": "cuidador_servicios",
+        }
 
 
 class AgregarBloquesRapidoService:

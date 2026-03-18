@@ -169,10 +169,6 @@ class VentanaDisponibilidad(models.Model):
     def __str__(self):
         return f"{self.idCuidador.idCuidador.nombre} - {self.diaSemana} {self.horaInicio}-{self.horaFin}"
 
-    @property
-    def slots_disponibles_count(self):
-        return self.slots.filter(disponible=True).count()
-
 
 class SlotDisponibilidad(models.Model):
     """Slot dentro de una ventana. DEPRECADO: usar SlotEvento. Mantenido para migración legada."""
@@ -215,10 +211,6 @@ class Evento(models.Model):
 
     def __str__(self):
         return f"{self.idCuidador.idCuidador.nombre} - {self.diaSemana} {self.horaInicio}-{self.horaFin}"
-
-    @property
-    def slots_disponibles_count(self):
-        return self.slots.filter(disponible=True).count()
 
 
 class SlotEvento(models.Model):

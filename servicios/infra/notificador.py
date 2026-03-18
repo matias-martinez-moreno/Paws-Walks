@@ -63,7 +63,7 @@ class NotificadorBase(ABC):
         """Notifica reseñas pendientes tras finalizar un servicio."""
         pass
 
-    def enviar_reserva_cancelada(self, solicitud, actor=None):
+    def enviar_reserva_cancelada(self, solicitud, actor=None, receptor=None, destino=None):
         """Notifica cancelación de reserva al otro participante."""
         pass
 
@@ -205,16 +205,18 @@ class NotificadorMock(NotificadorBase):
             url_destino=url_caregiver_pet,
         )
 
-    def enviar_reserva_cancelada(self, solicitud, actor=None):
+    def enviar_reserva_cancelada(self, solicitud, actor=None, receptor=None, destino=None):
         print(f"[MOCK] reserva cancelada: {solicitud.idSolicitud}")
         from servicios.models import CategoriaNotificacion, TipoNotificacion
 
-        receptor = solicitud.idDueño
-        if actor and actor.idUsuario == solicitud.idDueño_id:
-            receptor = solicitud.idCuidador
+        if receptor is None:
+            raise ValueError("receptor es requerido para notificar cancelación")
+
+        destino_url = str(destino or "").strip()
+        if not destino_url:
+            raise ValueError("destino es requerido para notificar cancelación")
 
         quien = actor.nombre if actor else "El sistema"
-        destino = "/cuidador/calendario/" if receptor.rol == "cuidador" else "/dueño/mis-reservas/"
         _crear_notificacion(
             para_usuario=receptor,
             actor_usuario=actor,
@@ -223,7 +225,7 @@ class NotificadorMock(NotificadorBase):
             categoria=CategoriaNotificacion.NEGOCIO,
             titulo="Reserva cancelada",
             descripcion=f"{quien} canceló la reserva de {solicitud.get_tipoServicio_display()}.",
-            url_destino=destino,
+            url_destino=destino_url,
         )
 
     def enviar_mascota_creada(self, mascota, actor):
@@ -329,9 +331,14 @@ class NotificadorReal(NotificadorBase):
         print(f"[REAL] enviando email: reseña pendiente solicitud {solicitud.idSolicitud}")
         NotificadorMock().enviar_resena_pendiente(solicitud)
 
-    def enviar_reserva_cancelada(self, solicitud, actor=None):
+    def enviar_reserva_cancelada(self, solicitud, actor=None, receptor=None, destino=None):
         print(f"[REAL] enviando email: reserva cancelada {solicitud.idSolicitud}")
-        NotificadorMock().enviar_reserva_cancelada(solicitud, actor=actor)
+        NotificadorMock().enviar_reserva_cancelada(
+            solicitud,
+            actor=actor,
+            receptor=receptor,
+            destino=destino,
+        )
 
     def enviar_mascota_creada(self, mascota, actor):
         print(f"[REAL] enviando email: mascota creada {mascota.idMascota}")

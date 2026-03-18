@@ -1,9 +1,16 @@
 from rest_framework import serializers
 
-from servicios.models import EstadoSolicitud, Evento, TipoServicio
+from servicios.domain.exceptions import DomainValidationError
+from servicios.models import EstadoSolicitud, TipoServicio
+from servicios.application.api_services import (
+    ValidarBusquedaDisponibilidadApiService,
+    ValidarCrearSolicitudApiService,
+)
 
 
 class SolicitudServicioCreateSerializer(serializers.Serializer):
+    _validator = ValidarCrearSolicitudApiService()
+
     idDueño_id = serializers.UUIDField()
     idCuidador_id = serializers.UUIDField()
     idMascota_id = serializers.UUIDField()
@@ -15,39 +22,11 @@ class SolicitudServicioCreateSerializer(serializers.Serializer):
     duracionMinutosSolicitados = serializers.IntegerField(required=False, allow_null=True)
 
     def validate(self, attrs):
-        tipo_servicio = attrs.get("tipoServicio")
-        fecha = attrs.get("fecha")
-        fecha_fin = attrs.get("fechaFin")
-
-        if tipo_servicio == TipoServicio.PASEO and fecha_fin is not None and fecha_fin != fecha:
-            raise serializers.ValidationError(
-                {"fechaFin": "para paseo la fecha fin debe coincidir con la fecha seleccionada"}
-            )
-
-        if tipo_servicio == TipoServicio.GUARDERIA and fecha_fin is not None and fecha_fin < fecha:
-            raise serializers.ValidationError(
-                {"fechaFin": "la fecha fin debe ser igual o posterior a la fecha"}
-            )
-
-        duracion = attrs.get("duracionMinutosSolicitados")
-        if duracion is not None and (duracion < 60 or duracion % 30 != 0):
-            raise serializers.ValidationError(
-                {
-                    "duracionMinutosSolicitados": (
-                        "la duración de guardería debe ser mínimo 60 minutos y en múltiplos de 30"
-                    )
-                }
-            )
-
-        evento_id = attrs.get("idEvento_id")
-        if evento_id:
-            evento = Evento.objects.filter(idEvento=evento_id).only("duracionSlotMinutos").first()
-            if evento and evento.duracionSlotMinutos is not None and not attrs.get("idSlotEvento_id"):
-                raise serializers.ValidationError(
-                    {"idSlotEvento_id": "este evento requiere seleccionar un slot"}
-                )
-
-        return attrs
+        try:
+            return self._validator.validar(attrs)
+        except DomainValidationError as error:
+            payload = error.args[0] if error.args else str(error)
+            raise serializers.ValidationError(payload)
 
 
 class SolicitudServicioCancelSerializer(serializers.Serializer):
@@ -77,6 +56,8 @@ class SolicitudServicioSerializer(serializers.Serializer):
 
 
 class DisponibilidadBusquedaSerializer(serializers.Serializer):
+    _validator = ValidarBusquedaDisponibilidadApiService()
+
     idDueño_id = serializers.UUIDField()
     idMascota_id = serializers.UUIDField()
     tipoServicio = serializers.ChoiceField(choices=[c[0] for c in TipoServicio.choices])
@@ -99,61 +80,11 @@ class DisponibilidadBusquedaSerializer(serializers.Serializer):
     horaFin = serializers.TimeField(required=False, allow_null=True)
 
     def validate(self, attrs):
-        tipo_servicio = attrs.get("tipoServicio")
-
-        if tipo_servicio == TipoServicio.PASEO:
-            if attrs.get("fecha") is None:
-                raise serializers.ValidationError({"fecha": "fecha es requerida para paseo"})
-            if attrs.get("duracionMinutos") is None:
-                raise serializers.ValidationError(
-                    {"duracionMinutos": "duracionMinutos es requerida para paseo"}
-                )
-
-            ciudad = str(attrs.get("ciudadPaseo") or "").strip()
-            latitud = attrs.get("latitudPaseo")
-            longitud = attrs.get("longitudPaseo")
-
-            if (latitud is None) != (longitud is None):
-                raise serializers.ValidationError(
-                    "latitudPaseo y longitudPaseo deben enviarse juntas"
-                )
-
-            if not ciudad and (latitud is None or longitud is None):
-                raise serializers.ValidationError(
-                    "para paseo debes enviar ciudadPaseo o coordenadas de referencia"
-                )
-
-        if tipo_servicio == TipoServicio.GUARDERIA:
-            fecha_inicio = attrs.get("fechaInicioGuarderia")
-            fecha_fin = attrs.get("fechaFinGuarderia")
-            if fecha_inicio is None:
-                raise serializers.ValidationError(
-                    {"fechaInicioGuarderia": "fechaInicioGuarderia es requerida para guardería"}
-                )
-            if fecha_fin is not None and fecha_fin < fecha_inicio:
-                raise serializers.ValidationError(
-                    {
-                        "fechaFinGuarderia": (
-                            "fechaFinGuarderia debe ser igual o posterior a fechaInicioGuarderia"
-                        )
-                    }
-                )
-
-        precio_min = attrs.get("precioMinHora")
-        precio_max = attrs.get("precioMaxHora")
-        if precio_min is not None and precio_max is not None and precio_min > precio_max:
-            raise serializers.ValidationError(
-                {"precioMinHora": "precioMinHora no puede ser mayor que precioMaxHora"}
-            )
-
-        hora_inicio = attrs.get("horaInicio")
-        hora_fin = attrs.get("horaFin")
-        if hora_inicio is not None and hora_fin is not None and hora_fin <= hora_inicio:
-            raise serializers.ValidationError(
-                {"horaFin": "horaFin debe ser posterior a horaInicio"}
-            )
-
-        return attrs
+        try:
+            return self._validator.validar(attrs)
+        except DomainValidationError as error:
+            payload = error.args[0] if error.args else str(error)
+            raise serializers.ValidationError(payload)
 
 
 class DisponibilidadSlotGuarderiaSerializer(serializers.Serializer):

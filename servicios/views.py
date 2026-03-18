@@ -3,92 +3,57 @@ from urllib.parse import urlencode
 from django.contrib.auth import login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
-from django.db import transaction
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.views import View
-from django.views.decorators.csrf import csrf_exempt
-from django.utils.decorators import method_decorator
 
 from servicios.domain.exceptions import DomainError
-from servicios.models import EstadoSolicitud, RolUsuario, SexoMascota, TamanoMascota, TipoMascota, TipoServicio, Usuario
+from servicios.models import EstadoSolicitud, SexoMascota, TamanoMascota, TipoMascota, TipoServicio, Usuario
+from servicios.application.api_services import CrearSolicitudServicioAppService
 from servicios.services import (
-    ActualizarFotoMascotaService,
-    ActualizarPerfilCuidadorService,
-    AgregarMascotaService,
     AutenticacionService,
-    BuscarDisponibilidadFormularioReservaService,
-    CambiarEstadoSolicitudService,
-    CancelarSolicitudService,
     ConstruirContextoHistorialSolicitudesService,
-    ConstruirDatosPerfilCuidadorFormularioService,
-    CrearCalificacionService,
-    CrearCalificacionMascotaService,
-    CrearReservaDesdeSeleccionService,
-    CrearSolicitudServicioAppService,
+    ConstruirContextoPerfilPublicoService,
+    ConstruirContextoRecuperacionPasswordService,
+    ConstruirDatosRegistroUsuarioFormularioService,
+    ConstruirDatosPerfilUsuarioFormularioService,
     CrearUsuarioAppService,
-    EditarMascotaService,
-    EnviarMensajeChatService,
     EditarPerfilUsuarioService,
-    EliminarEventoService,
-    EliminarServicioCuidadorService,
-    EliminarMascotaService,
-    GestionNotificacionesUsuarioService,
     ListarAgendamientosCuidadorService,
-    BuscarUsuarioPorIdentificadorService,
     FormatearTelefonoService,
     ListarMascotasDeDueñoService,
     ListarNotificacionesUsuarioService,
     NormalizarBusquedaReservaService,
     NormalizarFiltrosNotificacionesService,
     ObtenerContextoServiciosCuidadorService,
-    ObtenerPerfilPublicoService,
     ObtenerPreciosActivosCuidadorService,
     ListarResenasRecibidasService,
     ListarSolicitudesDueñoService,
-    ObtenerSolicitudParaChatService,
-    ObtenerTipoServicioEventoService,
-    MarcarServicioCompletadoService,
     ObtenerPerfilCuidadorService,
-    ProcesarAgregarEventoCuidadorService,
-    ProcesarBloquesPendientesService,
+    ProcesarAccionNuevaReservaDueñoService,
+    ProcesarAccionesCuidadorCalendarioService,
+    ProcesarAccionesCuidadorServiciosService,
+    ProcesarAccionesDueñoMascotasService,
+    ProcesarAccionesDueñoReservasService,
+    ProcesarAccionesNotificacionesService,
+    ResolverAccionPerfilCuidadorService,
+    ResolverRutaNotificacionesService,
+    ResolverRutaPostLoginService,
 )
 
 
 class SignupView(View):
+    _registro_form_service = ConstruirDatosRegistroUsuarioFormularioService()
+    _crear_usuario_service = CrearUsuarioAppService()
 
     def get(self, request):
         return render(request, "servicios/signup.html")
 
     def post(self, request):
-        prefijo = request.POST.get("prefijo", "+57")
-        telefono_num = request.POST.get("telefono", "")
-        telefono_full = f"{prefijo}{telefono_num}"
-
-        campos = {
-            "nombre": request.POST.get("nombre"),
-            "apellido": request.POST.get("apellido"),
-            "username": request.POST.get("username"),
-            "correo": request.POST.get("correo"),
-            "cedula": request.POST.get("cedula"),
-            "telefono": telefono_num,
-            "prefijo": prefijo,
-            "fechaNacimiento_str": request.POST.get("fechaNacimiento"),
-            "ciudad": request.POST.get("ciudad"),
-            "rol": request.POST.get("rol"),
-        }
+        campos, payload = self._registro_form_service.construir(request.POST)
 
         try:
-            CrearUsuarioAppService().crear_usuario({
-                "nombre": campos["nombre"], "apellido": campos["apellido"],
-                "username": campos["username"], "correo": campos["correo"],
-                "cedula": campos["cedula"], "telefono": telefono_full,
-                "fechaNacimiento_str": campos["fechaNacimiento_str"],
-                "ciudad": campos["ciudad"],
-                "password1": request.POST.get("password1"),
-                "password2": request.POST.get("password2"),
-                "rol": campos["rol"],
-            })
+            self._crear_usuario_service.crear_usuario(payload)
         except DomainError as e:
             return render(request, "servicios/signup.html", {**campos, "error": str(e)})
 
@@ -96,6 +61,8 @@ class SignupView(View):
 
 
 class LoginView(View):
+    _auth_service = AutenticacionService()
+    _ruta_post_login_service = ResolverRutaPostLoginService()
 
     def get(self, request):
         return render(request, "servicios/login.html")
@@ -103,15 +70,12 @@ class LoginView(View):
     def post(self, request):
         username = request.POST.get("username")
         password = request.POST.get("password")
-        service = AutenticacionService()
         try:
-            usuario = service.autenticar(username, password)
+            usuario = self._auth_service.autenticar(username, password)
         except DomainError as e:
             return render(request, "servicios/login.html", {"error": str(e), "username": username})
         login(request, usuario.user)
-        if usuario.rol == RolUsuario.DUEÑO:
-            return redirect("dashboard_dueño")
-        return redirect("dashboard_cuidador")
+        return redirect(self._ruta_post_login_service.resolver(usuario))
 
 
 class LogoutView(View):
@@ -125,18 +89,9 @@ class PasswordResetRequestView(View):
         return render(request, "servicios/password_reset_request.html")
 
     def post(self, request):
-        identificador = (request.POST.get("identificador") or "").strip()
-        ctx = {"identificador": identificador}
-        if not identificador:
-            ctx["error"] = "Escribe tu correo o usuario para continuar."
-            return render(request, "servicios/password_reset_request.html", ctx)
-
-        usuario = BuscarUsuarioPorIdentificadorService().buscar(identificador)
-        # En una siguiente iteración aquí se generaría un token y se enviaría un correo.
-        if usuario:
-            ctx["success"] = "Usuario encontrado. Enviaremos instrucciones a tu correo para recuperar tu contraseña."
-        else:
-            ctx["error"] = "No encontramos ninguna cuenta con ese correo o usuario."
+        ctx = ConstruirContextoRecuperacionPasswordService().construir(
+            request.POST.get("identificador")
+        )
         return render(request, "servicios/password_reset_request.html", ctx)
 
 
@@ -220,7 +175,7 @@ class DashboardDueñoView(LoginRequiredMixin, View):
 
 class DueñoNuevaReservaView(LoginRequiredMixin, View):
     _normalizador_busqueda = NormalizarBusquedaReservaService()
-    _buscador_disponibilidad = BuscarDisponibilidadFormularioReservaService()
+    _procesador_accion = ProcesarAccionNuevaReservaDueñoService()
 
     def _busqueda_default(self, usuario):
         return self._normalizador_busqueda.busqueda_default(usuario)
@@ -249,38 +204,8 @@ class DueñoNuevaReservaView(LoginRequiredMixin, View):
         if usuario is None:
             return redirect("login")
         mascotas = ListarMascotasDeDueñoService().listar(usuario)
-        action = request.POST.get("action", "buscar")
-
-        if action == "confirmar":
-            try:
-                CrearReservaDesdeSeleccionService().crear(
-                    dueño=usuario,
-                    mascota_id=request.POST.get("mascota_id"),
-                    evento_id=request.POST.get("evento_id") or None,
-                    fecha_str=request.POST.get("fecha", ""),
-                    fecha_fin_str=request.POST.get("fecha_fin") or None,
-                    tipo_servicio=request.POST.get("tipo_servicio", ""),
-                    modo_guarderia=request.POST.get("modo_guarderia") or None,
-                    duracion_guarderia_minutos=request.POST.get("duracion_guarderia_minutos") or None,
-                    hora_inicio_guarderia_str=request.POST.get("hora_inicio_guarderia") or None,
-                    hora_fin_guarderia_str=request.POST.get("hora_fin_guarderia") or None,
-                )
-            except DomainError as e:
-                return render(
-                    request,
-                    "servicios/dueño_nueva_reserva.html",
-                    {
-                        "mascotas": mascotas,
-                        "usuario": usuario,
-                        "error": str(e),
-                        "busqueda": self._busqueda_from_post(request, usuario),
-                        "cuidadores_disponibles": None,
-                    },
-                )
-            return redirect("dueño_mis_reservas")
-
         try:
-            cuidadores, busqueda = self._buscador_disponibilidad.buscar(usuario, request.POST)
+            resultado = self._procesador_accion.procesar(usuario, request.POST)
         except DomainError as e:
             return render(
                 request,
@@ -294,11 +219,14 @@ class DueñoNuevaReservaView(LoginRequiredMixin, View):
                 },
             )
 
+        if resultado.get("modo") == "redirect":
+            return redirect(resultado.get("ruta", "dueño_mis_reservas"))
+
         return render(request, "servicios/dueño_nueva_reserva.html", {
             "mascotas": mascotas,
             "usuario": usuario,
-            "cuidadores_disponibles": cuidadores,
-            "busqueda": busqueda,
+            "cuidadores_disponibles": resultado.get("cuidadores_disponibles"),
+            "busqueda": resultado.get("busqueda"),
         })
 
 
@@ -341,44 +269,25 @@ class DueñoMisReservasView(LoginRequiredMixin, View):
         usuario = _get_usuario(request)
         if usuario is None:
             return redirect("login")
-        action = request.POST.get("action")
-        if action in ("calificar", "calificar_cuidador"):
-            try:
-                CrearCalificacionService().crear(
-                    usuario,
-                    request.POST.get("solicitud_id"),
-                    request.POST.get("estrellas", 5),
-                    request.POST.get("comentario", ""),
-                )
-                messages.success(request, "Calificación enviada. ¡Gracias!")
-            except DomainError as e:
-                messages.error(request, str(e))
-        elif action == "cancelar":
-            try:
-                CancelarSolicitudService().cancelar(request.POST.get("solicitud_id"), usuario)
-                messages.success(request, "Reserva cancelada.")
-            except DomainError as e:
-                messages.error(request, str(e))
-        elif action == "completar":
-            messages.info(request, "El arrendamiento debe ser finalizado por el cuidador para habilitar calificación.")
-        elif action == "enviar_mensaje":
-            msg = (request.POST.get("mensaje") or "").strip()
-            solicitud_id = request.POST.get("solicitud_id")
-            if msg and solicitud_id:
-                try:
-                    sol = ObtenerSolicitudParaChatService().obtener_para_dueño(solicitud_id, usuario)
-                    EnviarMensajeChatService().enviar(sol, usuario, msg)
-                except DomainError as e:
-                    messages.error(request, str(e))
+        resultado = ProcesarAccionesDueñoReservasService().procesar(usuario, request.POST)
+        nivel = resultado.get("nivel")
+        mensaje = resultado.get("mensaje")
+        if mensaje and nivel == "success":
+            messages.success(request, mensaje)
+        elif mensaje and nivel == "info":
+            messages.info(request, mensaje)
+        elif mensaje and nivel == "error":
+            messages.error(request, mensaje)
         return redirect("dueño_mis_reservas")
 
 
 class NotificacionesView(LoginRequiredMixin, View):
     template_name = "servicios/notificaciones.html"
     _filtros_service = NormalizarFiltrosNotificacionesService()
+    _ruta_notificaciones_service = ResolverRutaNotificacionesService()
 
     def _ruta_por_rol(self, usuario: Usuario) -> str:
-        return "dueño_notificaciones" if usuario.rol == "dueño" else "cuidador_notificaciones"
+        return self._ruta_notificaciones_service.resolver(usuario)
 
     def _redirect_filtrado(self, usuario: Usuario, categoria: str, estado: str):
         ruta = self._ruta_por_rol(usuario)
@@ -389,7 +298,9 @@ class NotificacionesView(LoginRequiredMixin, View):
         usuario = _get_usuario(request)
         if usuario is None:
             return redirect("login")
-        if usuario.rol not in ("dueño", "cuidador"):
+        try:
+            self._ruta_por_rol(usuario)
+        except DomainError:
             return redirect("login")
 
         categoria, estado = self._filtros_service.desde_source(request.GET)
@@ -408,43 +319,43 @@ class NotificacionesView(LoginRequiredMixin, View):
         usuario = _get_usuario(request)
         if usuario is None:
             return redirect("login")
-        if usuario.rol not in ("dueño", "cuidador"):
+        try:
+            self._ruta_por_rol(usuario)
+        except DomainError:
             return redirect("login")
 
-        action = request.POST.get("action")
-        categoria, estado = self._filtros_service.desde_source(request.POST)
-        gestor = GestionNotificacionesUsuarioService()
+        resultado = ProcesarAccionesNotificacionesService().procesar(usuario, request.POST)
+        nivel = resultado.get("nivel")
+        mensaje = resultado.get("mensaje")
+        if mensaje and nivel == "success":
+            messages.success(request, mensaje)
+        elif mensaje and nivel == "error":
+            messages.error(request, mensaje)
 
-        ids_seleccionados = self._filtros_service.parsear_ids(request.POST.get("notificacion_ids"))
+        destino = resultado.get("destino")
+        if destino:
+            return redirect(destino)
 
-        try:
-            if action == "marcar_leida":
-                gestor.marcar_leida(usuario, request.POST.get("notificacion_id"))
-            elif action == "marcar_todas_leidas":
-                marcadas = gestor.marcar_todas_leidas(usuario, categoria=categoria)
-                messages.success(request, f"Se marcaron {marcadas} notificaciones como leídas.")
-            elif action == "eliminar":
-                gestor.eliminar(usuario, request.POST.get("notificacion_id"))
-            elif action == "eliminar_seleccionadas":
-                eliminadas = gestor.eliminar_seleccionadas(usuario, ids_seleccionados)
-                messages.success(request, f"Se eliminaron {eliminadas} notificaciones seleccionadas.")
-            elif action == "eliminar_todas":
-                eliminadas = gestor.eliminar_todas(usuario, categoria=categoria, estado=estado)
-                messages.success(request, f"Se eliminaron {eliminadas} notificaciones visibles con este filtro.")
-            elif action == "abrir":
-                notificacion = gestor.marcar_leida(usuario, request.POST.get("notificacion_id"))
-                destino = (notificacion.urlDestino or "").strip()
-                if destino.startswith("/"):
-                    return redirect(destino)
-            else:
-                messages.error(request, "Acción inválida.")
-        except DomainError as e:
-            messages.error(request, str(e))
-
-        return self._redirect_filtrado(usuario, categoria, estado)
+        return self._redirect_filtrado(
+            usuario,
+            resultado.get("categoria", "todas"),
+            resultado.get("estado", "todas"),
+        )
 
 
 class DueñoMisMascotasView(LoginRequiredMixin, View):
+    @staticmethod
+    def _render_con_error(request, usuario, error_texto):
+        mascotas = ListarMascotasDeDueñoService().listar(usuario)
+        return render(request, "servicios/dueño_mis_mascotas.html", {
+            "mascotas": mascotas,
+            "tipos_mascota": TipoMascota.choices,
+            "sexos_mascota": SexoMascota.choices,
+            "tamanos_mascota": TamanoMascota.choices,
+            "usuario": usuario,
+            "error": error_texto,
+        })
+
     def get(self, request):
         usuario = _get_usuario(request)
         if usuario is None:
@@ -465,86 +376,14 @@ class DueñoMisMascotasView(LoginRequiredMixin, View):
         usuario = _get_usuario(request)
         if usuario is None:
             return redirect("login")
-        action = request.POST.get("action")
-        if action == "eliminar":
-            try:
-                EliminarMascotaService().eliminar(usuario, request.POST.get("mascota_id"))
-            except DomainError as e:
-                mascotas = ListarMascotasDeDueñoService().listar(usuario)
-                return render(request, "servicios/dueño_mis_mascotas.html", {
-                    "mascotas": mascotas,
-                    "tipos_mascota": TipoMascota.choices,
-                    "sexos_mascota": SexoMascota.choices,
-                    "tamanos_mascota": TamanoMascota.choices,
-                    "usuario": usuario,
-                    "error": str(e),
-                })
-            return redirect("dueño_mis_mascotas")
-        if action == "cambiar_foto":
-            try:
-                ActualizarFotoMascotaService().actualizar(usuario, request.POST.get("mascota_id"), request.FILES.get("foto"))
-            except DomainError as e:
-                mascotas = ListarMascotasDeDueñoService().listar(usuario)
-                return render(request, "servicios/dueño_mis_mascotas.html", {
-                    "mascotas": mascotas,
-                    "tipos_mascota": TipoMascota.choices,
-                    "sexos_mascota": SexoMascota.choices,
-                    "tamanos_mascota": TamanoMascota.choices,
-                    "usuario": usuario,
-                    "error": str(e),
-                })
-            return redirect("dueño_mis_mascotas")
-        if action == "editar":
-            datos = {
-                "nombreMascota": request.POST.get("nombreMascota"),
-                "tipo": request.POST.get("tipo"),
-                "raza": request.POST.get("raza", ""),
-                "sexo": request.POST.get("sexo", ""),
-                "tamano": request.POST.get("tamano", ""),
-                "edad": request.POST.get("edad"),
-                "peso": request.POST.get("peso"),
-                "esterilizado": request.POST.get("esterilizado", ""),
-                "vacunasAlDia": request.POST.get("vacunasAlDia", ""),
-                "condicionesMedicas": request.POST.get("condicionesMedicas", ""),
-                "notas": request.POST.get("notas", ""),
-            }
-            try:
-                EditarMascotaService().editar(usuario, request.POST.get("mascota_id"), datos)
-            except DomainError as e:
-                mascotas = ListarMascotasDeDueñoService().listar(usuario)
-                return render(request, "servicios/dueño_mis_mascotas.html", {
-                    "mascotas": mascotas,
-                    "tipos_mascota": TipoMascota.choices,
-                    "sexos_mascota": SexoMascota.choices,
-                    "tamanos_mascota": TamanoMascota.choices,
-                    "usuario": usuario,
-                    "error": str(e),
-                })
-            return redirect("dueño_mis_mascotas")
-        datos = {
-            "nombreMascota": request.POST.get("nombreMascota"),
-            "tipo": request.POST.get("tipo"), "raza": request.POST.get("raza", ""),
-            "sexo": request.POST.get("sexo", ""),
-            "tamano": request.POST.get("tamano", ""),
-            "edad": request.POST.get("edad"), "peso": request.POST.get("peso"),
-            "esterilizado": request.POST.get("esterilizado", ""),
-            "vacunasAlDia": request.POST.get("vacunasAlDia", ""),
-            "condicionesMedicas": request.POST.get("condicionesMedicas", ""),
-            "notas": request.POST.get("notas", ""),
-            "foto": request.FILES.get("foto"),
-        }
-        try:
-            AgregarMascotaService().agregar(usuario, datos)
-        except DomainError as e:
-            mascotas = ListarMascotasDeDueñoService().listar(usuario)
-            return render(request, "servicios/dueño_mis_mascotas.html", {
-                "mascotas": mascotas,
-                "tipos_mascota": TipoMascota.choices,
-                "sexos_mascota": SexoMascota.choices,
-                "tamanos_mascota": TamanoMascota.choices,
-                "usuario": usuario,
-                "error": str(e),
-            })
+        resultado = ProcesarAccionesDueñoMascotasService().procesar(
+            usuario,
+            request.POST.get("action"),
+            request.POST,
+            request.FILES,
+        )
+        if not resultado.get("ok"):
+            return self._render_con_error(request, usuario, resultado.get("error", "Error al procesar la mascota."))
         return redirect("dueño_mis_mascotas")
 
 
@@ -573,23 +412,11 @@ class DueñoMiPerfilView(LoginRequiredMixin, View):
         usuario = _get_usuario(request)
         if usuario is None:
             return redirect("login")
-        telefono = FormatearTelefonoService().componer(
-            request.POST.get("prefijo", "+57"),
-            request.POST.get("telefono"),
-        )
         resenas_ctx = _get_resenas_context(request, usuario)
-        datos = {
-            "nombre": request.POST.get("nombre"),
-            "apellido": request.POST.get("apellido"),
-            "cedula": request.POST.get("cedula"),
-            "correo": request.POST.get("correo"),
-            "telefono": telefono,
-            "ciudad": request.POST.get("ciudad"),
-            "direccion": request.POST.get("direccion"),
-            "latitud": request.POST.get("latitud"),
-            "longitud": request.POST.get("longitud"),
-            "fotoPerfil": request.FILES.get("fotoPerfil"),
-        }
+        datos, telefono = ConstruirDatosPerfilUsuarioFormularioService().construir_dueño(
+            request.POST,
+            request.FILES,
+        )
         try:
             EditarPerfilUsuarioService().editar(usuario, datos)
         except DomainError as e:
@@ -713,61 +540,13 @@ class CuidadorCalendarioView(LoginRequiredMixin, View):
         usuario = _get_usuario(request)
         if usuario is None:
             return redirect("login")
-        action = request.POST.get("action")
-        solicitud_id = request.POST.get("solicitud_id")
-        if not solicitud_id or action not in (
-            "aceptar",
-            "rechazar",
-            "completar",
-            "finalizar",
-            "finalizar_prueba",
-            "cancelar",
-            "enviar_mensaje",
-            "calificar",
-            "calificar_dueno",
-            "calificar_mascota",
-        ):
-            messages.error(request, "Acción inválida.")
-            return redirect("cuidador_calendario")
-        try:
-            if action == "aceptar":
-                CambiarEstadoSolicitudService().aceptar(solicitud_id, usuario)
-                messages.success(request, "Solicitud aceptada correctamente.")
-            elif action == "rechazar":
-                CambiarEstadoSolicitudService().rechazar(solicitud_id, usuario)
-                messages.success(request, "Solicitud rechazada.")
-            elif action in ("completar", "finalizar"):
-                MarcarServicioCompletadoService().marcar(solicitud_id, usuario)
-                messages.success(request, "Arrendamiento finalizado correctamente.")
-            elif action == "finalizar_prueba":
-                MarcarServicioCompletadoService().marcar(solicitud_id, usuario, forzar=True)
-                messages.success(request, "Arrendamiento finalizado en modo prueba.")
-            elif action == "enviar_mensaje":
-                msg = (request.POST.get("mensaje") or "").strip()
-                if msg:
-                    sol = ObtenerSolicitudParaChatService().obtener_para_cuidador(solicitud_id, usuario)
-                    EnviarMensajeChatService().enviar(sol, usuario, msg)
-            elif action in ("calificar", "calificar_dueno"):
-                CrearCalificacionService().crear(
-                    usuario,
-                    solicitud_id,
-                    request.POST.get("estrellas", 5),
-                    request.POST.get("comentario", ""),
-                )
-                messages.success(request, "Reseña del dueño enviada. ¡Gracias!")
-            elif action == "calificar_mascota":
-                CrearCalificacionMascotaService().crear(
-                    usuario,
-                    solicitud_id,
-                    request.POST.get("estrellas", 5),
-                    request.POST.get("comentario", ""),
-                )
-                messages.success(request, "Reseña de la mascota enviada. ¡Gracias!")
-            else:
-                CancelarSolicitudService().cancelar(solicitud_id, usuario)
-                messages.success(request, "Reserva cancelada.")
-        except DomainError as e:
-            messages.error(request, str(e))
+        resultado = ProcesarAccionesCuidadorCalendarioService().procesar(usuario, request.POST)
+        nivel = resultado.get("nivel")
+        mensaje = resultado.get("mensaje")
+        if mensaje and nivel == "success":
+            messages.success(request, mensaje)
+        elif mensaje and nivel == "error":
+            messages.error(request, mensaje)
         return redirect("cuidador_calendario")
 
 
@@ -791,43 +570,30 @@ class DueñoGuiaView(LoginRequiredMixin, View):
 
 class VerPerfilOtroView(LoginRequiredMixin, View):
     """Ver perfil del otro (cuidador o dueño) en modo solo lectura."""
+    _ruta_post_login_service = ResolverRutaPostLoginService()
+
     def get(self, request, usuario_id):
         usuario = _get_usuario(request)
         if usuario is None:
             return redirect("login")
         try:
-            perfil_publico_service = ObtenerPerfilPublicoService()
-            otro = perfil_publico_service.obtener_usuario(usuario_id)
-            perfil_cuidador = perfil_publico_service.obtener_perfil_cuidador(otro)
-            mascota_asignada = None
-            solicitud_relacionada = None
-
-            solicitud_id = (request.GET.get("solicitud") or "").strip()
-            if solicitud_id and usuario.rol == "cuidador" and otro.rol == "dueño":
-                solicitud_relacionada = perfil_publico_service.obtener_solicitud_relacionada(
-                    solicitud_id,
-                    cuidador=usuario,
-                    dueño=otro,
-                )
-                if solicitud_relacionada:
-                    mascotas_dueño = ListarMascotasDeDueñoService().listar(otro)
-                    mascota_asignada = next(
-                        (m for m in mascotas_dueño if m.idMascota == solicitud_relacionada.idMascota_id),
-                        solicitud_relacionada.idMascota,
-                    )
-
-            resenas_ctx = _get_resenas_context(request, otro)
+            contexto_otro = ConstruirContextoPerfilPublicoService().construir(
+                usuario,
+                usuario_id,
+                request.GET.get("solicitud"),
+            )
+            resenas_ctx = _get_resenas_context(request, contexto_otro["otro"])
             return render(request, "servicios/ver_perfil_otro.html", {
                 "usuario": usuario,
-                "otro": otro,
-                "perfil_cuidador": perfil_cuidador,
-                "mascota_asignada": mascota_asignada,
-                "solicitud_relacionada": solicitud_relacionada,
+                **contexto_otro,
                 **resenas_ctx,
             })
         except DomainError:
             messages.error(request, "Usuario no encontrado.")
-            return redirect("dashboard_cuidador" if usuario.rol == "cuidador" else "dashboard_dueño")
+            try:
+                return redirect(self._ruta_post_login_service.resolver(usuario))
+            except DomainError:
+                return redirect("login")
 
 
 class CuidadorMiPerfilView(LoginRequiredMixin, View):
@@ -861,29 +627,14 @@ class CuidadorMiPerfilView(LoginRequiredMixin, View):
         usuario = _get_usuario(request)
         if usuario is None:
             return redirect("login")
-        action = request.POST.get("action")
-        if action != "datos_personales":
-            return redirect("cuidador_mi_perfil")
-        telefono = FormatearTelefonoService().componer(
-            request.POST.get("prefijo", "+57"),
-            request.POST.get("telefono"),
-        )
-        experiencia = (request.POST.get("experiencia") or "").strip()
+        accion = ResolverAccionPerfilCuidadorService().resolver(request.POST)
+        if accion.get("modo") == "redirect":
+            return redirect(accion.get("ruta", "cuidador_mi_perfil"))
         resenas_ctx = _get_resenas_context(request, usuario)
-        datos = {
-            "nombre": request.POST.get("nombre"),
-            "apellido": request.POST.get("apellido"),
-            "cedula": request.POST.get("cedula"),
-            "correo": request.POST.get("correo"),
-            "telefono": telefono,
-            "ciudad": request.POST.get("ciudad"),
-            "direccion": request.POST.get("direccion"),
-            "latitud": request.POST.get("latitud"),
-            "longitud": request.POST.get("longitud"),
-            "radioKm": request.POST.get("radioKm"),
-            "fotoPerfil": request.FILES.get("fotoPerfil"),
-            "experiencia": experiencia,
-        }
+        datos, telefono, experiencia = ConstruirDatosPerfilUsuarioFormularioService().construir_cuidador(
+            request.POST,
+            request.FILES,
+        )
         try:
             EditarPerfilUsuarioService().editar(usuario, datos)
         except DomainError as e:
@@ -929,122 +680,36 @@ class CuidadorMisServiciosView(LoginRequiredMixin, View):
         usuario = _get_usuario(request)
         if usuario is None:
             return redirect("login")
-        action = request.POST.get("action")
         ctx = _get_servicios_context(usuario)
         ctx["usuario"] = usuario
+        resultado = ProcesarAccionesCuidadorServiciosService().procesar(
+            usuario,
+            request.POST,
+            perfil_actual=ctx.get("perfil"),
+        )
 
-        if action == "servicio":
-            editar_post = request.POST.get("editar_tipo")
-            if editar_post in ("paseo", "guarderia"):
-                ctx["editar_tipo"] = editar_post
-
-            datos = ConstruirDatosPerfilCuidadorFormularioService().construir(
-                request.POST,
-                ctx.get("perfil"),
-                editar_post,
-            )
-
-            try:
-                with transaction.atomic():
-                    ActualizarPerfilCuidadorService().actualizar(usuario, datos)
-                    total_bloques_creados = ProcesarBloquesPendientesService().procesar(
-                        usuario,
-                        request.POST.get("bloquesPendientes"),
-                    )
-            except DomainError as e:
-                ctx["error"] = str(e)
-                return render(request, "servicios/cuidador_servicios.html", ctx)
-            if total_bloques_creados:
-                messages.success(
-                    request,
-                    f"Configuración guardada y {total_bloques_creados} bloque(s) creados correctamente.",
-                )
-            else:
-                messages.success(request, "Configuración guardada correctamente.")
-            return redirect("cuidador_servicios")
-
-        if action == "eliminar_servicio":
-            try:
-                tipo = (request.POST.get("tipoServicio") or "").strip()
-                resultado = EliminarServicioCuidadorService().eliminar(usuario, tipo)
-                if resultado.get("eventos_historicos"):
-                    messages.success(
-                        request,
-                        "Servicio eliminado. Los eventos con historial fueron desactivados para conservar trazabilidad.",
-                    )
-                else:
-                    messages.success(request, "Servicio eliminado correctamente.")
-            except DomainError as e:
-                messages.error(request, str(e))
-            return redirect("cuidador_servicios")
-
-        if action == "eliminar_evento":
-            editar_tipo = (request.POST.get("editar_tipo") or "").strip()
-            if editar_tipo not in ("paseo", "guarderia"):
-                evento_tipo = ObtenerTipoServicioEventoService().obtener(
-                    usuario,
-                    request.POST.get("evento_id"),
-                )
-                if evento_tipo in (TipoServicio.PASEO, TipoServicio.GUARDERIA):
-                    editar_tipo = evento_tipo
-            try:
-                EliminarEventoService().eliminar(usuario, request.POST.get("evento_id"))
-            except DomainError as e:
-                ctx["error"] = str(e)
-                if editar_tipo in ("paseo", "guarderia"):
-                    ctx["editar_tipo"] = editar_tipo
-                return render(request, "servicios/cuidador_servicios.html", ctx)
-            messages.success(request, "Evento eliminado.")
+        if resultado.get("modo") == "render_error":
+            ctx["error"] = resultado.get("error")
+            editar_tipo = resultado.get("editar_tipo")
             if editar_tipo in ("paseo", "guarderia"):
-                return redirect(f"{request.path}?editar={editar_tipo}")
-            return redirect("cuidador_servicios")
+                ctx["editar_tipo"] = editar_tipo
+            return render(request, "servicios/cuidador_servicios.html", ctx)
 
-        if action == "agregar":
-            editar_tipo = (request.POST.get("editar_tipo") or request.POST.get("tipoServicio") or "").strip()
-            preset = (request.POST.get("preset") or "").strip()
-            datos = {
-                "tipoServicio": request.POST.get("tipoServicio"),
-                "diaSemana": request.POST.get("diaSemana"),
-                "diaSemanaFin": request.POST.get("diaSemanaFin"),
-                "horaInicio": request.POST.get("horaInicio"),
-                "horaFin": request.POST.get("horaFin"),
-                "duracionMinutos": request.POST.get("duracionMinutos"),
-                "capacidadMaxima": request.POST.get("capacidadMaxima"),
-                "nombreLugar": request.POST.get("nombreLugar"),
-                "latitud": request.POST.get("latitud"),
-                "longitud": request.POST.get("longitud"),
-                "precioCOP": request.POST.get("precioCOP"),
-            }
-            if preset:
-                datos["preset"] = preset
-            try:
-                resultado = ProcesarAgregarEventoCuidadorService().procesar(usuario, datos)
-                if resultado.get("modo") == "preset":
-                    creados = resultado.get("creados") or 0
-                    if creados:
-                        messages.success(request, f"Se agregaron {creados} bloques correctamente.")
-                    else:
-                        messages.info(request, "No se agregaron bloques nuevos porque ya existían.")
-                elif resultado.get("modo") == "guarderia_rango":
-                    creados = resultado.get("creados") or 0
-                    if creados:
-                        messages.success(request, f"Se agregaron {creados} bloque(s) de guardería.")
-                    else:
-                        messages.info(request, "No se agregaron bloques porque ya existían para ese rango.")
-                else:
-                    messages.success(request, "Evento agregado correctamente.")
-            except DomainError as e:
-                ctx["error"] = str(e)
-                if editar_tipo in ("paseo", "guarderia"):
-                    ctx["editar_tipo"] = editar_tipo
-                return render(request, "servicios/cuidador_servicios.html", ctx)
-            if editar_tipo in ("paseo", "guarderia"):
-                return redirect(f"{request.path}?editar={editar_tipo}")
-            return redirect("cuidador_servicios")
+        nivel = resultado.get("nivel")
+        mensaje = resultado.get("mensaje")
+        if mensaje and nivel == "success":
+            messages.success(request, mensaje)
+        elif mensaje and nivel == "info":
+            messages.info(request, mensaje)
+        elif mensaje and nivel == "error":
+            messages.error(request, mensaje)
 
-        return redirect("cuidador_servicios")
+        ruta = resultado.get("ruta", "cuidador_servicios")
+        editar_tipo = resultado.get("editar_tipo")
+        if ruta == "cuidador_servicios" and editar_tipo in ("paseo", "guarderia"):
+            return redirect(f"{request.path}?editar={editar_tipo}")
+        return redirect(ruta)
 
-@method_decorator(csrf_exempt, name="dispatch")
 class CrearSolicitudServicioView(LoginRequiredMixin, View):
     def get(self, request):
         return render(request, "servicios/crear_solicitud.html", CrearSolicitudServicioAppService().get_form_context())
@@ -1056,7 +721,11 @@ class CrearSolicitudServicioView(LoginRequiredMixin, View):
             ctx = service.get_form_context()
             ctx["mensaje"] = f"Solicitud creada: {solicitud.idSolicitud}"
             return render(request, "servicios/crear_solicitud.html", ctx)
-        except Exception as e:
+        except DomainError as e:
             ctx = CrearSolicitudServicioAppService().get_form_context()
             ctx["error"] = str(e)
+            return render(request, "servicios/crear_solicitud.html", ctx)
+        except Exception:
+            ctx = CrearSolicitudServicioAppService().get_form_context()
+            ctx["error"] = "Ocurrió un error interno inesperado al crear la solicitud."
         return render(request, "servicios/crear_solicitud.html", ctx)

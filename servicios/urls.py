@@ -1,12 +1,5 @@
 from django.urls import path
 from django.views.generic.base import RedirectView
-
-from servicios.api.views import (
-    DisponibilidadCuidadoresAPIView,
-    SolicitudServicioCancelarAPIView,
-    SolicitudServicioCreateAPIView,
-    SolicitudServicioDetailAPIView,
-)
 from servicios.views import (
     CrearSolicitudServicioView,
     CuidadorCalendarioView,
@@ -60,8 +53,4 @@ urlpatterns = [
     path("perfil/<uuid:usuario_id>/", VerPerfilOtroView.as_view(), name="ver_perfil_otro"),
 
     path("solicitud/crear/", CrearSolicitudServicioView.as_view(), name="crear_solicitud"),
-    path("v1/solicitudes/", SolicitudServicioCreateAPIView.as_view(), name="api_crear_solicitud"),
-    path("v1/solicitudes/<uuid:solicitud_id>/", SolicitudServicioDetailAPIView.as_view(), name="api_detalle_solicitud"),
-    path("v1/solicitudes/<uuid:solicitud_id>/cancelar/", SolicitudServicioCancelarAPIView.as_view(), name="api_cancelar_solicitud"),
-    path("v1/disponibilidad/", DisponibilidadCuidadoresAPIView.as_view(), name="api_disponibilidad_cuidadores"),
 ]
