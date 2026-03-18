@@ -181,6 +181,19 @@ class SolicitudServicioBuilder:
         self._datos['ordenEnRuta'] = orden_ruta
         return self
 
+    def con_duracion_guarderia(self, duracion_minutos: int):
+        # permite calcular tarifa por tiempo solicitado por el dueño (múltiplos de 30 min)
+        try:
+            minutos = int(duracion_minutos)
+        except (ValueError, TypeError):
+            raise DomainValidationError("la duración de guardería debe ser un número entero")
+        if minutos < 60:
+            raise DomainValidationError("la duración mínima de guardería es 1 hora")
+        if minutos % 30 != 0:
+            raise DomainValidationError("la duración de guardería debe ser en múltiplos de 30 minutos")
+        self._datos['duracionGuarderiaMinutos'] = minutos
+        return self
+
     def _validar_precio_cuidador(self):
         # valida tarifa activa por tipo de servicio
         cuidador = self._datos.get('idCuidador')
@@ -222,15 +235,28 @@ class SolicitudServicioBuilder:
         if not precio:
             return 0
         if tipo_servicio == TipoServicio.GUARDERIA:
+            if 'idEvento' in self._datos:
+                evento = self._datos['idEvento']
+                duracion_min = self._datos.get('duracionGuarderiaMinutos')
+                if not duracion_min:
+                    duracion_min = (evento.horaFin.hour * 60 + evento.horaFin.minute) - (
+                        evento.horaInicio.hour * 60 + evento.horaInicio.minute
+                    )
+                tarifa_hora = precio.precioCOP
+                if evento.precioCOP:
+                    tarifa_hora = evento.precioCOP
+                fecha_inicio = self._datos['fecha']
+                fecha_fin = self._datos.get('fechaFin') or fecha_inicio
+                num_days = (fecha_fin - fecha_inicio).days + 1
+                return int(tarifa_hora * (duracion_min / 60.0) * num_days)
+
+            # Compatibilidad con flujo histórico de múltiples días.
             fecha_inicio = self._datos['fecha']
             fecha_fin = self._datos.get('fechaFin')
             if not fecha_fin:
                 return 0
             num_days = (fecha_fin - fecha_inicio).days + 1
-            tarifa_dia = precio.precioCOP  # COP/día
-            if 'idEvento' in self._datos and self._datos['idEvento'].precioCOP:
-                tarifa_dia = self._datos['idEvento'].precioCOP
-            return int(tarifa_dia * num_days)
+            return int(precio.precioCOP * num_days)
         # PASEO: COP/hora o precio del evento
         if 'idEvento' in self._datos:
             evento = self._datos['idEvento']

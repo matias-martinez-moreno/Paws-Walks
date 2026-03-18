@@ -1,124 +1,370 @@
-{% load servicios_extras %}
-<form method="post" id="formEditarPaseo">
-  {% csrf_token %}
-  <input type="hidden" name="action" value="servicio">
-  <input type="hidden" name="editar_tipo" value="paseo">
-  <input type="hidden" name="servicios" value="paseo">
-  {% if precios_activos.guarderia %}<input type="hidden" name="servicios" value="guarderia">{% endif %}
-  {% if precios_activos.entrenamiento %}<input type="hidden" name="servicios" value="entrenamiento">{% endif %}
-  <input type="hidden" name="tarifaGuarderia" value="{% if precios_activos.guarderia %}{{ precios_activos.guarderia.precioCOP }}{% endif %}">
-  <input type="hidden" name="descripcionGuarderia" value="{% if precios_activos.guarderia %}{{ precios_activos.guarderia.descripcion|default:'' }}{% endif %}">
-  <input type="hidden" name="tarifaEntrenamiento" value="{% if precios_activos.entrenamiento %}{{ precios_activos.entrenamiento.precioCOP }}{% endif %}">
-  <input type="hidden" name="descripcionEntrenamiento" value="{% if precios_activos.entrenamiento %}{{ precios_activos.entrenamiento.descripcion|default:'' }}{% endif %}">
-  <input type="hidden" name="lugarEntrenamiento" value="{% if precios_activos.entrenamiento %}{{ precios_activos.entrenamiento.lugarEntrenamiento|default:'' }}{% endif %}">
-  <div class="mb-6 rounded-2xl border border-slate-100/80 bg-white p-6 shadow-sm">
-    <h3 class="text-sm font-semibold text-slate-700 mb-3"><i class="bi bi-geo-alt me-2"></i>Zona de cobertura (Paseo)</h3>
-    <input type="hidden" name="latitud" id="latitudServicios" value="{{ usuario.latitud|default:'' }}">
-    <input type="hidden" name="longitud" id="longitudServicios" value="{{ usuario.longitud|default:'' }}">
-    <div class="flex flex-wrap gap-2 items-center mb-2">
-      <button type="button" class="border-2 border-pw-orange text-pw-orange hover:bg-pw-orange hover:text-white font-semibold rounded-lg px-3 py-1.5 text-sm transition" id="btnUbicacionServ"><i class="bi bi-geo-alt mr-1"></i>Usar mi ubicación</button>
-      <input type="text" name="ciudad" id="ciudadServicios" value="{{ usuario.ciudad|default:'' }}" placeholder="Ciudad" class="rounded-xl border border-slate-300 py-2 px-3 text-sm max-w-[140px] focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none">
-      <button type="button" class="border border-slate-300 text-slate-600 hover:bg-slate-50 font-semibold rounded-lg px-3 py-1.5 text-sm transition" id="btnCentrarCiudadServ"><i class="bi bi-search mr-1"></i>Buscar</button>
-    </div>
-    <div id="mapServicios" style="height: 180px; border-radius: 12px; border: 1px solid #e2e8f0;"></div>
-    <div class="mt-3 flex flex-wrap gap-4 items-center">
-      <div>
-        <label class="block text-xs font-semibold text-slate-600 mb-1">Radio (km)</label>
-        <select name="radioKm" class="rounded-xl border border-slate-300 py-2 px-3 text-sm max-w-[100px] focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" required>
-          <option value="1" {% if usuario.radioKm|floatformat:0 == "1" or not usuario.radioKm %}selected{% endif %}>1 km</option>
-          <option value="2" {% if usuario.radioKm|floatformat:0 == "2" %}selected{% endif %}>2 km</option>
-          <option value="3" {% if usuario.radioKm|floatformat:0 == "3" %}selected{% endif %}>3 km</option>
-          <option value="4" {% if usuario.radioKm|floatformat:0 == "4" %}selected{% endif %}>4 km</option>
-          <option value="5" {% if usuario.radioKm|floatformat:0 == "5" %}selected{% endif %}>5 km</option>
-        </select>
+{% load servicios_extras l10n %}
+<div class="grid gap-6 lg:grid-cols-5">
+  <div class="lg:col-span-3 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+    <div class="mb-5 flex items-center gap-3">
+      <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-amber-50 text-amber-600">
+        <i class="bi bi-paw-fill"></i>
       </div>
       <div>
-        <span class="text-xs font-semibold text-slate-600 mr-2">Mascotas:</span>
-        <label class="inline-flex items-center mr-3"><input type="checkbox" name="tiposMascotaCheck" value="perro" class="rounded border-slate-300 text-pw-orange focus:ring-pw-orange" {% if not perfil or 'perro' in perfil.tiposMascotaPreferidos|default:'ambos' or perfil.tiposMascotaPreferidos == 'ambos' %}checked{% endif %}><span class="ml-1.5 text-sm">Perros</span></label>
-        <label class="inline-flex items-center"><input type="checkbox" name="tiposMascotaCheck" value="gato" class="rounded border-slate-300 text-pw-orange focus:ring-pw-orange" {% if not perfil or 'gato' in perfil.tiposMascotaPreferidos|default:'ambos' or perfil.tiposMascotaPreferidos == 'ambos' %}checked{% endif %}><span class="ml-1.5 text-sm">Gatos</span></label>
+        <h3 class="text-lg font-bold text-slate-800">Configuracion de paseo</h3>
+        <p class="text-sm text-slate-500">Tarifa por hora, radio de cobertura y perfil visible.</p>
       </div>
     </div>
-  </div>
 
-  <div class="svc-card rounded-2xl border border-slate-100/80 bg-white p-6 shadow-sm">
-    <div class="mb-5 flex items-center gap-3 pl-4 border-l-4 border-amber-500">
-      <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-amber-50 text-2xl text-amber-600"><i class="bi bi-paw-fill"></i></div>
-      <div>
-        <h2 class="text-xl font-bold text-slate-800">Paseo</h2>
-        <p class="text-sm text-slate-500">Tarifa, descripción y horarios por reunión</p>
-      </div>
-    </div>
-    <div class="space-y-4">
+    <form method="post" class="space-y-4">
+      {% csrf_token %}
+      <input type="hidden" name="action" value="servicio">
+      <input type="hidden" name="editar_tipo" value="paseo">
+      <input type="hidden" name="bloquesPendientes" id="bloquesPendientesPaseoInput" value="[]">
+      <input type="hidden" name="servicios" value="paseo">
+      {% if precios_activos.guarderia %}<input type="hidden" name="servicios" value="guarderia">{% endif %}
+      <input type="hidden" name="tarifaGuarderia" value="{% if precios_activos.guarderia %}{{ precios_activos.guarderia.precioCOP }}{% endif %}">
+      <input type="hidden" name="descripcionGuarderia" value="{% if precios_activos.guarderia %}{{ precios_activos.guarderia.descripcion|default:'' }}{% endif %}">
+
       <div>
         <label class="mb-1.5 block text-sm font-semibold text-slate-700">Tarifa por hora (COP)</label>
-        <div class="relative">
-          <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 font-medium">$</span>
-          <input name="tarifaPaseo" type="number" min="1" placeholder="15000"
-                 class="w-full rounded-xl border border-slate-200 bg-slate-50 py-2.5 pl-8 pr-4 focus:border-[var(--pw-orange)] focus:bg-white focus:outline-none focus:ring-2 focus:ring-orange-100"
-                 value="{% if precios_activos.paseo %}{{ precios_activos.paseo.precioCOP }}{% endif %}">
-        </div>
+        <input name="tarifaPaseo" type="number" min="1" required value="{% if precios_activos.paseo %}{{ precios_activos.paseo.precioCOP }}{% endif %}" class="w-full rounded-xl border border-slate-300 px-4 py-2.5 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" placeholder="Ej: 18000">
       </div>
+
       <div>
-        <label class="mb-1.5 block text-sm font-semibold text-slate-700">Descripción</label>
-        <textarea name="descripcionPaseo" rows="3" placeholder="Ej: Paseos de 30-60 min, parques cercanos..."
-                  class="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 focus:border-[var(--pw-orange)] focus:bg-white focus:outline-none focus:ring-2 focus:ring-orange-100">{% if precios_activos.paseo %}{{ precios_activos.paseo.descripcion|default:'' }}{% endif %}</textarea>
+        <label class="mb-1.5 block text-sm font-semibold text-slate-700">Descripcion del servicio</label>
+        <textarea name="descripcionPaseo" rows="3" class="w-full rounded-xl border border-slate-300 px-4 py-2.5 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" placeholder="Cuenta como es tu paseo, zonas favoritas y condiciones.">{% if precios_activos.paseo %}{{ precios_activos.paseo.descripcion|default:'' }}{% endif %}</textarea>
       </div>
-    </div>
-    <div class="mt-6 border-t border-slate-100 pt-5">
-      <div class="mb-3 flex flex-wrap items-center justify-between gap-2">
-        <h3 class="text-sm font-semibold text-slate-600">Horarios disponibles</h3>
-        <div class="flex flex-wrap items-center gap-2">
-          <button type="button" class="border-2 border-pw-orange text-pw-orange hover:bg-pw-orange hover:text-white font-semibold rounded-lg py-1 px-2 text-xs transition" data-modal="rapidoPaseoModal" data-preset="todos"><i class="bi bi-calendar-week mr-1"></i>Todos</button>
-          <button type="button" class="border-2 border-pw-orange text-pw-orange hover:bg-pw-orange hover:text-white font-semibold rounded-lg py-1 px-2 text-xs transition" data-modal="rapidoPaseoModal" data-preset="fines_semana"><i class="bi bi-calendar2-weekend mr-1"></i>Fines</button>
-          <button type="button" class="border-2 border-pw-orange text-pw-orange hover:bg-pw-orange hover:text-white font-semibold rounded-lg py-1 px-2 text-xs transition" data-modal="rapidoPaseoModal" data-preset="entre_semana"><i class="bi bi-briefcase mr-1"></i>Entre semana</button>
-          <span class="text-slate-300">|</span>
-          <button type="button" class="bg-pw-orange hover:bg-pw-orange-dark text-white font-semibold rounded-lg py-1.5 px-2 text-xs transition" data-modal="addVentanaPaseoModal"><i class="bi bi-people mr-1"></i>Reunión con cupos</button>
-          <button type="button" class="border-2 border-pw-orange text-pw-orange hover:bg-pw-orange hover:text-white font-semibold rounded-lg py-1.5 px-2 text-xs transition" data-modal="addBlockPaseoModal"><i class="bi bi-plus-lg mr-1"></i>Reunión única</button>
-        </div>
-      </div>
-      {% if horarios_por_dia %}
-      <div class="space-y-3">
-        {% for dia_val, dia_label, items in horarios_por_dia %}
+
+      <div class="grid gap-4 sm:grid-cols-2">
         <div>
-          <div class="text-xs font-semibold text-slate-600 mb-1">{{ dia_label }}</div>
-          <div class="space-y-1.5">
-            {% for e in items.eventos %}
-            <div class="bloque-row flex items-center justify-between rounded-lg {% if e.duracionSlotMinutos %}bg-amber-50{% else %}bg-slate-50{% endif %} px-3 py-2">
-              <div class="flex flex-col gap-0.5">
-                <span class="text-sm text-slate-500">{{ e.horaInicio|hora_corta }} – {{ e.horaFin|hora_corta }}{% if e.duracionSlotMinutos %} ({{ e.slots_disponibles_count }}/{{ e.capacidadMaxima }}){% endif %}</span>
-                {% if e.nombreLugar %}<span class="text-xs text-slate-600"><i class="bi bi-geo-alt mr-1"></i>{{ e.nombreLugar }}{% if e.precioCOP %} · ${{ e.precioCOP|formato_cop }}{% endif %}</span>{% endif %}
-              </div>
-              <form method="post" class="inline">{% csrf_token %}<input type="hidden" name="action" value="eliminar_evento"><input type="hidden" name="evento_id" value="{{ e.idEvento }}"><button type="submit" class="rounded p-1 text-slate-400 hover:bg-red-50 hover:text-red-600" onclick="return confirm('¿Eliminar?');"><i class="bi bi-trash text-sm"></i></button></form>
-            </div>
-            {% endfor %}
-            {% for v in items.ventanas %}
-            <div class="bloque-row flex items-center justify-between rounded-lg bg-amber-50 px-3 py-2">
-              <div class="flex flex-col gap-0.5">
-                <span class="text-sm text-slate-500">{{ v.horaInicio|hora_corta }} – {{ v.horaFin|hora_corta }} ({{ v.slots_disponibles_count }}/{{ v.capacidadMaxima }})</span>
-                {% if v.nombreLugar %}<span class="text-xs text-slate-600"><i class="bi bi-geo-alt mr-1"></i>{{ v.nombreLugar }}{% if v.precioCOP %} · ${{ v.precioCOP|formato_cop }}{% endif %}</span>{% endif %}
-              </div>
-              <form method="post" class="inline">{% csrf_token %}<input type="hidden" name="action" value="eliminar_ventana"><input type="hidden" name="ventana_id" value="{{ v.idVentana }}"><button type="submit" class="rounded p-1 text-slate-400 hover:bg-red-50 hover:text-red-600" onclick="return confirm('¿Eliminar?');"><i class="bi bi-trash text-sm"></i></button></form>
-            </div>
-            {% endfor %}
-            {% for b in items.bloques %}
-            <div class="bloque-row flex items-center justify-between rounded-lg bg-slate-50 px-3 py-2">
-              <div class="flex flex-col gap-0.5">
-                <span class="text-sm text-slate-500">{{ b.horaInicio|hora_corta }} – {{ b.horaFin|hora_corta }}</span>
-                {% if b.nombreLugar %}<span class="text-xs text-slate-600"><i class="bi bi-geo-alt mr-1"></i>{{ b.nombreLugar }}{% if b.precioCOP %} · ${{ b.precioCOP|formato_cop }}{% endif %}</span>{% endif %}
-              </div>
-              <form method="post" class="inline">{% csrf_token %}<input type="hidden" name="action" value="eliminar"><input type="hidden" name="bloque_id" value="{{ b.idBloque }}"><button type="submit" class="rounded p-1 text-slate-400 hover:bg-red-50 hover:text-red-600" onclick="return confirm('¿Eliminar?');"><i class="bi bi-trash text-sm"></i></button></form>
-            </div>
-            {% endfor %}
+          <label class="mb-1.5 block text-sm font-semibold text-slate-700">Ubicacion</label>
+          <div class="relative">
+            <input name="ciudad" id="ciudadServiciosPaseo" value="{{ servicio_ciudad|default:'' }}" class="w-full rounded-xl border border-slate-300 px-4 py-2.5 pr-11 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" placeholder="Ej: Medellin">
+            <button type="button" id="btnBuscarCiudadPaseo" class="absolute right-2 top-1/2 -translate-y-1/2 rounded-lg p-1.5 text-slate-500 hover:bg-slate-100 hover:text-slate-700" aria-label="Buscar ubicacion escrita">
+              <i class="bi bi-search"></i>
+            </button>
           </div>
         </div>
+        <div>
+          <label class="mb-1.5 block text-sm font-semibold text-slate-700">Radio de cobertura (km)</label>
+          <select name="radioKm" required class="w-full rounded-xl border border-slate-300 px-4 py-2.5 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none">
+            <option value="1" {% if servicio_radio_km|floatformat:0 == "1" or not servicio_radio_km %}selected{% endif %}>1 km</option>
+            <option value="2" {% if servicio_radio_km|floatformat:0 == "2" %}selected{% endif %}>2 km</option>
+            <option value="3" {% if servicio_radio_km|floatformat:0 == "3" %}selected{% endif %}>3 km</option>
+          </select>
+        </div>
+      </div>
+
+      <input type="hidden" id="latitudServiciosPaseo" name="latitud" value="{{ servicio_latitud|default_if_none:''|unlocalize }}">
+      <input type="hidden" id="longitudServiciosPaseo" name="longitud" value="{{ servicio_longitud|default_if_none:''|unlocalize }}">
+      <div class="space-y-2">
+        <div class="flex flex-wrap gap-2">
+          <button type="button" id="btnUbicacionPaseo" class="rounded-lg border border-pw-orange px-3 py-1.5 text-xs font-semibold text-pw-orange hover:bg-pw-orange hover:text-white">Usar mi ubicacion</button>
+        </div>
+        <div id="mapServiciosPaseo" class="h-44 rounded-xl border border-slate-200"></div>
+      </div>
+
+      <input type="hidden" name="tiposMascotaCheck" value="perro">
+      <div class="rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-800">
+        Paseo disponible solo para perros.
+      </div>
+
+      <button type="submit" class="w-full rounded-xl bg-pw-orange px-4 py-2.5 text-sm font-semibold text-white hover:bg-pw-orange-dark">
+        Guardar configuracion de paseo
+      </button>
+    </form>
+
+    {% if precios_activos.paseo %}
+    <form method="post" class="mt-3">
+      {% csrf_token %}
+      <input type="hidden" name="action" value="eliminar_servicio">
+      <input type="hidden" name="tipoServicio" value="paseo">
+      <button type="submit" class="w-full rounded-xl border border-red-300 px-4 py-2.5 text-sm font-semibold text-red-700 hover:bg-red-50" onclick="return confirm('¿Eliminar servicio de paseo?');">Eliminar paseo</button>
+    </form>
+    {% endif %}
+  </div>
+
+  <div class="lg:col-span-2 space-y-6">
+    <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+      <h4 class="text-sm font-bold text-slate-800">Agregar bloque de paseo</h4>
+      <p class="mt-1 text-xs text-slate-500">Solo eliges hora de inicio y duración. No necesitas fecha de fin ni volver a escribir el lugar.</p>
+      <form method="post" class="mt-4 space-y-3" id="formAgregarBloquePaseo" onsubmit="return false;">
+        {% csrf_token %}
+        <input type="hidden" id="nombreLugarPaseoBloque" value="{{ servicio_ciudad|default:'' }}">
+
+        <input type="hidden" name="preset" id="presetPaseo" value="">
+        <div>
+          <label class="mb-1 block text-xs font-semibold text-slate-600">Añadir rapido (opcional)</label>
+          <div class="grid grid-cols-3 gap-2">
+            <button type="button" data-preset-btn="paseo" data-preset-value="entre_semana" class="rounded-lg border border-slate-300 px-2 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50">Entre semana</button>
+            <button type="button" data-preset-btn="paseo" data-preset-value="fines_semana" class="rounded-lg border border-slate-300 px-2 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50">Fines de semana</button>
+            <button type="button" data-preset-btn="paseo" data-preset-value="todos" class="rounded-lg border border-slate-300 px-2 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50">Todos los dias</button>
+          </div>
+          <div class="mt-1 flex items-center justify-between">
+            <p id="presetPaseoEstado" class="text-[11px] text-slate-500">Sin atajo seleccionado</p>
+            <button type="button" id="presetPaseoLimpiar" class="text-[11px] font-semibold text-slate-500 hover:text-slate-700">Limpiar</button>
+          </div>
+          <p class="mt-1 text-[11px] text-slate-500">Se aplican al pulsar "Agregar un dia" con la hora y duración elegidas.</p>
+        </div>
+
+        <div id="diaPaseoWrap">
+          <label class="mb-1 block text-xs font-semibold text-slate-600">Dia</label>
+          <select id="diaPaseoSelect" name="diaSemana" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none">
+            <option value="" selected disabled>Selecciona un dia</option>
+            {% for val, label in dias_semana %}<option value="{{ val }}">{{ label }}</option>{% endfor %}
+          </select>
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="mb-1 block text-xs font-semibold text-slate-600">Inicio</label>
+            <input id="horaPaseoInicioInput" name="horaInicio" type="time" value="09:00" step="1800" required class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none">
+            <div class="mt-1 flex flex-wrap gap-1">
+              <button type="button" class="rounded-md border border-slate-200 px-1.5 py-0.5 text-[11px] text-slate-600 hover:bg-slate-100" data-hora-paseo="07:00">7:00</button>
+              <button type="button" class="rounded-md border border-slate-200 px-1.5 py-0.5 text-[11px] text-slate-600 hover:bg-slate-100" data-hora-paseo="09:00">9:00</button>
+              <button type="button" class="rounded-md border border-slate-200 px-1.5 py-0.5 text-[11px] text-slate-600 hover:bg-slate-100" data-hora-paseo="15:00">15:00</button>
+            </div>
+          </div>
+          <div>
+            <label class="mb-1 block text-xs font-semibold text-slate-600">Duracion</label>
+            <select id="duracionPaseoInput" name="duracionMinutos" required class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none">
+              <option value="60">1 hora</option>
+              <option value="90">1.5 horas</option>
+              <option value="120" selected>2 horas</option>
+              <option value="150">2.5 horas</option>
+              <option value="180">3 horas</option>
+            </select>
+            <div class="mt-1 flex flex-wrap gap-1">
+              <button type="button" data-duracion-paseo="60" class="rounded-md border border-slate-200 px-1.5 py-0.5 text-[11px] text-slate-600 hover:bg-slate-100">1h</button>
+              <button type="button" data-duracion-paseo="90" class="rounded-md border border-slate-200 px-1.5 py-0.5 text-[11px] text-slate-600 hover:bg-slate-100">1.5h</button>
+              <button type="button" data-duracion-paseo="120" class="rounded-md border border-slate-200 px-1.5 py-0.5 text-[11px] text-slate-600 hover:bg-slate-100">2h</button>
+            </div>
+          </div>
+        </div>
+        <div>
+          <label class="mb-1 block text-xs font-semibold text-slate-600">Cupo maximo del bloque</label>
+          <select id="capacidadPaseoInput" name="capacidadMaxima" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none">
+            <option value="1">1 perro</option>
+            <option value="2">2 perros</option>
+            <option value="3">3 perros</option>
+            <option value="4" selected>4 perros</option>
+          </select>
+          <p class="mt-1 text-[11px] text-slate-500">Para paseo el cupo permitido es de 1 a 4 perros.</p>
+        </div>
+        <button type="button" id="btnAgregarBloquePaseoLocal" class="w-full rounded-lg bg-slate-900 px-3 py-2 text-sm font-semibold text-white hover:bg-slate-800">Agregar bloque (pendiente)</button>
+      </form>
+
+      <div id="bloquesPaseoPendientesWrap" class="mt-3 hidden rounded-lg border border-amber-200 bg-amber-50 p-3">
+        <p class="text-xs font-semibold uppercase tracking-wide text-amber-700">Pendientes por guardar</p>
+        <div id="bloquesPaseoPendientesList" class="mt-2 space-y-2"></div>
+      </div>
+    </div>
+
+    <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+      <h4 class="text-sm font-bold text-slate-800">Bloques configurados</h4>
+      {% if horarios_paseo_por_dia %}
+      <div class="mt-3 space-y-3">
+        {% for dia_val, dia_label, items in horarios_paseo_por_dia %}
+          {% if items.eventos %}
+          <div>
+            <p class="mb-1 text-xs font-semibold uppercase tracking-wide text-slate-500">{{ dia_label }}</p>
+            <div class="space-y-2">
+              {% for e in items.eventos %}
+              <div class="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2">
+                <div class="flex items-start justify-between gap-2">
+                  <div>
+                    <p class="text-sm font-semibold text-slate-700">{{ e.horaInicio|hora_corta }} - {{ e.horaFin|hora_corta }}</p>
+                    {% if e.nombreLugar %}<p class="text-xs text-slate-500">{{ e.nombreLugar }}</p>{% endif %}
+                    <p class="text-xs text-slate-500">Cupo maximo: {{ e.capacidadMaxima }} perro{{ e.capacidadMaxima|pluralize }}</p>
+                  </div>
+                  <form method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="eliminar_evento">
+                    <input type="hidden" name="evento_id" value="{{ e.idEvento }}">
+                    <input type="hidden" name="editar_tipo" value="paseo">
+                    <button type="submit" class="rounded-md p-1 text-slate-400 hover:bg-red-50 hover:text-red-600" onclick="return confirm('¿Eliminar bloque?');"><i class="bi bi-trash"></i></button>
+                  </form>
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+          {% endif %}
         {% endfor %}
       </div>
       {% else %}
-      <div class="rounded-xl border-2 border-dashed border-slate-200 py-6 text-center text-sm text-slate-500">Sin horarios. Usa los botones de arriba para agregar.</div>
+      <p class="mt-3 text-sm text-slate-500">Todavia no has agregado bloques de paseo.</p>
       {% endif %}
     </div>
-    <div class="mt-6 flex justify-end">
-      <button type="submit" class="bg-pw-orange hover:bg-pw-orange-dark text-white font-semibold rounded-xl px-6 py-2.5 transition"><i class="bi bi-check-lg mr-2"></i>Guardar cambios</button>
-    </div>
   </div>
-</form>
+</div>
+
+<script>
+(function () {
+  var ciudadServicios = document.getElementById("ciudadServiciosPaseo");
+  var nombreLugarBloque = document.getElementById("nombreLugarPaseoBloque");
+  var horaInicioInput = document.getElementById("horaPaseoInicioInput");
+  var duracionInput = document.getElementById("duracionPaseoInput");
+  var botonesHora = document.querySelectorAll("[data-hora-paseo]");
+  var botonesDuracion = document.querySelectorAll("[data-duracion-paseo]");
+  var btnAgregarLocal = document.getElementById("btnAgregarBloquePaseoLocal");
+  var bloquesPendientesInput = document.getElementById("bloquesPendientesPaseoInput");
+  var pendientesWrap = document.getElementById("bloquesPaseoPendientesWrap");
+  var pendientesList = document.getElementById("bloquesPaseoPendientesList");
+  var capacidadInput = document.getElementById("capacidadPaseoInput");
+  var latInput = document.getElementById("latitudServiciosPaseo");
+  var lngInput = document.getElementById("longitudServiciosPaseo");
+
+  var pendientes = [];
+
+  function syncPendientes() {
+    if (!bloquesPendientesInput) {
+      return;
+    }
+    bloquesPendientesInput.value = JSON.stringify(pendientes);
+
+    if (!pendientesWrap || !pendientesList) {
+      return;
+    }
+
+    if (!pendientes.length) {
+      pendientesWrap.classList.add("hidden");
+      pendientesList.innerHTML = "";
+      return;
+    }
+
+    pendientesWrap.classList.remove("hidden");
+    pendientesList.innerHTML = "";
+
+    pendientes.forEach(function (item, idx) {
+      var row = document.createElement("div");
+      row.className = "flex items-center justify-between gap-2 rounded-md border border-amber-300 bg-white px-2.5 py-2";
+
+      var descripcion = "";
+      if (item.preset) {
+        descripcion = "Atajo " + item.preset + " · " + item.horaInicio + " · " + item.duracionMinutos + " min";
+      } else {
+        descripcion = item.diaSemana + " · " + item.horaInicio + " · " + item.duracionMinutos + " min";
+      }
+      row.innerHTML =
+        '<p class="text-xs text-slate-700">' + descripcion + '</p>' +
+        '<button type="button" class="rounded border border-amber-300 px-2 py-1 text-[11px] font-semibold text-amber-700 hover:bg-amber-100">Quitar</button>';
+
+      var btnQuitar = row.querySelector("button");
+      btnQuitar.addEventListener("click", function () {
+        pendientes.splice(idx, 1);
+        syncPendientes();
+      });
+
+      pendientesList.appendChild(row);
+    });
+  }
+
+  function syncNombreLugarPaseo() {
+    if (!ciudadServicios || !nombreLugarBloque) {
+      return;
+    }
+    nombreLugarBloque.value = (ciudadServicios.value || "").trim();
+  }
+
+  syncNombreLugarPaseo();
+  ciudadServicios?.addEventListener("input", syncNombreLugarPaseo);
+
+  var hidden = document.getElementById("presetPaseo");
+  var estado = document.getElementById("presetPaseoEstado");
+  var limpiar = document.getElementById("presetPaseoLimpiar");
+  var diaWrap = document.getElementById("diaPaseoWrap");
+  var diaSelect = document.getElementById("diaPaseoSelect");
+  var botones = document.querySelectorAll('[data-preset-btn="paseo"]');
+
+  var labels = {
+    entre_semana: "Atajo activo: Entre semana",
+    fines_semana: "Atajo activo: Fines de semana",
+    todos: "Atajo activo: Todos los dias"
+  };
+
+  function renderPreset() {
+    if (!hidden || !estado || !botones.length) {
+      return;
+    }
+
+    botones.forEach(function (btn) {
+      var activo = btn.getAttribute("data-preset-value") === hidden.value;
+      if (activo) {
+        btn.classList.add("border-pw-orange", "text-pw-orange", "bg-orange-50");
+      } else {
+        btn.classList.remove("border-pw-orange", "text-pw-orange", "bg-orange-50");
+      }
+    });
+    var tienePreset = !!hidden.value;
+    estado.textContent = labels[hidden.value] || "Sin atajo seleccionado";
+    if (diaWrap && diaSelect) {
+      diaWrap.style.display = tienePreset ? "none" : "block";
+      diaSelect.disabled = tienePreset;
+      diaSelect.required = !tienePreset;
+      if (tienePreset) {
+        diaSelect.value = "";
+      }
+    }
+  }
+
+  if (botones.length && hidden) {
+    botones.forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        hidden.value = btn.getAttribute("data-preset-value") || "";
+        renderPreset();
+      });
+    });
+  }
+
+  botonesHora.forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      if (!horaInicioInput) {
+        return;
+      }
+      horaInicioInput.value = btn.getAttribute("data-hora-paseo") || "09:00";
+    });
+  });
+
+  botonesDuracion.forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      if (!duracionInput) {
+        return;
+      }
+      duracionInput.value = btn.getAttribute("data-duracion-paseo") || "120";
+    });
+  });
+
+  limpiar?.addEventListener("click", function () {
+    if (hidden) {
+      hidden.value = "";
+    }
+    renderPreset();
+  });
+
+  btnAgregarLocal?.addEventListener("click", function () {
+    syncNombreLugarPaseo();
+    var item = {
+      tipoServicio: "paseo",
+      preset: hidden ? (hidden.value || "") : "",
+      diaSemana: diaSelect ? (diaSelect.value || "") : "",
+      horaInicio: horaInicioInput ? (horaInicioInput.value || "") : "",
+      duracionMinutos: duracionInput ? (duracionInput.value || "") : "",
+      capacidadMaxima: capacidadInput ? (capacidadInput.value || "") : "",
+      nombreLugar: nombreLugarBloque ? (nombreLugarBloque.value || "") : "",
+      latitud: latInput ? (latInput.value || "") : "",
+      longitud: lngInput ? (lngInput.value || "") : ""
+    };
+
+    if (!item.horaInicio || !item.duracionMinutos) {
+      window.alert("Completa hora de inicio y duración antes de agregar.");
+      return;
+    }
+    if (!item.preset && !item.diaSemana) {
+      window.alert("Selecciona un día o usa un atajo de días.");
+      return;
+    }
+
+    pendientes.push(item);
+    syncPendientes();
+  });
+
+  renderPreset();
+  syncPendientes();
+})();
+</script>

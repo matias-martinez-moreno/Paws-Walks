@@ -22,29 +22,42 @@
 <body class="min-h-screen bg-gradient-to-br from-slate-50 via-white to-orange-50/30 font-['Segoe_UI',system-ui,-apple-system,sans-serif] text-slate-800">
 <div class="min-h-screen flex flex-col">
   <div class="grid min-h-screen md:grid-cols-12">
-    <section class="hidden md:flex md:col-span-5 bg-gradient-to-br from-pw-orange/5 via-slate-50 to-orange-50/20 border-r border-slate-200/80 px-10 py-12 items-center">
-      <div class="max-w-md">
-        <img src="{% static 'servicios/img/logo.png' %}" alt="Paws & Walks" class="w-64 h-64 object-contain mb-3">
+    <section class="hidden md:flex md:col-span-5 bg-white border-r border-slate-200 px-10 py-8 items-start">
+      <div class="max-w-md pt-2">
+        <img src="{% static 'servicios/img/logo.png' %}" alt="Paws & Walks" class="w-72 h-72 object-contain mb-3">
         <h1 class="text-4xl font-extrabold tracking-tight text-slate-800 mb-2">Paws & Walks</h1>
         <p class="text-slate-600 text-base leading-relaxed mb-6">
-          Tu aliado para el cuidado de tus mascotas.<br>
-          Conectamos <strong>dueños</strong> con <strong>cuidadores verificados</strong>.
+          Tu aliado confiable para el cuidado diario de tus mascotas.<br>
+          Conectamos <strong>dueños</strong> con <strong>cuidadores verificados</strong> para paseos y guardería,
+          con seguimiento claro de cada reserva, horarios y estado del servicio.
         </p>
         <div class="space-y-3">
-          <div class="flex items-center gap-3 rounded-xl border border-slate-200/80 bg-white/80 backdrop-blur-sm px-4 py-3 text-sm text-slate-600 shadow-sm hover:shadow-md transition-shadow">
-            <i class="bi bi-shield-check text-pw-orange text-xl"></i><span>Cuidadores verificados</span>
+          <div class="flex items-start gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-600 shadow-sm hover:shadow-md transition-shadow">
+            <i class="bi bi-shield-check text-pw-orange text-xl mt-0.5"></i>
+            <div>
+              <p class="font-semibold text-slate-700">Cuidadores verificados</p>
+              <p class="text-xs text-slate-500">Perfiles con datos completos y reputación visible para elegir con confianza.</p>
+            </div>
           </div>
-          <div class="flex items-center gap-3 rounded-xl border border-slate-200/80 bg-white/80 backdrop-blur-sm px-4 py-3 text-sm text-slate-600 shadow-sm hover:shadow-md transition-shadow">
-            <i class="bi bi-calendar-check text-pw-orange text-xl"></i><span>Reserva y seguimiento en tiempo real</span>
+          <div class="flex items-start gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-600 shadow-sm hover:shadow-md transition-shadow">
+            <i class="bi bi-calendar-check text-pw-orange text-xl mt-0.5"></i>
+            <div>
+              <p class="font-semibold text-slate-700">Reserva y seguimiento en tiempo real</p>
+              <p class="text-xs text-slate-500">Agenda por día, consulta disponibilidad y revisa cada cambio desde tu panel.</p>
+            </div>
           </div>
-          <div class="flex items-center gap-3 rounded-xl border border-slate-200/80 bg-white/80 backdrop-blur-sm px-4 py-3 text-sm text-slate-600 shadow-sm hover:shadow-md transition-shadow">
-            <i class="bi bi-heart text-pw-orange text-xl"></i><span>Tranquilidad garantizada</span>
+          <div class="flex items-start gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-600 shadow-sm hover:shadow-md transition-shadow">
+            <i class="bi bi-heart text-pw-orange text-xl mt-0.5"></i>
+            <div>
+              <p class="font-semibold text-slate-700">Tranquilidad garantizada</p>
+              <p class="text-xs text-slate-500">Toda la información de tu mascota y tus reservas en un solo lugar.</p>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="md:col-span-7 flex items-center justify-center px-4 py-10">
+    <section class="md:col-span-7 flex items-center justify-center px-4 py-6">
       <div class="w-full max-w-md md:max-w-lg bg-white/95 backdrop-blur-sm rounded-2xl shadow-xl border border-slate-100 px-6 py-8">
         <h2 class="text-3xl font-extrabold tracking-tight text-slate-800 mb-1">Bienvenido de nuevo</h2>
         <p class="text-slate-500 text-sm mb-6">Ingresa con tu usuario y contraseña para continuar.</p>
@@ -101,7 +114,7 @@
   <footer class="w-full border-t border-slate-200/80 bg-white/50 backdrop-blur-sm px-4 py-4 text-center text-xs text-slate-500">
     <p>
       <a href="{% url 'terminos_condiciones' %}" class="text-pw-orange hover:underline">Términos y condiciones</a>
-      · <a href="#" class="text-pw-orange hover:underline">Política de privacidad</a>
+      · <a href="{% url 'politica_privacidad' %}" class="text-pw-orange hover:underline">Política de privacidad</a>
       · <a href="mailto:contacto@pawswalks.co" class="text-pw-orange hover:underline">Contacto</a>
     </p>
     <p class="mt-1">© 2026 Paws & Walks. Contacto: contacto@pawswalks.co · +57 300 123 4567</p>

@@ -10,6 +10,17 @@ class TipoMascota(models.TextChoices):
     GATO = 'gato', 'Gato'
 
 
+class SexoMascota(models.TextChoices):
+    MACHO = 'macho', 'Macho'
+    HEMBRA = 'hembra', 'Hembra'
+
+
+class TamanoMascota(models.TextChoices):
+    PEQUENO = 'pequeno', 'Pequeño'
+    MEDIANO = 'mediano', 'Mediano'
+    GRANDE = 'grande', 'Grande'
+
+
 class RolUsuario(models.TextChoices):
     DUEÑO = 'dueño', 'Dueño'
     CUIDADOR = 'cuidador', 'Cuidador'
@@ -18,7 +29,6 @@ class RolUsuario(models.TextChoices):
 class TipoServicio(models.TextChoices):
     PASEO = 'paseo', 'Paseo'
     GUARDERIA = 'guarderia', 'Guardería'
-    ENTRENAMIENTO = 'entrenamiento', 'Entrenamiento'
 
 
 class DiaSemana(models.TextChoices):
@@ -36,7 +46,7 @@ class EstadoSolicitud(models.TextChoices):
     ACEPTADO = 'aceptado', 'Aceptado'
     RECHAZADO = 'rechazado', 'Rechazado'
     CANCELADO = 'cancelado', 'Cancelado'
-    COMPLETADO = 'completado', 'Completado'
+    COMPLETADO = 'completado', 'Finalizado'
 
 
 class Usuario(models.Model):
@@ -53,9 +63,10 @@ class Usuario(models.Model):
     telefono = models.CharField(max_length=20)
     fechaNacimiento = models.DateField()
     ciudad = models.CharField(max_length=100)
+    direccion = models.CharField(max_length=200, blank=True, default='')
     latitud = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True, help_text="Para búsqueda por proximidad")
     longitud = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True, help_text="Para búsqueda por proximidad")
-    radioKm = models.DecimalField(max_digits=5, decimal_places=1, null=True, blank=True, validators=[MinValueValidator(1), MaxValueValidator(100)], help_text="Radio de cobertura en km (solo cuidadores)")
+    radioKm = models.DecimalField(max_digits=5, decimal_places=1, null=True, blank=True, validators=[MinValueValidator(1), MaxValueValidator(3)], help_text="Radio de cobertura en km (solo cuidadores, 1-3 km)")
     rol = models.CharField(max_length=20, choices=RolUsuario.choices)
     fotoPerfil = models.ImageField(upload_to='perfiles/', blank=True, null=True)
     verificado = models.BooleanField(default=False)
@@ -72,8 +83,13 @@ class Mascota(models.Model):
     tipo = models.CharField(max_length=20, choices=TipoMascota.choices)
     foto = models.ImageField(upload_to='mascotas/', blank=True, null=True)
     raza = models.CharField(max_length=100, blank=True, default='')
+    sexo = models.CharField(max_length=10, choices=SexoMascota.choices, blank=True, default='')
+    tamano = models.CharField(max_length=20, choices=TamanoMascota.choices, blank=True, default='')
     edad = models.IntegerField(validators=[MinValueValidator(0)])
     peso = models.DecimalField(max_digits=5, decimal_places=1, null=True, blank=True)
+    esterilizado = models.BooleanField(default=False)
+    vacunasAlDia = models.BooleanField(default=False)
+    condicionesMedicas = models.TextField(blank=True, default='')
     notas = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -91,6 +107,17 @@ class PerfilCuidador(models.Model):
     descripcion = models.TextField(blank=True, default='')
     tarifaHora = models.IntegerField(validators=[MinValueValidator(0)], default=0)
     tiposMascotaPreferidos = models.CharField(max_length=50, default='ambos', help_text="perro, gato o ambos")
+    ciudadServicio = models.CharField(max_length=100, blank=True, default='', help_text="Ciudad operativa usada en búsqueda de servicios")
+    latitudServicio = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True, help_text="Ubicación operativa para servicios")
+    longitudServicio = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True, help_text="Ubicación operativa para servicios")
+    radioKmServicio = models.DecimalField(
+        max_digits=5,
+        decimal_places=1,
+        null=True,
+        blank=True,
+        validators=[MinValueValidator(1), MaxValueValidator(3)],
+        help_text="Radio de cobertura operativo en km (1-3)",
+    )
 
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -169,6 +196,7 @@ class Evento(models.Model):
     tipoServicio = models.CharField(max_length=20, choices=TipoServicio.choices)
 
     nombreLugar = models.CharField(max_length=120, blank=True, default='')
+    descripcion = models.TextField(blank=True, default='')
     latitud = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
     longitud = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
 
@@ -208,11 +236,6 @@ class SlotEvento(models.Model):
         return f"{self.idEvento} - {self.horaInicio}"
 
 
-class LugarEntrenamiento(models.TextChoices):
-    CUIDADOR = 'cuidador', 'En mi lugar (cuidador)'
-    DUEÑO = 'dueño', 'En casa del dueño'
-
-
 class PrecioServicio(models.Model):
     idPrecio = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     idCuidador = models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name='precios_servicio')
@@ -220,7 +243,6 @@ class PrecioServicio(models.Model):
     precioCOP = models.IntegerField(validators=[MinValueValidator(1)])
     descripcion = models.TextField(blank=True, default='')
     activo = models.BooleanField(default=True)
-    lugarEntrenamiento = models.CharField(max_length=20, choices=LugarEntrenamiento.choices, null=True, blank=True, help_text='Solo para Entrenamiento: dónde se realiza')
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -267,15 +289,86 @@ class SolicitudServicio(models.Model):
 class Calificacion(models.Model):
     idCalificación = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     idDe = models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name='calificaciones_dadas')
-    idParaCuidador = models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name='calificaciones_recibidas')
-    idSolicitud = models.OneToOneField(SolicitudServicio, on_delete=models.CASCADE, null=True, blank=True, related_name='calificacion')
+    idParaUsuario = models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name='calificaciones_recibidas')
+    idSolicitud = models.ForeignKey(SolicitudServicio, on_delete=models.CASCADE, null=True, blank=True, related_name='calificaciones')
     estrellas = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
     comentario = models.TextField(blank=True)
     fecha = models.DateField(auto_now_add=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['idSolicitud', 'idDe'], name='uniq_calificacion_solicitud_autor'),
+        ]
+
     def __str__(self):
-        return f"Calificación {self.estrellas}/5 - {self.idDe.nombre} -> {self.idParaCuidador.nombre}"
+        return f"Calificación {self.estrellas}/5 - {self.idDe.nombre} -> {self.idParaUsuario.nombre}"
+
+
+class CalificacionMascota(models.Model):
+    idCalificacionMascota = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    idDe = models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name='calificaciones_mascota_dadas')
+    idParaMascota = models.ForeignKey(Mascota, on_delete=models.CASCADE, related_name='calificaciones_recibidas')
+    idSolicitud = models.ForeignKey(SolicitudServicio, on_delete=models.CASCADE, null=True, blank=True, related_name='calificaciones_mascota')
+    estrellas = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
+    comentario = models.TextField(blank=True)
+    fecha = models.DateField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['idSolicitud', 'idDe'], name='uniq_calificacion_mascota_solicitud_autor'),
+        ]
+
+    def __str__(self):
+        return f"Calificación mascota {self.estrellas}/5 - {self.idDe.nombre} -> {self.idParaMascota.nombreMascota}"
+
+
+class CategoriaNotificacion(models.TextChoices):
+    NEGOCIO = 'negocio', 'Negocio'
+    SISTEMA = 'sistema', 'Sistema'
+
+
+class TipoNotificacion(models.TextChoices):
+    NUEVA_RESERVA = 'nueva_reserva', 'Nueva reserva'
+    RESERVA_ACEPTADA = 'reserva_aceptada', 'Reserva aceptada'
+    RESERVA_RECHAZADA = 'reserva_rechazada', 'Reserva rechazada'
+    RESERVA_CANCELADA = 'reserva_cancelada', 'Reserva cancelada'
+    SERVICIO_COMPLETADO = 'servicio_completado', 'Servicio completado'
+    RESENA_PENDIENTE = 'resena_pendiente', 'Reseña pendiente'
+    MENSAJE_CHAT = 'mensaje_chat', 'Mensaje de chat'
+    MASCOTA_CREADA = 'mascota_creada', 'Mascota creada'
+    MASCOTA_EDITADA = 'mascota_editada', 'Mascota editada'
+    MASCOTA_ELIMINADA = 'mascota_eliminada', 'Mascota eliminada'
+    PERFIL_ACTUALIZADO = 'perfil_actualizado', 'Perfil actualizado'
+
+
+class Notificacion(models.Model):
+    idNotificacion = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    idParaUsuario = models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name='notificaciones_recibidas')
+    idActorUsuario = models.ForeignKey(Usuario, on_delete=models.SET_NULL, null=True, blank=True, related_name='notificaciones_generadas')
+    idSolicitud = models.ForeignKey(SolicitudServicio, on_delete=models.CASCADE, null=True, blank=True, related_name='notificaciones')
+    idMascota = models.ForeignKey(Mascota, on_delete=models.SET_NULL, null=True, blank=True, related_name='notificaciones')
+    categoria = models.CharField(max_length=20, choices=CategoriaNotificacion.choices, default=CategoriaNotificacion.NEGOCIO)
+    tipoEvento = models.CharField(max_length=50, choices=TipoNotificacion.choices)
+    titulo = models.CharField(max_length=180)
+    descripcion = models.TextField(blank=True, default='')
+    urlDestino = models.CharField(max_length=255, blank=True, default='')
+    leida = models.BooleanField(default=False)
+    leidaEn = models.DateTimeField(null=True, blank=True)
+    eliminada = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['-created_at']
+        indexes = [
+            models.Index(fields=['idParaUsuario', 'eliminada', 'leida']),
+            models.Index(fields=['idParaUsuario', 'categoria', 'eliminada']),
+        ]
+
+    def __str__(self):
+        return f"Notificación {self.tipoEvento} para {self.idParaUsuario.nombre}"
 
 
 class MensajeChat(models.Model):

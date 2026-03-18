@@ -3,7 +3,7 @@
 
 {% block top_greeting %}
 <h1 class="page-header__title">Mis mascotas</h1>
-<p class="page-header__subtitle">Gestiona la información de tus mascotas</p>
+<p class="page-header__subtitle">Gestiona su ficha de cuidado y salud</p>
 {% endblock %}
 
 {% block sidebar_links %}
@@ -18,130 +18,538 @@
 {% endblock %}
 
 {% block content %}
-<div class="w-full">
-<div class="flex justify-end mb-6">
-  <button type="button" class="bg-pw-orange hover:bg-pw-orange-dark text-white font-semibold rounded-xl px-5 py-2.5 text-sm transition-all hover:shadow-lg hover:shadow-pw-orange/20" data-modal="addPetModal"><i class="bi bi-plus-lg mr-2"></i>Agregar mascota</button>
-</div>
+<div class="w-full space-y-5">
+  <section class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+    <div class="flex flex-wrap items-center justify-between gap-3">
+      <div>
+        <h2 class="text-base font-bold text-slate-800">Perfil de tus mascotas</h2>
+        <p class="text-xs text-slate-500">Gestiona fichas y filtra rápido.</p>
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="inline-flex items-center rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 text-[11px] font-semibold text-slate-600">
+          Total: {{ mascotas|length }}
+        </span>
+        <button type="button" class="bg-pw-orange hover:bg-pw-orange-dark text-white font-semibold rounded-lg px-3 py-2 text-sm transition-all" data-modal="addPetModal"><i class="bi bi-plus-lg mr-1"></i>Agregar</button>
+      </div>
+    </div>
 
-{% if mascotas %}
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-  {% for m in mascotas %}
-  <div>
-    <div class="bg-white rounded-2xl shadow-sm border border-slate-100/80 overflow-hidden h-full hover:shadow-lg hover:border-slate-200 transition-all mascota-card">
-      <div class="p-4">
-        <div class="flex items-center gap-3 mb-3">
-          <div class="mascota-avatar-wrap position-relative">
-            {% if m.foto %}
-              <img src="{{ m.foto.url }}" alt="{{ m.nombreMascota }}" class="w-14 h-14 rounded-full object-cover border-2 border-slate-200">
-            {% else %}
-              <div class="w-14 h-14 rounded-full flex items-center justify-center text-2xl border-2 border-slate-200 {% if m.tipo == 'perro' %}bg-orange-50 text-pw-orange{% else %}bg-red-50 text-red-600{% endif %}" title="Sin foto – avatar por defecto">
+    {% if mascotas %}
+    <div class="mt-3 grid grid-cols-2 gap-2 md:grid-cols-4 xl:grid-cols-8">
+      <div class="col-span-2 xl:col-span-2">
+        <label for="filtroMascotaNombre" class="mb-1 block text-[11px] font-semibold uppercase tracking-wide text-slate-500">Nombre o raza</label>
+        <input id="filtroMascotaNombre" type="text" class="w-full rounded-lg border border-slate-300 px-2.5 py-2 text-xs focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" placeholder="Ej: Luna, labrador">
+      </div>
+      <div>
+        <label for="filtroMascotaTipo" class="mb-1 block text-[11px] font-semibold uppercase tracking-wide text-slate-500">Tipo</label>
+        <select id="filtroMascotaTipo" class="w-full rounded-lg border border-slate-300 px-2.5 py-2 text-xs focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none">
+          <option value="">Todos</option>
+          {% for val,label in tipos_mascota %}<option value="{{ val }}">{{ label }}</option>{% endfor %}
+        </select>
+      </div>
+      <div>
+        <label for="filtroMascotaSexo" class="mb-1 block text-[11px] font-semibold uppercase tracking-wide text-slate-500">Sexo</label>
+        <select id="filtroMascotaSexo" class="w-full rounded-lg border border-slate-300 px-2.5 py-2 text-xs focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none">
+          <option value="">Todos</option>
+          {% for val,label in sexos_mascota %}<option value="{{ val }}">{{ label }}</option>{% endfor %}
+        </select>
+      </div>
+      <div>
+        <label for="filtroMascotaTamano" class="mb-1 block text-[11px] font-semibold uppercase tracking-wide text-slate-500">Tamaño</label>
+        <select id="filtroMascotaTamano" class="w-full rounded-lg border border-slate-300 px-2.5 py-2 text-xs focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none">
+          <option value="">Todos</option>
+          {% for val,label in tamanos_mascota %}<option value="{{ val }}">{{ label }}</option>{% endfor %}
+        </select>
+      </div>
+      <div>
+        <label for="filtroMascotaVacunas" class="mb-1 block text-[11px] font-semibold uppercase tracking-wide text-slate-500">Vacunas</label>
+        <select id="filtroMascotaVacunas" class="w-full rounded-lg border border-slate-300 px-2.5 py-2 text-xs focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none">
+          <option value="">Todas</option>
+          <option value="si">Al día</option>
+          <option value="no">Pendientes</option>
+        </select>
+      </div>
+      <div>
+        <label for="filtroMascotaEsterilizado" class="mb-1 block text-[11px] font-semibold uppercase tracking-wide text-slate-500">Esterilizado</label>
+        <select id="filtroMascotaEsterilizado" class="w-full rounded-lg border border-slate-300 px-2.5 py-2 text-xs focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none">
+          <option value="">Todos</option>
+          <option value="si">Sí</option>
+          <option value="no">No</option>
+        </select>
+      </div>
+      <div>
+        <label for="filtroMascotaResenas" class="mb-1 block text-[11px] font-semibold uppercase tracking-wide text-slate-500">Reseñas</label>
+        <select id="filtroMascotaResenas" class="w-full rounded-lg border border-slate-300 px-2.5 py-2 text-xs focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none">
+          <option value="">Todas</option>
+          <option value="si">Con reseñas</option>
+          <option value="no">Sin reseñas</option>
+        </select>
+      </div>
+    </div>
+    <div class="mt-2 flex flex-wrap items-center justify-between gap-2">
+      <p id="resumenFiltrosMascotas" class="text-[11px] text-slate-500"></p>
+      <button id="btnLimpiarFiltrosMascotas" type="button" class="rounded-lg border border-slate-300 px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50">Limpiar</button>
+    </div>
+    {% endif %}
+  </section>
+
+  {% if mascotas %}
+
+  <section id="mascotasGrid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
+    {% for m in mascotas %}
+    <article
+      class="mascota-card group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-lg"
+      data-nombre="{{ m.nombreMascota|default:''|lower }}"
+      data-raza="{{ m.raza|default:''|lower }}"
+      data-tipo="{{ m.tipo|default:'' }}"
+      data-sexo="{{ m.sexo|default:'' }}"
+      data-tamano="{{ m.tamano|default:'' }}"
+      data-vacunas="{% if m.vacunasAlDia %}si{% else %}no{% endif %}"
+      data-esterilizado="{% if m.esterilizado %}si{% else %}no{% endif %}"
+      data-resenas="{% if m.calificacion_count %}si{% else %}no{% endif %}">
+      <div class="h-2 {% if m.tipo == 'perro' %}bg-amber-400{% else %}bg-rose-400{% endif %}"></div>
+      <div class="p-5">
+        <div class="flex items-start justify-between gap-3">
+          <div class="flex items-center gap-3 min-w-0">
+            <div class="relative shrink-0 mascota-avatar-wrap">
+              {% if m.foto %}
+              <img src="{{ m.foto.url }}" alt="{{ m.nombreMascota }}" class="h-14 w-14 rounded-full object-cover border-2 border-slate-200">
+              {% else %}
+              <div class="h-14 w-14 rounded-full border-2 border-slate-200 flex items-center justify-center text-xl {% if m.tipo == 'perro' %}bg-amber-50 text-amber-600{% else %}bg-rose-50 text-rose-600{% endif %}">
                 <i class="bi {% if m.tipo == 'perro' %}bi-emoji-smile{% else %}bi-emoji-heart-eyes{% endif %}"></i>
               </div>
-            {% endif %}
-            <form method="post" enctype="multipart/form-data" class="mascota-foto-form">
-              {% csrf_token %}
-              <input type="hidden" name="action" value="cambiar_foto">
-              <input type="hidden" name="mascota_id" value="{{ m.idMascota }}">
-              <label class="mascota-foto-btn inline-flex items-center justify-center w-7 h-7 rounded-full bg-white border border-slate-200 shadow-sm cursor-pointer text-sm" title="Cambiar foto">
-                <i class="bi bi-camera"></i>
-                <input type="file" name="foto" accept="image/*" class="hidden" onchange="this.form.submit()">
-              </label>
-            </form>
-          </div>
-          <div class="flex-grow min-w-0">
-            <h6 class="font-bold mb-0 text-slate-800">{{ m.nombreMascota }}</h6>
-            <small class="text-slate-500">{{ m.get_tipo_display }}{% if m.raza %} · {{ m.raza }}{% endif %}</small>
+              {% endif %}
+              <form method="post" enctype="multipart/form-data" class="mascota-foto-form">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="cambiar_foto">
+                <input type="hidden" name="mascota_id" value="{{ m.idMascota }}">
+                <label class="inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm hover:bg-slate-50" title="Cambiar foto">
+                  <i class="bi bi-camera"></i>
+                  <input type="file" name="foto" accept="image/*" class="hidden" onchange="this.form.submit()">
+                </label>
+              </form>
+            </div>
+            <div class="min-w-0">
+              <h3 class="truncate text-base font-bold text-slate-800">{{ m.nombreMascota }}</h3>
+              <p class="truncate text-sm text-slate-500">{{ m.get_tipo_display }}{% if m.raza %} · {{ m.raza }}{% endif %}</p>
+              {% if m.calificacion_count %}
+              <p class="mt-1 text-sm text-amber-600"><i class="bi bi-star-fill"></i> {{ m.calificacion_promedio }} ({{ m.calificacion_count }})</p>
+              {% else %}
+              <p class="mt-1 text-xs text-slate-500"><i class="bi bi-star"></i> Sin calificaciones aún</p>
+              {% endif %}
+            </div>
           </div>
         </div>
-        <div class="text-sm text-slate-600 leading-6">
-          <div class="mb-1"><strong>Edad:</strong> {{ m.edad }} años</div>
-          {% if m.peso %}<div class="mb-1"><strong>Peso:</strong> {{ m.peso }} kg</div>{% endif %}
-          {% if m.notas %}<div class="mb-1"><strong>Notas:</strong> {{ m.notas }}</div>{% endif %}
+
+        <div class="mt-4 flex flex-wrap gap-2 text-xs">
+          <span class="rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 font-semibold text-slate-600">{% if m.sexo %}{{ m.get_sexo_display }}{% else %}Sexo no indicado{% endif %}</span>
+          <span class="rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 font-semibold text-slate-600">{% if m.tamano %}{{ m.get_tamano_display }}{% else %}Tamaño no indicado{% endif %}</span>
+          <span class="rounded-full px-2.5 py-1 font-semibold {% if m.vacunasAlDia %}border border-emerald-200 bg-emerald-50 text-emerald-700{% else %}border border-amber-200 bg-amber-50 text-amber-700{% endif %}">
+            {% if m.vacunasAlDia %}Vacunas al día{% else %}Vacunas pendientes{% endif %}
+          </span>
         </div>
-      </div>
-      <div class="px-4 pb-4">
-        <form method="post">
-          {% csrf_token %}
-          <input type="hidden" name="action" value="eliminar">
-          <input type="hidden" name="mascota_id" value="{{ m.idMascota }}">
-          <button type="submit" class="w-full rounded-xl py-2 text-sm border border-red-200 text-red-600 hover:bg-red-50 transition" onclick="return confirm('¿Eliminar {{ m.nombreMascota }}?')">
-            <i class="bi bi-trash mr-1"></i>Eliminar
+
+        <div class="mt-4 grid grid-cols-2 gap-3 text-sm text-slate-600">
+          <div class="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2"><strong class="text-slate-700">Edad:</strong> {{ m.edad }} año{{ m.edad|pluralize }}</div>
+          <div class="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2"><strong class="text-slate-700">Peso:</strong> {% if m.peso %}{{ m.peso }} kg{% else %}No indicado{% endif %}</div>
+          <div class="col-span-2 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2"><strong class="text-slate-700">Esterilizado:</strong> {% if m.esterilizado %}Sí{% else %}No{% endif %}</div>
+        </div>
+
+        <div class="mt-3 rounded-lg border border-amber-100 bg-amber-50 px-3 py-2">
+          <p class="text-xs font-semibold uppercase tracking-wide text-amber-700">Reseñas recientes de cuidadores</p>
+          {% if m.calificacion_comentarios %}
+          <div class="mt-1.5 space-y-1.5">
+            {% for c in m.calificacion_comentarios|slice:":2" %}
+            <p class="text-xs text-amber-800"><i class="bi bi-chat-left-quote mr-1"></i><span class="font-semibold">{{ c.estrellas }}/5</span> · {{ c.comentario|truncatechars:120 }}</p>
+            {% endfor %}
+          </div>
+          {% if m.calificacion_count %}
+          <button type="button" class="mt-2 inline-flex items-center gap-1 rounded-lg border border-amber-300 bg-white px-2.5 py-1 text-xs font-semibold text-amber-700 hover:bg-amber-100" data-modal="petReviewsModal-{{ m.idMascota }}">
+            <i class="bi bi-card-list"></i>Ver reseñas detalladas
           </button>
-        </form>
+          {% endif %}
+          {% else %}
+          <p class="mt-1.5 text-xs text-slate-500">Aún no hay comentarios para esta mascota.</p>
+          {% endif %}
+        </div>
+
+        {% if m.condicionesMedicas %}
+        <div class="mt-3 rounded-lg border border-rose-100 bg-rose-50 px-3 py-2 text-sm text-rose-700">
+          <strong>Condiciones médicas:</strong> {{ m.condicionesMedicas }}
+        </div>
+        {% endif %}
+
+        {% if m.notas %}
+        <div class="mt-3 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-600">
+          <strong class="text-slate-700">Notas:</strong> {{ m.notas }}
+        </div>
+        {% endif %}
+
+        <div class="mt-4 grid grid-cols-2 gap-2">
+          <button type="button" class="w-full rounded-xl border border-slate-300 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50" data-modal="editPetModal-{{ m.idMascota }}">
+            <i class="bi bi-pencil-square mr-1"></i>Editar
+          </button>
+          <form method="post">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="eliminar">
+            <input type="hidden" name="mascota_id" value="{{ m.idMascota }}">
+            <button type="submit" class="w-full rounded-xl border border-red-200 py-2 text-sm font-semibold text-red-600 transition hover:bg-red-50" onclick="return confirm('¿Eliminar {{ m.nombreMascota }}?')">
+              <i class="bi bi-trash mr-1"></i>Eliminar
+            </button>
+          </form>
+        </div>
       </div>
+    </article>
+    {% endfor %}
+  </section>
+
+  <section id="mascotasSinResultados" class="hidden rounded-2xl border border-dashed border-slate-300 bg-white p-8 text-center shadow-sm">
+    <p class="text-base font-semibold text-slate-700">No hay mascotas que coincidan con los filtros</p>
+    <p class="mt-1 text-sm text-slate-500">Ajusta los criterios o usa Limpiar para volver a ver todas.</p>
+  </section>
+  {% else %}
+  <section class="rounded-2xl border border-dashed border-slate-300 bg-white p-10 text-center shadow-sm">
+    <div class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-rose-50 text-pw-orange">
+      <i class="bi bi-heart text-3xl"></i>
+    </div>
+    <p class="text-base font-semibold text-slate-700">Aún no has registrado mascotas</p>
+    <p class="mt-1 text-sm text-slate-500">Crea su ficha para reservar paseos y guardería más rápido.</p>
+    <button type="button" class="mt-5 bg-pw-orange hover:bg-pw-orange-dark text-white font-semibold rounded-xl px-5 py-2.5 text-sm transition-all hover:shadow-lg hover:shadow-pw-orange/20" data-modal="addPetModal"><i class="bi bi-plus mr-2"></i>Agregar primera mascota</button>
+  </section>
+  {% endif %}
+
+  <div class="pw-modal fixed inset-0 z-50 hidden flex items-center justify-center p-4" id="addPetModal" aria-hidden="true">
+    <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" data-modal-close="addPetModal"></div>
+    <div class="relative bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6 z-10 border border-slate-100">
+      <div class="flex items-center justify-between mb-4">
+        <h5 class="font-bold text-slate-800">Agregar mascota</h5>
+        <button type="button" class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-slate-100 text-slate-500" data-modal-close="addPetModal" aria-label="Cerrar"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <form method="post" enctype="multipart/form-data" class="space-y-4">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="agregar">
+
+        <div>
+          <label class="block text-sm font-semibold text-slate-700 mb-1.5">Foto</label>
+          <input type="file" name="foto" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" accept="image/*" required>
+          <span class="text-xs text-slate-500 mt-1 block">Sube una foto para completar el registro.</span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div class="md:col-span-2">
+            <label class="block text-sm font-semibold text-slate-700 mb-1.5">Nombre</label>
+            <input name="nombreMascota" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" maxlength="100" required>
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-1.5">Tipo</label>
+            <select name="tipo" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" required>
+              <option value="" selected disabled>Selecciona tipo</option>
+              {% for val,label in tipos_mascota %}<option value="{{ val }}">{{ label }}</option>{% endfor %}
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-1.5">Raza</label>
+            <input name="raza" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" maxlength="100" placeholder="Ej: Labrador, criollo, siamés" required>
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-1.5">Sexo</label>
+            <select name="sexo" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" required>
+              <option value="" selected disabled>Selecciona sexo</option>
+              {% for val,label in sexos_mascota %}<option value="{{ val }}">{{ label }}</option>{% endfor %}
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-1.5">Tamaño</label>
+            <select name="tamano" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" required>
+              <option value="" selected disabled>Selecciona tamaño</option>
+              {% for val,label in tamanos_mascota %}<option value="{{ val }}">{{ label }}</option>{% endfor %}
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-1.5">Edad (años)</label>
+            <input name="edad" type="number" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" min="0" required>
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-1.5">Peso (kg)</label>
+            <input name="peso" type="number" step="0.1" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" min="0" required>
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-1.5">Esterilizado</label>
+            <select name="esterilizado" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" required>
+              <option value="" selected disabled>Selecciona una opción</option>
+              <option value="no">No</option>
+              <option value="si">Sí</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-1.5">Vacunas al día</label>
+            <select name="vacunasAlDia" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" required>
+              <option value="" selected disabled>Selecciona una opción</option>
+              <option value="si">Sí</option>
+              <option value="no">No</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-sm font-semibold text-slate-700 mb-1.5">Condiciones médicas o alergias</label>
+          <textarea name="condicionesMedicas" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" rows="2" placeholder="Ej: alergia a pollo, tratamiento dermatológico, medicación actual. Si no tiene, escribe 'ninguna'." required></textarea>
+        </div>
+
+        <div>
+          <label class="block text-sm font-semibold text-slate-700 mb-1.5">Notas de comportamiento</label>
+          <textarea name="notas" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" rows="2" placeholder="Ej: se estresa con ruidos fuertes, socializa bien con otros perros. Si no hay observaciones, escribe 'ninguna'." required></textarea>
+        </div>
+
+        <button type="submit" class="w-full bg-pw-orange hover:bg-pw-orange-dark text-white font-semibold rounded-xl px-4 py-3 text-sm transition-all hover:shadow-lg hover:shadow-pw-orange/20"><i class="bi bi-plus-lg mr-2"></i>Guardar mascota</button>
+      </form>
+    </div>
+  </div>
+
+  {% for m in mascotas %}
+  <div class="pw-modal fixed inset-0 z-50 hidden flex items-center justify-center p-4" id="editPetModal-{{ m.idMascota }}" aria-hidden="true">
+    <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" data-modal-close="editPetModal-{{ m.idMascota }}"></div>
+    <div class="relative bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6 z-10 border border-slate-100">
+      <div class="flex items-center justify-between mb-4">
+        <h5 class="font-bold text-slate-800">Editar {{ m.nombreMascota }}</h5>
+        <button type="button" class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-slate-100 text-slate-500" data-modal-close="editPetModal-{{ m.idMascota }}" aria-label="Cerrar"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <form method="post" class="space-y-4">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="editar">
+        <input type="hidden" name="mascota_id" value="{{ m.idMascota }}">
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div class="md:col-span-2">
+            <label class="block text-sm font-semibold text-slate-700 mb-1.5">Nombre</label>
+            <input name="nombreMascota" value="{{ m.nombreMascota }}" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" maxlength="100" required>
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-1.5">Tipo</label>
+            <select name="tipo" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" required>
+              {% for val,label in tipos_mascota %}<option value="{{ val }}" {% if m.tipo == val %}selected{% endif %}>{{ label }}</option>{% endfor %}
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-1.5">Raza</label>
+            <input name="raza" value="{{ m.raza|default:'' }}" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" maxlength="100">
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-1.5">Sexo</label>
+            <select name="sexo" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none">
+              <option value="">No especificar</option>
+              {% for val,label in sexos_mascota %}<option value="{{ val }}" {% if m.sexo == val %}selected{% endif %}>{{ label }}</option>{% endfor %}
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-1.5">Tamaño</label>
+            <select name="tamano" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none">
+              <option value="">No especificar</option>
+              {% for val,label in tamanos_mascota %}<option value="{{ val }}" {% if m.tamano == val %}selected{% endif %}>{{ label }}</option>{% endfor %}
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-1.5">Edad (años)</label>
+            <input name="edad" type="number" min="0" value="{{ m.edad }}" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" required>
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-1.5">Peso (kg)</label>
+            <input name="peso" type="number" step="0.1" min="0" value="{{ m.peso|default:'' }}" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none">
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-1.5">Esterilizado</label>
+            <select name="esterilizado" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none">
+              <option value="si" {% if m.esterilizado %}selected{% endif %}>Sí</option>
+              <option value="no" {% if not m.esterilizado %}selected{% endif %}>No</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-1.5">Vacunas al día</label>
+            <select name="vacunasAlDia" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none">
+              <option value="si" {% if m.vacunasAlDia %}selected{% endif %}>Sí</option>
+              <option value="no" {% if not m.vacunasAlDia %}selected{% endif %}>No</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-sm font-semibold text-slate-700 mb-1.5">Condiciones médicas o alergias</label>
+          <textarea name="condicionesMedicas" rows="2" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none">{{ m.condicionesMedicas|default:'' }}</textarea>
+        </div>
+
+        <div>
+          <label class="block text-sm font-semibold text-slate-700 mb-1.5">Notas de comportamiento</label>
+          <textarea name="notas" rows="2" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none">{{ m.notas|default:'' }}</textarea>
+        </div>
+
+        <button type="submit" class="w-full bg-pw-orange hover:bg-pw-orange-dark text-white font-semibold rounded-xl px-4 py-3 text-sm transition-all hover:shadow-lg hover:shadow-pw-orange/20"><i class="bi bi-check2-circle mr-2"></i>Guardar cambios</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="pw-modal fixed inset-0 z-50 hidden flex items-center justify-center p-4" id="petReviewsModal-{{ m.idMascota }}" aria-hidden="true">
+    <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" data-modal-close="petReviewsModal-{{ m.idMascota }}"></div>
+    <div class="relative bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6 z-10 border border-slate-100">
+      <div class="flex items-center justify-between mb-4">
+        <h5 class="font-bold text-slate-800">Reseñas de {{ m.nombreMascota }}</h5>
+        <button type="button" class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-slate-100 text-slate-500" data-modal-close="petReviewsModal-{{ m.idMascota }}" aria-label="Cerrar"><i class="bi bi-x-lg"></i></button>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
+        <div class="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3">
+          <p class="text-xs uppercase tracking-wide text-slate-500">Promedio</p>
+          <p class="text-xl font-bold text-slate-800">{{ m.calificacion_promedio|default:"0.0" }}/5</p>
+        </div>
+        <div class="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3">
+          <p class="text-xs uppercase tracking-wide text-slate-500">Total reseñas</p>
+          <p class="text-xl font-bold text-slate-800">{{ m.calificacion_count|default:0 }}</p>
+        </div>
+        <div class="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3">
+          <p class="text-xs uppercase tracking-wide text-slate-500">Comentarios visibles</p>
+          <p class="text-xl font-bold text-slate-800">{{ m.calificacion_comentarios|length }}</p>
+        </div>
+      </div>
+
+      {% if m.calificacion_comentarios %}
+      <div class="space-y-3">
+        {% for c in m.calificacion_comentarios %}
+        <article class="rounded-xl border border-slate-200 bg-white p-4">
+          <div class="flex items-center justify-between gap-2 mb-2">
+            <p class="text-sm font-semibold text-slate-800">{{ c.autor }}</p>
+            <div class="flex items-center gap-1 text-amber-500">
+              {% for i in "12345" %}
+              <i class="bi {% if forloop.counter <= c.estrellas %}bi-star-fill{% else %}bi-star{% endif %}"></i>
+              {% endfor %}
+            </div>
+          </div>
+          <p class="text-sm text-slate-700">{{ c.comentario }}</p>
+        </article>
+        {% endfor %}
+      </div>
+      {% elif m.calificacion_count %}
+      <div class="rounded-xl border border-slate-200 bg-slate-50 p-6 text-center text-sm text-slate-600">
+        Esta mascota tiene calificaciones, pero sin comentarios escritos.
+      </div>
+      {% else %}
+      <div class="rounded-xl border border-slate-200 bg-slate-50 p-6 text-center text-sm text-slate-600">
+        Esta mascota aún no tiene reseñas.
+      </div>
+      {% endif %}
     </div>
   </div>
   {% endfor %}
 </div>
-{% else %}
-<div class="bg-white rounded-2xl shadow-sm border border-slate-100/80 overflow-hidden">
-  <div class="text-center py-16 px-6">
-    <div class="w-20 h-20 rounded-full bg-rose-50 flex items-center justify-center mx-auto mb-4">
-      <i class="bi bi-heart text-4xl text-pw-orange"></i>
-    </div>
-    <p class="text-slate-600 font-medium mb-1">Aún no has registrado mascotas</p>
-    <p class="text-slate-500 text-sm mb-6">Agrega tu primera mascota para poder hacer reservas</p>
-    <button type="button" class="bg-pw-orange hover:bg-pw-orange-dark text-white font-semibold rounded-xl px-5 py-2.5 text-sm transition-all hover:shadow-lg hover:shadow-pw-orange/20" data-modal="addPetModal"><i class="bi bi-plus mr-2"></i>Agregar mascota</button>
-  </div>
-</div>
-{% endif %}
-
-<!-- Modal agregar mascota -->
-<div class="pw-modal fixed inset-0 z-50 hidden flex items-center justify-center p-4" id="addPetModal" aria-hidden="true">
-  <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" data-modal-close="addPetModal"></div>
-  <div class="relative bg-white rounded-2xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto p-6 z-10 border border-slate-100">
-    <div class="flex items-center justify-between mb-4">
-      <h5 class="font-bold text-slate-800">Agregar mascota</h5>
-      <button type="button" class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-slate-100 text-slate-500" data-modal-close="addPetModal" aria-label="Cerrar"><i class="bi bi-x-lg"></i></button>
-    </div>
-    <form method="post" enctype="multipart/form-data">
-      {% csrf_token %}
-      <input type="hidden" name="action" value="agregar">
-      <div class="mb-4">
-        <label class="block text-sm font-semibold text-slate-700 mb-1.5">Foto (opcional)</label>
-        <input type="file" name="foto" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" accept="image/*">
-        <span class="text-xs text-slate-500 mt-1 block">Si no subes foto, se mostrará un avatar por defecto.</span>
-      </div>
-      <div class="mb-4">
-        <label class="block text-sm font-semibold text-slate-700 mb-1.5">Nombre</label>
-        <input name="nombreMascota" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" maxlength="100" required>
-      </div>
-      <div class="grid grid-cols-2 gap-3 mb-4">
-        <div>
-          <label class="block text-sm font-semibold text-slate-700 mb-1.5">Tipo</label>
-          <select name="tipo" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" required>
-            {% for val,label in tipos_mascota %}<option value="{{ val }}">{{ label }}</option>{% endfor %}
-          </select>
-        </div>
-        <div>
-          <label class="block text-sm font-semibold text-slate-700 mb-1.5">Raza</label>
-          <input name="raza" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" maxlength="100">
-        </div>
-      </div>
-      <div class="grid grid-cols-2 gap-3 mb-4">
-        <div>
-          <label class="block text-sm font-semibold text-slate-700 mb-1.5">Edad (años)</label>
-          <input name="edad" type="number" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" min="0" required>
-        </div>
-        <div>
-          <label class="block text-sm font-semibold text-slate-700 mb-1.5">Peso (kg)</label>
-          <input name="peso" type="number" step="0.1" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" min="0">
-        </div>
-      </div>
-      <div class="mb-4">
-        <label class="block text-sm font-semibold text-slate-700 mb-1.5">Notas</label>
-        <textarea name="notas" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" rows="2"></textarea>
-      </div>
-      <button type="submit" class="w-full bg-pw-orange hover:bg-pw-orange-dark text-white font-semibold rounded-xl px-4 py-3 text-sm transition-all hover:shadow-lg hover:shadow-pw-orange/20"><i class="bi bi-plus-lg mr-2"></i>Agregar mascota</button>
-    </form>
-  </div>
-</div>
- </div>
 {% endblock %}
 
 {% block extra_css %}
 <style>
-.mascota-avatar-wrap{position:relative;flex-shrink:0}
-.mascota-foto-form{position:absolute;bottom:-4px;right:-4px}
+.mascota-avatar-wrap { position: relative; }
+.mascota-foto-form { position: absolute; right: -4px; bottom: -6px; }
 </style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+(function () {
+  var cards = Array.prototype.slice.call(document.querySelectorAll('.mascota-card'));
+  if (!cards.length) {
+    return;
+  }
+
+  var nombreInput = document.getElementById('filtroMascotaNombre');
+  var tipoSelect = document.getElementById('filtroMascotaTipo');
+  var sexoSelect = document.getElementById('filtroMascotaSexo');
+  var tamanoSelect = document.getElementById('filtroMascotaTamano');
+  var vacunasSelect = document.getElementById('filtroMascotaVacunas');
+  var esterilizadoSelect = document.getElementById('filtroMascotaEsterilizado');
+  var resenasSelect = document.getElementById('filtroMascotaResenas');
+  var limpiarBtn = document.getElementById('btnLimpiarFiltrosMascotas');
+  var resumen = document.getElementById('resumenFiltrosMascotas');
+  var sinResultados = document.getElementById('mascotasSinResultados');
+
+  function normalize(value) {
+    return String(value || '')
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .trim();
+  }
+
+  function aplicarFiltros() {
+    var nombreFiltro = normalize(nombreInput ? nombreInput.value : '');
+    var tipoFiltro = (tipoSelect && tipoSelect.value) ? tipoSelect.value : '';
+    var sexoFiltro = (sexoSelect && sexoSelect.value) ? sexoSelect.value : '';
+    var tamanoFiltro = (tamanoSelect && tamanoSelect.value) ? tamanoSelect.value : '';
+    var vacunasFiltro = (vacunasSelect && vacunasSelect.value) ? vacunasSelect.value : '';
+    var esterilizadoFiltro = (esterilizadoSelect && esterilizadoSelect.value) ? esterilizadoSelect.value : '';
+    var resenasFiltro = (resenasSelect && resenasSelect.value) ? resenasSelect.value : '';
+
+    var visibles = 0;
+    cards.forEach(function (card) {
+      var nombre = normalize(card.getAttribute('data-nombre'));
+      var raza = normalize(card.getAttribute('data-raza'));
+      var tipo = card.getAttribute('data-tipo') || '';
+      var sexo = card.getAttribute('data-sexo') || '';
+      var tamano = card.getAttribute('data-tamano') || '';
+      var vacunas = card.getAttribute('data-vacunas') || '';
+      var esterilizado = card.getAttribute('data-esterilizado') || '';
+      var resenas = card.getAttribute('data-resenas') || '';
+
+      var coincideNombre = !nombreFiltro || nombre.indexOf(nombreFiltro) !== -1 || raza.indexOf(nombreFiltro) !== -1;
+      var coincideTipo = !tipoFiltro || tipo === tipoFiltro;
+      var coincideSexo = !sexoFiltro || sexo === sexoFiltro;
+      var coincideTamano = !tamanoFiltro || tamano === tamanoFiltro;
+      var coincideVacunas = !vacunasFiltro || vacunas === vacunasFiltro;
+      var coincideEsterilizado = !esterilizadoFiltro || esterilizado === esterilizadoFiltro;
+      var coincideResenas = !resenasFiltro || resenas === resenasFiltro;
+
+      var visible = coincideNombre && coincideTipo && coincideSexo && coincideTamano && coincideVacunas && coincideEsterilizado && coincideResenas;
+      card.style.display = visible ? '' : 'none';
+      if (visible) {
+        visibles += 1;
+      }
+    });
+
+    if (resumen) {
+      resumen.textContent = visibles + ' de ' + cards.length + ' mascotas visibles';
+    }
+    if (sinResultados) {
+      if (visibles === 0) {
+        sinResultados.classList.remove('hidden');
+      } else {
+        sinResultados.classList.add('hidden');
+      }
+    }
+  }
+
+  if (nombreInput) {
+    nombreInput.addEventListener('input', aplicarFiltros);
+  }
+  [tipoSelect, sexoSelect, tamanoSelect, vacunasSelect, esterilizadoSelect, resenasSelect].forEach(function (el) {
+    if (el) {
+      el.addEventListener('change', aplicarFiltros);
+    }
+  });
+
+  if (limpiarBtn) {
+    limpiarBtn.addEventListener('click', function () {
+      if (nombreInput) nombreInput.value = '';
+      if (tipoSelect) tipoSelect.value = '';
+      if (sexoSelect) sexoSelect.value = '';
+      if (tamanoSelect) tamanoSelect.value = '';
+      if (vacunasSelect) vacunasSelect.value = '';
+      if (esterilizadoSelect) esterilizadoSelect.value = '';
+      if (resenasSelect) resenasSelect.value = '';
+      aplicarFiltros();
+    });
+  }
+
+  aplicarFiltros();
+})();
+</script>
 {% endblock %}

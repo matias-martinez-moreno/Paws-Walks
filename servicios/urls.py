@@ -1,14 +1,18 @@
 from django.urls import path
+from django.views.generic.base import RedirectView
 
-from servicios.api.views import SolicitudServicioCreateAPIView
+from servicios.api.views import (
+    DisponibilidadCuidadoresAPIView,
+    SolicitudServicioCancelarAPIView,
+    SolicitudServicioCreateAPIView,
+    SolicitudServicioDetailAPIView,
+)
 from servicios.views import (
     CrearSolicitudServicioView,
     CuidadorCalendarioView,
     CuidadorGuiaView,
     CuidadorMiPerfilView,
-    CuidadorMisPagosView,
     CuidadorMisServiciosView,
-    CuidadorSoporteView,
     DashboardCuidadorView,
     DashboardDueñoView,
     DueñoGuiaView,
@@ -16,10 +20,11 @@ from servicios.views import (
     DueñoMisMascotasView,
     DueñoMisReservasView,
     DueñoNuevaReservaView,
-    DueñoSoporteView,
     LoginView,
+    NotificacionesView,
     LogoutView,
     PasswordResetRequestView,
+    PoliticaPrivacidadView,
     SignupView,
     TerminosCondicionesView,
     VerPerfilOtroView,
@@ -31,26 +36,32 @@ urlpatterns = [
     path("logout/", LogoutView.as_view(), name="logout"),
     path("recuperar-contraseña/", PasswordResetRequestView.as_view(), name="password_reset_request"),
     path("terminos-y-condiciones/", TerminosCondicionesView.as_view(), name="terminos_condiciones"),
+    path("politica-de-privacidad/", PoliticaPrivacidadView.as_view(), name="politica_privacidad"),
 
     path("dashboard/dueño/", DashboardDueñoView.as_view(), name="dashboard_dueño"),
     path("dueño/nueva-reserva/", DueñoNuevaReservaView.as_view(), name="dueño_nueva_reserva"),
     path("dueño/mis-reservas/", DueñoMisReservasView.as_view(), name="dueño_mis_reservas"),
+    path("dueño/notificaciones/", NotificacionesView.as_view(), name="dueño_notificaciones"),
     path("dueño/mis-mascotas/", DueñoMisMascotasView.as_view(), name="dueño_mis_mascotas"),
     path("dueño/mi-perfil/", DueñoMiPerfilView.as_view(), name="dueño_mi_perfil"),
 
     path("dashboard/cuidador/", DashboardCuidadorView.as_view(), name="dashboard_cuidador"),
     path("cuidador/calendario/", CuidadorCalendarioView.as_view(), name="cuidador_calendario"),
+    path("cuidador/notificaciones/", NotificacionesView.as_view(), name="cuidador_notificaciones"),
     path("cuidador/mi-perfil/", CuidadorMiPerfilView.as_view(), name="cuidador_mi_perfil"),
     path("cuidador/servicios/", CuidadorMisServiciosView.as_view(), name="cuidador_servicios"),
-    path("cuidador/mis-pagos/", CuidadorMisPagosView.as_view(), name="cuidador_mis_pagos"),
     path("cuidador/guia/", CuidadorGuiaView.as_view(), name="cuidador_guia"),
-    path("cuidador/soporte/", CuidadorSoporteView.as_view(), name="cuidador_soporte"),
+    path("cuidador/mis-pagos/", RedirectView.as_view(pattern_name="dashboard_cuidador", permanent=False), name="cuidador_mis_pagos"),
+    path("cuidador/soporte/", RedirectView.as_view(pattern_name="dashboard_cuidador", permanent=False), name="cuidador_soporte"),
 
     path("dueño/guia/", DueñoGuiaView.as_view(), name="dueño_guia"),
-    path("dueño/soporte/", DueñoSoporteView.as_view(), name="dueño_soporte"),
+    path("dueño/soporte/", RedirectView.as_view(pattern_name="dashboard_dueño", permanent=False), name="dueño_soporte"),
 
     path("perfil/<uuid:usuario_id>/", VerPerfilOtroView.as_view(), name="ver_perfil_otro"),
 
     path("solicitud/crear/", CrearSolicitudServicioView.as_view(), name="crear_solicitud"),
     path("v1/solicitudes/", SolicitudServicioCreateAPIView.as_view(), name="api_crear_solicitud"),
+    path("v1/solicitudes/<uuid:solicitud_id>/", SolicitudServicioDetailAPIView.as_view(), name="api_detalle_solicitud"),
+    path("v1/solicitudes/<uuid:solicitud_id>/cancelar/", SolicitudServicioCancelarAPIView.as_view(), name="api_cancelar_solicitud"),
+    path("v1/disponibilidad/", DisponibilidadCuidadoresAPIView.as_view(), name="api_disponibilidad_cuidadores"),
 ]

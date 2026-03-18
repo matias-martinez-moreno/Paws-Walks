@@ -3,10 +3,13 @@ from django.contrib import admin
 from servicios.models import (
     BloqueTiempo,
     Calificacion,
+    CalificacionMascota,
+    Evento,
     Mascota,
     PerfilCuidador,
     PrecioServicio,
     SlotDisponibilidad,
+    SlotEvento,
     SolicitudServicio,
     Usuario,
     VentanaDisponibilidad,
@@ -53,6 +56,18 @@ class SlotDisponibilidadAdmin(admin.ModelAdmin):
     list_filter = ("disponible",)
 
 
+@admin.register(Evento)
+class EventoAdmin(admin.ModelAdmin):
+    list_display = ("idCuidador", "tipoServicio", "diaSemana", "horaInicio", "horaFin", "disponible")
+    list_filter = ("tipoServicio", "diaSemana", "disponible")
+
+
+@admin.register(SlotEvento)
+class SlotEventoAdmin(admin.ModelAdmin):
+    list_display = ("idEvento", "horaInicio", "disponible")
+    list_filter = ("disponible",)
+
+
 @admin.register(PrecioServicio)
 class PrecioServicioAdmin(admin.ModelAdmin):
     list_display = ("idCuidador", "tipoServicio", "precioCOP", "activo")
@@ -68,5 +83,11 @@ class SolicitudServicioAdmin(admin.ModelAdmin):
 
 @admin.register(Calificacion)
 class CalificacionAdmin(admin.ModelAdmin):
-    list_display = ("idDe", "idParaCuidador", "estrellas", "fecha")
+    list_display = ("idDe", "idParaUsuario", "estrellas", "fecha")
+    list_filter = ("estrellas",)
+
+
+@admin.register(CalificacionMascota)
+class CalificacionMascotaAdmin(admin.ModelAdmin):
+    list_display = ("idDe", "idParaMascota", "estrellas", "fecha")
     list_filter = ("estrellas",)

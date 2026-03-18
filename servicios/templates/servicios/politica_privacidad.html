@@ -1,0 +1,82 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Política de privacidad – Paws & Walks</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            pw: { orange: '#e07a2e', 'orange-dark': '#c96a25', dark: '#333' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+</head>
+<body class="min-h-screen bg-gradient-to-br from-slate-50 via-white to-orange-50/20 font-sans text-slate-800 antialiased">
+  <div class="max-w-3xl mx-auto px-4 py-10">
+    <a href="{% url 'login' %}" class="inline-flex items-center gap-2 text-pw-orange font-semibold hover:text-pw-orange-dark hover:underline mb-6 transition-colors"><i class="bi bi-arrow-left"></i> Volver</a>
+    <div class="bg-white rounded-2xl shadow-lg border border-slate-100/80 p-6 md:p-10">
+      <h1 class="text-2xl font-extrabold text-pw-dark mb-2 pb-2 border-b-2 border-pw-orange"><i class="bi bi-shield-lock mr-2 text-slate-500"></i>Política de privacidad</h1>
+      <p class="text-slate-600 text-sm mb-4">Última actualización: marzo 2026. Esta política describe cómo Paws & Walks recolecta, usa, almacena y protege datos personales en Colombia.</p>
+
+      <div class="rounded-xl border border-pw-orange/50 bg-orange-50/80 p-4 mb-6 font-medium text-slate-800 shadow-sm">
+        <strong>Responsable del tratamiento:</strong> Paws & Walks. Canal de atención: <a href="mailto:contacto@pawswalks.co" class="text-pw-orange hover:underline">contacto@pawswalks.co</a> · +57 300 123 4567.
+      </div>
+
+      <h2 class="text-lg font-bold text-slate-800 mt-6 mb-2">1. Marco normativo</h2>
+      <p class="text-slate-600 text-sm leading-relaxed mb-3">Esta política se rige por la legislación colombiana aplicable en protección de datos personales, especialmente:</p>
+      <ul class="list-disc pl-6 mb-4 space-y-2 text-slate-600 text-sm leading-relaxed">
+        <li><strong>Ley 1581 de 2012</strong> (Régimen General de Protección de Datos Personales).</li>
+        <li><strong>Decreto 1377 de 2013</strong> (reglamentación parcial de la Ley 1581).</li>
+        <li><strong>Ley 1266 de 2008</strong>, cuando aplique por naturaleza de los datos tratados.</li>
+        <li>Lineamientos y circulares de la <strong>Superintendencia de Industria y Comercio (SIC)</strong>.</li>
+      </ul>
+
+      <h2 class="text-lg font-bold text-slate-800 mt-6 mb-2">2. Datos que recolectamos</h2>
+      <ul class="list-disc pl-6 mb-4 space-y-2 text-slate-600 text-sm leading-relaxed">
+        <li>Datos de identificación y contacto: nombre, apellido, cédula, correo, teléfono y ciudad.</li>
+        <li>Datos de cuenta: usuario, rol (dueño o cuidador), foto de perfil y credenciales cifradas.</li>
+        <li>Datos operativos del servicio: mascotas registradas, solicitudes de reserva, calificaciones, mensajes y soporte.</li>
+        <li>Datos de ubicación: coordenadas y ciudad cuando el usuario las ingresa para búsqueda o prestación de servicios.</li>
+      </ul>
+
+      <h2 class="text-lg font-bold text-slate-800 mt-6 mb-2">3. Finalidades del tratamiento</h2>
+      <ul class="list-disc pl-6 mb-4 space-y-2 text-slate-600 text-sm leading-relaxed">
+        <li>Crear y administrar cuentas de usuario.</li>
+        <li>Conectar dueños y cuidadores para paseos y guardería.</li>
+        <li>Gestionar reservas, pagos, calificaciones y atención de incidentes.</li>
+        <li>Cumplir obligaciones legales y contractuales.</li>
+        <li>Enviar comunicaciones relacionadas con la operación de la plataforma.</li>
+      </ul>
+
+      <h2 class="text-lg font-bold text-slate-800 mt-6 mb-2">4. Derechos del titular</h2>
+      <p class="text-slate-600 text-sm leading-relaxed mb-4">Como titular de datos personales, usted puede ejercer derechos de <strong>acceso, actualización, rectificación, supresión</strong> y <strong>revocatoria de autorización</strong>, así como presentar consultas y reclamos ante Paws & Walks. También puede acudir a la SIC cuando considere vulnerados sus derechos.</p>
+
+      <h2 class="text-lg font-bold text-slate-800 mt-6 mb-2">5. Canales para consultas y reclamos</h2>
+      <p class="text-slate-600 text-sm leading-relaxed mb-4">Las solicitudes de habeas data pueden enviarse a <a href="mailto:contacto@pawswalks.co" class="text-pw-orange hover:underline">contacto@pawswalks.co</a> indicando nombre completo, identificación, detalle de la solicitud y medios de respuesta.</p>
+
+      <h2 class="text-lg font-bold text-slate-800 mt-6 mb-2">6. Transferencia y circulación de datos</h2>
+      <p class="text-slate-600 text-sm leading-relaxed mb-4">Paws & Walks comparte únicamente la información necesaria para la operación del servicio entre dueño y cuidador. No comercializa datos personales con terceros no autorizados.</p>
+
+      <h2 class="text-lg font-bold text-slate-800 mt-6 mb-2">7. Seguridad de la información</h2>
+      <p class="text-slate-600 text-sm leading-relaxed mb-4">Implementamos controles técnicos y administrativos razonables para proteger la información contra acceso no autorizado, pérdida, uso indebido o alteración. Ningún sistema es infalible, por lo que también se exige al usuario proteger sus credenciales.</p>
+
+      <h2 class="text-lg font-bold text-slate-800 mt-6 mb-2">8. Vigencia y cambios de la política</h2>
+      <p class="text-slate-600 text-sm leading-relaxed mb-4">Esta política rige desde su publicación y podrá actualizarse por cambios normativos o del servicio. La versión vigente estará disponible en esta página.</p>
+
+      <div class="mt-6 rounded-xl border border-slate-200 bg-slate-50 p-4 text-sm text-slate-600">
+        Consulte también nuestros <a href="{% url 'terminos_condiciones' %}" class="text-pw-orange font-semibold hover:underline">Términos y condiciones</a>.
+      </div>
+
+      <p class="mt-6 text-slate-500 text-sm">© 2026 Paws & Walks. Todos los derechos reservados.</p>
+    </div>
+  </div>
+</body>
+</html>

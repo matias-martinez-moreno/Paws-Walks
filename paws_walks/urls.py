@@ -21,9 +21,10 @@ from django.urls import include, path
 from django.views.generic import RedirectView
 
 urlpatterns = [
-    path("", RedirectView.as_view(url="/api/login/", permanent=False)),
+    path("", RedirectView.as_view(url="/login/", permanent=False)),
     path("admin/", admin.site.urls),
-    path("api/", include("servicios.urls")),
+    path("", include("servicios.urls")),
+    path("api/", include(("servicios.urls", "servicios"), namespace="api")),
 ]
 
 if settings.DEBUG:

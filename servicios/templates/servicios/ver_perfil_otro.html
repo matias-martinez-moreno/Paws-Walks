@@ -59,6 +59,110 @@
       {% endif %}
     </div>
   </div>
+
+  {% if mascota_asignada %}
+  <div class="mt-6 bg-white rounded-2xl shadow-sm border border-slate-100/80 overflow-hidden">
+    <div class="px-6 py-4 border-b border-slate-100">
+      <h3 class="font-semibold text-slate-800">Mascota asignada al servicio</h3>
+      <p class="text-sm text-slate-500">Información inicial de la mascota para esta reserva.</p>
+    </div>
+    <div class="p-6">
+      <div class="flex flex-col gap-4 sm:flex-row sm:items-start">
+        <div class="shrink-0">
+          {% if mascota_asignada.foto %}
+            <img src="{{ mascota_asignada.foto.url }}" alt="foto mascota" class="w-24 h-24 rounded-full object-cover border-2 border-slate-200">
+          {% else %}
+            <div class="w-24 h-24 rounded-full bg-amber-100 text-amber-700 inline-flex items-center justify-center text-3xl">
+              <i class="bi bi-heart-fill"></i>
+            </div>
+          {% endif %}
+        </div>
+        <div class="flex-1">
+          <h5 class="font-bold text-slate-800">{{ mascota_asignada.nombreMascota }}</h5>
+          <div class="mt-1 flex flex-wrap gap-2 text-xs">
+            <span class="inline-flex items-center rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 font-semibold text-slate-600">{{ mascota_asignada.get_tipo_display }}</span>
+            {% if mascota_asignada.raza %}<span class="inline-flex items-center rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 font-semibold text-slate-600">{{ mascota_asignada.raza }}</span>{% endif %}
+            {% if mascota_asignada.sexo %}<span class="inline-flex items-center rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 font-semibold text-slate-600">{{ mascota_asignada.get_sexo_display }}</span>{% endif %}
+            {% if mascota_asignada.tamano %}<span class="inline-flex items-center rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 font-semibold text-slate-600">{{ mascota_asignada.get_tamano_display }}</span>{% endif %}
+          </div>
+          {% if solicitud_relacionada %}
+          <p class="mt-2 text-xs text-slate-500">Reserva: {{ solicitud_relacionada.get_tipoServicio_display }} · {{ solicitud_relacionada.fecha|date:"d/m/Y" }}{% if solicitud_relacionada.fechaFin %} a {{ solicitud_relacionada.fechaFin|date:"d/m/Y" }}{% endif %}</p>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="mt-5 grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-slate-700">
+        <div><strong class="text-slate-500 block mb-1">Edad</strong>{{ mascota_asignada.edad }} año{{ mascota_asignada.edad|pluralize }}</div>
+        <div><strong class="text-slate-500 block mb-1">Peso</strong>{% if mascota_asignada.peso %}{{ mascota_asignada.peso }} kg{% else %}No indicado{% endif %}</div>
+        <div><strong class="text-slate-500 block mb-1">Esterilizado</strong>{% if mascota_asignada.esterilizado %}Sí{% else %}No{% endif %}</div>
+        <div><strong class="text-slate-500 block mb-1">Vacunas al día</strong>{% if mascota_asignada.vacunasAlDia %}Sí{% else %}No{% endif %}</div>
+      </div>
+
+      {% if mascota_asignada.condicionesMedicas %}
+      <div class="mt-4 rounded-lg border border-rose-100 bg-rose-50 px-3 py-2 text-sm text-rose-700">
+        <strong>Condiciones médicas:</strong> {{ mascota_asignada.condicionesMedicas }}
+      </div>
+      {% endif %}
+
+      {% if mascota_asignada.notas %}
+      <div class="mt-3 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-700">
+        <strong>Notas:</strong> {{ mascota_asignada.notas }}
+      </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="mt-6 bg-white rounded-2xl shadow-sm border border-slate-100/80 overflow-hidden">
+    <div class="px-6 py-4 border-b border-slate-100">
+      <h3 class="font-semibold text-slate-800">Calificaciones y reseñas de la mascota</h3>
+      <p class="text-sm text-slate-500">Opiniones de cuidadores que ya atendieron a {{ mascota_asignada.nombreMascota }}.</p>
+    </div>
+    <div class="p-4 md:p-6 space-y-4">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+        <div class="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3">
+          <p class="text-xs uppercase tracking-wide text-slate-500">Promedio</p>
+          <p class="text-xl font-bold text-slate-800">{{ mascota_asignada.calificacion_promedio|default:"0.0" }}/5</p>
+        </div>
+        <div class="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3">
+          <p class="text-xs uppercase tracking-wide text-slate-500">Total reseñas</p>
+          <p class="text-xl font-bold text-slate-800">{{ mascota_asignada.calificacion_count|default:0 }}</p>
+        </div>
+        <div class="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3">
+          <p class="text-xs uppercase tracking-wide text-slate-500">Comentarios visibles</p>
+          <p class="text-xl font-bold text-slate-800">{{ mascota_asignada.calificacion_comentarios|length }}</p>
+        </div>
+      </div>
+
+      {% if mascota_asignada.calificacion_comentarios %}
+      <div class="space-y-3">
+        {% for c in mascota_asignada.calificacion_comentarios %}
+        <article class="rounded-xl border border-slate-200 bg-white p-4">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <p class="font-semibold text-slate-800">{{ c.autor }}</p>
+            <div class="flex items-center gap-1 text-amber-500">
+              {% for i in "12345" %}
+              <i class="bi {% if forloop.counter <= c.estrellas %}bi-star-fill{% else %}bi-star{% endif %}"></i>
+              {% endfor %}
+            </div>
+          </div>
+          <p class="mt-2 text-sm text-slate-700">{{ c.comentario }}</p>
+        </article>
+        {% endfor %}
+      </div>
+      {% elif mascota_asignada.calificacion_count %}
+      <div class="rounded-xl border border-slate-200 bg-slate-50 p-6 text-center text-sm text-slate-600">
+        Esta mascota tiene calificaciones, pero sin comentarios escritos.
+      </div>
+      {% else %}
+      <div class="rounded-xl border-2 border-dashed border-slate-200 bg-slate-50 p-8 text-center">
+        <p class="text-sm font-semibold text-slate-700">Aún no hay calificaciones para esta mascota.</p>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+  {% endif %}
+
+  {% include "servicios/includes/resenas_recibidas_mi_perfil.html" %}
   <div class="mt-4">
     <a href="{% if usuario.rol == 'cuidador' %}{% url 'cuidador_calendario' %}{% else %}{% url 'dueño_mis_reservas' %}{% endif %}" class="text-pw-orange font-semibold hover:underline text-sm"><i class="bi bi-arrow-left mr-1"></i>Volver</a>
   </div>

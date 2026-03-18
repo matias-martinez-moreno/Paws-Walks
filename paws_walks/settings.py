@@ -65,6 +65,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "servicios.context_processors.notificaciones_no_leidas",
             ],
         },
     },
@@ -131,7 +132,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # ENV_TYPE: MOCK (consola) | REAL (emails reales). Usado por NotificadorFactory.
 ENV_TYPE = os.environ.get("ENV_TYPE", "MOCK")
 
-LOGIN_URL = "/api/login/"
+LOGIN_URL = "/login/"
 
 # Cache en memoria para sesiones: reduce latencia del login (sin escribir en BD en cada request)
 CACHES = {

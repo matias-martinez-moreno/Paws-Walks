@@ -4,7 +4,7 @@
 
 {% block top_greeting %}
 <h1 class="page-header__title">Mis reservas</h1>
-<p class="page-header__subtitle">Historial y reservas próximas</p>
+<p class="page-header__subtitle">Historial, finalizaciones y calificaciones</p>
 {% endblock %}
 
 {% block sidebar_links %}
@@ -26,26 +26,80 @@
     {% if solicitudes_futuras %}
     <div class="overflow-x-auto">
       <table class="w-full mb-0">
-        <thead class="bg-slate-50"><tr><th class="text-left text-xs uppercase tracking-wide text-slate-500 font-medium py-3 px-4 border-b-2 border-slate-100">Mascota</th><th class="text-left text-xs uppercase tracking-wide text-slate-500 font-medium py-3 border-b-2 border-slate-100">Cuidador</th><th class="text-left text-xs uppercase tracking-wide text-slate-500 font-medium py-3 border-b-2 border-slate-100">Servicio</th><th class="text-left text-xs uppercase tracking-wide text-slate-500 font-medium py-3 border-b-2 border-slate-100">Inicio</th><th class="text-left text-xs uppercase tracking-wide text-slate-500 font-medium py-3 border-b-2 border-slate-100">Fin</th><th class="text-left text-xs uppercase tracking-wide text-slate-500 font-medium py-3 border-b-2 border-slate-100">Monto</th><th class="text-left text-xs uppercase tracking-wide text-slate-500 font-medium py-3 border-b-2 border-slate-100">Estado</th><th class="text-left text-xs uppercase tracking-wide text-slate-500 font-medium py-3 border-b-2 border-slate-100">Acciones</th></tr></thead>
+        <thead class="bg-slate-50"><tr><th class="text-left text-xs uppercase tracking-wide text-slate-500 font-medium py-3 px-4 border-b-2 border-slate-100">Mascota</th><th class="text-left text-xs uppercase tracking-wide text-slate-500 font-medium py-3 border-b-2 border-slate-100">Servicio</th><th class="text-left text-xs uppercase tracking-wide text-slate-500 font-medium py-3 border-b-2 border-slate-100">Cuidador</th><th class="text-left text-xs uppercase tracking-wide text-slate-500 font-medium py-3 border-b-2 border-slate-100">Cuándo</th><th class="text-left text-xs uppercase tracking-wide text-slate-500 font-medium py-3 border-b-2 border-slate-100">Estado y pago</th><th class="text-left text-xs uppercase tracking-wide text-slate-500 font-medium py-3 border-b-2 border-slate-100">Acciones</th></tr></thead>
         <tbody>
         {% for s in solicitudes_futuras %}
         <tr class="hover:bg-slate-50 transition">
           <td class="py-3 px-4 text-sm align-middle">{{ s.idMascota.nombreMascota }}</td>
+          <td class="py-3 text-sm align-middle"><span class="inline-flex items-center rounded-full px-3 py-1 text-xs font-medium bg-slate-100 text-slate-800 border border-slate-200">{{ s.get_tipoServicio_display }}</span><p class="mt-1 text-xs text-slate-500">{% if s.monto_pago %}${{ s.monto_pago|formato_cop }} COP{% else %}Monto pendiente{% endif %}</p></td>
           <td class="py-3 text-sm align-middle">{{ s.idCuidador.nombre }}</td>
-          <td class="py-3 text-sm align-middle"><span class="inline-flex items-center rounded-full px-3 py-1 text-xs font-medium bg-slate-100 text-slate-800 border border-slate-200">{{ s.get_tipoServicio_display }}</span></td>
-          <td class="py-3 text-sm align-middle">{{ s.fecha|date:"d M Y" }}</td>
-          <td class="py-3 text-sm align-middle">{% if s.fechaFin %}{{ s.fechaFin|date:"d M Y" }}{% else %}—{% endif %}</td>
-          <td class="py-3 text-sm align-middle">{% if s.monto_pago %}${{ s.monto_pago|formato_cop }} COP{% else %}—{% endif %}<br><small class="text-slate-500">{% if s.estado_pago == 'pendiente' %}Pago pendiente{% else %}{{ s.get_estado_pago_display }}{% endif %}</small></td>
-          <td class="py-3 text-sm align-middle"><span class="inline-flex items-center rounded-full px-3 py-1 text-xs font-medium bg-blue-50 text-blue-700">{{ s.get_estado_display }}</span></td>
+          <td class="py-3 text-sm align-middle">{% if s.tipoServicio == 'guarderia' and s.fechaFin %}{{ s.fecha|date:"d M Y" }} - {{ s.fechaFin|date:"d M Y" }}{% else %}{{ s.fecha|date:"d M Y" }}{% endif %}<br><small class="text-slate-500">{% if s.horaRecogidaAsignada %}{{ s.horaRecogidaAsignada|hora_corta }}{% if s.ordenEnRuta %} ({{ s.ordenEnRuta }}.º en ruta){% endif %}{% elif s.idEvento %}{{ s.idEvento.horaInicio|hora_corta }} - {{ s.idEvento.horaFin|hora_corta }}{% elif s.idBloqueHorario %}{{ s.idBloqueHorario.horaInicio|hora_corta }} - {{ s.idBloqueHorario.horaFin|hora_corta }}{% elif s.idVentana %}{{ s.idVentana.horaInicio|hora_corta }} - {{ s.idVentana.horaFin|hora_corta }}{% else %}Sin franja horaria{% endif %}</small></td>
+          <td class="py-3 text-sm align-middle"><span class="inline-flex items-center rounded-full px-3 py-1 text-xs font-medium bg-blue-50 text-blue-700">{{ s.get_estado_display }}</span><br><small class="text-slate-500">{% if s.estado_pago == 'pendiente' %}Pago pendiente{% else %}{{ s.get_estado_pago_display }}{% endif %}</small></td>
           <td class="py-3 text-sm align-middle">
-            <a href="{% url 'ver_perfil_otro' s.idCuidador.idUsuario %}" class="border-2 border-slate-300 text-slate-600 hover:bg-slate-50 font-semibold rounded-lg px-3 py-1.5 text-sm transition inline-block mr-1"><i class="bi bi-person mr-1"></i>Ver perfil</a>
-            <button type="button" class="btnChat border-2 border-pw-orange text-pw-orange hover:bg-pw-orange hover:text-white font-semibold rounded-lg px-3 py-1.5 text-sm transition" data-solicitud="{{ s.idSolicitud }}" data-cuidador="{{ s.idCuidador.nombre }}"><i class="bi bi-chat-dots mr-1"></i>Chat</button>
-            <form method="post" class="inline ml-1" onsubmit="return confirm('¿Cancelar esta reserva?');">
+            <div class="flex flex-wrap items-center gap-1.5">
+              <button type="button" class="btnDetalle border-2 border-slate-300 text-slate-600 hover:bg-slate-50 font-semibold rounded-lg px-3 py-1.5 text-sm transition" data-target="detalle-{{ s.idSolicitud }}" aria-expanded="false"><i class="bi bi-info-circle mr-1"></i>Ver detalles completos</button>
+              <a href="{% url 'ver_perfil_otro' s.idCuidador.idUsuario %}" class="border-2 border-slate-300 text-slate-600 hover:bg-slate-50 font-semibold rounded-lg px-3 py-1.5 text-sm transition inline-block"><i class="bi bi-person mr-1"></i>Ver perfil</a>
+              <button type="button" class="btnChat inline-flex items-center border-2 border-pw-orange text-pw-orange hover:bg-pw-orange hover:text-white font-semibold rounded-xl px-4 py-2 text-sm transition" data-solicitud="{{ s.idSolicitud }}" data-cuidador="{{ s.idCuidador.nombre }}" data-mascota="{{ s.idMascota.nombreMascota }}" data-servicio="{{ s.get_tipoServicio_display }}" data-fecha="{{ s.fecha|date:'d M Y' }}" data-fecha-fin="{% if s.fechaFin %}{{ s.fechaFin|date:'d M Y' }}{% endif %}" data-franja="{% if s.horaRecogidaAsignada %}Recogida {{ s.horaRecogidaAsignada|hora_corta }}{% if s.ordenEnRuta %} ({{ s.ordenEnRuta }}.º en ruta){% endif %}{% elif s.idEvento %}{{ s.idEvento.horaInicio|hora_corta }} - {{ s.idEvento.horaFin|hora_corta }}{% elif s.idBloqueHorario %}{{ s.idBloqueHorario.horaInicio|hora_corta }} - {{ s.idBloqueHorario.horaFin|hora_corta }}{% elif s.idVentana %}{{ s.idVentana.horaInicio|hora_corta }} - {{ s.idVentana.horaFin|hora_corta }}{% else %}Sin franja horaria{% endif %}" data-estado="{{ s.get_estado_display }}" data-pago="{% if s.estado_pago == 'pendiente' %}Pago pendiente{% else %}{{ s.get_estado_pago_display }}{% endif %}" data-monto="{% if s.monto_pago %}${{ s.monto_pago|formato_cop }} COP{% else %}Monto pendiente{% endif %}"><i class="bi bi-chat-dots mr-1"></i>Chat</button>
+            <form method="post" class="inline" onsubmit="return confirm('¿Cancelar esta reserva?');">
               {% csrf_token %}
               <input type="hidden" name="action" value="cancelar">
               <input type="hidden" name="solicitud_id" value="{{ s.idSolicitud }}">
               <button type="submit" class="border-2 border-red-500 text-red-600 hover:bg-red-500 hover:text-white font-semibold rounded-lg px-3 py-1.5 text-sm transition"><i class="bi bi-x-circle mr-1"></i>Cancelar</button>
             </form>
+            </div>
+          </td>
+        </tr>
+        <tr id="detalle-{{ s.idSolicitud }}" class="hidden bg-slate-50/60">
+          <td colspan="6" class="px-4 pb-4 pt-1">
+            <div class="rounded-xl border border-slate-200 bg-white p-4">
+              <div class="grid gap-3 md:grid-cols-3">
+                <div class="rounded-lg border border-slate-200 bg-slate-50 p-3">
+                  <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Detalle del servicio</p>
+                  {% if s.tipoServicio == 'paseo' %}
+                  <p class="mt-1 text-sm text-slate-700">Paseo programado para {{ s.fecha|date:"d M Y" }}.</p>
+                  <p class="mt-1 text-xs text-slate-500">Próximamente saldrá el mapa del recorrido que hizo tu cachorro.</p>
+                  {% else %}
+                  <p class="mt-1 text-sm text-slate-700">Guardería del {{ s.fecha|date:"d M Y" }}{% if s.fechaFin %} al {{ s.fechaFin|date:"d M Y" }}{% endif %}.</p>
+                  <p class="mt-1 text-xs text-slate-500">Tiempo reservado: {{ s.total_dias_servicio }} día{{ s.total_dias_servicio|pluralize }}.</p>
+                  {% endif %}
+                  <p class="mt-1 text-xs text-slate-500">Reserva #{{ s.idSolicitud|stringformat:"s"|slice:":8"|upper }}</p>
+                  <p class="mt-1 text-xs text-slate-500">Creada: {{ s.created_at|date:"d M Y H:i" }}</p>
+                </div>
+                <div class="rounded-lg border border-slate-200 bg-slate-50 p-3">
+                  <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Logística</p>
+                  {% if s.horaRecogidaAsignada %}
+                  <p class="mt-1 text-sm text-slate-700">Recogida: {{ s.horaRecogidaAsignada|hora_corta }}{% if s.ordenEnRuta %} ({{ s.ordenEnRuta }}.º en ruta){% endif %}</p>
+                  {% elif s.hora_slot_asignado %}
+                  <p class="mt-1 text-sm text-slate-700">Hora asignada: {{ s.hora_slot_asignado|hora_corta }}</p>
+                  {% elif s.hora_inicio_servicio and s.hora_fin_servicio %}
+                  <p class="mt-1 text-sm text-slate-700">Franja: {{ s.hora_inicio_servicio|hora_corta }} - {{ s.hora_fin_servicio|hora_corta }}</p>
+                  {% else %}
+                  <p class="mt-1 text-sm text-slate-500">Sin franja horaria registrada.</p>
+                  {% endif %}
+                  {% if s.capacidad_evento %}<p class="mt-1 text-xs text-slate-500">Cupos del bloque: {{ s.capacidad_evento }}</p>{% endif %}
+                  {% if s.nombre_lugar_servicio %}<p class="mt-1 text-xs text-slate-500">Lugar: {{ s.nombre_lugar_servicio }}</p>{% endif %}
+                  {% if s.latitud_servicio and s.longitud_servicio %}<p class="mt-1 text-xs text-slate-500">Ubicación: {{ s.latitud_servicio }}, {{ s.longitud_servicio }}</p>{% endif %}
+                </div>
+                <div class="rounded-lg border border-slate-200 bg-slate-50 p-3">
+                  <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Pago y seguimiento</p>
+                  <p class="mt-1 text-sm text-slate-700">Estado servicio: {{ s.get_estado_display }}</p>
+                  <p class="mt-1 text-xs text-slate-500">Estado pago: {% if s.estado_pago == 'pendiente' %}Pago pendiente{% else %}{{ s.get_estado_pago_display }}{% endif %}</p>
+                  <p class="mt-1 text-xs text-slate-500">Monto: {% if s.monto_pago %}${{ s.monto_pago|formato_cop }} COP{% else %}Pendiente{% endif %}</p>
+                  {% if s.referencia_pago %}<p class="mt-1 text-xs text-slate-500">Referencia: {{ s.referencia_pago }}</p>{% endif %}
+                  <p class="mt-1 text-xs text-slate-500">Mensajes en chat: {{ s.total_mensajes }}</p>
+                  {% if s.ultimo_mensaje_fecha %}<p class="mt-1 text-xs text-slate-500">Último mensaje: {{ s.ultimo_mensaje_fecha|date:"d M Y H:i" }}</p>{% endif %}
+                </div>
+              </div>
+              <div class="mt-3 rounded-lg border border-slate-200 bg-slate-50 p-3">
+                <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Anotaciones del cuidador</p>
+                {% if s.anotacion_cuidador %}
+                <p class="mt-1 text-sm text-slate-700">{{ s.anotacion_cuidador }}</p>
+                {% if s.anotacion_cuidador_fecha %}<p class="mt-1 text-xs text-slate-500">Última actualización: {{ s.anotacion_cuidador_fecha|date:"d M Y H:i" }}</p>{% endif %}
+                {% else %}
+                <p class="mt-1 text-sm text-slate-500">Aún no hay anotaciones del cuidador para este servicio.</p>
+                {% endif %}
+              </div>
+            </div>
           </td>
         </tr>
         {% endfor %}
@@ -63,40 +117,116 @@
 </div>
 
 <div class="bg-white rounded-2xl shadow-sm border border-slate-100/80 overflow-hidden">
-  <div class="px-6 py-4 border-b border-slate-100 font-semibold text-slate-800 flex items-center bg-slate-50/50"><i class="bi bi-clock-history mr-2 text-slate-500"></i>Historial</div>
+  <div class="px-6 py-4 border-b border-slate-100 bg-slate-50/50">
+    <div class="font-semibold text-slate-800 flex items-center"><i class="bi bi-clock-history mr-2 text-slate-500"></i>Historial</div>
+    <form method="get" class="mt-3 flex flex-wrap items-end gap-2 text-sm">
+      <label class="text-slate-600">
+        Estado
+        <select name="hist_estado" class="ml-1 rounded-lg border border-slate-300 px-2 py-1.5">
+          {% for valor, etiqueta in historial_estado_opciones %}
+          <option value="{{ valor }}" {% if historial_estado_actual == valor %}selected{% endif %}>{{ etiqueta }}</option>
+          {% endfor %}
+        </select>
+      </label>
+      <label class="text-slate-600">
+        Servicio
+        <select name="hist_servicio" class="ml-1 rounded-lg border border-slate-300 px-2 py-1.5">
+          {% for valor, etiqueta in historial_servicio_opciones %}
+          <option value="{{ valor }}" {% if historial_servicio_actual == valor %}selected{% endif %}>{{ etiqueta }}</option>
+          {% endfor %}
+        </select>
+      </label>
+      <button type="submit" class="rounded-lg border-2 border-pw-orange px-3 py-1.5 font-semibold text-pw-orange hover:bg-pw-orange hover:text-white transition">Filtrar</button>
+      {% if historial_estado_actual != 'todas' or historial_servicio_actual != 'todos' %}
+      <a href="{% url 'dueño_mis_reservas' %}" class="rounded-lg border border-slate-300 px-3 py-1.5 text-slate-600 hover:bg-slate-100 transition">Limpiar</a>
+      {% endif %}
+      <span class="ml-auto text-xs text-slate-500">{{ historial_filtrado_total|default:0 }} resultado{{ historial_filtrado_total|default:0|pluralize }}</span>
+    </form>
+  </div>
   <div class="p-0">
     {% if solicitudes_pasadas %}
     <div class="overflow-x-auto">
       <table class="w-full mb-0">
-        <thead class="bg-slate-50"><tr><th class="text-left text-xs uppercase tracking-wide text-slate-500 font-medium py-3 px-4 border-b-2 border-slate-100">Mascota</th><th class="text-left text-xs uppercase tracking-wide text-slate-500 font-medium py-3 border-b-2 border-slate-100">Cuidador</th><th class="text-left text-xs uppercase tracking-wide text-slate-500 font-medium py-3 border-b-2 border-slate-100">Servicio</th><th class="text-left text-xs uppercase tracking-wide text-slate-500 font-medium py-3 border-b-2 border-slate-100">Inicio</th><th class="text-left text-xs uppercase tracking-wide text-slate-500 font-medium py-3 border-b-2 border-slate-100">Fin</th><th class="text-left text-xs uppercase tracking-wide text-slate-500 font-medium py-3 border-b-2 border-slate-100">Monto</th><th class="text-left text-xs uppercase tracking-wide text-slate-500 font-medium py-3 border-b-2 border-slate-100">Estado</th><th class="text-left text-xs uppercase tracking-wide text-slate-500 font-medium py-3 border-b-2 border-slate-100"></th></tr></thead>
+        <thead class="bg-slate-50"><tr><th class="text-left text-xs uppercase tracking-wide text-slate-500 font-medium py-3 px-4 border-b-2 border-slate-100">Mascota</th><th class="text-left text-xs uppercase tracking-wide text-slate-500 font-medium py-3 border-b-2 border-slate-100">Servicio</th><th class="text-left text-xs uppercase tracking-wide text-slate-500 font-medium py-3 border-b-2 border-slate-100">Cuidador</th><th class="text-left text-xs uppercase tracking-wide text-slate-500 font-medium py-3 border-b-2 border-slate-100">Cuándo</th><th class="text-left text-xs uppercase tracking-wide text-slate-500 font-medium py-3 border-b-2 border-slate-100">Estado y pago</th><th class="text-left text-xs uppercase tracking-wide text-slate-500 font-medium py-3 border-b-2 border-slate-100">Acciones</th></tr></thead>
         <tbody>
         {% for s in solicitudes_pasadas %}
         <tr class="hover:bg-slate-50 transition">
           <td class="py-3 px-4 text-sm align-middle">{{ s.idMascota.nombreMascota }}</td>
+          <td class="py-3 text-sm align-middle"><span class="inline-flex items-center rounded-full px-3 py-1 text-xs font-medium bg-slate-100 text-slate-800 border border-slate-200">{{ s.get_tipoServicio_display }}</span><p class="mt-1 text-xs text-slate-500">{% if s.monto_pago %}${{ s.monto_pago|formato_cop }} COP{% else %}Monto no registrado{% endif %}</p></td>
           <td class="py-3 text-sm align-middle">{{ s.idCuidador.nombre }}</td>
-          <td class="py-3 text-sm align-middle"><span class="inline-flex items-center rounded-full px-3 py-1 text-xs font-medium bg-slate-100 text-slate-800 border border-slate-200">{{ s.get_tipoServicio_display }}</span></td>
-          <td class="py-3 text-sm align-middle">{{ s.fecha|date:"d M Y" }}</td>
-          <td class="py-3 text-sm align-middle">{% if s.fechaFin %}{{ s.fechaFin|date:"d M Y" }}{% else %}—{% endif %}</td>
-          <td class="py-3 text-sm align-middle">{% if s.monto_pago %}${{ s.monto_pago|formato_cop }} COP{% else %}—{% endif %}</td>
-          <td class="py-3 text-sm align-middle"><span class="inline-flex items-center rounded-full px-3 py-1 text-xs font-medium bg-slate-100 text-slate-600">{{ s.get_estado_display }}</span></td>
+          <td class="py-3 text-sm align-middle">{% if s.tipoServicio == 'guarderia' and s.fechaFin %}{{ s.fecha|date:"d M Y" }} - {{ s.fechaFin|date:"d M Y" }}{% else %}{{ s.fecha|date:"d M Y" }}{% endif %}<br><small class="text-slate-500">{% if s.horaRecogidaAsignada %}{{ s.horaRecogidaAsignada|hora_corta }}{% if s.ordenEnRuta %} ({{ s.ordenEnRuta }}.º en ruta){% endif %}{% elif s.idEvento %}{{ s.idEvento.horaInicio|hora_corta }} - {{ s.idEvento.horaFin|hora_corta }}{% elif s.idBloqueHorario %}{{ s.idBloqueHorario.horaInicio|hora_corta }} - {{ s.idBloqueHorario.horaFin|hora_corta }}{% elif s.idVentana %}{{ s.idVentana.horaInicio|hora_corta }} - {{ s.idVentana.horaFin|hora_corta }}{% else %}Sin franja horaria{% endif %}</small></td>
+          <td class="py-3 text-sm align-middle"><span class="inline-flex items-center rounded-full px-3 py-1 text-xs font-medium bg-slate-100 text-slate-600">{% if s.estado == 'completado' %}Finalizado{% else %}{{ s.get_estado_display }}{% endif %}</span><br><small class="text-slate-500">{% if s.estado_pago == 'pendiente' %}Pago pendiente{% else %}{{ s.get_estado_pago_display }}{% endif %}</small></td>
           <td class="py-3 text-sm align-middle">
-            <a href="{% url 'ver_perfil_otro' s.idCuidador.idUsuario %}" class="border-2 border-slate-300 text-slate-600 hover:bg-slate-50 font-semibold rounded-lg px-3 py-1.5 text-sm transition inline-block mr-1"><i class="bi bi-person mr-1"></i>Ver perfil</a>
+            <div class="flex flex-wrap items-center gap-1.5">
+            <button type="button" class="btnDetalle border-2 border-slate-300 text-slate-600 hover:bg-slate-50 font-semibold rounded-lg px-3 py-1.5 text-sm transition" data-target="detalle-{{ s.idSolicitud }}" aria-expanded="false"><i class="bi bi-info-circle mr-1"></i>Ver detalles completos</button>
+            <a href="{% url 'ver_perfil_otro' s.idCuidador.idUsuario %}" class="border-2 border-slate-300 text-slate-600 hover:bg-slate-50 font-semibold rounded-lg px-3 py-1.5 text-sm transition inline-block"><i class="bi bi-person mr-1"></i>Ver perfil</a>
+            {% if s.estado == 'aceptado' or s.estado == 'completado' %}
+            <button type="button" class="btnChat inline-flex items-center border-2 border-pw-orange text-pw-orange hover:bg-pw-orange hover:text-white font-semibold rounded-xl px-4 py-2 text-sm transition" data-solicitud="{{ s.idSolicitud }}" data-cuidador="{{ s.idCuidador.nombre }}" data-mascota="{{ s.idMascota.nombreMascota }}" data-servicio="{{ s.get_tipoServicio_display }}" data-fecha="{{ s.fecha|date:'d M Y' }}" data-fecha-fin="{% if s.fechaFin %}{{ s.fechaFin|date:'d M Y' }}{% endif %}" data-franja="{% if s.horaRecogidaAsignada %}Recogida {{ s.horaRecogidaAsignada|hora_corta }}{% if s.ordenEnRuta %} ({{ s.ordenEnRuta }}.º en ruta){% endif %}{% elif s.idEvento %}{{ s.idEvento.horaInicio|hora_corta }} - {{ s.idEvento.horaFin|hora_corta }}{% elif s.idBloqueHorario %}{{ s.idBloqueHorario.horaInicio|hora_corta }} - {{ s.idBloqueHorario.horaFin|hora_corta }}{% elif s.idVentana %}{{ s.idVentana.horaInicio|hora_corta }} - {{ s.idVentana.horaFin|hora_corta }}{% else %}Sin franja horaria{% endif %}" data-estado="{{ s.get_estado_display }}" data-pago="{% if s.estado_pago == 'pendiente' %}Pago pendiente{% else %}{{ s.get_estado_pago_display }}{% endif %}" data-monto="{% if s.monto_pago %}${{ s.monto_pago|formato_cop }} COP{% else %}Monto pendiente{% endif %}"><i class="bi bi-chat-dots mr-1"></i>Chat</button>
             {% if s.estado == 'aceptado' %}
-            <button type="button" class="btnChat border-2 border-pw-orange text-pw-orange hover:bg-pw-orange hover:text-white font-semibold rounded-lg px-3 py-1.5 text-sm transition inline mr-1" data-solicitud="{{ s.idSolicitud }}" data-cuidador="{{ s.idCuidador.nombre }}"><i class="bi bi-chat-dots mr-1"></i>Chat</button>
-            <form method="post" class="inline mr-2">
-              {% csrf_token %}
-              <input type="hidden" name="action" value="completar">
-              <input type="hidden" name="solicitud_id" value="{{ s.idSolicitud }}">
-              <button type="submit" class="border-2 border-emerald-500 text-emerald-600 hover:bg-emerald-500 hover:text-white font-semibold rounded-lg px-3 py-1.5 text-sm transition"><i class="bi bi-check-circle mr-1"></i>Marcar completado</button>
-            </form>
+            <span class="inline-flex items-center rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-800">Pendiente de finalizar por cuidador</span>
             {% endif %}
-            {% if s.estado == 'completado' and not s.calificacion %}
+            {% endif %}
+            {% if s.estado == 'completado' and not s.calificacion_mia %}
             <button type="button" class="border-2 border-pw-orange text-pw-orange hover:bg-pw-orange hover:text-white font-semibold rounded-lg px-3 py-1.5 text-sm transition" data-modal="modalCalificar" data-solicitud="{{ s.idSolicitud }}">
-              <i class="bi bi-star mr-1"></i>Calificar
+              <i class="bi bi-star mr-1"></i>Calificar cuidador
             </button>
-            {% elif s.calificacion %}
-            <span class="text-emerald-600 text-sm"><i class="bi bi-star-fill mr-1"></i>{{ s.calificacion.estrellas }}/5</span>
+            {% elif s.calificacion_mia %}
+            <span class="text-emerald-600 text-sm"><i class="bi bi-star-fill mr-1"></i>{{ s.calificacion_mia.estrellas }}/5</span>
             {% endif %}
+            </div>
+          </td>
+        </tr>
+        <tr id="detalle-{{ s.idSolicitud }}" class="hidden bg-slate-50/60">
+          <td colspan="6" class="px-4 pb-4 pt-1">
+            <div class="rounded-xl border border-slate-200 bg-white p-4">
+              <div class="grid gap-3 md:grid-cols-3">
+                <div class="rounded-lg border border-slate-200 bg-slate-50 p-3">
+                  <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Detalle del servicio</p>
+                  {% if s.tipoServicio == 'paseo' %}
+                  <p class="mt-1 text-sm text-slate-700">Paseo realizado el {{ s.fecha|date:"d M Y" }}.</p>
+                  <p class="mt-1 text-xs text-slate-500">Próximamente podrás ver el mapa completo del recorrido de tu cachorro.</p>
+                  {% else %}
+                  <p class="mt-1 text-sm text-slate-700">Guardería del {{ s.fecha|date:"d M Y" }}{% if s.fechaFin %} al {{ s.fechaFin|date:"d M Y" }}{% endif %}.</p>
+                  <p class="mt-1 text-xs text-slate-500">Tiempo reservado: {{ s.total_dias_servicio }} día{{ s.total_dias_servicio|pluralize }}.</p>
+                  {% endif %}
+                  <p class="mt-1 text-xs text-slate-500">Reserva #{{ s.idSolicitud|stringformat:"s"|slice:":8"|upper }}</p>
+                  <p class="mt-1 text-xs text-slate-500">Creada: {{ s.created_at|date:"d M Y H:i" }}</p>
+                </div>
+                <div class="rounded-lg border border-slate-200 bg-slate-50 p-3">
+                  <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Logística</p>
+                  {% if s.horaRecogidaAsignada %}
+                  <p class="mt-1 text-sm text-slate-700">Recogida: {{ s.horaRecogidaAsignada|hora_corta }}{% if s.ordenEnRuta %} ({{ s.ordenEnRuta }}.º en ruta){% endif %}</p>
+                  {% elif s.hora_slot_asignado %}
+                  <p class="mt-1 text-sm text-slate-700">Hora asignada: {{ s.hora_slot_asignado|hora_corta }}</p>
+                  {% elif s.hora_inicio_servicio and s.hora_fin_servicio %}
+                  <p class="mt-1 text-sm text-slate-700">Franja: {{ s.hora_inicio_servicio|hora_corta }} - {{ s.hora_fin_servicio|hora_corta }}</p>
+                  {% else %}
+                  <p class="mt-1 text-sm text-slate-500">Sin franja horaria registrada.</p>
+                  {% endif %}
+                  {% if s.capacidad_evento %}<p class="mt-1 text-xs text-slate-500">Cupos del bloque: {{ s.capacidad_evento }}</p>{% endif %}
+                  {% if s.nombre_lugar_servicio %}<p class="mt-1 text-xs text-slate-500">Lugar: {{ s.nombre_lugar_servicio }}</p>{% endif %}
+                  {% if s.latitud_servicio and s.longitud_servicio %}<p class="mt-1 text-xs text-slate-500">Ubicación: {{ s.latitud_servicio }}, {{ s.longitud_servicio }}</p>{% endif %}
+                </div>
+                <div class="rounded-lg border border-slate-200 bg-slate-50 p-3">
+                  <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Pago y seguimiento</p>
+                  <p class="mt-1 text-sm text-slate-700">Estado servicio: {{ s.get_estado_display }}</p>
+                  <p class="mt-1 text-xs text-slate-500">Estado pago: {% if s.estado_pago == 'pendiente' %}Pago pendiente{% else %}{{ s.get_estado_pago_display }}{% endif %}</p>
+                  <p class="mt-1 text-xs text-slate-500">Monto: {% if s.monto_pago %}${{ s.monto_pago|formato_cop }} COP{% else %}Pendiente{% endif %}</p>
+                  {% if s.referencia_pago %}<p class="mt-1 text-xs text-slate-500">Referencia: {{ s.referencia_pago }}</p>{% endif %}
+                  <p class="mt-1 text-xs text-slate-500">Mensajes en chat: {{ s.total_mensajes }}</p>
+                  {% if s.ultimo_mensaje_fecha %}<p class="mt-1 text-xs text-slate-500">Último mensaje: {{ s.ultimo_mensaje_fecha|date:"d M Y H:i" }}</p>{% endif %}
+                </div>
+              </div>
+              <div class="mt-3 rounded-lg border border-slate-200 bg-slate-50 p-3">
+                <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Anotaciones del cuidador</p>
+                {% if s.anotacion_cuidador %}
+                <p class="mt-1 text-sm text-slate-700">{{ s.anotacion_cuidador }}</p>
+                {% if s.anotacion_cuidador_fecha %}<p class="mt-1 text-xs text-slate-500">Última actualización: {{ s.anotacion_cuidador_fecha|date:"d M Y H:i" }}</p>{% endif %}
+                {% else %}
+                <p class="mt-1 text-sm text-slate-500">Aún no hay anotaciones del cuidador para este servicio.</p>
+                {% endif %}
+              </div>
+            </div>
           </td>
         </tr>
         {% endfor %}
@@ -117,12 +247,12 @@
   <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" data-modal-close="modalCalificar"></div>
   <div class="relative bg-white rounded-2xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto p-6 z-10 border border-slate-100">
     <div class="flex items-center justify-between mb-4">
-      <h5 class="font-bold text-slate-800"><i class="bi bi-star mr-2 text-amber-500"></i>Calificar servicio</h5>
+      <h5 class="font-bold text-slate-800"><i class="bi bi-star mr-2 text-amber-500"></i>Calificar cuidador</h5>
       <button type="button" class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-slate-100 text-slate-500" data-modal-close="modalCalificar" aria-label="Cerrar"><i class="bi bi-x-lg"></i></button>
     </div>
     <form method="post">
       {% csrf_token %}
-      <input type="hidden" name="action" value="calificar">
+      <input type="hidden" name="action" value="calificar_cuidador">
       <input type="hidden" name="solicitud_id" id="calificarSolicitudId" value="">
       <div class="mb-4">
         <label class="block text-sm font-semibold text-slate-700 mb-2">¿Cómo fue tu experiencia?</label>
@@ -148,15 +278,31 @@
 </div>
  </div>
 
+<div id="resenaPendienteData" class="hidden" data-solicitud="{{ resena_pendiente_solicitud_id|default:'' }}" data-objetivo="{{ resena_pendiente_objetivo|default:'' }}"></div>
+
 <!-- Modal Chat -->
 <div class="pw-modal fixed inset-0 z-50 hidden flex items-center justify-center p-4" id="chatModal" aria-hidden="true">
   <div class="absolute inset-0 bg-black/40" data-modal-close="chatModal"></div>
-  <div class="relative bg-white rounded-2xl shadow-xl max-w-md w-full max-h-[85vh] flex flex-col z-10">
+  <div class="relative bg-white rounded-2xl shadow-xl max-w-2xl w-full max-h-[88vh] flex flex-col z-10">
     <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
-      <h5 class="font-bold text-slate-800" id="chatModalTitulo">Chat</h5>
+      <div>
+        <h5 class="font-bold text-slate-800" id="chatModalTitulo">Chat</h5>
+        <p class="text-xs text-slate-500" id="chatModalSubtitulo">Conversación con contexto de la reserva</p>
+      </div>
       <button type="button" class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-slate-100 text-slate-500" data-modal-close="chatModal"><i class="bi bi-x-lg"></i></button>
     </div>
-    <div id="chatModalBody" class="flex-1 overflow-y-auto p-4 min-h-[200px] max-h-80 bg-slate-50 space-y-2"></div>
+    <div class="px-6 py-3 border-b border-slate-100 bg-slate-50/70">
+      <p class="text-sm font-semibold text-slate-700" id="chatContextDestinatario">Destinatario: —</p>
+      <div class="mt-2 grid gap-2 sm:grid-cols-2 text-xs text-slate-600">
+        <p><i class="bi bi-heart mr-1 text-pw-orange"></i><span class="font-medium">Mascota:</span> <span id="chatCtxMascota">—</span></p>
+        <p><i class="bi bi-tag mr-1 text-pw-orange"></i><span class="font-medium">Servicio:</span> <span id="chatCtxServicio">—</span></p>
+        <p><i class="bi bi-calendar3 mr-1 text-pw-orange"></i><span class="font-medium">Fecha:</span> <span id="chatCtxCuando">—</span></p>
+        <p><i class="bi bi-clock mr-1 text-pw-orange"></i><span class="font-medium">Franja:</span> <span id="chatCtxFranja">—</span></p>
+        <p><i class="bi bi-info-circle mr-1 text-pw-orange"></i><span class="font-medium">Estado:</span> <span id="chatCtxEstado">—</span></p>
+        <p><i class="bi bi-cash mr-1 text-pw-orange"></i><span class="font-medium">Pago:</span> <span id="chatCtxPago">—</span></p>
+      </div>
+    </div>
+    <div id="chatModalBody" class="flex-1 overflow-y-auto p-4 min-h-[220px] max-h-[45vh] bg-slate-50 space-y-2"></div>
     <form method="post" class="p-4 border-t border-slate-100">
       {% csrf_token %}
       <input type="hidden" name="action" value="enviar_mensaje">
@@ -177,6 +323,19 @@ document.addEventListener('pw-modal-open', function(e) {
     document.getElementById('calificarSolicitudId').value = e.detail.trigger.dataset.solicitud;
   }
 });
+
+(function() {
+  var marcador = document.getElementById('resenaPendienteData');
+  if (!marcador) return;
+  var solicitudId = marcador.getAttribute('data-solicitud') || '';
+  var objetivo = marcador.getAttribute('data-objetivo') || '';
+  if (!solicitudId || objetivo !== 'cuidador') return;
+  var trigger = document.querySelector('[data-modal="modalCalificar"][data-solicitud="' + solicitudId + '"]');
+  if (trigger) {
+    trigger.click();
+  }
+})();
+
 document.querySelectorAll('#modalCalificar [name="estrellas"]').forEach(function(r) {
   r.closest('label')?.addEventListener('click', function() {
     var val = parseInt(this.querySelector('input').value, 10);
@@ -185,6 +344,21 @@ document.querySelectorAll('#modalCalificar [name="estrellas"]').forEach(function
       star.classList.toggle('bi-star-fill', starVal <= val);
       star.classList.toggle('bi-star', starVal > val);
     });
+  });
+});
+
+document.querySelectorAll('.btnDetalle').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    var targetId = this.getAttribute('data-target');
+    if (!targetId) return;
+    var panel = document.getElementById(targetId);
+    if (!panel) return;
+    var estabaAbierto = !panel.classList.contains('hidden');
+    panel.classList.toggle('hidden');
+    this.setAttribute('aria-expanded', estabaAbierto ? 'false' : 'true');
+    this.innerHTML = estabaAbierto
+      ? '<i class="bi bi-info-circle mr-1"></i>Ver detalles completos'
+      : '<i class="bi bi-chevron-up mr-1"></i>Ocultar detalles';
   });
 });
 
@@ -199,14 +373,38 @@ document.querySelectorAll('.btnChat').forEach(function(btn) {
   btn.addEventListener('click', function() {
     var sid = this.getAttribute('data-solicitud');
     var cuidador = this.getAttribute('data-cuidador');
+    var mascota = this.getAttribute('data-mascota') || 'Sin mascota';
+    var servicio = this.getAttribute('data-servicio') || 'Servicio';
+    var fecha = this.getAttribute('data-fecha') || '';
+    var fechaFin = this.getAttribute('data-fecha-fin') || '';
+    var franja = this.getAttribute('data-franja') || 'Sin franja horaria';
+    var estado = this.getAttribute('data-estado') || 'Sin estado';
+    var pago = this.getAttribute('data-pago') || 'Pago pendiente';
+    var monto = this.getAttribute('data-monto') || '';
+    var cuando = fecha;
+    if (fechaFin) {
+      cuando = fecha + ' - ' + fechaFin;
+    }
+
     document.getElementById('chatSolicitudId').value = sid;
     document.getElementById('chatModalTitulo').textContent = 'Chat con ' + cuidador;
+    document.getElementById('chatModalSubtitulo').textContent = 'Solicitud #' + String(sid).slice(0, 8).toUpperCase();
+    document.getElementById('chatContextDestinatario').textContent = 'Destinatario: ' + cuidador;
+    document.getElementById('chatCtxMascota').textContent = mascota;
+    document.getElementById('chatCtxServicio').textContent = servicio;
+    document.getElementById('chatCtxCuando').textContent = cuando || 'Sin fecha';
+    document.getElementById('chatCtxFranja').textContent = franja;
+    document.getElementById('chatCtxEstado').textContent = estado;
+    document.getElementById('chatCtxPago').textContent = pago + (monto ? ' · ' + monto : '');
+
     var body = document.getElementById('chatModalBody');
     var msgs = chatData[sid] || [];
     body.innerHTML = msgs.map(function(m) {
       var align = m.yo ? 'justify-end' : 'justify-start';
       var bg = m.yo ? 'bg-pw-orange text-white rounded-tr-none' : 'bg-white border border-slate-200 rounded-tl-none';
-      return '<div class="flex ' + align + '"><div class="max-w-[85%] ' + bg + ' rounded-2xl px-4 py-2 shadow-sm"><p class="text-sm">' + m.msg.replace(/</g,'&lt;') + '</p><span class="text-xs opacity-75">' + m.de + '</span></div></div>';
+      var autor = m.yo ? 'Tú' : m.de;
+      var seguro = m.msg.replace(/</g,'&lt;').replace(/>/g,'&gt;');
+      return '<div class="flex ' + align + '"><div class="max-w-[85%] ' + bg + ' rounded-2xl px-4 py-2 shadow-sm"><p class="text-[11px] font-semibold opacity-80 mb-1">' + autor + '</p><p class="text-sm">' + seguro + '</p></div></div>';
     }).join('') || '<p class="text-slate-500 text-sm text-center py-4">Sin mensajes aún. Escribe el primero.</p>';
     body.scrollTop = body.scrollHeight;
     document.getElementById('chatModal').classList.remove('hidden');

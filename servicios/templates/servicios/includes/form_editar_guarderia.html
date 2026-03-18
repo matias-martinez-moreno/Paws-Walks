@@ -1,105 +1,399 @@
-{% load servicios_extras %}
-<form method="post" id="formEditarGuarderia">
-  {% csrf_token %}
-  <input type="hidden" name="action" value="servicio">
-  <input type="hidden" name="editar_tipo" value="guarderia">
-  <input type="hidden" name="servicios" value="guarderia">
-  {% if precios_activos.paseo %}<input type="hidden" name="servicios" value="paseo">{% endif %}
-  {% if precios_activos.entrenamiento %}<input type="hidden" name="servicios" value="entrenamiento">{% endif %}
-  <input type="hidden" name="tarifaPaseo" value="{% if precios_activos.paseo %}{{ precios_activos.paseo.precioCOP }}{% endif %}">
-  <input type="hidden" name="descripcionPaseo" value="{% if precios_activos.paseo %}{{ precios_activos.paseo.descripcion|default:'' }}{% endif %}">
-  <input type="hidden" name="tarifaEntrenamiento" value="{% if precios_activos.entrenamiento %}{{ precios_activos.entrenamiento.precioCOP }}{% endif %}">
-  <input type="hidden" name="descripcionEntrenamiento" value="{% if precios_activos.entrenamiento %}{{ precios_activos.entrenamiento.descripcion|default:'' }}{% endif %}">
-  <input type="hidden" name="lugarEntrenamiento" value="{% if precios_activos.entrenamiento %}{{ precios_activos.entrenamiento.lugarEntrenamiento|default:'' }}{% endif %}">
-  <div class="mb-6 rounded-2xl border border-slate-100/80 bg-white p-6 shadow-sm">
-    <h3 class="text-sm font-semibold text-slate-700 mb-3"><i class="bi bi-geo-alt me-2"></i>Zona de cobertura (Guardería)</h3>
-    <input type="hidden" name="latitud" id="latitudServicios" value="{{ usuario.latitud|default:'' }}">
-    <input type="hidden" name="longitud" id="longitudServicios" value="{{ usuario.longitud|default:'' }}">
-    <div class="flex flex-wrap gap-2 items-center mb-2">
-      <button type="button" class="border-2 border-pw-orange text-pw-orange hover:bg-pw-orange hover:text-white font-semibold rounded-lg px-3 py-1.5 text-sm transition" id="btnUbicacionServ"><i class="bi bi-geo-alt mr-1"></i>Usar mi ubicación</button>
-      <input type="text" name="ciudad" id="ciudadServicios" value="{{ usuario.ciudad|default:'' }}" placeholder="Ciudad" class="rounded-xl border border-slate-300 py-2 px-3 text-sm max-w-[140px] focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none">
-      <button type="button" class="border border-slate-300 text-slate-600 hover:bg-slate-50 font-semibold rounded-lg px-3 py-1.5 text-sm transition" id="btnCentrarCiudadServ"><i class="bi bi-search mr-1"></i>Buscar</button>
-    </div>
-    <div id="mapServicios" style="height: 180px; border-radius: 12px; border: 1px solid #e2e8f0;"></div>
-    <div class="mt-3 flex flex-wrap gap-4 items-center">
-      <div>
-        <label class="block text-xs font-semibold text-slate-600 mb-1">Radio (km)</label>
-        <select name="radioKm" class="rounded-xl border border-slate-300 py-2 px-3 text-sm max-w-[100px] focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" required>
-          <option value="1" {% if usuario.radioKm|floatformat:0 == "1" or not usuario.radioKm %}selected{% endif %}>1 km</option>
-          <option value="2" {% if usuario.radioKm|floatformat:0 == "2" %}selected{% endif %}>2 km</option>
-          <option value="3" {% if usuario.radioKm|floatformat:0 == "3" %}selected{% endif %}>3 km</option>
-          <option value="4" {% if usuario.radioKm|floatformat:0 == "4" %}selected{% endif %}>4 km</option>
-          <option value="5" {% if usuario.radioKm|floatformat:0 == "5" %}selected{% endif %}>5 km</option>
-        </select>
+{% load servicios_extras l10n %}
+<div class="grid gap-6 lg:grid-cols-5">
+  <div class="lg:col-span-3 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+    <div class="mb-5 flex items-center gap-3">
+      <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-rose-50 text-rose-600">
+        <i class="bi bi-house-heart"></i>
       </div>
       <div>
-        <span class="text-xs font-semibold text-slate-600 mr-2">Mascotas:</span>
-        <label class="inline-flex items-center mr-3"><input type="checkbox" name="tiposMascotaCheck" value="perro" class="rounded border-slate-300 text-pw-orange focus:ring-pw-orange" {% if not perfil or 'perro' in perfil.tiposMascotaPreferidos|default:'ambos' or perfil.tiposMascotaPreferidos == 'ambos' %}checked{% endif %}><span class="ml-1.5 text-sm">Perros</span></label>
-        <label class="inline-flex items-center"><input type="checkbox" name="tiposMascotaCheck" value="gato" class="rounded border-slate-300 text-pw-orange focus:ring-pw-orange" {% if not perfil or 'gato' in perfil.tiposMascotaPreferidos|default:'ambos' or perfil.tiposMascotaPreferidos == 'ambos' %}checked{% endif %}><span class="ml-1.5 text-sm">Gatos</span></label>
+        <h3 class="text-lg font-bold text-slate-800">Configuracion de guarderia</h3>
+        <p class="text-sm text-slate-500">Tarifa por hora y disponibilidad flexible por bloques.</p>
       </div>
     </div>
+
+    <form method="post" class="space-y-4">
+      {% csrf_token %}
+      <input type="hidden" name="action" value="servicio">
+      <input type="hidden" name="editar_tipo" value="guarderia">
+      <input type="hidden" name="bloquesPendientes" id="bloquesPendientesGuarderiaInput" value="[]">
+      <input type="hidden" name="servicios" value="guarderia">
+      {% if precios_activos.paseo %}<input type="hidden" name="servicios" value="paseo">{% endif %}
+      <input type="hidden" name="tarifaPaseo" value="{% if precios_activos.paseo %}{{ precios_activos.paseo.precioCOP }}{% endif %}">
+      <input type="hidden" name="descripcionPaseo" value="{% if precios_activos.paseo %}{{ precios_activos.paseo.descripcion|default:'' }}{% endif %}">
+
+      <div>
+        <label class="mb-1.5 block text-sm font-semibold text-slate-700">Tarifa por hora (COP)</label>
+        <input name="tarifaGuarderia" type="number" min="1" required value="{% if precios_activos.guarderia %}{{ precios_activos.guarderia.precioCOP }}{% endif %}" class="w-full rounded-xl border border-slate-300 px-4 py-2.5 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" placeholder="Ej: 14000">
+      </div>
+
+      <div>
+        <label class="mb-1.5 block text-sm font-semibold text-slate-700">Descripcion del servicio</label>
+        <textarea name="descripcionGuarderia" rows="3" class="w-full rounded-xl border border-slate-300 px-4 py-2.5 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" placeholder="Describe el espacio, cuidados y condiciones.">{% if precios_activos.guarderia %}{{ precios_activos.guarderia.descripcion|default:'' }}{% endif %}</textarea>
+      </div>
+
+      <div>
+        <label class="mb-1.5 block text-sm font-semibold text-slate-700">Ubicacion</label>
+        <div class="relative">
+          <input name="ciudad" id="ciudadServiciosGuarderia" value="{{ servicio_ciudad|default:'' }}" class="w-full rounded-xl border border-slate-300 px-4 py-2.5 pr-11 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" placeholder="Ej: Medellin">
+          <button type="button" id="btnBuscarCiudadGuarderia" class="absolute right-2 top-1/2 -translate-y-1/2 rounded-lg p-1.5 text-slate-500 hover:bg-slate-100 hover:text-slate-700" aria-label="Buscar ubicacion escrita">
+            <i class="bi bi-search"></i>
+          </button>
+        </div>
+      </div>
+
+      <input type="hidden" id="latitudServiciosGuarderia" name="latitud" value="{{ servicio_latitud|default_if_none:''|unlocalize }}">
+      <input type="hidden" id="longitudServiciosGuarderia" name="longitud" value="{{ servicio_longitud|default_if_none:''|unlocalize }}">
+      <div class="space-y-2">
+        <div class="flex flex-wrap gap-2">
+          <button type="button" id="btnUbicacionGuarderia" class="rounded-lg border border-pw-orange px-3 py-1.5 text-xs font-semibold text-pw-orange hover:bg-pw-orange hover:text-white">Usar mi ubicacion</button>
+        </div>
+        <div id="mapServiciosGuarderia" class="h-44 rounded-xl border border-slate-200"></div>
+      </div>
+
+      <div>
+        <p class="mb-1.5 text-sm font-semibold text-slate-700">Tipo de mascota para guarderia</p>
+        <label class="mr-3 inline-flex items-center gap-2 text-sm text-slate-700"><input type="radio" name="tipoMascotaGuarderia" value="perro" {% if not perfil or perfil.tiposMascotaPreferidos == 'perro' or perfil.tiposMascotaPreferidos == 'ambos' %}checked{% endif %}>Perros</label>
+        <label class="inline-flex items-center gap-2 text-sm text-slate-700"><input type="radio" name="tipoMascotaGuarderia" value="gato" {% if perfil and perfil.tiposMascotaPreferidos == 'gato' %}checked{% endif %}>Gatos</label>
+      </div>
+
+      <button type="submit" class="w-full rounded-xl bg-pw-orange px-4 py-2.5 text-sm font-semibold text-white hover:bg-pw-orange-dark">
+        Guardar configuracion de guarderia
+      </button>
+    </form>
+
+    {% if precios_activos.guarderia %}
+    <form method="post" class="mt-3">
+      {% csrf_token %}
+      <input type="hidden" name="action" value="eliminar_servicio">
+      <input type="hidden" name="tipoServicio" value="guarderia">
+      <button type="submit" class="w-full rounded-xl border border-red-300 px-4 py-2.5 text-sm font-semibold text-red-700 hover:bg-red-50" onclick="return confirm('¿Eliminar servicio de guarderia?');">Eliminar guarderia</button>
+    </form>
+    {% endif %}
   </div>
 
-  <div class="svc-card rounded-2xl border border-slate-100/80 bg-white p-6 shadow-sm" style="border-left: 4px solid #f43f5e;">
-    <div class="mb-5 flex items-center gap-3 pl-4">
-      <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-rose-50 text-2xl text-rose-600"><i class="bi bi-house-heart"></i></div>
-      <div>
-        <h2 class="text-xl font-bold text-slate-800">Guardería</h2>
-        <p class="text-sm text-slate-500">Tarifa, descripción y lugares/horarios</p>
-      </div>
-    </div>
-    <div class="space-y-4">
-      <div>
-        <label class="mb-1.5 block text-sm font-semibold text-slate-700">Tarifa por día (COP)</label>
-        <div class="relative">
-          <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 font-medium">$</span>
-          <input name="tarifaGuarderia" type="number" min="1" placeholder="50000"
-                 class="w-full rounded-xl border border-slate-200 bg-slate-50 py-2.5 pl-8 pr-4 focus:border-[var(--pw-orange)] focus:bg-white focus:outline-none focus:ring-2 focus:ring-orange-100"
-                 value="{% if precios_activos.guarderia %}{{ precios_activos.guarderia.precioCOP }}{% endif %}">
+  <div class="lg:col-span-2 space-y-6">
+    <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+      <h4 class="text-sm font-bold text-slate-800">Agregar bloque de guarderia</h4>
+      <p class="mt-1 text-xs text-slate-500">Define tu disponibilidad en una sola accion: por rango de dias, por un solo dia o dia completo.</p>
+      <form method="post" class="mt-4 space-y-3" id="formAgregarBloqueGuarderia" onsubmit="return false;">
+        {% csrf_token %}
+        <input type="hidden" id="nombreLugarGuarderiaBloque" value="{{ servicio_ciudad|default:'' }}">
+
+        <div class="rounded-lg border border-rose-100 bg-rose-50 px-3 py-2 text-[11px] text-rose-700">
+          Ejemplos: lunes 08:00 a sabado 21:00, domingo todo el dia, o solo martes por unas horas.
         </div>
-      </div>
-      <div>
-        <label class="mb-1.5 block text-sm font-semibold text-slate-700">Descripción</label>
-        <textarea name="descripcionGuarderia" rows="3" placeholder="Ej: Casa con patio, acepto estadías largas..."
-                  class="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 focus:border-[var(--pw-orange)] focus:bg-white focus:outline-none focus:ring-2 focus:ring-orange-100">{% if precios_activos.guarderia %}{{ precios_activos.guarderia.descripcion|default:'' }}{% endif %}</textarea>
-      </div>
-    </div>
-    <div class="mt-6 border-t border-slate-100 pt-5">
-      <div class="mb-3 flex flex-wrap items-center justify-between gap-2">
-        <h3 class="text-sm font-semibold text-slate-600">Horarios / lugares</h3>
-        <div class="flex flex-wrap items-center gap-2">
-          <button type="button" class="border-2 border-pw-orange text-pw-orange hover:bg-pw-orange hover:text-white font-semibold rounded-lg py-1 px-2 text-xs transition" data-modal="rapidoGuarderiaModal" data-preset="todos"><i class="bi bi-calendar-week mr-1"></i>Todos</button>
-          <button type="button" class="border-2 border-pw-orange text-pw-orange hover:bg-pw-orange hover:text-white font-semibold rounded-lg py-1 px-2 text-xs transition" data-modal="rapidoGuarderiaModal" data-preset="fines_semana"><i class="bi bi-calendar2-weekend mr-1"></i>Fines</button>
-          <button type="button" class="border-2 border-pw-orange text-pw-orange hover:bg-pw-orange hover:text-white font-semibold rounded-lg py-1 px-2 text-xs transition" data-modal="rapidoGuarderiaModal" data-preset="entre_semana"><i class="bi bi-briefcase mr-1"></i>Entre semana</button>
-          <span class="text-slate-300">|</span>
-          <button type="button" class="bg-pw-orange hover:bg-pw-orange-dark text-white font-semibold rounded-lg py-1.5 px-2 text-xs transition" data-modal="addBlockGuarderiaModal"><i class="bi bi-plus-lg mr-1"></i>Agregar lugar</button>
-        </div>
-      </div>
-      {% if horarios_guarderia_por_dia %}
-      <div class="space-y-3">
-        {% for dia_val, dia_label, items in horarios_guarderia_por_dia %}
-        <div>
-          <div class="text-xs font-semibold text-slate-600 mb-1">{{ dia_label }}</div>
-          <div class="space-y-1.5">
-            {% for tipo, obj in items %}
-            <div class="bloque-row flex items-center justify-between rounded-lg bg-slate-50 px-3 py-2">
-              <div class="flex flex-col gap-0.5">
-                <span class="text-sm text-slate-500">{{ obj.horaInicio|hora_corta }} – {{ obj.horaFin|hora_corta }}</span>
-                {% if obj.nombreLugar %}<span class="text-xs text-slate-600"><i class="bi bi-geo-alt mr-1"></i>{{ obj.nombreLugar }}{% if obj.precioCOP %} · ${{ obj.precioCOP|formato_cop }}{% endif %}</span>{% endif %}
-              </div>
-              <form method="post" class="inline">{% csrf_token %}{% if tipo == "evento" %}<input type="hidden" name="action" value="eliminar_evento"><input type="hidden" name="evento_id" value="{{ obj.idEvento }}">{% else %}<input type="hidden" name="action" value="eliminar"><input type="hidden" name="bloque_id" value="{{ obj.idBloque }}">{% endif %}<button type="submit" class="rounded p-1 text-slate-400 hover:bg-red-50 hover:text-red-600" onclick="return confirm('¿Eliminar?');"><i class="bi bi-trash text-sm"></i></button></form>
-            </div>
-            {% endfor %}
+
+        <div class="grid grid-cols-2 gap-2">
+          <div id="diaGuarderiaWrap">
+            <label class="mb-1 block text-xs font-semibold text-slate-600">Desde</label>
+            <select id="diaGuarderiaSelect" name="diaSemana" required class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none">
+              <option value="" selected disabled>Selecciona un dia</option>
+              {% for val, label in dias_semana %}<option value="{{ val }}">{{ label }}</option>{% endfor %}
+            </select>
+          </div>
+          <div id="diaGuarderiaFinWrap">
+            <label class="mb-1 block text-xs font-semibold text-slate-600">Hasta</label>
+            <select id="diaGuarderiaFinSelect" name="diaSemanaFin" required class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none">
+              <option value="" selected disabled>Selecciona un dia</option>
+              {% for val, label in dias_semana %}<option value="{{ val }}">{{ label }}</option>{% endfor %}
+            </select>
           </div>
         </div>
+        <label class="inline-flex items-center gap-2 text-xs text-slate-600">
+          <input id="soloUnDiaGuarderia" type="checkbox" class="rounded border-slate-300 text-pw-orange focus:ring-pw-orange/30">
+          Solo este dia
+        </label>
+
+        <div>
+          <label class="mb-1 block text-xs font-semibold text-slate-600">Horario del bloque</label>
+          <input type="hidden" id="modoHorarioGuarderia" value="por_horas">
+          <div class="grid grid-cols-2 gap-2">
+            <button type="button" data-modo-horario-guarderia="por_horas" class="rounded-lg border border-slate-300 px-2 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50">Por horas</button>
+            <button type="button" data-modo-horario-guarderia="todo_dia" class="rounded-lg border border-slate-300 px-2 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50">Todo el dia</button>
+          </div>
+          <p id="modoHorarioAyuda" class="mt-1 text-[11px] text-slate-500">Por horas: define inicio y fin. Todo el dia: se usa 00:00 a 23:30.</p>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="mb-1 block text-xs font-semibold text-slate-600">Hora inicial</label>
+            <input id="horaGuarderiaInicioInput" name="horaInicio" type="time" value="08:00" step="1800" required class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none">
+          </div>
+          <div>
+            <label class="mb-1 block text-xs font-semibold text-slate-600">Hora final</label>
+            <input id="horaGuarderiaFinInput" name="horaFin" type="time" value="18:00" step="1800" required class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none">
+          </div>
+        </div>
+        <div class="flex flex-wrap gap-1">
+          <button type="button" data-horario-guarderia="07:00|13:00" class="rounded-md border border-slate-200 px-2 py-0.5 text-[11px] text-slate-600 hover:bg-slate-100">Manana</button>
+          <button type="button" data-horario-guarderia="13:00|19:00" class="rounded-md border border-slate-200 px-2 py-0.5 text-[11px] text-slate-600 hover:bg-slate-100">Tarde</button>
+          <button type="button" data-horario-guarderia="08:00|21:00" class="rounded-md border border-slate-200 px-2 py-0.5 text-[11px] text-slate-600 hover:bg-slate-100">Largo</button>
+        </div>
+
+        <div>
+          <label class="mb-1 block text-xs font-semibold text-slate-600">Cupo maximo del bloque</label>
+          <select id="capacidadGuarderiaInput" name="capacidadMaxima" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none">
+            <option value="1" selected>1 mascota</option>
+            <option value="2">2 mascotas</option>
+            <option value="3">3 mascotas</option>
+            <option value="4">4 mascotas</option>
+            <option value="5">5 mascotas</option>
+          </select>
+        </div>
+        <button type="button" id="btnAgregarBloqueGuarderiaLocal" class="w-full rounded-lg bg-slate-900 px-3 py-2 text-sm font-semibold text-white hover:bg-slate-800">Agregar bloque (pendiente)</button>
+      </form>
+
+      <div id="bloquesGuarderiaPendientesWrap" class="mt-3 hidden rounded-lg border border-rose-200 bg-rose-50 p-3">
+        <p class="text-xs font-semibold uppercase tracking-wide text-rose-700">Pendientes por guardar</p>
+        <div id="bloquesGuarderiaPendientesList" class="mt-2 space-y-2"></div>
+      </div>
+    </div>
+
+    <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+      <h4 class="text-sm font-bold text-slate-800">Bloques configurados</h4>
+      {% if horarios_guarderia_por_dia %}
+      <div class="mt-3 space-y-3">
+        {% for dia_val, dia_label, items in horarios_guarderia_por_dia %}
+          {% if items.eventos %}
+          <div>
+            <p class="mb-1 text-xs font-semibold uppercase tracking-wide text-slate-500">{{ dia_label }}</p>
+            <div class="space-y-2">
+              {% for e in items.eventos %}
+              <div class="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2">
+                <div class="flex items-start justify-between gap-2">
+                  <div>
+                    <p class="text-sm font-semibold text-slate-700">{{ e.horaInicio|hora_corta }} - {{ e.horaFin|hora_corta }}</p>
+                    {% if e.nombreLugar %}<p class="text-xs text-slate-500">{{ e.nombreLugar }}</p>{% endif %}
+                    <p class="text-xs text-slate-500">Cupo maximo: {{ e.capacidadMaxima }} mascota{{ e.capacidadMaxima|pluralize }}</p>
+                  </div>
+                  <form method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="eliminar_evento">
+                    <input type="hidden" name="evento_id" value="{{ e.idEvento }}">
+                    <input type="hidden" name="editar_tipo" value="guarderia">
+                    <button type="submit" class="rounded-md p-1 text-slate-400 hover:bg-red-50 hover:text-red-600" onclick="return confirm('¿Eliminar bloque?');"><i class="bi bi-trash"></i></button>
+                  </form>
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+          {% endif %}
         {% endfor %}
       </div>
       {% else %}
-      <div class="rounded-xl border-2 border-dashed border-slate-200 py-6 text-center text-sm text-slate-500">Sin horarios. Agrega un lugar con el botón de arriba.</div>
+      <p class="mt-3 text-sm text-slate-500">Todavia no has agregado bloques de guarderia.</p>
       {% endif %}
     </div>
-    <div class="mt-6 flex justify-end">
-      <button type="submit" class="bg-pw-orange hover:bg-pw-orange-dark text-white font-semibold rounded-xl px-6 py-2.5 transition"><i class="bi bi-check-lg mr-2"></i>Guardar cambios</button>
-    </div>
   </div>
-</form>
+</div>
+
+<script>
+(function () {
+  var ciudadServicios = document.getElementById("ciudadServiciosGuarderia");
+  var nombreLugarBloque = document.getElementById("nombreLugarGuarderiaBloque");
+  var formAgregar = document.getElementById("formAgregarBloqueGuarderia");
+  var diaSelect = document.getElementById("diaGuarderiaSelect");
+  var diaFinSelect = document.getElementById("diaGuarderiaFinSelect");
+  var soloUnDiaCheck = document.getElementById("soloUnDiaGuarderia");
+  var modoHorario = document.getElementById("modoHorarioGuarderia");
+  var botonesModoHorario = document.querySelectorAll("[data-modo-horario-guarderia]");
+  var horaInicio = document.getElementById("horaGuarderiaInicioInput");
+  var horaFin = document.getElementById("horaGuarderiaFinInput");
+  var botonesHorarioRapido = document.querySelectorAll("[data-horario-guarderia]");
+  var modoAyuda = document.getElementById("modoHorarioAyuda");
+  var btnAgregarLocal = document.getElementById("btnAgregarBloqueGuarderiaLocal");
+  var bloquesPendientesInput = document.getElementById("bloquesPendientesGuarderiaInput");
+  var pendientesWrap = document.getElementById("bloquesGuarderiaPendientesWrap");
+  var pendientesList = document.getElementById("bloquesGuarderiaPendientesList");
+  var capacidadInput = document.getElementById("capacidadGuarderiaInput");
+  var latInput = document.getElementById("latitudServiciosGuarderia");
+  var lngInput = document.getElementById("longitudServiciosGuarderia");
+
+  var pendientes = [];
+
+  function syncPendientes() {
+    if (!bloquesPendientesInput) {
+      return;
+    }
+    bloquesPendientesInput.value = JSON.stringify(pendientes);
+
+    if (!pendientesWrap || !pendientesList) {
+      return;
+    }
+
+    if (!pendientes.length) {
+      pendientesWrap.classList.add("hidden");
+      pendientesList.innerHTML = "";
+      return;
+    }
+
+    pendientesWrap.classList.remove("hidden");
+    pendientesList.innerHTML = "";
+
+    pendientes.forEach(function (item, idx) {
+      var row = document.createElement("div");
+      row.className = "flex items-center justify-between gap-2 rounded-md border border-rose-300 bg-white px-2.5 py-2";
+      var descripcion = item.diaSemana + " a " + item.diaSemanaFin + " · " + item.horaInicio + " - " + item.horaFin;
+      row.innerHTML =
+        '<p class="text-xs text-slate-700">' + descripcion + '</p>' +
+        '<button type="button" class="rounded border border-rose-300 px-2 py-1 text-[11px] font-semibold text-rose-700 hover:bg-rose-100">Quitar</button>';
+
+      var btnQuitar = row.querySelector("button");
+      btnQuitar.addEventListener("click", function () {
+        pendientes.splice(idx, 1);
+        syncPendientes();
+      });
+
+      pendientesList.appendChild(row);
+    });
+  }
+
+  function syncNombreLugarGuarderia() {
+    if (!ciudadServicios || !nombreLugarBloque) {
+      return;
+    }
+    nombreLugarBloque.value = (ciudadServicios.value || "").trim();
+  }
+
+  function renderSoloUnDia() {
+    if (!diaSelect || !diaFinSelect || !soloUnDiaCheck) {
+      return;
+    }
+    var soloUnDia = !!soloUnDiaCheck.checked;
+    if (soloUnDia) {
+      diaFinSelect.value = diaSelect.value || "";
+      diaFinSelect.disabled = true;
+    } else {
+      diaFinSelect.disabled = false;
+      if (!diaFinSelect.value && diaSelect.value) {
+        diaFinSelect.value = diaSelect.value;
+      }
+    }
+  }
+
+  function renderModoHorario() {
+    if (!modoHorario || !horaInicio || !horaFin) {
+      return;
+    }
+
+    var todoDia = modoHorario.value === "todo_dia";
+    botonesModoHorario.forEach(function (btn) {
+      var activo = btn.getAttribute("data-modo-horario-guarderia") === modoHorario.value;
+      if (activo) {
+        btn.classList.add("border-pw-orange", "text-pw-orange", "bg-orange-50");
+      } else {
+        btn.classList.remove("border-pw-orange", "text-pw-orange", "bg-orange-50");
+      }
+    });
+
+    if (todoDia) {
+      horaInicio.value = "00:00";
+      horaFin.value = "23:30";
+      horaInicio.readOnly = true;
+      horaFin.readOnly = true;
+      horaInicio.classList.add("bg-slate-100", "text-slate-500", "pointer-events-none");
+      horaFin.classList.add("bg-slate-100", "text-slate-500", "pointer-events-none");
+      if (modoAyuda) {
+        modoAyuda.textContent = "Todo el dia deja el bloque listo para estancias largas (00:00 a 23:30).";
+      }
+    } else {
+      horaInicio.readOnly = false;
+      horaFin.readOnly = false;
+      horaInicio.classList.remove("bg-slate-100", "text-slate-500", "pointer-events-none");
+      horaFin.classList.remove("bg-slate-100", "text-slate-500", "pointer-events-none");
+      if (horaInicio.value === "00:00" && horaFin.value === "23:30") {
+        horaInicio.value = "08:00";
+        horaFin.value = "18:00";
+      }
+      if (modoAyuda) {
+        modoAyuda.textContent = "Por horas: define el intervalo exacto en que recibes mascotas.";
+      }
+    }
+  }
+
+  syncNombreLugarGuarderia();
+  ciudadServicios?.addEventListener("input", syncNombreLugarGuarderia);
+
+  botonesHorarioRapido.forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var pair = (btn.getAttribute("data-horario-guarderia") || "").split("|");
+      if (pair.length !== 2 || !horaInicio || !horaFin) {
+        return;
+      }
+      if (modoHorario) {
+        modoHorario.value = "por_horas";
+      }
+      horaInicio.value = pair[0];
+      horaFin.value = pair[1];
+      renderModoHorario();
+    });
+  });
+
+  botonesModoHorario.forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      if (!modoHorario) {
+        return;
+      }
+      modoHorario.value = btn.getAttribute("data-modo-horario-guarderia") || "por_horas";
+      renderModoHorario();
+    });
+  });
+
+  diaSelect?.addEventListener("change", function () {
+    if (soloUnDiaCheck?.checked && diaFinSelect) {
+      diaFinSelect.value = diaSelect.value || "";
+    } else if (diaFinSelect && !diaFinSelect.value) {
+      diaFinSelect.value = diaSelect.value || "";
+    }
+  });
+
+  soloUnDiaCheck?.addEventListener("change", renderSoloUnDia);
+
+  formAgregar?.addEventListener("submit", function () {
+    if (modoHorario && modoHorario.value === "todo_dia") {
+      horaInicio.value = "00:00";
+      horaFin.value = "23:30";
+    }
+    if (soloUnDiaCheck && soloUnDiaCheck.checked && diaFinSelect && diaSelect) {
+      diaFinSelect.value = diaSelect.value || "";
+    }
+    syncNombreLugarGuarderia();
+  });
+
+  btnAgregarLocal?.addEventListener("click", function () {
+    if (modoHorario && modoHorario.value === "todo_dia") {
+      horaInicio.value = "00:00";
+      horaFin.value = "23:30";
+    }
+    if (soloUnDiaCheck && soloUnDiaCheck.checked && diaFinSelect && diaSelect) {
+      diaFinSelect.value = diaSelect.value || "";
+    }
+    syncNombreLugarGuarderia();
+
+    var item = {
+      tipoServicio: "guarderia",
+      diaSemana: diaSelect ? (diaSelect.value || "") : "",
+      diaSemanaFin: diaFinSelect ? (diaFinSelect.value || "") : "",
+      horaInicio: horaInicio ? (horaInicio.value || "") : "",
+      horaFin: horaFin ? (horaFin.value || "") : "",
+      capacidadMaxima: capacidadInput ? (capacidadInput.value || "") : "",
+      nombreLugar: nombreLugarBloque ? (nombreLugarBloque.value || "") : "",
+      latitud: latInput ? (latInput.value || "") : "",
+      longitud: lngInput ? (lngInput.value || "") : ""
+    };
+
+    if (!item.diaSemana || !item.diaSemanaFin || !item.horaInicio || !item.horaFin) {
+      window.alert("Completa día(s) y horario antes de agregar.");
+      return;
+    }
+
+    pendientes.push(item);
+    syncPendientes();
+  });
+
+  renderSoloUnDia();
+  renderModoHorario();
+  syncPendientes();
+})();
+</script>

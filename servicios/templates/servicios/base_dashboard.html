@@ -70,6 +70,23 @@
   </div>
   <nav class="flex-1 py-3 overflow-y-auto">
     {% block sidebar_links %}{% endblock %}
+    {% if usuario and usuario.rol == 'dueño' %}
+    <a class="nav-link {% if request.resolver_match.url_name == 'dueño_notificaciones' %}active{% endif %}" href="{% url 'dueño_notificaciones' %}">
+      <i class="bi bi-bell"></i>
+      <span>Notificaciones</span>
+      {% if notificaciones_no_leidas_total %}
+      <span class="ml-auto inline-flex min-w-[1.35rem] h-5 px-1.5 items-center justify-center rounded-full bg-red-500 text-white text-[0.68rem] font-bold leading-none">{{ notificaciones_no_leidas_total }}</span>
+      {% endif %}
+    </a>
+    {% elif usuario and usuario.rol == 'cuidador' %}
+    <a class="nav-link {% if request.resolver_match.url_name == 'cuidador_notificaciones' %}active{% endif %}" href="{% url 'cuidador_notificaciones' %}">
+      <i class="bi bi-bell"></i>
+      <span>Notificaciones</span>
+      {% if notificaciones_no_leidas_total %}
+      <span class="ml-auto inline-flex min-w-[1.35rem] h-5 px-1.5 items-center justify-center rounded-full bg-red-500 text-white text-[0.68rem] font-bold leading-none">{{ notificaciones_no_leidas_total }}</span>
+      {% endif %}
+    </a>
+    {% endif %}
     {% block sidebar_extra %}
     {% if usuario.rol == 'cuidador' %}{% include "servicios/includes/sidebar_cuidador_extra.html" %}
     {% elif usuario.rol == 'dueño' %}{% include "servicios/includes/sidebar_dueño_extra.html" %}{% endif %}

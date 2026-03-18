@@ -19,93 +19,122 @@
   </script>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
 </head>
-<body class="min-h-screen bg-gradient-to-br from-slate-50 via-white to-orange-50/30 font-sans antialiased">
+<body class="min-h-screen bg-gradient-to-br from-slate-50 via-white to-orange-50/30 font-['Segoe_UI',system-ui,-apple-system,sans-serif] text-slate-800">
 <div class="min-h-screen flex flex-col">
-  <div class="flex-grow flex flex-col items-center justify-center px-4 py-8">
-    <div class="bg-white rounded-2xl shadow-xl border border-slate-100 p-8 max-w-2xl w-full">
-      <h2 class="text-2xl font-extrabold text-slate-800 mb-1 tracking-tight"><i class="bi bi-person-plus mr-2 text-pw-orange"></i>Crear cuenta</h2>
-      <p class="text-slate-600 text-sm mb-6">Completa los datos para registrarte en Paws & Walks.</p>
-
-      {% if error %}
-      <div class="rounded-xl px-4 py-3 mb-6 bg-red-50/90 border border-red-200/80 text-red-800 flex items-center gap-3 shadow-sm"><i class="bi bi-exclamation-triangle-fill text-red-500"></i><span>{{ error }}</span></div>
-      {% endif %}
-
-      <form method="post" class="space-y-4">
-        {% csrf_token %}
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div>
-            <label class="block text-sm font-semibold text-slate-700 mb-1.5">Nombre</label>
-            <input name="nombre" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100/80 outline-none transition-all placeholder:text-slate-400" maxlength="50" value="{{ nombre|default:'' }}" placeholder="Tu nombre" required>
-          </div>
-          <div>
-            <label class="block text-sm font-semibold text-slate-700 mb-1.5">Apellido</label>
-            <input name="apellido" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100/80 outline-none transition-all placeholder:text-slate-400" maxlength="50" value="{{ apellido|default:'' }}" placeholder="Tu apellido" required>
-          </div>
-          <div>
-            <label class="block text-sm font-semibold text-slate-700 mb-1.5">Usuario</label>
-            <input name="username" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" maxlength="30" value="{{ username|default:'' }}" required>
-          </div>
-          <div>
-            <label class="block text-sm font-semibold text-slate-700 mb-1.5">Correo</label>
-            <input name="correo" type="email" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" value="{{ correo|default:'' }}" required>
-          </div>
-          <div>
-            <label class="block text-sm font-semibold text-slate-700 mb-1.5">Cédula</label>
-            <input name="cedula" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" maxlength="20" value="{{ cedula|default:'' }}" required>
-          </div>
-          <div>
-            <label class="block text-sm font-semibold text-slate-700 mb-1.5">Teléfono</label>
-            <div class="flex gap-2">
-              <select name="prefijo" class="rounded-xl border border-slate-300 py-2.5 px-3 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none w-20">
-                <option value="+57" {% if prefijo == '+57' %}selected{% endif %}>+57</option>
-                <option value="+1" {% if prefijo == '+1' %}selected{% endif %}>+1</option>
-                <option value="+34" {% if prefijo == '+34' %}selected{% endif %}>+34</option>
-                <option value="+52" {% if prefijo == '+52' %}selected{% endif %}>+52</option>
-                <option value="+54" {% if prefijo == '+54' %}selected{% endif %}>+54</option>
-                <option value="+55" {% if prefijo == '+55' %}selected{% endif %}>+55</option>
-                <option value="+44" {% if prefijo == '+44' %}selected{% endif %}>+44</option>
-              </select>
-              <input name="telefono" class="flex-1 rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" maxlength="15" value="{{ telefono|default:'' }}" required>
+  <div class="grid min-h-screen md:grid-cols-12">
+    <section class="hidden md:flex md:col-span-5 bg-white border-r border-slate-200 px-10 py-12 items-center">
+      <div class="max-w-md">
+        <img src="{% static 'servicios/img/logo.png' %}" alt="Paws & Walks" class="w-80 h-80 object-contain mb-4">
+        <h1 class="text-4xl font-extrabold tracking-tight text-slate-800 mb-2">Paws & Walks</h1>
+        <p class="text-slate-600 text-base leading-relaxed mb-6">
+          Crea tu cuenta y gestiona reservas de paseo y guardería desde un solo lugar.
+        </p>
+        <div class="space-y-3">
+          <div class="flex items-start gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-600 shadow-sm">
+            <i class="bi bi-shield-check text-pw-orange text-xl mt-0.5"></i>
+            <div>
+              <p class="font-semibold text-slate-700">Perfiles confiables</p>
+              <p class="text-xs text-slate-500">Dueños y cuidadores con historial visible dentro de la plataforma.</p>
             </div>
           </div>
-          <div>
-            <label class="block text-sm font-semibold text-slate-700 mb-1.5">Nacimiento</label>
-            <input name="fechaNacimiento" type="date" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" value="{{ fechaNacimiento_str|default:'' }}" required title="Mayor 15 años">
-          </div>
-          <div>
-            <label class="block text-sm font-semibold text-slate-700 mb-1.5">Ciudad</label>
-            <input name="ciudad" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" maxlength="100" value="{{ ciudad|default:'' }}" required>
-          </div>
-          <div>
-            <label class="block text-sm font-semibold text-slate-700 mb-1.5">Contraseña</label>
-            <input name="password1" type="password" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" minlength="8" required>
-          </div>
-          <div>
-            <label class="block text-sm font-semibold text-slate-700 mb-1.5">Repetir contraseña</label>
-            <input name="password2" type="password" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" minlength="8" required>
-          </div>
-          <div class="sm:col-span-2">
-            <label class="block text-sm font-semibold text-slate-700 mb-1.5">Tipo de cuenta</label>
-            <div class="flex gap-2">
-              <div class="role-option flex-1 cursor-pointer border-2 rounded-xl p-4 text-center transition-all border-slate-200 bg-white hover:border-pw-orange hover:bg-orange-50/50 hover:shadow-md {% if rol == 'DUEÑO' %}border-pw-orange bg-orange-50/80 shadow-sm{% endif %}" onclick="selRole(this,'DUEÑO')">
-                <i class="bi bi-heart-fill text-pw-orange block text-2xl mb-2"></i><span class="font-bold text-sm text-slate-800">Dueño</span>
-              </div>
-              <div class="role-option flex-1 cursor-pointer border-2 rounded-xl p-4 text-center transition-all border-slate-200 bg-white hover:border-pw-orange hover:bg-orange-50/50 hover:shadow-md {% if rol == 'CUIDADOR' %}border-pw-orange bg-orange-50/80 shadow-sm{% endif %}" onclick="selRole(this,'CUIDADOR')">
-                <i class="bi bi-shield-fill-check text-pw-orange block text-2xl mb-2"></i><span class="font-bold text-sm text-slate-800">Cuidador</span>
-              </div>
+          <div class="flex items-start gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-600 shadow-sm">
+            <i class="bi bi-calendar-check text-pw-orange text-xl mt-0.5"></i>
+            <div>
+              <p class="font-semibold text-slate-700">Reservas organizadas</p>
+              <p class="text-xs text-slate-500">Consulta disponibilidad, agenda servicios y sigue cada solicitud.</p>
             </div>
           </div>
         </div>
-        <input type="hidden" name="rol" id="rolInput" value="{{ rol|default:'' }}">
-        <div class="flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-3 mt-6 pt-4 border-t border-slate-100">
-          <button type="submit" class="bg-pw-orange hover:bg-pw-orange-dark text-white font-semibold rounded-xl px-6 py-3 text-sm transition-all hover:shadow-lg hover:shadow-pw-orange/20 active:scale-[0.99]"><i class="bi bi-person-plus mr-2"></i>Crear cuenta</button>
-          <span class="text-slate-500 text-sm flex items-center">¿Ya tienes cuenta? <a href="{% url 'login' %}" class="text-pw-orange font-semibold hover:underline ml-1">Iniciar sesión</a></span>
-        </div>
-      </form>
-    </div>
+      </div>
+    </section>
+
+    <section class="md:col-span-7 flex items-center justify-center px-4 py-10">
+      <div class="w-full max-w-2xl bg-white/95 backdrop-blur-sm rounded-2xl shadow-xl border border-slate-100 p-8">
+        <h2 class="text-2xl font-extrabold text-slate-800 mb-1 tracking-tight"><i class="bi bi-person-plus mr-2 text-pw-orange"></i>Crear cuenta</h2>
+        <p class="text-slate-600 text-sm mb-6">Completa los datos para registrarte en Paws & Walks.</p>
+
+        {% if error %}
+        <div class="rounded-xl px-4 py-3 mb-6 bg-red-50/90 border border-red-200/80 text-red-800 flex items-center gap-3 shadow-sm"><i class="bi bi-exclamation-triangle-fill text-red-500"></i><span>{{ error }}</span></div>
+        {% endif %}
+
+        <form method="post" class="space-y-4">
+          {% csrf_token %}
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-semibold text-slate-700 mb-1.5">Nombre</label>
+              <input name="nombre" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100/80 outline-none transition-all placeholder:text-slate-400" maxlength="50" value="{{ nombre|default:'' }}" placeholder="Tu nombre" required>
+            </div>
+            <div>
+              <label class="block text-sm font-semibold text-slate-700 mb-1.5">Apellido</label>
+              <input name="apellido" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100/80 outline-none transition-all placeholder:text-slate-400" maxlength="50" value="{{ apellido|default:'' }}" placeholder="Tu apellido" required>
+            </div>
+            <div>
+              <label class="block text-sm font-semibold text-slate-700 mb-1.5">Usuario</label>
+              <input name="username" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" maxlength="30" value="{{ username|default:'' }}" required>
+            </div>
+            <div>
+              <label class="block text-sm font-semibold text-slate-700 mb-1.5">Correo</label>
+              <input name="correo" type="email" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" value="{{ correo|default:'' }}" required>
+            </div>
+            <div>
+              <label class="block text-sm font-semibold text-slate-700 mb-1.5">Cédula</label>
+              <input name="cedula" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" maxlength="20" value="{{ cedula|default:'' }}" required>
+            </div>
+            <div>
+              <label class="block text-sm font-semibold text-slate-700 mb-1.5">Teléfono</label>
+              <div class="flex gap-2">
+                <select name="prefijo" class="rounded-xl border border-slate-300 py-2.5 px-3 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none w-20">
+                  <option value="+57" {% if prefijo == '+57' %}selected{% endif %}>+57</option>
+                  <option value="+1" {% if prefijo == '+1' %}selected{% endif %}>+1</option>
+                  <option value="+34" {% if prefijo == '+34' %}selected{% endif %}>+34</option>
+                  <option value="+52" {% if prefijo == '+52' %}selected{% endif %}>+52</option>
+                  <option value="+54" {% if prefijo == '+54' %}selected{% endif %}>+54</option>
+                  <option value="+55" {% if prefijo == '+55' %}selected{% endif %}>+55</option>
+                  <option value="+44" {% if prefijo == '+44' %}selected{% endif %}>+44</option>
+                </select>
+                <input name="telefono" class="flex-1 rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" maxlength="15" value="{{ telefono|default:'' }}" required>
+              </div>
+            </div>
+            <div>
+              <label class="block text-sm font-semibold text-slate-700 mb-1.5">Nacimiento</label>
+              <input name="fechaNacimiento" type="date" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" value="{{ fechaNacimiento_str|default:'' }}" required title="Mayor 15 años">
+            </div>
+            <div>
+              <label class="block text-sm font-semibold text-slate-700 mb-1.5">Ciudad</label>
+              <input name="ciudad" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" maxlength="100" value="{{ ciudad|default:'' }}" required>
+            </div>
+            <div>
+              <label class="block text-sm font-semibold text-slate-700 mb-1.5">Contraseña</label>
+              <input name="password1" type="password" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" minlength="8" required>
+            </div>
+            <div>
+              <label class="block text-sm font-semibold text-slate-700 mb-1.5">Repetir contraseña</label>
+              <input name="password2" type="password" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" minlength="8" required>
+            </div>
+            <div class="sm:col-span-2">
+              <label class="block text-sm font-semibold text-slate-700 mb-1.5">Tipo de cuenta</label>
+              <div class="flex gap-2">
+                <div class="role-option flex-1 cursor-pointer border-2 rounded-xl p-4 text-center transition-all border-slate-200 bg-white hover:border-pw-orange hover:bg-orange-50/50 hover:shadow-md {% if rol == 'DUEÑO' %}border-pw-orange bg-orange-50/80 shadow-sm{% endif %}" onclick="selRole(this,'DUEÑO')">
+                  <i class="bi bi-heart-fill text-pw-orange block text-2xl mb-2"></i><span class="font-bold text-sm text-slate-800">Dueño</span>
+                </div>
+                <div class="role-option flex-1 cursor-pointer border-2 rounded-xl p-4 text-center transition-all border-slate-200 bg-white hover:border-pw-orange hover:bg-orange-50/50 hover:shadow-md {% if rol == 'CUIDADOR' %}border-pw-orange bg-orange-50/80 shadow-sm{% endif %}" onclick="selRole(this,'CUIDADOR')">
+                  <i class="bi bi-shield-fill-check text-pw-orange block text-2xl mb-2"></i><span class="font-bold text-sm text-slate-800">Cuidador</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <input type="hidden" name="rol" id="rolInput" value="{{ rol|default:'' }}">
+          <div class="flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-3 mt-6 pt-4 border-t border-slate-100">
+            <button type="submit" class="bg-pw-orange hover:bg-pw-orange-dark text-white font-semibold rounded-xl px-6 py-3 text-sm transition-all hover:shadow-lg hover:shadow-pw-orange/20 active:scale-[0.99]"><i class="bi bi-person-plus mr-2"></i>Crear cuenta</button>
+            <span class="text-slate-500 text-sm flex items-center">¿Ya tienes cuenta? <a href="{% url 'login' %}" class="text-pw-orange font-semibold hover:underline ml-1">Iniciar sesión</a></span>
+          </div>
+        </form>
+      </div>
+    </section>
   </div>
+
   <footer class="w-full border-t border-slate-200/80 bg-white/50 backdrop-blur-sm py-4 px-4 text-center text-xs text-slate-500">
-    <p><a href="{% url 'terminos_condiciones' %}" class="text-pw-orange hover:underline">Términos y condiciones</a> · <a href="#" class="text-pw-orange hover:underline">Política de privacidad</a> · <a href="mailto:contacto@pawswalks.co" class="text-pw-orange hover:underline">Contacto</a></p>
+    <p><a href="{% url 'terminos_condiciones' %}" class="text-pw-orange hover:underline">Términos y condiciones</a> · <a href="{% url 'politica_privacidad' %}" class="text-pw-orange hover:underline">Política de privacidad</a> · <a href="mailto:contacto@pawswalks.co" class="text-pw-orange hover:underline">Contacto</a></p>
     <p class="mt-1">© 2026 Paws & Walks. Contacto: contacto@pawswalks.co · +57 300 123 4567</p>
   </footer>
 </div>
