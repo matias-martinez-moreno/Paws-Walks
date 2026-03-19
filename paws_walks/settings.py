@@ -134,6 +134,16 @@ ENV_TYPE = os.environ.get("ENV_TYPE", "MOCK")
 
 LOGIN_URL = "/login/"
 
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework.authentication.SessionAuthentication",
+        "rest_framework.authentication.BasicAuthentication",
+    ],
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.IsAuthenticated",
+    ],
+}
+
 # Cache en memoria para sesiones: reduce latencia del login (sin escribir en BD en cada request)
 CACHES = {
     "default": {

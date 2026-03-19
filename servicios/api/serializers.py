@@ -2,7 +2,7 @@ from rest_framework import serializers
 
 from servicios.domain.exceptions import DomainValidationError
 from servicios.models import EstadoSolicitud, TipoServicio
-from servicios.application.api_services import (
+from servicios.services import (
     ValidarBusquedaDisponibilidadApiService,
     ValidarCrearSolicitudApiService,
 )
@@ -30,7 +30,7 @@ class SolicitudServicioCreateSerializer(serializers.Serializer):
 
 
 class SolicitudServicioCancelSerializer(serializers.Serializer):
-    actor_id = serializers.UUIDField()
+    actor_id = serializers.UUIDField(required=False, allow_null=True)
 
 
 class SolicitudServicioSerializer(serializers.Serializer):

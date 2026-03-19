@@ -1,7 +1,9 @@
 from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from servicios.domain.exceptions import DomainError
 from servicios.api.serializers import (
     DisponibilidadBusquedaSerializer,
     DisponibilidadResultadoSerializer,
@@ -9,8 +11,9 @@ from servicios.api.serializers import (
     SolicitudServicioCancelSerializer,
     SolicitudServicioSerializer,
 )
-from servicios.application.api_services import (
+from servicios.services import (
     MapearErroresApiService,
+    PoliticaAccesoServiciosApiService,
     ServiciosApiGatewayService,
 )
 
@@ -18,7 +21,9 @@ from servicios.application.api_services import (
 class BaseServiciosAPIView(APIView):
     """Base APIView para centralizar traducción de errores de dominio."""
 
+    permission_classes = [IsAuthenticated]
     _error_mapper = MapearErroresApiService(logger_name=__name__)
+    _policy = PoliticaAccesoServiciosApiService()
     _gateway = ServiciosApiGatewayService()
 
     def _respuesta_error(self, exc: Exception, operacion: str):
@@ -30,16 +35,29 @@ class SolicitudServicioCreateAPIView(BaseServiciosAPIView):
     # endpoint drf para crear solicitud
 
     def post(self, request):
+        try:
+            actor = self._policy.resolver_actor(request.user)
+            self._policy.exigir_rol_dueño_para_crear(actor)
+        except DomainError as exc:
+            return self._respuesta_error(exc, "crear solicitud")
+        except Exception as exc:
+            return self._respuesta_error(exc, "crear solicitud")
+
         # valida estructura de entrada
         in_serializer = SolicitudServicioCreateSerializer(data=request.data)
         if not in_serializer.is_valid():
             return Response(in_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
         try:
-            # delega al service layer
-            solicitud = self._gateway.crear_solicitud(
-                in_serializer.validated_data
+            data = self._policy.forzar_dueño_del_actor(
+                in_serializer.validated_data,
+                actor,
+                mismatch_msg="no puedes crear solicitudes para otro dueño",
             )
+            # delega al service layer
+            solicitud = self._gateway.crear_solicitud(data)
+        except DomainError as exc:
+            return self._respuesta_error(exc, "crear solicitud")
         except Exception as exc:
             return self._respuesta_error(exc, "crear solicitud")
 
@@ -53,7 +71,11 @@ class SolicitudServicioDetailAPIView(BaseServiciosAPIView):
 
     def get(self, request, solicitud_id):
         try:
+            actor = self._policy.resolver_actor(request.user)
             solicitud = self._gateway.obtener_solicitud(str(solicitud_id))
+            self._policy.validar_participacion_en_solicitud(actor, solicitud)
+        except DomainError as exc:
+            return self._respuesta_error(exc, "detalle solicitud")
         except Exception as exc:
             return self._respuesta_error(exc, "detalle solicitud")
 
@@ -70,10 +92,17 @@ class SolicitudServicioCancelarAPIView(BaseServiciosAPIView):
             return Response(in_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
         try:
+            actor = self._policy.resolver_actor(request.user)
+            actor_id = self._policy.validar_actor_cancelacion(
+                actor,
+                in_serializer.validated_data.get("actor_id"),
+            )
             solicitud = self._gateway.cancelar_solicitud(
                 str(solicitud_id),
-                in_serializer.validated_data["actor_id"],
+                actor_id,
             )
+        except DomainError as exc:
+            return self._respuesta_error(exc, "cancelar solicitud")
         except Exception as exc:
             return self._respuesta_error(exc, "cancelar solicitud")
 
@@ -85,14 +114,27 @@ class DisponibilidadCuidadoresAPIView(BaseServiciosAPIView):
     # endpoint drf para buscar cuidadores disponibles
 
     def post(self, request):
+        try:
+            actor = self._policy.resolver_actor(request.user)
+            self._policy.exigir_rol_dueño_para_buscar(actor)
+        except DomainError as exc:
+            return self._respuesta_error(exc, "buscar disponibilidad")
+        except Exception as exc:
+            return self._respuesta_error(exc, "buscar disponibilidad")
+
         in_serializer = DisponibilidadBusquedaSerializer(data=request.data)
         if not in_serializer.is_valid():
             return Response(in_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-        data = in_serializer.validated_data
-
         try:
+            data = self._policy.forzar_dueño_del_actor(
+                in_serializer.validated_data,
+                actor,
+                mismatch_msg="no puedes buscar disponibilidad para otro dueño",
+            )
             payload = self._gateway.buscar_disponibilidad(data)
+        except DomainError as exc:
+            return self._respuesta_error(exc, "buscar disponibilidad")
         except Exception as exc:
             return self._respuesta_error(exc, "buscar disponibilidad")
 

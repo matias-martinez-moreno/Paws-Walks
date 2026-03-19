@@ -17,3 +17,8 @@ class ConflictError(DomainError):
     # conflicto de estado de negocio
     pass
 
+
+class AuthorizationError(DomainError):
+    # actor autenticado sin permisos para ejecutar la operacion
+    pass
+

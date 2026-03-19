@@ -9,7 +9,6 @@ from django.views import View
 
 from servicios.domain.exceptions import DomainError
 from servicios.models import EstadoSolicitud, SexoMascota, TamanoMascota, TipoMascota, TipoServicio, Usuario
-from servicios.application.api_services import CrearSolicitudServicioAppService
 from servicios.services import (
     AutenticacionService,
     ConstruirContextoHistorialSolicitudesService,
@@ -18,6 +17,7 @@ from servicios.services import (
     ConstruirDatosRegistroUsuarioFormularioService,
     ConstruirDatosPerfilUsuarioFormularioService,
     CrearUsuarioAppService,
+    CrearSolicitudServicioAppService,
     EditarPerfilUsuarioService,
     ListarAgendamientosCuidadorService,
     FormatearTelefonoService,

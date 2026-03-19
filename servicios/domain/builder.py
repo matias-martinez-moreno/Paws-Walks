@@ -1,6 +1,5 @@
-# builder: construye SolicitudServicio sin lógica de negocio ni acceso a ORM
+# builder de dominio: construye un payload puro sin acoplarse a ORM
 from servicios.domain.exceptions import DomainValidationError
-from servicios.models import EstadoSolicitud, SolicitudServicio
 
 
 class SolicitudServicioBuilder:
@@ -59,10 +58,6 @@ class SolicitudServicioBuilder:
         self._datos["ordenEnRuta"] = orden_ruta
         return self
 
-    def con_duracion_guarderia(self, duracion_minutos):
-        self._datos["duracionGuarderiaMinutos"] = duracion_minutos
-        return self
-
     def con_monto_pago(self, monto_pago):
         self._datos["monto_pago"] = monto_pago
         return self
@@ -76,7 +71,7 @@ class SolicitudServicioBuilder:
         if "idEvento" not in self._datos and "idVentana" not in self._datos and "idBloqueHorario" not in self._datos:
             raise DomainValidationError("debes definir un origen de disponibilidad (evento, ventana o bloque)")
 
-    def build(self):
+    def build(self, *, estado_inicial: str = "pendiente"):
         self._validar_campos_minimos()
         kwargs = {
             "idDueño": self._datos["idDueño"],
@@ -85,7 +80,7 @@ class SolicitudServicioBuilder:
             "tipoServicio": self._datos["tipoServicio"],
             "fecha": self._datos["fecha"],
             "fechaFin": self._datos.get("fechaFin"),
-            "estado": EstadoSolicitud.PENDIENTE,
+            "estado": estado_inicial,
             "monto_pago": self._datos.get("monto_pago"),
         }
 
@@ -108,4 +103,4 @@ class SolicitudServicioBuilder:
         else:
             kwargs["idBloqueHorario"] = self._datos["idBloqueHorario"]
 
-        return SolicitudServicio(**kwargs)
+        return kwargs
