@@ -8,7 +8,7 @@ from django.urls import reverse
 from django.views import View
 
 from servicios.domain.exceptions import DomainError
-from servicios.models import EstadoSolicitud, SexoMascota, TamanoMascota, TipoMascota, TipoServicio, Usuario
+from servicios.models import SexoMascota, TamanoMascota, TipoMascota, Usuario
 from servicios.services import (
     AutenticacionService,
     ConstruirContextoHistorialSolicitudesService,
@@ -125,19 +125,7 @@ def _get_resenas_context(request, usuario):
     return ListarResenasRecibidasService().listar(usuario, orden=orden_resenas)
 
 
-HISTORIAL_ESTADO_OPCIONES = [
-    ("todas", "Todos los estados"),
-    (EstadoSolicitud.COMPLETADO, "Finalizados"),
-    (EstadoSolicitud.CANCELADO, "Cancelados"),
-    (EstadoSolicitud.RECHAZADO, "Rechazados"),
-    (EstadoSolicitud.ACEPTADO, "Aceptados"),
-    (EstadoSolicitud.PENDIENTE, "Pendientes"),
-]
-HISTORIAL_SERVICIO_OPCIONES = [
-    ("todos", "Todos los servicios"),
-    (TipoServicio.PASEO, "Paseo"),
-    (TipoServicio.GUARDERIA, "Guardería"),
-]
+from servicios.presentation_constants import HISTORIAL_ESTADO_OPCIONES, HISTORIAL_SERVICIO_OPCIONES
 
 
 # ── Dueño ─────────────────────────────────────────────────

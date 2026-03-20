@@ -126,7 +126,7 @@ class PerfilCuidador(models.Model):
 
 
 class BloqueTiempo(models.Model):
-    """Bloque de tiempo (reunión). DEPRECADO: usar Evento. Mantenido para migración legada."""
+    """Bloque de disponibilidad individual de un cuidador (reunión 1:1)."""
     idBloque = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     idCuidador = models.ForeignKey(PerfilCuidador, on_delete=models.CASCADE, related_name='bloques_tiempo')
     tipoServicio = models.CharField(max_length=20, choices=TipoServicio.choices, default=TipoServicio.PASEO)
@@ -148,7 +148,7 @@ class BloqueTiempo(models.Model):
 
 
 class VentanaDisponibilidad(models.Model):
-    """Ventana amplia de disponibilidad. DEPRECADO: usar Evento. Mantenido para migración legada."""
+    """Ventana de disponibilidad con slots para paseos grupales."""
     idVentana = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     idCuidador = models.ForeignKey(PerfilCuidador, on_delete=models.CASCADE, related_name='ventanas_disponibilidad')
     tipoServicio = models.CharField(max_length=20, choices=TipoServicio.choices, default=TipoServicio.PASEO)
@@ -171,7 +171,7 @@ class VentanaDisponibilidad(models.Model):
 
 
 class SlotDisponibilidad(models.Model):
-    """Slot dentro de una ventana. DEPRECADO: usar SlotEvento. Mantenido para migración legada."""
+    """Slot de tiempo dentro de una ventana de disponibilidad."""
     idSlot = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     idVentana = models.ForeignKey(VentanaDisponibilidad, on_delete=models.CASCADE, related_name='slots')
     horaInicio = models.TimeField()

@@ -1,4 +1,6 @@
-# builder de dominio: construye un payload puro sin acoplarse a ORM
+# builder de dominio: construye y persiste la entidad SolicitudServicio
+from __future__ import annotations
+
 from servicios.domain.exceptions import DomainValidationError
 
 
@@ -72,6 +74,7 @@ class SolicitudServicioBuilder:
             raise DomainValidationError("debes definir un origen de disponibilidad (evento, ventana o bloque)")
 
     def build(self, *, estado_inicial: str = "pendiente"):
+        """Retorna el dict de kwargs validado para crear la SolicitudServicio."""
         self._validar_campos_minimos()
         kwargs = {
             "idDueño": self._datos["idDueño"],

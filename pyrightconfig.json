@@ -1,0 +1,17 @@
+{
+  "venvPath": ".",
+  "venv": ".venv",
+  "pythonVersion": "3.13",
+  "include": ["."],
+  "exclude": [
+    ".venv",
+    "servicios/venv",
+    "**/migrations",
+    "**/__pycache__"
+  ],
+  "extraPaths": ["."],
+  "typeCheckingMode": "basic",
+  "reportMissingImports": "warning",
+  "reportMissingModuleSource": "none",
+  "useLibraryCodeForTypes": true
+}

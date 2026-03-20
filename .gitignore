@@ -12,4 +12,6 @@ db.sqlite3
 
 # IDE
 .vscode/
+.claude/
+
 .idea/

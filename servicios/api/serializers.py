@@ -1,16 +1,16 @@
 from rest_framework import serializers
 
-from servicios.domain.exceptions import DomainValidationError
 from servicios.models import EstadoSolicitud, TipoServicio
-from servicios.services import (
-    ValidarBusquedaDisponibilidadApiService,
-    ValidarCrearSolicitudApiService,
-)
 
+
+# ── Serializers de entrada ──────────────────────────────────────────────────
+# Solo validan estructura (tipos, formatos, campos requeridos).
+# Las reglas de negocio se validan explícitamente en el APIView,
+# delegando al Service Layer (ValidarCrearSolicitudApiService /
+# ValidarBusquedaDisponibilidadApiService). Esto cumple SRP:
+# el Serializer es responsable de la forma del dato, no de las reglas.
 
 class SolicitudServicioCreateSerializer(serializers.Serializer):
-    _validator = ValidarCrearSolicitudApiService()
-
     idDueño_id = serializers.UUIDField()
     idCuidador_id = serializers.UUIDField()
     idMascota_id = serializers.UUIDField()
@@ -20,13 +20,6 @@ class SolicitudServicioCreateSerializer(serializers.Serializer):
     idEvento_id = serializers.UUIDField()
     idSlotEvento_id = serializers.UUIDField(required=False, allow_null=True)
     duracionMinutosSolicitados = serializers.IntegerField(required=False, allow_null=True)
-
-    def validate(self, attrs):
-        try:
-            return self._validator.validar(attrs)
-        except DomainValidationError as error:
-            payload = error.args[0] if error.args else str(error)
-            raise serializers.ValidationError(payload)
 
 
 class SolicitudServicioCancelSerializer(serializers.Serializer):
@@ -56,8 +49,6 @@ class SolicitudServicioSerializer(serializers.Serializer):
 
 
 class DisponibilidadBusquedaSerializer(serializers.Serializer):
-    _validator = ValidarBusquedaDisponibilidadApiService()
-
     idDueño_id = serializers.UUIDField()
     idMascota_id = serializers.UUIDField()
     tipoServicio = serializers.ChoiceField(choices=[c[0] for c in TipoServicio.choices])
@@ -78,13 +69,6 @@ class DisponibilidadBusquedaSerializer(serializers.Serializer):
     precioMaxHora = serializers.IntegerField(required=False, allow_null=True)
     horaInicio = serializers.TimeField(required=False, allow_null=True)
     horaFin = serializers.TimeField(required=False, allow_null=True)
-
-    def validate(self, attrs):
-        try:
-            return self._validator.validar(attrs)
-        except DomainValidationError as error:
-            payload = error.args[0] if error.args else str(error)
-            raise serializers.ValidationError(payload)
 
 
 class DisponibilidadSlotGuarderiaSerializer(serializers.Serializer):
