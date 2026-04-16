@@ -59,10 +59,6 @@ class ValidarBusquedaDisponibilidadApiService:
         if tipo_servicio == TipoServicio.PASEO:
             if attrs.get("fecha") is None:
                 raise DomainValidationError({"fecha": "fecha es requerida para paseo"})
-            if attrs.get("duracionMinutos") is None:
-                raise DomainValidationError(
-                    {"duracionMinutos": "duracionMinutos es requerida para paseo"}
-                )
 
             ciudad = str(attrs.get("ciudadPaseo") or "").strip()
             latitud = attrs.get("latitudPaseo")
@@ -171,6 +167,11 @@ class MapearResultadosDisponibilidadApiService:
 
         if slots_guarderia:
             payload["slotsGuarderia"] = slots_guarderia
+            first_opciones = slots_guarderia[0].get("duracionOpciones") or []
+            payload["duracionOpciones"] = first_opciones
+            payload["duracionMaxima"] = first_opciones[-1] if first_opciones else 0
+            payload["fechaInicio"] = str(data.get("fechaInicioGuarderia") or "")
+            payload["fechaFin"] = str(data.get("fechaFinGuarderia") or data.get("fechaInicioGuarderia") or "")
 
         return payload
 

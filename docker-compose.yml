@@ -1,0 +1,19 @@
+services:
+
+  django:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      DISPONIBILIDAD_SERVICE_URL: http://disponibilidad:5001
+      ENV_TYPE: MOCK
+    volumes:
+      - ./db.sqlite3:/app/db.sqlite3
+    command: python manage.py runserver 0.0.0.0:8000
+
+  disponibilidad:
+    build: ./microservicio_disponibilidad
+    ports:
+      - "5001:5001"
+    volumes:
+      - ./db.sqlite3:/app/db.sqlite3

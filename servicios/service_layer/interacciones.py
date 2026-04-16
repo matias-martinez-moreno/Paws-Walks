@@ -14,6 +14,7 @@ from servicios.domain.exceptions import (
     ResourceNotFoundError,
 )
 from servicios.infra.factory import NotificadorFactory
+from servicios.service_layer.api_gateway import ServiciosApiGatewayService
 from servicios.models import (
     Calificacion,
     CalificacionMascota,
@@ -31,6 +32,7 @@ from servicios.models import (
 from servicios.service_layer.disponibilidad import (
     BuscarDisponibilidadFormularioReservaService,
     CrearReservaDesdeSeleccionService,
+    NormalizarBusquedaReservaService,
     _auto_finalizar_paseos_expirados,
 )
 from servicios.service_layer.reputacion_servicios import (
@@ -142,11 +144,13 @@ class ProcesarAccionNuevaReservaDueñoService:
         self,
         crear_reserva_service: CrearReservaDesdeSeleccionService | None = None,
         buscar_disponibilidad_service: BuscarDisponibilidadFormularioReservaService | None = None,
+        gateway: ServiciosApiGatewayService | None = None,
     ):
         self._crear_reserva_service = crear_reserva_service or CrearReservaDesdeSeleccionService()
         self._buscar_disponibilidad_service = (
             buscar_disponibilidad_service or BuscarDisponibilidadFormularioReservaService()
         )
+        self._gateway = gateway or ServiciosApiGatewayService()
 
     def procesar(self, dueño: Usuario, source) -> dict:
         action = str(source.get("action") or "buscar").strip().lower()
@@ -168,12 +172,51 @@ class ProcesarAccionNuevaReservaDueñoService:
                 "ruta": "dueño_mis_reservas",
             }
 
-        cuidadores, busqueda = self._buscar_disponibilidad_service.buscar(dueño, source)
+        # Usa Gateway (que puede llamar Flask microservicio) en lugar del servicio directo
+        tipo_servicio = str(source.get("tipo_servicio") or "paseo").strip().lower()
+        payload_gateway = {
+            "tipoServicio": tipo_servicio,
+            "idDueño_id": str(dueño.idUsuario),
+            "idMascota_id": source.get("mascota_id", ""),
+        }
+        if tipo_servicio == "paseo":
+            payload_paseo = {
+                "fecha": source.get("fecha", ""),
+                "ciudadPaseo": (source.get("ciudad_paseo") or "").strip(),
+                "latitudPaseo": source.get("latitud_paseo"),
+                "longitudPaseo": source.get("longitud_paseo"),
+            }
+            duracion = self._coerce_int_or_none(source.get("duracion"))
+            if duracion is not None:
+                payload_paseo["duracionMinutos"] = duracion
+            payload_gateway.update(payload_paseo)
+        else:
+            payload_gateway.update({
+                "fechaInicioGuarderia": source.get("fecha_guarderia_inicio", ""),
+                "fechaFinGuarderia": source.get("fecha_guarderia_fin") or source.get("fecha_guarderia_inicio", ""),
+            })
+        payload_gateway.update({
+            "precioMinHora": self._coerce_int_or_none(source.get("precio_min")),
+            "precioMaxHora": self._coerce_int_or_none(source.get("precio_max")),
+        })
+
+        cuidadores = self._gateway.buscar_disponibilidad(payload_gateway)
+        busqueda = NormalizarBusquedaReservaService().busqueda_from_source(source, dueño)
         return {
             "modo": "render_resultado",
             "cuidadores_disponibles": cuidadores,
             "busqueda": busqueda,
         }
+
+    @staticmethod
+    def _coerce_int_or_none(valor):
+        texto = str(valor or "").strip()
+        if not texto:
+            return None
+        try:
+            return int(texto)
+        except (ValueError, TypeError):
+            return None
 
 
 class EnviarMensajeChatService:

@@ -4,13 +4,13 @@
 
 {% block top_greeting %}
 <h1 class="page-header__title">Mis servicios</h1>
-<p class="page-header__subtitle">Configura paseo y guarderia con horarios simples</p>
+<p class="page-header__subtitle">Configura paseos y guarderías disponibles</p>
 {% endblock %}
 
 {% block sidebar_links %}
 <div class="sidebar-section">Principal</div>
 <a class="nav-link" href="{% url 'dashboard_cuidador' %}"><i class="bi bi-house-door"></i> Panel</a>
-<div class="sidebar-section">Gestion</div>
+<div class="sidebar-section">Gestión</div>
 <a class="nav-link" href="{% url 'cuidador_calendario' %}"><i class="bi bi-calendar3"></i> Mi calendario</a>
 <a class="nav-link active" href="{% url 'cuidador_servicios' %}"><i class="bi bi-gear-wide-connected"></i> Mis servicios</a>
 <div class="sidebar-section">Cuenta</div>
@@ -20,131 +20,272 @@
 {% block extra_css %}
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
 <style>
-  .svc-card { transition: transform .15s ease, box-shadow .2s ease; }
-  .svc-card:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(15,23,42,.08); }
+  .tab-btn { transition: all .2s ease; }
+  .tab-btn.active { color: #e07a2e; border-bottom: 3px solid #e07a2e; }
+  .bloque-item { transition: all .15s ease; }
+  .bloque-item:hover { background-color: rgba(0,0,0,0.02); }
 </style>
 {% endblock %}
 
 {% block content %}
-<div class="max-w-6xl mx-auto space-y-6">
+<div>
   {% if not editar_tipo %}
-  <div class="flex flex-wrap items-center justify-between gap-3">
-    <div>
-      <h2 class="text-xl font-bold text-slate-800">Servicios activos</h2>
-      <p class="text-sm text-slate-500">Solo paseo y guarderia, con horarios por evento.</p>
-    </div>
-    <div class="flex flex-wrap gap-2">
-      <a href="{% url 'cuidador_servicios' %}?editar=paseo" class="inline-flex items-center gap-2 rounded-xl border border-amber-200 bg-amber-50 px-4 py-2 text-sm font-semibold text-amber-800 hover:bg-amber-100">
-        <span class="inline-flex h-6 w-6 items-center justify-center rounded-full bg-white text-base leading-none" aria-hidden="true">🐾</span>
-        Agregar paseo
-      </a>
-      <a href="{% url 'cuidador_servicios' %}?editar=guarderia" class="inline-flex items-center gap-2 rounded-xl border border-rose-200 bg-rose-50 px-4 py-2 text-sm font-semibold text-rose-800 hover:bg-rose-100">
-        <i class="bi bi-house-heart"></i> Agregar guarderia
-      </a>
-    </div>
+
+  <!-- Tabs separadores: Paseo / Guardería -->
+  <div class="mb-6 border-b border-slate-200 flex gap-6">
+    <button class="tab-btn active py-3 text-sm font-semibold text-slate-800 border-b-4 border-pw-orange" data-tab="paseo">
+      <i class="bi bi-walking mr-2"></i>Paseos
+    </button>
+    <button class="tab-btn py-3 text-sm font-semibold text-slate-600 border-b-4 border-transparent hover:text-slate-800" data-tab="guarderia">
+      <i class="bi bi-house-heart mr-2"></i>Guarderías
+    </button>
   </div>
 
-  <div class="grid gap-4 md:grid-cols-2">
+  <!-- TAB PASEOS -->
+  <div id="tab-paseo" class="tab-content space-y-3">
     {% if precios_activos.paseo %}
-    <div class="svc-card rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-      <div class="flex items-center gap-3">
-        <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-amber-50 text-amber-600">
-          <span class="text-2xl leading-none" aria-hidden="true">🐾</span>
-        </div>
+      <div class="flex items-center justify-between mb-4">
         <div>
-          <h3 class="font-bold text-slate-800">Paseo</h3>
-          <p class="text-sm text-slate-600">${{ precios_activos.paseo.precioCOP|formato_cop }} COP/hora</p>
+          <h3 class="text-base font-bold text-slate-800">Paseo</h3>
+          <p class="text-xs text-slate-600">${{ precios_activos.paseo.precioCOP|formato_cop }} COP/hora</p>
+        </div>
+        <span class="px-2.5 py-1 bg-emerald-100 text-emerald-700 text-xs font-bold rounded-full">Activo</span>
+      </div>
+
+      <!-- Estadísticas compactas -->
+      <div class="grid grid-cols-3 gap-2 mb-4 p-3 bg-slate-50 rounded-lg border border-slate-200">
+        <div class="text-center">
+          <p class="text-xs text-slate-500 font-semibold">Bloques</p>
+          <p class="text-lg font-bold text-slate-800">{{ total_horarios_paseo }}</p>
+        </div>
+        <div class="text-center">
+          <p class="text-xs text-slate-500 font-semibold">Cupos</p>
+          <p class="text-lg font-bold text-slate-800">{{ resumen_paseo.capacidad_maxima }}</p>
+        </div>
+        <div class="text-center">
+          <p class="text-xs text-slate-500 font-semibold">Horario</p>
+          <p class="text-xs font-semibold text-slate-700">{% if resumen_paseo.hora_inicio_min %}{{ resumen_paseo.hora_inicio_min|hora_corta }}-{{ resumen_paseo.hora_fin_max|hora_corta }}{% else %}—{% endif %}</p>
         </div>
       </div>
-      <div class="mt-3 space-y-1 text-xs text-slate-600">
-        <p><i class="bi bi-calendar3 mr-1 text-slate-400"></i>Bloques activos: {{ total_horarios_paseo }}</p>
-        <p><i class="bi bi-geo-alt mr-1 text-slate-400"></i>Zona: {% if servicio_ciudad %}{{ servicio_ciudad }}{% else %}Sin ciudad{% endif %}</p>
-        <p><i class="bi bi-clock mr-1 text-slate-400"></i>Franja: {% if resumen_paseo.hora_inicio_min %}{{ resumen_paseo.hora_inicio_min|hora_corta }} - {{ resumen_paseo.hora_fin_max|hora_corta }}{% else %}Sin horarios{% endif %}</p>
-        <p><i class="bi bi-people mr-1 text-slate-400"></i>Cupos por bloque: hasta {{ resumen_paseo.capacidad_maxima }} perro{{ resumen_paseo.capacidad_maxima|pluralize }}</p>
-        <p><i class="bi bi-calendar-week mr-1 text-slate-400"></i>Dias activos: {{ resumen_paseo.dias_resumen }}</p>
+
+      <!-- Bloques por día -->
+      {% if horarios_paseo_por_dia %}
+        {% for dia_val, dia_label, eventos in horarios_paseo_por_dia %}
+          {% if eventos %}
+          <div class="mb-3">
+            <p class="text-xs font-bold text-slate-700 mb-2">{{ dia_label }}</p>
+            <div class="space-y-1.5">
+              {% for e in eventos %}
+              <div class="bloque-item flex items-center justify-between rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm">
+                <div class="flex-1">
+                  <span class="font-semibold text-slate-800">{{ e.horaInicio|hora_corta }} – {{ e.horaFin|hora_corta }}</span>
+                  <span class="ml-2 text-xs text-slate-500">{{ e.capacidadMaxima }} cupo{{ e.capacidadMaxima|pluralize }}</span>
+                </div>
+                <button class="eliminar-bloque ml-2 p-1.5 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded transition" data-evento="{{ e.idEvento }}" data-tipo="paseo" title="Eliminar bloque">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+          {% endif %}
+        {% endfor %}
+      {% else %}
+      <div class="p-4 bg-slate-50 rounded-lg border border-slate-200 text-center">
+        <p class="text-xs text-slate-500">Sin horarios configurados</p>
       </div>
-      {% if precios_activos.paseo and precios_activos.paseo.descripcion %}
-      <p class="mt-2 text-sm text-slate-600">{{ precios_activos.paseo.descripcion|truncatewords:18 }}</p>
       {% endif %}
-      <div class="mt-4 flex flex-wrap items-center gap-2">
-      <a href="{% url 'cuidador_servicios' %}?editar=paseo" class="inline-flex items-center gap-2 rounded-lg bg-pw-orange px-3 py-2 text-sm font-semibold text-white hover:bg-pw-orange-dark">
-        <i class="bi bi-sliders"></i>Gestionar paseo
-      </a>
-      <form method="post" class="inline-flex" onsubmit="return confirm('¿Eliminar servicio de paseo?');">
-        {% csrf_token %}
-        <input type="hidden" name="action" value="eliminar_servicio">
-        <input type="hidden" name="tipoServicio" value="paseo">
-        <button type="submit" class="inline-flex items-center gap-2 rounded-lg border border-red-300 px-3 py-2 text-sm font-semibold text-red-700 hover:bg-red-50">
-          <i class="bi bi-trash"></i>Eliminar servicio
-        </button>
-      </form>
+
+      <!-- Acciones paseo -->
+      <div class="flex gap-2 pt-2 border-t border-slate-200">
+        <a href="{% url 'cuidador_servicios' %}?editar=paseo" class="flex-1 inline-flex items-center justify-center gap-2 rounded-lg bg-pw-orange text-white px-3 py-2 text-xs font-semibold hover:bg-pw-orange-dark transition">
+          <i class="bi bi-pencil-square"></i>Editar
+        </a>
+        <form method="post" class="flex-1" onsubmit="return confirm('¿Eliminar servicio?');">
+          {% csrf_token %}
+          <input type="hidden" name="action" value="eliminar_servicio">
+          <input type="hidden" name="tipoServicio" value="paseo">
+          <button type="submit" class="w-full inline-flex items-center justify-center gap-2 rounded-lg border border-red-300 text-red-700 px-3 py-2 text-xs font-semibold hover:bg-red-50 transition">
+            <i class="bi bi-trash"></i>Eliminar todo
+          </button>
+        </form>
       </div>
+    {% else %}
+    <div class="p-6 text-center bg-slate-50 rounded-lg border border-slate-200">
+      <p class="text-sm text-slate-600 mb-3">Aún no tienes paseos configurados</p>
+      <a href="{% url 'cuidador_servicios' %}?editar=paseo" class="inline-flex items-center gap-2 rounded-lg bg-pw-orange text-white px-4 py-2 text-sm font-semibold hover:bg-pw-orange-dark transition">
+        <i class="bi bi-plus-circle"></i>Agregar paseo
+      </a>
     </div>
     {% endif %}
+  </div>
 
+  <!-- TAB GUARDERÍAS -->
+  <div id="tab-guarderia" class="tab-content space-y-3 hidden">
     {% if precios_activos.guarderia %}
-    <div class="svc-card rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-      <div class="flex items-center gap-3">
-        <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-rose-50 text-rose-600">
-          <i class="bi bi-house-heart"></i>
-        </div>
+      <div class="flex items-center justify-between mb-4">
         <div>
-          <h3 class="font-bold text-slate-800">Guarderia</h3>
-          <p class="text-sm text-slate-600">${{ precios_activos.guarderia.precioCOP|formato_cop }} COP/hora</p>
+          <h3 class="text-base font-bold text-slate-800">Guardería</h3>
+          <p class="text-xs text-slate-600">${{ precios_activos.guarderia.precioCOP|formato_cop }} COP/hora</p>
+        </div>
+        <span class="px-2.5 py-1 bg-emerald-100 text-emerald-700 text-xs font-bold rounded-full">Activo</span>
+      </div>
+
+      <!-- Estadísticas compactas -->
+      <div class="grid grid-cols-3 gap-2 mb-4 p-3 bg-slate-50 rounded-lg border border-slate-200">
+        <div class="text-center">
+          <p class="text-xs text-slate-500 font-semibold">Bloques</p>
+          <p class="text-lg font-bold text-slate-800">{{ total_horarios_guarderia }}</p>
+        </div>
+        <div class="text-center">
+          <p class="text-xs text-slate-500 font-semibold">Cupos</p>
+          <p class="text-lg font-bold text-slate-800">{{ resumen_guarderia.capacidad_maxima }}</p>
+        </div>
+        <div class="text-center">
+          <p class="text-xs text-slate-500 font-semibold">Horario</p>
+          <p class="text-xs font-semibold text-slate-700">{% if resumen_guarderia.hora_inicio_min %}{{ resumen_guarderia.hora_inicio_min|hora_corta }}-{{ resumen_guarderia.hora_fin_max|hora_corta }}{% else %}—{% endif %}</p>
         </div>
       </div>
-      <div class="mt-3 space-y-1 text-xs text-slate-600">
-        <p><i class="bi bi-calendar3 mr-1 text-slate-400"></i>Bloques activos: {{ total_horarios_guarderia }}</p>
-        <p><i class="bi bi-geo-alt mr-1 text-slate-400"></i>Zona: {% if servicio_ciudad %}{{ servicio_ciudad }}{% else %}Sin ciudad{% endif %}</p>
-        <p><i class="bi bi-clock mr-1 text-slate-400"></i>Franja: {% if resumen_guarderia.hora_inicio_min %}{{ resumen_guarderia.hora_inicio_min|hora_corta }} - {{ resumen_guarderia.hora_fin_max|hora_corta }}{% else %}Sin horarios{% endif %}</p>
-        <p><i class="bi bi-people mr-1 text-slate-400"></i>Cupos por bloque: hasta {{ resumen_guarderia.capacidad_maxima }} mascota{{ resumen_guarderia.capacidad_maxima|pluralize }}</p>
-        <p><i class="bi bi-calendar-week mr-1 text-slate-400"></i>Dias activos: {{ resumen_guarderia.dias_resumen }}</p>
+
+      <!-- Bloques por día -->
+      {% if horarios_guarderia_por_dia %}
+        {% for dia_val, dia_label, eventos in horarios_guarderia_por_dia %}
+          {% if eventos %}
+          <div class="mb-3">
+            <p class="text-xs font-bold text-slate-700 mb-2">{{ dia_label }}</p>
+            <div class="space-y-1.5">
+              {% for e in eventos %}
+              <div class="bloque-item flex items-center justify-between rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm">
+                <div class="flex-1">
+                  <span class="font-semibold text-slate-800">{{ e.horaInicio|hora_corta }} – {{ e.horaFin|hora_corta }}</span>
+                  <span class="ml-2 text-xs text-slate-500">{{ e.capacidadMaxima }} cupo{{ e.capacidadMaxima|pluralize }}</span>
+                </div>
+                <button class="eliminar-bloque ml-2 p-1.5 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded transition" data-evento="{{ e.idEvento }}" data-tipo="guarderia" title="Eliminar bloque">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+          {% endif %}
+        {% endfor %}
+      {% else %}
+      <div class="p-4 bg-slate-50 rounded-lg border border-slate-200 text-center">
+        <p class="text-xs text-slate-500">Sin horarios configurados</p>
       </div>
-      {% if precios_activos.guarderia and precios_activos.guarderia.descripcion %}
-      <p class="mt-2 text-sm text-slate-600">{{ precios_activos.guarderia.descripcion|truncatewords:18 }}</p>
       {% endif %}
-      <div class="mt-4 flex flex-wrap items-center gap-2">
-      <a href="{% url 'cuidador_servicios' %}?editar=guarderia" class="inline-flex items-center gap-2 rounded-lg bg-pw-orange px-3 py-2 text-sm font-semibold text-white hover:bg-pw-orange-dark">
-        <i class="bi bi-sliders"></i>Gestionar guarderia
-      </a>
-      <form method="post" class="inline-flex" onsubmit="return confirm('¿Eliminar servicio de guarderia?');">
-        {% csrf_token %}
-        <input type="hidden" name="action" value="eliminar_servicio">
-        <input type="hidden" name="tipoServicio" value="guarderia">
-        <button type="submit" class="inline-flex items-center gap-2 rounded-lg border border-red-300 px-3 py-2 text-sm font-semibold text-red-700 hover:bg-red-50">
-          <i class="bi bi-trash"></i>Eliminar servicio
-        </button>
-      </form>
+
+      <!-- Acciones guardería -->
+      <div class="flex gap-2 pt-2 border-t border-slate-200">
+        <a href="{% url 'cuidador_servicios' %}?editar=guarderia" class="flex-1 inline-flex items-center justify-center gap-2 rounded-lg bg-pw-orange text-white px-3 py-2 text-xs font-semibold hover:bg-pw-orange-dark transition">
+          <i class="bi bi-pencil-square"></i>Editar
+        </a>
+        <form method="post" class="flex-1" onsubmit="return confirm('¿Eliminar servicio?');">
+          {% csrf_token %}
+          <input type="hidden" name="action" value="eliminar_servicio">
+          <input type="hidden" name="tipoServicio" value="guarderia">
+          <button type="submit" class="w-full inline-flex items-center justify-center gap-2 rounded-lg border border-red-300 text-red-700 px-3 py-2 text-xs font-semibold hover:bg-red-50 transition">
+            <i class="bi bi-trash"></i>Eliminar todo
+          </button>
+        </form>
       </div>
+    {% else %}
+    <div class="p-6 text-center bg-slate-50 rounded-lg border border-slate-200">
+      <p class="text-sm text-slate-600 mb-3">Aún no tienes guarderías configuradas</p>
+      <a href="{% url 'cuidador_servicios' %}?editar=guarderia" class="inline-flex items-center gap-2 rounded-lg bg-pw-orange text-white px-4 py-2 text-sm font-semibold hover:bg-pw-orange-dark transition">
+        <i class="bi bi-plus-circle"></i>Agregar guardería
+      </a>
     </div>
     {% endif %}
   </div>
-
-  {% if not precios_activos.paseo and not precios_activos.guarderia %}
-  <div class="rounded-2xl border-2 border-dashed border-slate-200 bg-slate-50 p-8 text-center">
-    <p class="text-base font-semibold text-slate-700">Aun no tienes servicios activos.</p>
-    <p class="mt-1 text-sm text-slate-500">Empieza configurando paseo o guarderia para aparecer en las busquedas.</p>
-  </div>
-  {% endif %}
 
   {% else %}
-  <div>
-    <a href="{% url 'cuidador_servicios' %}" class="inline-flex items-center gap-2 text-sm font-semibold text-slate-600 hover:text-pw-orange">
-      <i class="bi bi-arrow-left"></i> Volver a mis servicios
-    </a>
+  <!-- VISTA DE EDICIÓN -->
+  <div class="bg-white rounded-xl border border-slate-200 shadow-sm">
+    <!-- Header de edición -->
+    <div class="border-b border-slate-200 px-6 py-4 flex items-center justify-between">
+      <h2 class="text-lg font-bold text-slate-800">
+        {% if editar_tipo == 'paseo' %}Configurar paseo{% else %}Configurar guardería{% endif %}
+      </h2>
+      <a href="{% url 'cuidador_servicios' %}" class="inline-flex items-center gap-2 text-slate-600 hover:text-pw-orange transition text-xl">
+        <i class="bi bi-x-lg"></i>
+      </a>
+    </div>
+
+    <!-- Contenido del formulario -->
+    <div class="p-6">
+      {% if editar_tipo == 'paseo' %}
+      {% include "servicios/includes/form_editar_paseo.html" %}
+      {% elif editar_tipo == 'guarderia' %}
+      {% include "servicios/includes/form_editar_guarderia.html" %}
+      {% endif %}
+    </div>
   </div>
 
-  {% if editar_tipo == 'paseo' %}
-  {% include "servicios/includes/form_editar_paseo.html" %}
-  {% elif editar_tipo == 'guarderia' %}
-  {% include "servicios/includes/form_editar_guarderia.html" %}
-  {% endif %}
+  <!-- Botón volver -->
+  <div class="mt-4">
+    <a href="{% url 'cuidador_servicios' %}" class="inline-flex items-center gap-2 text-slate-600 hover:text-slate-800 text-sm font-semibold">
+      <i class="bi bi-arrow-left"></i>Volver a mis servicios
+    </a>
+  </div>
   {% endif %}
 </div>
 {% endblock %}
 
 {% block extra_js %}
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script>
+// Tabs para cambiar entre Paseo y Guardería
+document.querySelectorAll('.tab-btn').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    var tabName = this.dataset.tab;
+    // Ocultar todos los tabs
+    document.querySelectorAll('.tab-content').forEach(function(tab) {
+      tab.classList.add('hidden');
+    });
+    // Mostrar el tab seleccionado
+    document.getElementById('tab-' + tabName).classList.remove('hidden');
+    // Actualizar botones activos
+    document.querySelectorAll('.tab-btn').forEach(function(b) {
+      b.classList.remove('active', 'border-pw-orange', 'border-b-4', 'text-slate-800');
+      b.classList.add('border-transparent', 'text-slate-600');
+    });
+    this.classList.add('active', 'border-pw-orange', 'text-slate-800');
+  });
+});
+
+// Eliminar bloques con AJAX (sin redirigir)
+document.querySelectorAll('.eliminar-bloque').forEach(function(btn) {
+  btn.addEventListener('click', function(e) {
+    e.preventDefault();
+    if (!confirm('¿Eliminar este bloque?')) return;
+
+    var eventoId = this.dataset.evento;
+    var tipo = this.dataset.tipo;
+    var btn = this;
+    var bloqueDiv = btn.closest('.bloque-item');
+
+    var formData = new FormData();
+    formData.append('action', 'eliminar_evento');
+    formData.append('evento_id', eventoId);
+    formData.append('editar_tipo', tipo);
+    formData.append('csrfmiddlewaretoken', document.querySelector('[name=csrfmiddlewaretoken]').value);
+
+    fetch(window.location.href, {
+      method: 'POST',
+      body: formData
+    }).then(function(res) {
+      if (res.ok) {
+        bloqueDiv.remove();
+      } else {
+        alert('Error al eliminar el bloque');
+      }
+    }).catch(function(err) {
+      alert('Error: ' + err);
+    });
+  });
+});
+</script>
 <script>
 (function () {
   if (typeof L === "undefined") return;

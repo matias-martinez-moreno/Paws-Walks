@@ -77,12 +77,27 @@ WSGI_APPLICATION = "paws_walks.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+_db_url = os.environ.get("DATABASE_URL", "")
+if _db_url.startswith("postgresql://"):
+    import urllib.parse as _up
+    _p = _up.urlparse(_db_url)
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": _p.path.lstrip("/"),
+            "USER": _p.username,
+            "PASSWORD": _p.password,
+            "HOST": _p.hostname,
+            "PORT": _p.port or 5432,
+        }
     }
-}
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
+    }
 
 
 # Password validation
@@ -131,6 +146,10 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # ENV_TYPE: MOCK (consola) | REAL (emails reales). Usado por NotificadorFactory.
 ENV_TYPE = os.environ.get("ENV_TYPE", "MOCK")
+
+# Microservicio de disponibilidad (Flask). Si está seteado, el Gateway lo llama vía HTTP.
+# Vacío = usa el servicio interno de Django como fallback.
+DISPONIBILIDAD_SERVICE_URL = os.environ.get("DISPONIBILIDAD_SERVICE_URL", "")
 
 LOGIN_URL = "/login/"
 

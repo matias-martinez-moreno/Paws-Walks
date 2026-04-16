@@ -166,49 +166,45 @@
       {% for item in cuidadores_disponibles %}
       <div class="flex flex-wrap items-center justify-between gap-4 px-6 py-5">
         <div class="flex items-start gap-3">
-          {% if item.cuidador.fotoPerfil %}
-          <img src="{{ item.cuidador.fotoPerfil.url }}" alt="" class="h-12 w-12 rounded-full object-cover">
-          {% else %}
-          <div class="flex h-12 w-12 items-center justify-center rounded-full bg-slate-100 font-bold text-slate-600">{{ item.cuidador.nombre|first }}</div>
-          {% endif %}
+          <div class="flex h-12 w-12 items-center justify-center rounded-full bg-slate-100 font-bold text-slate-600">{{ item.cuidadorNombre|first }}</div>
           <div>
-            <p class="font-bold text-slate-800">{{ item.cuidador.nombre }} {{ item.cuidador.apellido }}</p>
+            <p class="font-bold text-slate-800">{{ item.cuidadorNombre }} {{ item.cuidadorApellido }}</p>
             <p class="text-sm text-slate-500">
-              {% if item.tipo_servicio == 'paseo' %}
-              Horario disponible: {{ item.evento.horaInicio|hora_corta }} - {{ item.evento.horaFin|hora_corta }}
+              {% if item.tipoServicio == 'paseo' %}
+              Horario disponible: {{ item.horaInicio|hora_corta }} - {{ item.horaFin|hora_corta }}
               {% else %}
-              Bloque disponible: {{ item.evento.horaInicio|hora_corta }} - {{ item.evento.horaFin|hora_corta }}
+              Bloque disponible: {{ item.horaInicio|hora_corta }} - {{ item.horaFin|hora_corta }}
               {% endif %}
             </p>
-            {% if item.tipo_servicio == 'paseo' %}
-            <p class="text-xs text-slate-500">Cupos disponibles: {{ item.cupos_disponibles }} / {{ item.cupo_maximo }}</p>
+            {% if item.tipoServicio == 'paseo' %}
+            <p class="text-xs text-slate-500">Cupos disponibles: {{ item.cuposDisponibles }} / {{ item.cupoMaximo }}</p>
             {% endif %}
-            {% if item.tipo_servicio == 'guarderia' %}
-            <p class="text-xs text-slate-500">Rango consultado: {{ item.fecha_inicio|date:'Y-m-d' }} a {{ item.fecha_fin|date:'Y-m-d' }}</p>
-            <p class="text-xs text-slate-500">Slots disponibles en el rango: {{ item.total_slots_disponibles }}</p>
-            <p class="text-xs text-slate-500">Slot sugerido: {{ item.fecha_default|date:'Y-m-d' }} · {{ item.hora_inicio|hora_corta }} - {{ item.hora_fin|hora_corta }} ({{ item.cupos_disponibles }}/{{ item.cupo_maximo }} cupos)</p>
+            {% if item.tipoServicio == 'guarderia' %}
+            <p class="text-xs text-slate-500">Rango consultado: {{ item.fechaInicio }} a {{ item.fechaFin }}</p>
+            <p class="text-xs text-slate-500">Slots disponibles en el rango: {{ item.totalSlotsDisponibles }}</p>
+            <p class="text-xs text-slate-500">Slot sugerido: {{ item.fecha }} · {{ item.horaInicio|hora_corta }} - {{ item.horaFin|hora_corta }} ({{ item.cuposDisponibles }}/{{ item.cupoMaximo }} cupos)</p>
             {% endif %}
-            {% if item.calificacion_count %}
-            <p class="text-sm text-amber-600"><i class="bi bi-star-fill"></i> {{ item.calificacion_promedio }} ({{ item.calificacion_count }})</p>
+            {% if item.calificacionCount %}
+            <p class="text-sm text-amber-600"><i class="bi bi-star-fill"></i> {{ item.calificacionPromedio }} ({{ item.calificacionCount }})</p>
             {% else %}
             <p class="text-xs text-slate-500"><i class="bi bi-star"></i> Sin calificaciones aún</p>
             {% endif %}
-            {% if item.descripcion_servicio %}
-            <p class="mt-1 text-sm text-slate-600">{{ item.descripcion_servicio|truncatewords:16 }}</p>
+            {% if item.descripcionServicio %}
+            <p class="mt-1 text-sm text-slate-600">{{ item.descripcionServicio|truncatewords:16 }}</p>
             {% endif %}
-            {% if item.distancia_km %}
-            <p class="mt-1 text-xs text-slate-500"><i class="bi bi-geo-alt"></i> {{ item.distancia_km }} km</p>
+            {% if item.distanciaKm %}
+            <p class="mt-1 text-xs text-slate-500"><i class="bi bi-geo-alt"></i> {{ item.distanciaKm }} km</p>
             {% endif %}
           </div>
         </div>
 
         <div class="text-right">
-          <p class="text-lg font-bold text-slate-800">${{ item.tarifa_total|formato_cop }} COP</p>
-          {% if item.tipo_servicio == 'guarderia' %}
-          <p class="text-xs text-slate-500">${{ item.tarifa_hora|formato_cop }} COP/hora</p>
+          <p class="text-lg font-bold text-slate-800">${{ item.tarifaTotal|formato_cop }} COP</p>
+          {% if item.tipoServicio == 'guarderia' %}
+          <p class="text-xs text-slate-500">${{ item.tarifaHora|formato_cop }} COP/hora</p>
           <p class="text-xs text-slate-500">Valor estimado para el slot seleccionado</p>
           {% else %}
-          <p class="text-xs text-slate-500">${{ item.tarifa_hora|formato_cop }} COP/hora</p>
+          <p class="text-xs text-slate-500">${{ item.tarifaHora|formato_cop }} COP/hora</p>
           {% endif %}
           <form method="post" class="mt-2">
             {% csrf_token %}
@@ -220,9 +216,9 @@
             <input type="hidden" name="hora_inicio_filtro" value="{{ busqueda.hora_inicio_filtro|default:'' }}">
             <input type="hidden" name="hora_fin_filtro" value="{{ busqueda.hora_fin_filtro|default:'' }}">
             {% if busqueda.tipo_servicio == 'guarderia' %}
-            <input type="hidden" name="evento_id" value="{{ item.evento_default_id }}" class="js-guarderia-evento-id">
-            <input type="hidden" name="fecha" value="{{ item.fecha_default_iso }}" class="js-guarderia-fecha">
-            <input type="hidden" name="fecha_fin" value="{{ item.fecha_default_iso }}" class="js-guarderia-fecha-fin">
+            <input type="hidden" name="evento_id" value="{{ item.eventoId }}" class="js-guarderia-evento-id">
+            <input type="hidden" name="fecha" value="{{ item.fecha }}" class="js-guarderia-fecha">
+            <input type="hidden" name="fecha_fin" value="{{ item.fecha }}" class="js-guarderia-fecha-fin">
             <input type="hidden" name="fecha_guarderia_inicio" value="{{ busqueda.fecha_inicio_guarderia }}">
             <input type="hidden" name="fecha_guarderia_fin" value="{{ busqueda.fecha_fin_guarderia }}">
             <input type="hidden" name="ciudad_guarderia" value="{{ busqueda.ciudad_guarderia|default:'' }}">
@@ -232,19 +228,19 @@
             <div class="mt-2 space-y-2 text-left">
               <label class="block text-xs font-semibold text-slate-600">Slot de guarderia disponible</label>
               <select class="w-full rounded-lg border border-slate-300 px-2 py-1.5 text-xs focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none js-guarderia-slot">
-                {% for slot in item.slots_guarderia %}
-                <option value="{{ slot.evento_id }}"
-                        data-evento-id="{{ slot.evento_id }}"
-                        data-fecha="{{ slot.fecha_iso }}"
-                        data-cupos="{{ slot.cupos_disponibles }}"
-                        data-cupo-max="{{ slot.cupo_maximo }}"
-                        data-duracion-max="{{ slot.duracion_maxima_minutos }}"
-                        {% if slot.evento_id == item.evento_default_id and slot.fecha_iso == item.fecha_default_iso %}selected{% endif %}>
-                  {{ slot.fecha|date:'Y-m-d' }} · {{ slot.hora_inicio|hora_corta }} - {{ slot.hora_fin|hora_corta }} ({{ slot.cupos_disponibles }}/{{ slot.cupo_maximo }} cupos)
+                {% for slot in item.slotsGuarderia %}
+                <option value="{{ slot.eventoId }}"
+                        data-evento-id="{{ slot.eventoId }}"
+                        data-fecha="{{ slot.fecha }}"
+                        data-cupos="{{ slot.cuposDisponibles }}"
+                        data-cupo-max="{{ slot.cupoMaximo }}"
+                        data-duracion-max="{{ slot.duracionOpciones|last }}"
+                        {% if slot.eventoId == item.eventoId and slot.fecha == item.fecha %}selected{% endif %}>
+                  {{ slot.fecha }} · {{ slot.horaInicio|hora_corta }} - {{ slot.horaFin|hora_corta }} ({{ slot.cuposDisponibles }}/{{ slot.cupoMaximo }} cupos)
                 </option>
                 {% endfor %}
               </select>
-              <p class="text-[11px] text-slate-500">Cupos del slot elegido: <span class="js-cupos-slot">{{ item.cupos_disponibles }}</span>/<span class="js-cupo-max-slot">{{ item.cupo_maximo }}</span></p>
+              <p class="text-[11px] text-slate-500">Cupos del slot elegido: <span class="js-cupos-slot">{{ item.cuposDisponibles }}</span>/<span class="js-cupo-max-slot">{{ item.cupoMaximo }}</span></p>
 
               <label class="block text-xs font-semibold text-slate-600">Tiempo de guarderia</label>
               <select name="modo_guarderia" class="w-full rounded-lg border border-slate-300 px-2 py-1.5 text-xs focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none js-modo-guarderia">
@@ -252,14 +248,14 @@
                 <option value="tiempo_personalizado">Reservar tiempo personalizado</option>
               </select>
               <select name="duracion_guarderia_minutos" class="w-full rounded-lg border border-slate-300 px-2 py-1.5 text-xs focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none js-duracion-guarderia" disabled>
-                {% for minutos in item.duracion_opciones %}
-                <option value="{{ minutos }}" {% if minutos == item.duracion_maxima_minutos %}selected{% endif %}>{{ minutos }} min</option>
+                {% for minutos in item.duracionOpciones %}
+                <option value="{{ minutos }}" {% if minutos == item.duracionMaxima %}selected{% endif %}>{{ minutos }} min</option>
                 {% endfor %}
               </select>
               <p class="text-[11px] text-slate-500">Si eliges tiempo personalizado, se aplica por día dentro del bloque disponible.</p>
             </div>
             {% else %}
-            <input type="hidden" name="evento_id" value="{{ item.evento.idEvento }}">
+            <input type="hidden" name="evento_id" value="{{ item.eventoId }}">
             <input type="hidden" name="fecha" value="{{ busqueda.fecha }}">
             {% endif %}
             <button type="submit" class="rounded-xl bg-pw-orange px-4 py-2 text-sm font-semibold text-white hover:bg-pw-orange-dark">Reservar</button>

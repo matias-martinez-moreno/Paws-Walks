@@ -4,7 +4,17 @@
 #   Las vistas DRF solo conocen este Gateway — nunca los servicios internos.
 #   Esto cumple el principio de minimo conocimiento (Law of Demeter) y facilita
 #   cambiar la implementacion interna sin tocar la capa de presentacion.
+#
+# buscar_disponibilidad() delega al microservicio Flask si DISPONIBILIDAD_SERVICE_URL
+# está configurado; en caso de fallo cae al servicio interno (fallback).
 from __future__ import annotations
+
+import json
+import logging
+
+import requests as http_requests
+from django.conf import settings
+from django.core.serializers.json import DjangoJSONEncoder
 
 from servicios.models import SolicitudServicio
 from servicios.service_layer.api_disponibilidad_servicios import BuscarDisponibilidadDesdeApiService
@@ -18,6 +28,8 @@ from servicios.service_layer.api_validadores import (
     ValidarCrearSolicitudApiService,
 )
 from servicios.service_layer.reservas_servicios import ObtenerSolicitudServicioService
+
+_logger = logging.getLogger(__name__)
 
 
 class ServiciosApiGatewayService:
@@ -52,6 +64,24 @@ class ServiciosApiGatewayService:
         return self._cancelar_solicitud_service.cancelar(solicitud_id, actor_id)
 
     def buscar_disponibilidad(self, payload: dict) -> list[dict]:
+        # Validar SIEMPRE primero: el validador inyecta idDueño_id desde el actor
+        # y normaliza campos. Flask necesita el payload ya validado.
         data = self._validar_disponibilidad_service.validar(payload)
+
+        flask_url = getattr(settings, "DISPONIBILIDAD_SERVICE_URL", "")
+        if flask_url:
+            try:
+                json_payload = json.loads(json.dumps(data, cls=DjangoJSONEncoder))
+                resp = http_requests.post(
+                    f"{flask_url}/disponibilidad",
+                    json=json_payload,
+                    timeout=10,
+                )
+                resp.raise_for_status()
+                return resp.json()
+            except Exception as exc:  # noqa: BLE001
+                _logger.warning("Microservicio disponibilidad no disponible, usando fallback: %s", exc)
+
+        # Fallback: servicio interno Django
         resultados = self._buscar_disponibilidad_service.buscar(data)
         return self._resultado_mapper.mapear(resultados, data["tipoServicio"], data)

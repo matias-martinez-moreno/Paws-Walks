@@ -1000,4 +1000,19 @@ class CrearReservaDesdeSeleccionService:
         return self._solicitud_service.crear_solicitud_evento(datos)
 
 
+def ya_paso_fin_programado_paseo(solicitud: SolicitudServicio) -> bool:
+    """Verifica si ya pasó la hora de fin del paseo programado."""
+    if not solicitud.idEvento or solicitud.tipoServicio != TipoServicio.PASEO:
+        return False
+
+    evento = solicitud.idEvento
+    hora_fin = evento.horaFin
+
+    if not hora_fin:
+        return False
+
+    ahora = timezone.localtime().time()
+    return ahora >= hora_fin
+
+
 

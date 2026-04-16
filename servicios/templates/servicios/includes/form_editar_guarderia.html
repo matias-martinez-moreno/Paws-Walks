@@ -154,11 +154,11 @@
       {% if horarios_guarderia_por_dia %}
       <div class="mt-3 space-y-3">
         {% for dia_val, dia_label, items in horarios_guarderia_por_dia %}
-          {% if items.eventos %}
+          {% if items %}
           <div>
             <p class="mb-1 text-xs font-semibold uppercase tracking-wide text-slate-500">{{ dia_label }}</p>
             <div class="space-y-2">
-              {% for e in items.eventos %}
+              {% for e in items %}
               <div class="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2">
                 <div class="flex items-start justify-between gap-2">
                   <div>

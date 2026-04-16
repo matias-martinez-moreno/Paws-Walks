@@ -32,8 +32,6 @@ class BuscarDisponibilidadDesdeApiService:
                 raise DomainValidationError("fecha es requerida para paseo")
 
             duracion = data.get("duracionMinutos")
-            if duracion is None:
-                raise DomainValidationError("duracionMinutos es requerida para paseo")
 
             resultados = self._buscador.buscar(
                 dueño=dueno,

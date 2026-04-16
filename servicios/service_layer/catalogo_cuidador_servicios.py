@@ -426,16 +426,12 @@ class ObtenerContextoServiciosCuidadorService:
         ) or ""
 
         precios = {p.tipoServicio: p for p in cuidador.precios_servicio.filter(activo=True)}
-        eventos_paseo = [
-            evento
-            for evento in ListarEventosCuidadorService().listar(cuidador, tipo_servicio=TipoServicio.PASEO)
-            if evento.disponible
-        ]
-        eventos_guarderia = [
-            evento
-            for evento in ListarEventosCuidadorService().listar(cuidador, tipo_servicio=TipoServicio.GUARDERIA)
-            if evento.disponible
-        ]
+        eventos_paseo = list(
+            ListarEventosCuidadorService().listar(cuidador, tipo_servicio=TipoServicio.PASEO)
+        )
+        eventos_guarderia = list(
+            ListarEventosCuidadorService().listar(cuidador, tipo_servicio=TipoServicio.GUARDERIA)
+        )
 
         return {
             "perfil": perfil,

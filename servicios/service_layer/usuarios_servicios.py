@@ -54,6 +54,9 @@ class ConstruirDatosRegistroUsuarioFormularioService:
         telefono_local = source.get("telefono", "")
         telefono = self._telefono_service.componer(prefijo, telefono_local)
 
+        # Normalizar rol a minúsculas (formulario envía DUEÑO/CUIDADOR, modelo espera dueño/cuidador)
+        rol = (source.get("rol") or "").lower().strip()
+
         campos = {
             "nombre": source.get("nombre"),
             "apellido": source.get("apellido"),
@@ -64,7 +67,7 @@ class ConstruirDatosRegistroUsuarioFormularioService:
             "prefijo": prefijo,
             "fechaNacimiento_str": source.get("fechaNacimiento"),
             "ciudad": source.get("ciudad"),
-            "rol": source.get("rol"),
+            "rol": rol,
         }
 
         payload = {
