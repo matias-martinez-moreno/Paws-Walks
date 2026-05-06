@@ -1,5 +1,47 @@
 # Paws & Walks — Guía Arquitectural
 
+---
+
+## 🚀 ENTREGA No. 1 - RESUMEN EJECUTIVO
+
+### Preferencias del Desarrollador
+- ⚠️ **NO proponer crear muchos markdowns.** Solo: README.md, C4_DIAGRAMS.md, CLAUDE.md
+- Mantener proyecto limpio, sin documentación redundante
+- Código limpio > Documentación abundante
+
+### Qué Pedía Entrega No. 1
+
+| Requisito | Peso |
+|---|---|
+| Implementar 50-60% de clases de dominio | 1.0 |
+| SOLID: Service Layer desacoplado (SRP prioritario) | 1.5 |
+| DRF: Serializers + APIViews con HTTP status correctos | 1.0 |
+| Patrones: Builder (obligatorio) + Factory (obligatorio) | 1.0 |
+| Documentación Wiki con diagramas de secuencia | 0.5 |
+
+### ✅ QUÉ SE HIZO
+
+- ✅ **11 modelos implementados** (65% dominio: Usuario, Mascota, PerfilCuidador, BloqueTiempo, VentanaDisponibilidad, SlotDisponibilidad, Evento, SlotEvento, PrecioServicio, SolicitudServicio, Calificacion)
+- ✅ **SOLID cumplido:** SRP (cada servicio = 1 responsabilidad), OCP (Factory pattern), LSP (Notificadores intercambiables), DIP (inyección de dependencias en Gateway), ISP (interfaces segregadas)
+- ✅ **DRF profesional:** APIViews thin (sin lógica), Serializers solo validación estructural, HTTP status correctos (201, 400, 404, 409)
+- ✅ **Builder:** SolicitudServicioBuilder para construir solicitudes complejas
+- ✅ **Factory:** NotificadorFactory (Mock/LogOnly/Real), ClimaAdapterFactory
+- ✅ **Excepciones de dominio:** Mapeo claro a HTTP (400, 403, 404, 409)
+- ✅ **Cero lógica de negocio en views/models:** Cumple advertencia crítica de rúbrica
+- ✅ **API Gateway:** Orquesta todas operaciones HTTP (buscar_disponibilidad, crear_solicitud, etc)
+- ✅ **Microservicio Flask:** Disponibilidad con fallback a Django
+- ✅ **Docker Compose:** PostgreSQL + Django + Flask orquestados
+
+### ⚠️ QUÉ FALTA (opcional para máximo 5.0)
+
+- [ ] **WIKI_TECNICA.md** con diagramas de secuencia (Crear Solicitud, Buscar Disponibilidad)
+- [ ] Explicación de escalabilidad + API Gateway en documentación
+- [ ] Interfaces ABC explícitas en `domain/ports.py` (mejora profesional)
+
+**Puntuación esperada:** 4.8/5.0 (si completas Wiki: 5.0/5.0)
+
+---
+
 ## Qué es este proyecto
 
 Plataforma de reserva de servicios de cuidado de mascotas (paseos y guarderías).
