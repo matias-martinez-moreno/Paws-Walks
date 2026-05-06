@@ -16,6 +16,7 @@ import requests as http_requests
 from django.conf import settings
 from django.core.serializers.json import DjangoJSONEncoder
 
+from servicios.infra.factory import ClimaAdapterFactory
 from servicios.models import SolicitudServicio
 from servicios.service_layer.api_disponibilidad_servicios import BuscarDisponibilidadDesdeApiService
 from servicios.service_layer.api_servicios import (
@@ -27,6 +28,7 @@ from servicios.service_layer.api_validadores import (
     ValidarBusquedaDisponibilidadApiService,
     ValidarCrearSolicitudApiService,
 )
+from servicios.service_layer.clima_servicios import ClimaService
 from servicios.service_layer.reservas_servicios import ObtenerSolicitudServicioService
 
 _logger = logging.getLogger(__name__)
@@ -44,6 +46,7 @@ class ServiciosApiGatewayService:
         resultado_mapper: MapearResultadosDisponibilidadApiService | None = None,
         validar_creacion_service: ValidarCrearSolicitudApiService | None = None,
         validar_disponibilidad_service: ValidarBusquedaDisponibilidadApiService | None = None,
+        clima_service: ClimaService | None = None,
     ):
         self._crear_solicitud_service = crear_solicitud_service or CrearSolicitudServicioApiAppService()
         self._obtener_solicitud_service = obtener_solicitud_service or ObtenerSolicitudServicioService()
@@ -52,6 +55,7 @@ class ServiciosApiGatewayService:
         self._resultado_mapper = resultado_mapper or MapearResultadosDisponibilidadApiService()
         self._validar_creacion_service = validar_creacion_service or ValidarCrearSolicitudApiService()
         self._validar_disponibilidad_service = validar_disponibilidad_service or ValidarBusquedaDisponibilidadApiService()
+        self._clima_service = clima_service or ClimaService(ClimaAdapterFactory.crear())
 
     def crear_solicitud(self, payload: dict) -> SolicitudServicio:
         data = self._validar_creacion_service.validar(payload)
@@ -85,3 +89,6 @@ class ServiciosApiGatewayService:
         # Fallback: servicio interno Django
         resultados = self._buscar_disponibilidad_service.buscar(data)
         return self._resultado_mapper.mapear(resultados, data["tipoServicio"], data)
+
+    def obtener_clima_ciudad(self, ciudad: str) -> dict:
+        return self._clima_service.obtener_clima_para_paseo(ciudad)

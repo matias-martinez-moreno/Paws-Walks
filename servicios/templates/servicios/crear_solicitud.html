@@ -1,10 +1,10 @@
-{% load static %}
+{% load static i18n %}
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Paws & Walks – Nueva Solicitud</title>
+  <title>Paws & Walks – {% trans "Nueva Solicitud" %}</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -23,8 +23,8 @@
   <div class="bg-white rounded-2xl shadow-xl border border-slate-100/80 p-8 max-w-lg w-full">
     <div class="text-center mb-6">
       <img src="{% static 'servicios/img/logo.png' %}" alt="Paws & Walks" class="h-24 mx-auto">
-      <h4 class="font-bold mt-2 text-slate-800 text-xl">Solicitud de Servicio</h4>
-      <p class="text-slate-500 text-sm">Reserva un servicio con un cuidador verificado.</p>
+      <h4 class="font-bold mt-2 text-slate-800 text-xl">{% trans "Solicitud de Servicio" %}</h4>
+      <p class="text-slate-500 text-sm">{% trans "Reserva un servicio con un cuidador verificado." %}</p>
     </div>
 
     {% if mensaje %}
@@ -37,74 +37,82 @@
     <form method="post" class="space-y-4">
       {% csrf_token %}
       <div>
-        <label class="block text-sm font-semibold text-slate-700 mb-1.5">Dueño</label>
+        <label class="block text-sm font-semibold text-slate-700 mb-1.5">{% trans "Dueño" %}</label>
         <select name="idDueño_id" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" required>
-          <option value="">— Seleccione —</option>
+          <option value="">{% trans "— Seleccione —" %}</option>
           {% for d in dueños %}
           <option value="{{ d.idUsuario }}">{{ d.nombre }} {{ d.apellido }}</option>
           {% endfor %}
         </select>
       </div>
       <div>
-        <label class="block text-sm font-semibold text-slate-700 mb-1.5">Cuidador</label>
+        <label class="block text-sm font-semibold text-slate-700 mb-1.5">{% trans "Cuidador" %}</label>
         <select name="idCuidador_id" id="cuidador_select" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" required>
-          <option value="">— Seleccione —</option>
+          <option value="">{% trans "— Seleccione —" %}</option>
           {% for c in cuidadores %}
           <option value="{{ c.idUsuario }}">{{ c.nombre }} {{ c.apellido }}</option>
           {% endfor %}
         </select>
       </div>
       <div>
-        <label class="block text-sm font-semibold text-slate-700 mb-1.5">Mascota</label>
+        <label class="block text-sm font-semibold text-slate-700 mb-1.5">{% trans "Mascota" %}</label>
         <select name="idMascota_id" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" required>
-          <option value="">— Seleccione —</option>
+          <option value="">{% trans "— Seleccione —" %}</option>
           {% for m in mascotas %}
           <option value="{{ m.idMascota }}" data-dueño="{{ m.idDueño.idUsuario }}">{{ m.nombreMascota }} ({{ m.tipo }})</option>
           {% endfor %}
         </select>
       </div>
       <div>
-        <label class="block text-sm font-semibold text-slate-700 mb-1.5">Tipo de servicio</label>
+        <label class="block text-sm font-semibold text-slate-700 mb-1.5">{% trans "Tipo de servicio" %}</label>
         <select name="tipoServicio" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" required>
-          <option value="">— Seleccione —</option>
-          <option value="paseo">Paseo</option>
-          <option value="guarderia">Guardería</option>
+          <option value="">{% trans "— Seleccione —" %}</option>
+          <option value="paseo">{% trans "Paseo" %}</option>
+          <option value="guarderia">{% trans "Guardería" %}</option>
         </select>
       </div>
       <div>
-        <label class="block text-sm font-semibold text-slate-700 mb-1.5">Fecha</label>
+        <label class="block text-sm font-semibold text-slate-700 mb-1.5">{% trans "Fecha" %}</label>
         <input type="date" name="fecha" id="fecha_input" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" required>
       </div>
       <div id="fecha_fin_group" class="hidden">
-        <label class="block text-sm font-semibold text-slate-700 mb-1.5">Fecha fin (guardería)</label>
+        <label class="block text-sm font-semibold text-slate-700 mb-1.5">{% trans "Fecha fin (guardería)" %}</label>
         <input type="date" name="fechaFin" id="fecha_fin_input" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none">
       </div>
       <hr class="border-slate-200">
       <div id="evento_group">
-        <label class="block text-sm font-semibold text-slate-700 mb-1.5">Evento / Horario</label>
+        <label class="block text-sm font-semibold text-slate-700 mb-1.5">{% trans "Evento / Horario" %}</label>
         <select name="idEvento_id" id="evento_select" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none disabled:bg-slate-50" disabled>
-          <option value="">— Seleccione cuidador, tipo y fecha —</option>
+          <option value="">{% trans "— Seleccione cuidador, tipo y fecha —" %}</option>
         </select>
-        <p class="text-xs text-slate-500 mt-1">Para paseo con slots, el sistema asignará la hora según proximidad.</p>
+        <p class="text-xs text-slate-500 mt-1">{% trans "Para paseo con slots, el sistema asignará la hora según proximidad." %}</p>
       </div>
       <div id="ventana_group" class="hidden">
-        <label class="block text-sm font-semibold text-slate-700 mb-1.5">Ventana (paseo, legacy)</label>
+        <label class="block text-sm font-semibold text-slate-700 mb-1.5">{% trans "Ventana (paseo, legacy)" %}</label>
         <select name="idVentana_id" id="ventana_select" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none disabled:bg-slate-50" disabled>
-          <option value="">— Seleccione cuidador y fecha —</option>
+          <option value="">{% trans "— Seleccione cuidador y fecha —" %}</option>
         </select>
       </div>
       <div id="bloque_group" class="hidden">
-        <label class="block text-sm font-semibold text-slate-700 mb-1.5">Bloque horario (legacy)</label>
+        <label class="block text-sm font-semibold text-slate-700 mb-1.5">{% trans "Bloque horario (legacy)" %}</label>
         <select name="idBloqueHorario_id" id="bloque_select" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none disabled:bg-slate-50" disabled>
-          <option value="">— Seleccione cuidador y fecha —</option>
+          <option value="">{% trans "— Seleccione cuidador y fecha —" %}</option>
         </select>
       </div>
-      <p class="text-xs text-slate-500" id="horario_hint">Se cargan al elegir cuidador, tipo y fecha.</p>
-      <button type="submit" class="w-full bg-pw-orange hover:bg-pw-orange-dark text-white font-semibold rounded-xl py-3 transition">Crear Solicitud</button>
+      <p class="text-xs text-slate-500" id="horario_hint">{% trans "Se cargan al elegir cuidador, tipo y fecha." %}</p>
+      <button type="submit" class="w-full bg-pw-orange hover:bg-pw-orange-dark text-white font-semibold rounded-xl py-3 transition">{% trans "Crear Solicitud" %}</button>
     </form>
   </div>
 
   <script>
+    const STR_SOLICITUD = {
+      seleccione: "{% trans "— Seleccione —" %}",
+      seleccionaCuidador: "{% trans "Seleccione un cuidador." %}",
+      seleccionaTipo: "{% trans "Seleccione el tipo de servicio." %}",
+      sinDisponibilidad: "{% trans "— Sin disponibilidad —" %}",
+      sinHorarios: "{% trans "No hay horarios para este día." %}",
+      opcionesDisponibles: "{% trans "opción(es) disponible(s)" %}"
+    };
     const eventosData = JSON.parse('{{ eventos_por_cuidador|default:"{}"|escapejs }}');
     const ventanasData = JSON.parse('{{ ventanas_por_cuidador|default:"{}"|escapejs }}');
     const bloquesData = JSON.parse('{{ bloques_por_cuidador|default:"{}"|escapejs }}');
@@ -128,19 +136,19 @@
       const tipo = tipoSel && tipoSel.value;
       const isPaseo = tipo === 'paseo';
 
-      eventoSel.innerHTML = '<option value="">— Seleccione —</option>';
-      ventanaSel.innerHTML = '<option value="">— Seleccione —</option>';
-      bloqueSel.innerHTML = '<option value="">— Seleccione —</option>';
+      eventoSel.innerHTML = '<option value="">' + STR_SOLICITUD.seleccione + '</option>';
+      ventanaSel.innerHTML = '<option value="">' + STR_SOLICITUD.seleccione + '</option>';
+      bloqueSel.innerHTML = '<option value="">' + STR_SOLICITUD.seleccione + '</option>';
       eventoSel.disabled = true;
       ventanaSel.disabled = true;
       bloqueSel.disabled = true;
 
       if (!cId) {
-        hint.textContent = 'Seleccione un cuidador.';
+        hint.textContent = STR_SOLICITUD.seleccionaCuidador;
         return;
       }
       if (!tipo) {
-        hint.textContent = 'Seleccione el tipo de servicio.';
+        hint.textContent = STR_SOLICITUD.seleccionaTipo;
         return;
       }
 
@@ -159,11 +167,11 @@
       }
       const sel = useEventos ? eventoSel : (isPaseo ? ventanaSel : bloqueSel);
       if (!items.length) {
-        sel.innerHTML = '<option value="">— Sin disponibilidad —</option>';
-        hint.textContent = 'No hay horarios para este día.';
+        sel.innerHTML = '<option value="">' + STR_SOLICITUD.sinDisponibilidad + '</option>';
+        hint.textContent = STR_SOLICITUD.sinHorarios;
         return;
       }
-      sel.innerHTML = '<option value="">— Seleccione —</option>';
+      sel.innerHTML = '<option value="">' + STR_SOLICITUD.seleccione + '</option>';
       items.forEach(b => {
         const opt = document.createElement('option');
         opt.value = b.id;
@@ -177,7 +185,7 @@
       eventoSel.required = useEventos;
       ventanaSel.required = !useEventos && isPaseo;
       bloqueSel.required = !useEventos && !isPaseo;
-      hint.textContent = items.length + ' opción(es) disponible(s).';
+      hint.textContent = items.length + ' ' + STR_SOLICITUD.opcionesDisponibles + '.';
     }
 
     function toggleTipo() {

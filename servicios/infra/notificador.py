@@ -268,6 +268,55 @@ class NotificadorBase(ABC):
         )
 
 
+class NotificadorAsync(NotificadorBase):
+    """Produccion async — despacha tareas Celery en lugar de procesar directo.
+
+    El service layer llama enviar_*() exactamente igual que antes.
+    La diferencia es que el trabajo ocurre en background (worker Celery).
+    Esto cumple OCP: el comportamiento cambia sin modificar el service layer.
+    """
+
+    def _log(self, mensaje: str):
+        pass  # el worker loguea por su cuenta
+
+    def enviar_nueva_solicitud(self, solicitud):
+        from servicios.tasks import task_nueva_solicitud
+        task_nueva_solicitud.delay(str(solicitud.idSolicitud))
+
+    def enviar_solicitud_aceptada(self, solicitud):
+        from servicios.tasks import task_solicitud_aceptada
+        task_solicitud_aceptada.delay(str(solicitud.idSolicitud))
+
+    def enviar_solicitud_rechazada(self, solicitud):
+        from servicios.tasks import task_solicitud_rechazada
+        task_solicitud_rechazada.delay(str(solicitud.idSolicitud))
+
+    def enviar_servicio_completado(self, solicitud):
+        from servicios.tasks import task_servicio_completado
+        task_servicio_completado.delay(str(solicitud.idSolicitud))
+
+    def enviar_resena_pendiente(self, solicitud):
+        pass  # incluida en task_servicio_completado
+
+    def enviar_reserva_cancelada(self, solicitud, actor=None, receptor=None, destino=None):
+        from servicios.tasks import task_reserva_cancelada
+        task_reserva_cancelada.delay(
+            str(solicitud.idSolicitud),
+            str(actor.idUsuario) if actor else "",
+            str(receptor.idUsuario),
+            str(destino or ""),
+        )
+
+    def enviar_mensaje_chat(self, solicitud, actor, receptor, mensaje):
+        from servicios.tasks import task_mensaje_chat
+        task_mensaje_chat.delay(
+            str(solicitud.idSolicitud),
+            str(actor.idUsuario) if actor else "",
+            str(receptor.idUsuario) if receptor else "",
+            str(mensaje or ""),
+        )
+
+
 class NotificadorMock(NotificadorBase):
     """Mock - imprime en consola para desarrollo."""
 

@@ -1,30 +1,31 @@
 {% extends "servicios/base_dashboard.html" %}
+{% load i18n %}
 
-{% block title %}Notificaciones{% endblock %}
+{% block title %}{% trans "Notificaciones" %}{% endblock %}
 
 {% block top_greeting %}
-<h1 class="page-header__title">Notificaciones</h1>
-<p class="page-header__subtitle">{{ notificaciones_no_leidas }} no leídas · {{ notificaciones_total }} total</p>
+<h1 class="page-header__title">{% trans "Notificaciones" %}</h1>
+<p class="page-header__subtitle">{{ notificaciones_no_leidas }} {% trans "no leídas" %} · {{ notificaciones_total }} {% trans "total" %}</p>
 {% endblock %}
 
 {% block sidebar_links %}
 {% if usuario.rol == 'dueño' %}
-<div class="sidebar-section">Principal</div>
-<a class="nav-link" href="{% url 'dashboard_dueño' %}"><i class="bi bi-house-door"></i> Panel</a>
-<div class="sidebar-section">Gestión</div>
-<a class="nav-link" href="{% url 'dueño_nueva_reserva' %}"><i class="bi bi-plus-circle"></i> Hacer reserva</a>
-<a class="nav-link" href="{% url 'dueño_mis_reservas' %}"><i class="bi bi-calendar3"></i> Mis reservas</a>
-<a class="nav-link" href="{% url 'dueño_mis_mascotas' %}"><i class="bi bi-heart"></i> Mis mascotas</a>
-<div class="sidebar-section">Cuenta</div>
-<a class="nav-link" href="{% url 'dueño_mi_perfil' %}"><i class="bi bi-person"></i> Mi perfil</a>
+<div class="sidebar-section">{% trans "Principal" %}</div>
+<a class="nav-link" href="{% url 'dashboard_dueño' %}"><i class="bi bi-house-door"></i> {% trans "Panel" %}</a>
+<div class="sidebar-section">{% trans "Gestión" %}</div>
+<a class="nav-link" href="{% url 'dueño_nueva_reserva' %}"><i class="bi bi-plus-circle"></i> {% trans "Hacer reserva" %}</a>
+<a class="nav-link" href="{% url 'dueño_mis_reservas' %}"><i class="bi bi-calendar3"></i> {% trans "Mis reservas" %}</a>
+<a class="nav-link" href="{% url 'dueño_mis_mascotas' %}"><i class="bi bi-heart"></i> {% trans "Mis mascotas" %}</a>
+<div class="sidebar-section">{% trans "Cuenta" %}</div>
+<a class="nav-link" href="{% url 'dueño_mi_perfil' %}"><i class="bi bi-person"></i> {% trans "Mi perfil" %}</a>
 {% else %}
-<div class="sidebar-section">Principal</div>
-<a class="nav-link" href="{% url 'dashboard_cuidador' %}"><i class="bi bi-house-door"></i> Panel</a>
-<div class="sidebar-section">Gestión</div>
-<a class="nav-link" href="{% url 'cuidador_calendario' %}"><i class="bi bi-calendar3"></i> Mi calendario</a>
-<a class="nav-link" href="{% url 'cuidador_servicios' %}"><i class="bi bi-gear-wide-connected"></i> Mis servicios</a>
-<div class="sidebar-section">Cuenta</div>
-<a class="nav-link" href="{% url 'cuidador_mi_perfil' %}"><i class="bi bi-person"></i> Mi perfil</a>
+<div class="sidebar-section">{% trans "Principal" %}</div>
+<a class="nav-link" href="{% url 'dashboard_cuidador' %}"><i class="bi bi-house-door"></i> {% trans "Panel" %}</a>
+<div class="sidebar-section">{% trans "Gestión" %}</div>
+<a class="nav-link" href="{% url 'cuidador_calendario' %}"><i class="bi bi-calendar3"></i> {% trans "Mi calendario" %}</a>
+<a class="nav-link" href="{% url 'cuidador_servicios' %}"><i class="bi bi-gear-wide-connected"></i> {% trans "Mis servicios" %}</a>
+<div class="sidebar-section">{% trans "Cuenta" %}</div>
+<a class="nav-link" href="{% url 'cuidador_mi_perfil' %}"><i class="bi bi-person"></i> {% trans "Mi perfil" %}</a>
 {% endif %}
 {% endblock %}
 
@@ -37,25 +38,25 @@
       <form method="get" class="flex flex-wrap gap-2 items-center">
         <div class="flex-1 min-w-max">
           <select name="categoria" class="rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none">
-            <option value="todas" {% if notificaciones_categoria_actual == 'todas' %}selected{% endif %}>Todas las categorías</option>
-            <option value="negocio" {% if notificaciones_categoria_actual == 'negocio' %}selected{% endif %}>Negocio</option>
-            <option value="sistema" {% if notificaciones_categoria_actual == 'sistema' %}selected{% endif %}>Sistema</option>
+            <option value="todas" {% if notificaciones_categoria_actual == 'todas' %}selected{% endif %}>{% trans "Todas las categorías" %}</option>
+            <option value="negocio" {% if notificaciones_categoria_actual == 'negocio' %}selected{% endif %}>{% trans "Negocio" %}</option>
+            <option value="sistema" {% if notificaciones_categoria_actual == 'sistema' %}selected{% endif %}>{% trans "Sistema" %}</option>
           </select>
         </div>
 
         <div class="flex-1 min-w-max">
           <select name="estado" class="rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none">
-            <option value="todas" {% if notificaciones_estado_actual == 'todas' %}selected{% endif %}>Todas</option>
-            <option value="no_leidas" {% if notificaciones_estado_actual == 'no_leidas' %}selected{% endif %}>No leídas</option>
-            <option value="leidas" {% if notificaciones_estado_actual == 'leidas' %}selected{% endif %}>Leídas</option>
+            <option value="todas" {% if notificaciones_estado_actual == 'todas' %}selected{% endif %}>{% trans "Todas" %}</option>
+            <option value="no_leidas" {% if notificaciones_estado_actual == 'no_leidas' %}selected{% endif %}>{% trans "No leídas" %}</option>
+            <option value="leidas" {% if notificaciones_estado_actual == 'leidas' %}selected{% endif %}>{% trans "Leídas" %}</option>
           </select>
         </div>
 
         <button type="submit" class="px-4 py-2 bg-pw-orange text-white font-semibold rounded-lg hover:bg-pw-orange-dark text-sm transition">
-          <i class="bi bi-funnel mr-1"></i>Filtrar
+          <i class="bi bi-funnel mr-1"></i>{% trans "Filtrar" %}
         </button>
         <a href="?categoria=todas&estado=todas" class="px-4 py-2 border border-slate-300 text-slate-700 font-semibold rounded-lg hover:bg-slate-50 text-sm transition">
-          Limpiar
+          {% trans "Limpiar" %}
         </a>
       </form>
 
@@ -64,10 +65,10 @@
       <div class="border-t border-slate-200 pt-4 flex flex-wrap gap-2 items-center">
         <label class="inline-flex items-center gap-2 cursor-pointer">
           <input type="checkbox" id="selectAllNotifications" class="h-4 w-4 rounded border-slate-300 text-pw-orange cursor-pointer">
-          <span class="text-sm font-semibold text-slate-700">Seleccionar todas</span>
+          <span class="text-sm font-semibold text-slate-700">{% trans "Seleccionar todas" %}</span>
         </label>
 
-        <span class="text-xs text-slate-500">(<span id="countSelected">0</span> seleccionadas)</span>
+        <span class="text-xs text-slate-500">(<span id="countSelected">0</span> {% trans "seleccionadas" %})</span>
 
         <div class="ml-auto flex flex-wrap gap-2">
           <form method="post" onsubmit="return document.querySelectorAll('.notificacion-checkbox:checked').length > 0">
@@ -76,18 +77,18 @@
             <input type="hidden" name="categoria" value="{{ notificaciones_categoria_actual }}">
             <input type="hidden" name="estado" value="{{ notificaciones_estado_actual }}">
             <button type="submit" id="btnMarcarLeidas" disabled class="px-3 py-2 border border-emerald-300 text-emerald-700 font-semibold rounded-lg hover:bg-emerald-50 text-xs transition disabled:opacity-50 disabled:cursor-not-allowed">
-              Marcar leídas
+              {% trans "Marcar leídas" %}
             </button>
           </form>
 
-          <form method="post" id="formEliminarSeleccionadas" onsubmit="return confirm('¿Eliminar seleccionadas?') && document.querySelectorAll('.notificacion-checkbox:checked').length > 0">
+          <form method="post" id="formEliminarSeleccionadas" onsubmit="return confirm('{% trans "¿Eliminar seleccionadas?" %}') && document.querySelectorAll('.notificacion-checkbox:checked').length > 0">
             {% csrf_token %}
             <input type="hidden" name="action" value="eliminar_seleccionadas">
             <input type="hidden" name="categoria" value="{{ notificaciones_categoria_actual }}">
             <input type="hidden" name="estado" value="{{ notificaciones_estado_actual }}">
             <input type="hidden" name="notificacion_ids" id="notificacionesSeleccionadasInput" value="">
             <button type="submit" id="btnEliminarSeleccionadas" disabled class="px-3 py-2 border border-red-300 text-red-700 font-semibold rounded-lg hover:bg-red-50 text-xs transition disabled:opacity-50 disabled:cursor-not-allowed">
-              Eliminar seleccionadas
+              {% trans "Eliminar seleccionadas" %}
             </button>
           </form>
         </div>
@@ -115,7 +116,7 @@
           <div class="flex items-start justify-between gap-3 mb-1">
             <h3 class="font-bold text-slate-800 text-base">{{ n.titulo }}</h3>
             <span class="inline-block px-2.5 py-1 rounded-full text-xs font-semibold flex-shrink-0 {% if n.leida %}bg-slate-100 text-slate-600{% else %}bg-red-100 text-red-700 font-bold{% endif %}">
-              {% if n.leida %}Leída{% else %}Nueva{% endif %}
+              {% if n.leida %}{% trans "Leída" %}{% else %}{% trans "Nueva" %}{% endif %}
             </span>
           </div>
 
@@ -139,7 +140,7 @@
               <input type="hidden" name="categoria" value="{{ notificaciones_categoria_actual }}">
               <input type="hidden" name="estado" value="{{ notificaciones_estado_actual }}">
               <button type="submit" class="px-3 py-1.5 text-xs font-semibold text-pw-orange border border-pw-orange rounded-lg hover:bg-pw-orange hover:text-white transition-colors">
-                <i class="bi bi-box-arrow-up-right mr-1"></i>Ver
+                <i class="bi bi-box-arrow-up-right mr-1"></i>{% trans "Ver" %}
               </button>
             </form>
             {% endif %}
@@ -151,18 +152,18 @@
               <input type="hidden" name="categoria" value="{{ notificaciones_categoria_actual }}">
               <input type="hidden" name="estado" value="{{ notificaciones_estado_actual }}">
               <button type="submit" class="px-3 py-1.5 text-xs font-semibold text-emerald-700 border border-emerald-300 rounded-lg hover:bg-emerald-50 transition-colors">
-                <i class="bi bi-check-circle mr-1"></i>Marcar leída
+                <i class="bi bi-check-circle mr-1"></i>{% trans "Marcar leída" %}
               </button>
             </form>
             {% endif %}
-            <form method="post" class="inline" onsubmit="return confirm('¿Eliminar?');">
+            <form method="post" class="inline" onsubmit="return confirm('{% trans "¿Eliminar?" %}');">
               {% csrf_token %}
               <input type="hidden" name="action" value="eliminar">
               <input type="hidden" name="notificacion_id" value="{{ n.idNotificacion }}">
               <input type="hidden" name="categoria" value="{{ notificaciones_categoria_actual }}">
               <input type="hidden" name="estado" value="{{ notificaciones_estado_actual }}">
               <button type="submit" class="px-3 py-1.5 text-xs font-semibold text-red-700 border border-red-300 rounded-lg hover:bg-red-50 transition-colors">
-                <i class="bi bi-trash mr-1"></i>Eliminar
+                <i class="bi bi-trash mr-1"></i>{% trans "Eliminar" %}
               </button>
             </form>
           </div>
@@ -176,8 +177,8 @@
     <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-slate-100 flex items-center justify-center text-slate-400 text-2xl">
       <i class="bi bi-bell-slash"></i>
     </div>
-    <h3 class="font-bold text-slate-700 text-lg">Sin notificaciones</h3>
-    <p class="text-sm text-slate-500 mt-1">Ajusta los filtros o vuelve después para nuevas alertas</p>
+    <h3 class="font-bold text-slate-700 text-lg">{% trans "Sin notificaciones" %}</h3>
+    <p class="text-sm text-slate-500 mt-1">{% trans "Ajusta los filtros o vuelve después para nuevas alertas" %}</p>
   </div>
   {% endif %}
 </div>

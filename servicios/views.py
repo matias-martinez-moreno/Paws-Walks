@@ -3,6 +3,7 @@ from urllib.parse import urlencode
 from django.contrib.auth import login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
+from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.views import View
@@ -10,6 +11,7 @@ from django.views import View
 from servicios.domain.exceptions import DomainError
 from servicios.models import SexoMascota, TamanoMascota, TipoMascota, Usuario
 from servicios.services import (
+    ServiciosApiGatewayService,
     AutenticacionService,
     ConstruirContextoHistorialSolicitudesService,
     ConstruirContextoPerfilPublicoService,
@@ -717,3 +719,13 @@ class CrearSolicitudServicioView(LoginRequiredMixin, View):
             ctx = CrearSolicitudServicioAppService().get_form_context()
             ctx["error"] = "Ocurrió un error interno inesperado al crear la solicitud."
         return render(request, "servicios/crear_solicitud.html", ctx)
+
+
+class ClimaJsonView(LoginRequiredMixin, View):
+    _gateway = ServiciosApiGatewayService()
+
+    def get(self, request):
+        ciudad = request.GET.get("ciudad", "").strip()
+        if not ciudad:
+            return JsonResponse({"error": "ciudad requerida"}, status=400)
+        return JsonResponse(self._gateway.obtener_clima_ciudad(ciudad))

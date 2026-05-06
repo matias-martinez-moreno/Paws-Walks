@@ -1,25 +1,25 @@
 {% extends "servicios/base_dashboard.html" %}
-{% load servicios_extras %}
-{% block title %}Nueva reserva{% endblock %}
+{% load servicios_extras i18n %}
+{% block title %}{% trans "Nueva reserva" %}{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
 {% endblock %}
 
 {% block top_greeting %}
-<h1 class="page-header__title">Nueva reserva</h1>
-<p class="page-header__subtitle">Busca por día y elige los horarios disponibles del cuidador</p>
+<h1 class="page-header__title">{% trans "Nueva reserva" %}</h1>
+<p class="page-header__subtitle">{% trans "Busca por día y elige los horarios disponibles del cuidador" %}</p>
 {% endblock %}
 
 {% block sidebar_links %}
-<div class="sidebar-section">Principal</div>
-<a class="nav-link" href="{% url 'dashboard_dueño' %}"><i class="bi bi-house-door"></i> Panel</a>
-<div class="sidebar-section">Gestion</div>
-<a class="nav-link active" href="{% url 'dueño_nueva_reserva' %}"><i class="bi bi-plus-circle"></i> Hacer reserva</a>
-<a class="nav-link" href="{% url 'dueño_mis_reservas' %}"><i class="bi bi-calendar3"></i> Mis reservas</a>
-<a class="nav-link" href="{% url 'dueño_mis_mascotas' %}"><i class="bi bi-heart"></i> Mis mascotas</a>
-<div class="sidebar-section">Cuenta</div>
-<a class="nav-link" href="{% url 'dueño_mi_perfil' %}"><i class="bi bi-person"></i> Mi perfil</a>
+<div class="sidebar-section">{% trans "Principal" %}</div>
+<a class="nav-link" href="{% url 'dashboard_dueño' %}"><i class="bi bi-house-door"></i> {% trans "Panel" %}</a>
+<div class="sidebar-section">{% trans "Gestión" %}</div>
+<a class="nav-link active" href="{% url 'dueño_nueva_reserva' %}"><i class="bi bi-plus-circle"></i> {% trans "Hacer reserva" %}</a>
+<a class="nav-link" href="{% url 'dueño_mis_reservas' %}"><i class="bi bi-calendar3"></i> {% trans "Mis reservas" %}</a>
+<a class="nav-link" href="{% url 'dueño_mis_mascotas' %}"><i class="bi bi-heart"></i> {% trans "Mis mascotas" %}</a>
+<div class="sidebar-section">{% trans "Cuenta" %}</div>
+<a class="nav-link" href="{% url 'dueño_mi_perfil' %}"><i class="bi bi-person"></i> {% trans "Mi perfil" %}</a>
 {% endblock %}
 
 {% block content %}
@@ -28,8 +28,8 @@
     <div class="mb-5 flex items-center gap-3">
       <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-pw-orange/10 text-pw-orange font-bold">1</div>
       <div>
-        <h2 class="text-lg font-bold text-slate-800">Buscar disponibilidad</h2>
-        <p class="text-sm text-slate-500">Paseo: fecha y ubicación. Guarderia: fecha inicio/fin y luego eliges bloque completo o tiempo personalizado.</p>
+        <h2 class="text-lg font-bold text-slate-800">{% trans "Buscar disponibilidad" %}</h2>
+        <p class="text-sm text-slate-500">{% trans "Paseo: fecha y ubicación. Guarderia: fecha inicio/fin y luego eliges bloque completo o tiempo personalizado." %}</p>
       </div>
     </div>
 
@@ -39,31 +39,31 @@
 
       <div class="grid gap-4 md:grid-cols-2">
         <div>
-          <label class="mb-1.5 block text-sm font-semibold text-slate-700">Tipo de servicio</label>
+          <label class="mb-1.5 block text-sm font-semibold text-slate-700">{% trans "Tipo de servicio" %}</label>
           <select name="tipo_servicio" id="tipoServicio" class="w-full rounded-xl border border-slate-300 px-4 py-2.5 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none">
-            <option value="paseo" {% if not busqueda or busqueda.tipo_servicio == 'paseo' %}selected{% endif %}>Paseo</option>
-            <option value="guarderia" {% if busqueda and busqueda.tipo_servicio == 'guarderia' %}selected{% endif %}>Guarderia</option>
+            <option value="paseo" {% if not busqueda or busqueda.tipo_servicio == 'paseo' %}selected{% endif %}>{% trans "Paseo" %}</option>
+            <option value="guarderia" {% if busqueda and busqueda.tipo_servicio == 'guarderia' %}selected{% endif %}>{% trans "Guardería" %}</option>
           </select>
         </div>
         <div>
-          <label class="mb-1.5 block text-sm font-semibold text-slate-700">Mascota</label>
+          <label class="mb-1.5 block text-sm font-semibold text-slate-700">{% trans "Mascota" %}</label>
           <select id="mascotaSelectReserva" name="mascota_id" required class="w-full rounded-xl border border-slate-300 px-4 py-2.5 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none">
-            <option value="">Seleccionar...</option>
+            <option value="">{% trans "Seleccionar..." %}</option>
             {% for m in mascotas %}
             <option value="{{ m.idMascota }}" data-tipo="{{ m.tipo }}" {% if busqueda and busqueda.mascota_id == m.idMascota|stringformat:'s' %}selected{% endif %}>{{ m.nombreMascota }} ({{ m.get_tipo_display }})</option>
             {% endfor %}
           </select>
-          <p id="hintMascotaPaseo" class="mt-1 text-xs text-slate-500 hidden">Para paseo solo se muestran mascotas tipo perro.</p>
+          <p id="hintMascotaPaseo" class="mt-1 text-xs text-slate-500 hidden">{% trans "Para paseo solo se muestran mascotas tipo perro." %}</p>
         </div>
       </div>
 
       <div id="camposPaseo" class="grid gap-4 md:grid-cols-2">
         <div>
-          <label class="mb-1.5 block text-sm font-semibold text-slate-700">Fecha</label>
+          <label class="mb-1.5 block text-sm font-semibold text-slate-700">{% trans "Fecha" %}</label>
           <input type="date" name="fecha" id="fechaPaseo" value="{{ busqueda.fecha|default:'' }}" class="w-full rounded-xl border border-slate-300 px-4 py-2.5 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none">
         </div>
         <div class="md:col-span-2 space-y-2">
-          <label class="mb-1.5 block text-sm font-semibold text-slate-700">Ubicacion del paseo</label>
+          <label class="mb-1.5 block text-sm font-semibold text-slate-700">{% trans "Ubicacion del paseo" %}</label>
           <div class="grid gap-2 sm:grid-cols-[1fr_auto]">
             <div class="relative">
               <input type="text" name="ciudad_paseo" id="ciudadPaseoReserva" value="{{ busqueda.ciudad_paseo|default:usuario.ciudad }}" class="w-full rounded-xl border border-slate-300 px-4 py-2.5 pr-11 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" placeholder="Ej: Laureles, Medellin o Calle 10 # 34-22">
@@ -72,28 +72,49 @@
               </button>
             </div>
             <button type="button" id="btnUbicacionPaseoReserva" class="rounded-xl border border-pw-orange px-3 py-2.5 text-sm font-semibold text-pw-orange hover:bg-pw-orange hover:text-white">
-              Mi ubicacion
+              {% trans "Mi ubicacion" %}
             </button>
           </div>
           <input type="hidden" name="latitud_paseo" id="latitudPaseoReserva" value="{{ busqueda.latitud_paseo|default:'' }}">
           <input type="hidden" name="longitud_paseo" id="longitudPaseoReserva" value="{{ busqueda.longitud_paseo|default:'' }}">
-          <p class="text-xs text-slate-500">1) Escribe un barrio, dirección o referencia y pulsa la lupa. 2) También puedes usar Mi ubicación. 3) Si prefieres, haz clic en el mapa para marcar el punto exacto.</p>
+          <p class="text-xs text-slate-500">{% trans "1) Escribe un barrio, dirección o referencia y pulsa la lupa. 2) También puedes usar Mi ubicación. 3) Si prefieres, haz clic en el mapa para marcar el punto exacto." %}</p>
           <div id="mapPaseoReserva" class="h-44 rounded-xl border border-slate-200"></div>
-          <p class="text-xs text-slate-500">Solo se mostrarán cuidadores que cubren esa zona según su radio configurado.</p>
+
+          <!-- Widget clima paseo -->
+          <div id="climaWidgetPaseo" class="hidden mt-2 rounded-xl border border-sky-100 bg-gradient-to-r from-sky-50 to-blue-50/60 p-3.5">
+            <div id="climaCargandoPaseo" class="flex items-center gap-2 text-xs text-slate-500">
+              <svg class="h-4 w-4 animate-spin text-pw-orange" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path></svg>
+              <span>{% trans "Consultando clima..." %}</span>
+            </div>
+            <div id="climaContenidoPaseo" class="hidden">
+              <div class="flex items-center gap-3">
+                <img id="climaIconoPaseo" src="" alt="" class="h-12 w-12 flex-shrink-0">
+                <div class="min-w-0 flex-1">
+                  <p class="text-sm font-bold text-slate-800" id="climaCiudadPaseo"></p>
+                  <p class="text-sm text-slate-700"><span id="climaTempPaseo" class="font-semibold"></span>°C · <span id="climaDescPaseo"></span></p>
+                  <p class="text-xs text-slate-500">{% trans "Humedad:" %} <span id="climaHumedadPaseo"></span>%</p>
+                </div>
+                <span id="climaBadgePaseo" class="flex-shrink-0 rounded-full px-3 py-1.5 text-xs font-bold"></span>
+              </div>
+              <p class="mt-1.5 text-[10px] text-slate-400 italic" id="climaNotaPaseo"></p>
+            </div>
+          </div>
+
+          <p class="text-xs text-slate-500">{% trans "Solo se mostrarán cuidadores que cubren esa zona según su radio configurado." %}</p>
         </div>
       </div>
 
       <div id="camposGuarderia" class="grid gap-4 md:grid-cols-2" style="display:none;">
         <div>
-          <label class="mb-1.5 block text-sm font-semibold text-slate-700">Fecha inicio</label>
+          <label class="mb-1.5 block text-sm font-semibold text-slate-700">{% trans "Fecha inicio" %}</label>
           <input type="date" name="fecha_guarderia_inicio" id="fechaGuarderiaInicio" value="{{ busqueda.fecha_inicio_guarderia|default:'' }}" class="w-full rounded-xl border border-slate-300 px-4 py-2.5 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none">
         </div>
         <div>
-          <label class="mb-1.5 block text-sm font-semibold text-slate-700">Fecha fin</label>
+          <label class="mb-1.5 block text-sm font-semibold text-slate-700">{% trans "Fecha fin" %}</label>
           <input type="date" name="fecha_guarderia_fin" id="fechaGuarderiaFin" value="{{ busqueda.fecha_fin_guarderia|default:busqueda.fecha_inicio_guarderia|default:'' }}" class="w-full rounded-xl border border-slate-300 px-4 py-2.5 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none">
         </div>
         <div class="md:col-span-2 space-y-2">
-          <label class="mb-1.5 block text-sm font-semibold text-slate-700">Lugar de referencia para guardería</label>
+          <label class="mb-1.5 block text-sm font-semibold text-slate-700">{% trans "Lugar de referencia para guardería" %}</label>
           <div class="grid gap-2 sm:grid-cols-[1fr_auto_auto]">
             <div class="relative">
               <input type="text" name="ciudad_guarderia" id="ciudadGuarderiaReserva" value="{{ busqueda.ciudad_guarderia|default:usuario.ciudad }}" class="w-full rounded-xl border border-slate-300 px-4 py-2.5 pr-11 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" placeholder="Ej: Envigado, El Poblado o Calle 30 # 43-21">
@@ -102,47 +123,47 @@
               </button>
             </div>
             <button type="button" id="btnUbicacionGuarderiaReserva" class="rounded-xl border border-pw-orange px-3 py-2.5 text-sm font-semibold text-pw-orange hover:bg-pw-orange hover:text-white">
-              Mi ubicación
+              {% trans "Mi ubicación" %}
             </button>
-            <input type="number" name="radio_guarderia_km" id="radioGuarderiaKm" value="{{ busqueda.radio_guarderia_km|default:'' }}" min="0.5" max="50" step="0.5" class="w-full sm:w-[140px] rounded-xl border border-slate-300 px-3 py-2.5 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" placeholder="Km máx">
+            <input type="number" name="radio_guarderia_km" id="radioGuarderiaKm" value="{{ busqueda.radio_guarderia_km|default:'' }}" min="0.5" max="50" step="0.5" class="w-full sm:w-[140px] rounded-xl border border-slate-300 px-3 py-2.5 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" placeholder="{% trans 'Km máx' %}">
           </div>
           <input type="hidden" name="latitud_guarderia" id="latitudGuarderiaReserva" value="{{ busqueda.latitud_guarderia|default:'' }}">
           <input type="hidden" name="longitud_guarderia" id="longitudGuarderiaReserva" value="{{ busqueda.longitud_guarderia|default:'' }}">
-          <p class="text-xs text-slate-500">1) Escribe la zona o dirección de referencia y pulsa la lupa. 2) También puedes usar Mi ubicación. 3) Opcional: escribe los km máximos para ver solo guarderías cercanas a ese punto.</p>
+          <p class="text-xs text-slate-500">{% trans "1) Escribe la zona o dirección de referencia y pulsa la lupa. 2) También puedes usar Mi ubicación. 3) Opcional: escribe los km máximos para ver solo guarderías cercanas a ese punto." %}</p>
           <div id="mapGuarderiaReserva" class="h-44 rounded-xl border border-slate-200"></div>
         </div>
-        <p class="md:col-span-2 text-xs text-slate-500">En el resultado eliges si reservas todo el bloque de guardería o solo un tiempo dentro del bloque.</p>
+        <p class="md:col-span-2 text-xs text-slate-500">{% trans "En el resultado eliges si reservas todo el bloque de guardería o solo un tiempo dentro del bloque." %}</p>
       </div>
 
       {% if cuidadores_disponibles is not None %}
       <div class="rounded-xl border border-slate-200 bg-slate-50 px-3 py-3">
         <div class="mb-2 flex items-center gap-2 text-xs font-semibold text-slate-600">
           <i class="bi bi-funnel"></i>
-          <span>Filtros rápidos</span>
+          <span>{% trans "Filtros rápidos" %}</span>
         </div>
         <div class="flex flex-wrap items-center gap-2">
           {% if busqueda.tipo_servicio == 'paseo' %}
-          <select name="duracion" class="min-w-[150px] rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" title="Duración de paseo">
-              <option value="" {% if not busqueda.duracion %}selected{% endif %}>Duración</option>
-              <option value="60" {% if busqueda.duracion == 60 %}selected{% endif %}>1 hora</option>
-              <option value="90" {% if busqueda.duracion == 90 %}selected{% endif %}>1.5 horas</option>
-              <option value="120" {% if busqueda.duracion == 120 %}selected{% endif %}>2 horas</option>
-              <option value="150" {% if busqueda.duracion == 150 %}selected{% endif %}>2.5 horas</option>
-              <option value="180" {% if busqueda.duracion == 180 %}selected{% endif %}>3 horas</option>
+          <select name="duracion" class="min-w-[150px] rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" title="{% trans 'Duración de paseo' %}">
+              <option value="" {% if not busqueda.duracion %}selected{% endif %}>{% trans "Duración" %}</option>
+              <option value="60" {% if busqueda.duracion == 60 %}selected{% endif %}>{% trans "1 hora" %}</option>
+              <option value="90" {% if busqueda.duracion == 90 %}selected{% endif %}>{% trans "1.5 horas" %}</option>
+              <option value="120" {% if busqueda.duracion == 120 %}selected{% endif %}>{% trans "2 horas" %}</option>
+              <option value="150" {% if busqueda.duracion == 150 %}selected{% endif %}>{% trans "2.5 horas" %}</option>
+              <option value="180" {% if busqueda.duracion == 180 %}selected{% endif %}>{% trans "3 horas" %}</option>
           </select>
           {% endif %}
-          <input type="number" name="precio_min" min="0" value="{{ busqueda.precio_min|default:'' }}" class="min-w-[140px] rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" placeholder="Precio mín/h">
-          <input type="number" name="precio_max" min="0" value="{{ busqueda.precio_max|default:'' }}" class="min-w-[140px] rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" placeholder="Precio máx/h">
-          <input type="time" name="hora_inicio_filtro" value="{{ busqueda.hora_inicio_filtro|default:'' }}" class="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" title="Hora inicio desde">
-          <input type="time" name="hora_fin_filtro" value="{{ busqueda.hora_fin_filtro|default:'' }}" class="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" title="Hora fin hasta">
+          <input type="number" name="precio_min" min="0" value="{{ busqueda.precio_min|default:'' }}" class="min-w-[140px] rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" placeholder="{% trans 'Precio mín/h' %}">
+          <input type="number" name="precio_max" min="0" value="{{ busqueda.precio_max|default:'' }}" class="min-w-[140px] rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" placeholder="{% trans 'Precio máx/h' %}">
+          <input type="time" name="hora_inicio_filtro" value="{{ busqueda.hora_inicio_filtro|default:'' }}" class="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" title="{% trans 'Hora inicio desde' %}">
+          <input type="time" name="hora_fin_filtro" value="{{ busqueda.hora_fin_filtro|default:'' }}" class="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" title="{% trans 'Hora fin hasta' %}">
         </div>
-        <p class="mt-2 text-xs text-slate-500">Estos filtros aparecen después de la primera búsqueda.</p>
+        <p class="mt-2 text-xs text-slate-500">{% trans "Estos filtros aparecen después de la primera búsqueda." %}</p>
       </div>
       {% endif %}
 
       <div class="pt-1">
         <button type="submit" class="inline-flex items-center gap-2 rounded-xl bg-pw-orange px-5 py-2.5 text-sm font-semibold text-white hover:bg-pw-orange-dark">
-          <i class="bi bi-search"></i> Buscar cuidadores
+          <i class="bi bi-search"></i> {% trans "Buscar cuidadores" %}
         </button>
       </div>
     </form>
@@ -151,12 +172,12 @@
   {% if cuidadores_disponibles is not None %}
   <div class="rounded-2xl border border-slate-200 bg-white shadow-sm">
     <div class="border-b border-slate-200 px-6 py-4">
-      <h3 class="text-base font-bold text-slate-800">Resultados disponibles</h3>
+      <h3 class="text-base font-bold text-slate-800">{% trans "Resultados disponibles" %}</h3>
       <p class="text-sm text-slate-500">
         {% if busqueda.tipo_servicio == 'paseo' %}
-        {{ busqueda.fecha }} - {% if busqueda.duracion %}{{ busqueda.duracion }} min{% else %}todas las franjas horarias{% endif %}
+        {{ busqueda.fecha }} - {% if busqueda.duracion %}{{ busqueda.duracion }} min{% else %}{% trans "todas las franjas horarias" %}{% endif %}
         {% else %}
-        {{ busqueda.fecha_inicio_guarderia }} a {{ busqueda.fecha_fin_guarderia }}
+        {{ busqueda.fecha_inicio_guarderia }} - {{ busqueda.fecha_fin_guarderia }}
         {% endif %}
       </p>
     </div>
@@ -171,23 +192,23 @@
             <p class="font-bold text-slate-800">{{ item.cuidadorNombre }} {{ item.cuidadorApellido }}</p>
             <p class="text-sm text-slate-500">
               {% if item.tipoServicio == 'paseo' %}
-              Horario disponible: {{ item.horaInicio|hora_corta }} - {{ item.horaFin|hora_corta }}
+              {% trans "Horario disponible:" %} {{ item.horaInicio|hora_corta }} - {{ item.horaFin|hora_corta }}
               {% else %}
-              Bloque disponible: {{ item.horaInicio|hora_corta }} - {{ item.horaFin|hora_corta }}
+              {% trans "Bloque disponible:" %} {{ item.horaInicio|hora_corta }} - {{ item.horaFin|hora_corta }}
               {% endif %}
             </p>
             {% if item.tipoServicio == 'paseo' %}
-            <p class="text-xs text-slate-500">Cupos disponibles: {{ item.cuposDisponibles }} / {{ item.cupoMaximo }}</p>
+            <p class="text-xs text-slate-500">{% trans "Cupos disponibles:" %} {{ item.cuposDisponibles }} / {{ item.cupoMaximo }}</p>
             {% endif %}
             {% if item.tipoServicio == 'guarderia' %}
-            <p class="text-xs text-slate-500">Rango consultado: {{ item.fechaInicio }} a {{ item.fechaFin }}</p>
-            <p class="text-xs text-slate-500">Slots disponibles en el rango: {{ item.totalSlotsDisponibles }}</p>
-            <p class="text-xs text-slate-500">Slot sugerido: {{ item.fecha }} · {{ item.horaInicio|hora_corta }} - {{ item.horaFin|hora_corta }} ({{ item.cuposDisponibles }}/{{ item.cupoMaximo }} cupos)</p>
+            <p class="text-xs text-slate-500">{% trans "Rango consultado:" %} {{ item.fechaInicio }} - {{ item.fechaFin }}</p>
+            <p class="text-xs text-slate-500">{% trans "Slots disponibles en el rango:" %} {{ item.totalSlotsDisponibles }}</p>
+            <p class="text-xs text-slate-500">{% trans "Slot sugerido:" %} {{ item.fecha }} · {{ item.horaInicio|hora_corta }} - {{ item.horaFin|hora_corta }} ({{ item.cuposDisponibles }}/{{ item.cupoMaximo }} {% trans "cupos" %})</p>
             {% endif %}
             {% if item.calificacionCount %}
             <p class="text-sm text-amber-600"><i class="bi bi-star-fill"></i> {{ item.calificacionPromedio }} ({{ item.calificacionCount }})</p>
             {% else %}
-            <p class="text-xs text-slate-500"><i class="bi bi-star"></i> Sin calificaciones aún</p>
+            <p class="text-xs text-slate-500"><i class="bi bi-star"></i> {% trans "Sin calificaciones aún" %}</p>
             {% endif %}
             {% if item.descripcionServicio %}
             <p class="mt-1 text-sm text-slate-600">{{ item.descripcionServicio|truncatewords:16 }}</p>
@@ -202,7 +223,7 @@
           <p class="text-lg font-bold text-slate-800">${{ item.tarifaTotal|formato_cop }} COP</p>
           {% if item.tipoServicio == 'guarderia' %}
           <p class="text-xs text-slate-500">${{ item.tarifaHora|formato_cop }} COP/hora</p>
-          <p class="text-xs text-slate-500">Valor estimado para el slot seleccionado</p>
+          <p class="text-xs text-slate-500">{% trans "Valor estimado para el slot seleccionado" %}</p>
           {% else %}
           <p class="text-xs text-slate-500">${{ item.tarifaHora|formato_cop }} COP/hora</p>
           {% endif %}
@@ -226,7 +247,7 @@
             <input type="hidden" name="longitud_guarderia" value="{{ busqueda.longitud_guarderia|default:'' }}">
             <input type="hidden" name="radio_guarderia_km" value="{{ busqueda.radio_guarderia_km|default:'' }}">
             <div class="mt-2 space-y-2 text-left">
-              <label class="block text-xs font-semibold text-slate-600">Slot de guarderia disponible</label>
+              <label class="block text-xs font-semibold text-slate-600">{% trans "Slot de guarderia disponible" %}</label>
               <select class="w-full rounded-lg border border-slate-300 px-2 py-1.5 text-xs focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none js-guarderia-slot">
                 {% for slot in item.slotsGuarderia %}
                 <option value="{{ slot.eventoId }}"
@@ -236,29 +257,29 @@
                         data-cupo-max="{{ slot.cupoMaximo }}"
                         data-duracion-max="{{ slot.duracionOpciones|last }}"
                         {% if slot.eventoId == item.eventoId and slot.fecha == item.fecha %}selected{% endif %}>
-                  {{ slot.fecha }} · {{ slot.horaInicio|hora_corta }} - {{ slot.horaFin|hora_corta }} ({{ slot.cuposDisponibles }}/{{ slot.cupoMaximo }} cupos)
+                  {{ slot.fecha }} · {{ slot.horaInicio|hora_corta }} - {{ slot.horaFin|hora_corta }} ({{ slot.cuposDisponibles }}/{{ slot.cupoMaximo }} {% trans "cupos" %})
                 </option>
                 {% endfor %}
               </select>
-              <p class="text-[11px] text-slate-500">Cupos del slot elegido: <span class="js-cupos-slot">{{ item.cuposDisponibles }}</span>/<span class="js-cupo-max-slot">{{ item.cupoMaximo }}</span></p>
+              <p class="text-[11px] text-slate-500">{% trans "Cupos del slot elegido:" %} <span class="js-cupos-slot">{{ item.cuposDisponibles }}</span>/<span class="js-cupo-max-slot">{{ item.cupoMaximo }}</span></p>
 
-              <label class="block text-xs font-semibold text-slate-600">Tiempo de guarderia</label>
+              <label class="block text-xs font-semibold text-slate-600">{% trans "Tiempo de guarderia" %}</label>
               <select name="modo_guarderia" class="w-full rounded-lg border border-slate-300 px-2 py-1.5 text-xs focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none js-modo-guarderia">
-                <option value="bloque_completo" selected>Reservar todo el bloque</option>
-                <option value="tiempo_personalizado">Reservar tiempo personalizado</option>
+                <option value="bloque_completo" selected>{% trans "Reservar todo el bloque" %}</option>
+                <option value="tiempo_personalizado">{% trans "Reservar tiempo personalizado" %}</option>
               </select>
               <select name="duracion_guarderia_minutos" class="w-full rounded-lg border border-slate-300 px-2 py-1.5 text-xs focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none js-duracion-guarderia" disabled>
                 {% for minutos in item.duracionOpciones %}
                 <option value="{{ minutos }}" {% if minutos == item.duracionMaxima %}selected{% endif %}>{{ minutos }} min</option>
                 {% endfor %}
               </select>
-              <p class="text-[11px] text-slate-500">Si eliges tiempo personalizado, se aplica por día dentro del bloque disponible.</p>
+              <p class="text-[11px] text-slate-500">{% trans "Si eliges tiempo personalizado, se aplica por día dentro del bloque disponible." %}</p>
             </div>
             {% else %}
             <input type="hidden" name="evento_id" value="{{ item.eventoId }}">
             <input type="hidden" name="fecha" value="{{ busqueda.fecha }}">
             {% endif %}
-            <button type="submit" class="rounded-xl bg-pw-orange px-4 py-2 text-sm font-semibold text-white hover:bg-pw-orange-dark">Reservar</button>
+            <button type="submit" class="rounded-xl bg-pw-orange px-4 py-2 text-sm font-semibold text-white hover:bg-pw-orange-dark">{% trans "Reservar" %}</button>
           </form>
         </div>
       </div>
@@ -267,11 +288,11 @@
     {% else %}
     <div class="px-6 py-12 text-center">
       <div class="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-full bg-slate-100 text-slate-400"><i class="bi bi-search"></i></div>
-      <p class="font-semibold text-slate-700">No encontramos cuidadores para ese filtro.</p>
+      <p class="font-semibold text-slate-700">{% trans "No encontramos cuidadores para ese filtro." %}</p>
       {% if busqueda.tipo_servicio == 'guarderia' %}
-      <p class="text-sm text-slate-500">Prueba con otro rango de fechas u horario de guardería.</p>
+      <p class="text-sm text-slate-500">{% trans "Prueba con otro rango de fechas u horario de guardería." %}</p>
       {% else %}
-      <p class="text-sm text-slate-500">Prueba con otra fecha, duración o ubicación del paseo.</p>
+      <p class="text-sm text-slate-500">{% trans "Prueba con otra fecha, duración o ubicación del paseo." %}</p>
       {% endif %}
     </div>
     {% endif %}
@@ -284,6 +305,16 @@
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <script>
 (function () {
+  var STR = {
+    aptoPasear: "{% trans '✓ Apto para pasear' %}",
+    climaPoco: "{% trans '✗ Clima poco favorable' %}",
+    condicionesActuales: "{% trans 'Condiciones actuales de la zona' %}",
+    referenciaPara: "{% trans 'Referencia para' %}",
+    escribeUbicacion: "{% trans 'Escribe una ubicación primero' %}",
+    noEncontramosUbicacion: "{% trans 'No encontramos esa ubicación' %}",
+    noSoportaGeolocalizacion: "{% trans 'Tu navegador no soporta geolocalizacion' %}",
+  };
+
   var tipo = document.getElementById("tipoServicio");
   var camposPaseo = document.getElementById("camposPaseo");
   var camposGuarderia = document.getElementById("camposGuarderia");
@@ -312,25 +343,89 @@
   var geoGuarderiaBtn = document.getElementById("btnUbicacionGuarderiaReserva");
   var searchGuarderiaBtn = document.getElementById("btnBuscarCiudadGuarderiaReserva");
 
-  function buscarPorTextoUbicacion(ciudadInputEl, mapRef, setMarkerRef) {
+  // ─── CLIMA ──────────────────────────────────────────────────────────────────
+  var _climaTimer = null;
+
+  function fetchClimaPaseo(ciudad) {
+    if (!ciudad) return;
+    var widget = document.getElementById("climaWidgetPaseo");
+    var cargando = document.getElementById("climaCargandoPaseo");
+    var contenido = document.getElementById("climaContenidoPaseo");
+    if (!widget) return;
+    widget.classList.remove("hidden");
+    cargando.classList.remove("hidden");
+    contenido.classList.add("hidden");
+    fetch("/clima-json/?ciudad=" + encodeURIComponent(ciudad))
+      .then(function (r) { return r.json(); })
+      .then(function (d) {
+        cargando.classList.add("hidden");
+        contenido.classList.remove("hidden");
+        document.getElementById("climaCiudadPaseo").textContent = d.ciudad || ciudad;
+        document.getElementById("climaTempPaseo").textContent = d.temperatura != null ? d.temperatura : "--";
+        document.getElementById("climaDescPaseo").textContent = d.descripcion || "";
+        document.getElementById("climaHumedadPaseo").textContent = d.humedad != null ? d.humedad : "--";
+        var icono = document.getElementById("climaIconoPaseo");
+        if (d.icono) {
+          icono.src = "https://openweathermap.org/img/wn/" + d.icono + "@2x.png";
+          icono.classList.remove("hidden");
+        } else {
+          icono.classList.add("hidden");
+        }
+        var badge = document.getElementById("climaBadgePaseo");
+        if (d.apto_para_paseo) {
+          badge.textContent = STR.aptoPasear;
+          badge.className = "flex-shrink-0 rounded-full px-3 py-1.5 text-xs font-bold bg-emerald-100 text-emerald-700";
+        } else {
+          badge.textContent = STR.climaPoco;
+          badge.className = "flex-shrink-0 rounded-full px-3 py-1.5 text-xs font-bold bg-red-100 text-red-700";
+        }
+        var nota = document.getElementById("climaNotaPaseo");
+        if (nota) {
+          var fecha = fechaPaseo ? fechaPaseo.value : "";
+          nota.textContent = fecha
+            ? STR.referenciaPara + " " + fecha + " · " + STR.condicionesActuales
+            : STR.condicionesActuales;
+        }
+      })
+      .catch(function () { widget.classList.add("hidden"); });
+  }
+
+  function reverseGeocodePaseo(lat, lng) {
+    fetch("https://nominatim.openstreetmap.org/reverse?format=json&lat=" + lat + "&lon=" + lng)
+      .then(function (r) { return r.json(); })
+      .then(function (d) {
+        if (!d || !d.address) return;
+        var nombre = d.address.city || d.address.town || d.address.village || d.address.suburb || "";
+        if (nombre && cityPaseoInput) cityPaseoInput.value = nombre;
+        fetchClimaPaseo(nombre || (cityPaseoInput ? cityPaseoInput.value : ""));
+      })
+      .catch(function () { fetchClimaPaseo(cityPaseoInput ? cityPaseoInput.value : ""); });
+  }
+
+  function debouncedFetchClima(ciudad) {
+    clearTimeout(_climaTimer);
+    _climaTimer = setTimeout(function () { fetchClimaPaseo(ciudad); }, 600);
+  }
+  // ────────────────────────────────────────────────────────────────────────────
+
+  function buscarPorTextoUbicacion(ciudadInputEl, mapRef, setMarkerRef, onSuccess) {
     var ciudad = (ciudadInputEl?.value || "").trim();
     if (!ciudad) {
-      alert("Escribe una ubicación primero");
+      alert(STR.escribeUbicacion);
       return;
     }
-    if (!mapRef || !setMarkerRef) {
-      return;
-    }
+    if (!mapRef || !setMarkerRef) return;
     fetch("https://nominatim.openstreetmap.org/search?format=json&q=" + encodeURIComponent(ciudad + ", Colombia") + "&limit=1")
       .then(function (res) { return res.json(); })
       .then(function (data) {
         if (!data || !data[0]) {
-          alert("No encontramos esa ubicación");
+          alert(STR.noEncontramosUbicacion);
           return;
         }
         var ll = { lat: parseFloat(data[0].lat), lng: parseFloat(data[0].lon) };
         setMarkerRef(ll);
         mapRef.setView([ll.lat, ll.lng], 13);
+        if (onSuccess) onSuccess(ciudadInputEl.value);
       });
   }
 
@@ -357,7 +452,9 @@
       if (!markerPaseo) {
         markerPaseo = L.marker(ll, { draggable: true }).addTo(mapPaseo);
         markerPaseo.on("dragend", function () {
-          updateInputs(markerPaseo.getLatLng());
+          var latlng = markerPaseo.getLatLng();
+          updateInputs(latlng);
+          reverseGeocodePaseo(latlng.lat, latlng.lng);
         });
       } else {
         markerPaseo.setLatLng(ll);
@@ -369,32 +466,35 @@
 
     if (hasCoords) {
       setMarker({ lat: lat, lng: lng });
+      if (cityPaseoInput && cityPaseoInput.value) fetchClimaPaseo(cityPaseoInput.value);
     }
 
     mapPaseo.on("click", function (e) {
       setMarker(e.latlng);
+      reverseGeocodePaseo(e.latlng.lat, e.latlng.lng);
     });
 
     geoPaseoBtn?.addEventListener("click", function () {
       if (!navigator.geolocation) {
-        alert("Tu navegador no soporta geolocalizacion");
+        alert(STR.noSoportaGeolocalizacion);
         return;
       }
       navigator.geolocation.getCurrentPosition(function (pos) {
         var ll = { lat: pos.coords.latitude, lng: pos.coords.longitude };
         setMarker(ll);
         mapPaseo.setView([ll.lat, ll.lng], 15);
+        reverseGeocodePaseo(ll.lat, ll.lng);
       });
     });
 
     searchPaseoBtn?.addEventListener("click", function () {
-      buscarPorTextoUbicacion(cityPaseoInput, mapPaseo, setMarkerPaseoFn);
+      buscarPorTextoUbicacion(cityPaseoInput, mapPaseo, setMarkerPaseoFn, fetchClimaPaseo);
     });
 
     cityPaseoInput?.addEventListener("keydown", function (e) {
       if (e.key === "Enter") {
         e.preventDefault();
-        buscarPorTextoUbicacion(cityPaseoInput, mapPaseo, setMarkerPaseoFn);
+        buscarPorTextoUbicacion(cityPaseoInput, mapPaseo, setMarkerPaseoFn, fetchClimaPaseo);
       }
     });
   }
@@ -442,7 +542,7 @@
 
     geoGuarderiaBtn?.addEventListener("click", function () {
       if (!navigator.geolocation) {
-        alert("Tu navegador no soporta geolocalizacion");
+        alert(STR.noSoportaGeolocalizacion);
         return;
       }
       navigator.geolocation.getCurrentPosition(function (pos) {
@@ -526,6 +626,12 @@
     syncForm();
   }
 
+  fechaPaseo?.addEventListener("change", function () {
+    if (cityPaseoInput && cityPaseoInput.value) {
+      debouncedFetchClima(cityPaseoInput.value);
+    }
+  });
+
   fechaGuarderiaInicio?.addEventListener("change", function () {
     if (fechaGuarderiaFin && !fechaGuarderiaFin.value) {
       fechaGuarderiaFin.value = fechaGuarderiaInicio.value;
@@ -580,21 +686,11 @@
       var cupoMax = selected.getAttribute("data-cupo-max") || "-";
       var duracionMax = parseInt(selected.getAttribute("data-duracion-max") || "0", 10);
 
-      if (eventoInput) {
-        eventoInput.value = eventoId;
-      }
-      if (fechaInput) {
-        fechaInput.value = fechaIso;
-      }
-      if (fechaFinInput) {
-        fechaFinInput.value = fechaIso;
-      }
-      if (cuposSlot) {
-        cuposSlot.textContent = cupos;
-      }
-      if (cupoMaxSlot) {
-        cupoMaxSlot.textContent = cupoMax;
-      }
+      if (eventoInput) eventoInput.value = eventoId;
+      if (fechaInput) fechaInput.value = fechaIso;
+      if (fechaFinInput) fechaFinInput.value = fechaIso;
+      if (cuposSlot) cuposSlot.textContent = cupos;
+      if (cupoMaxSlot) cupoMaxSlot.textContent = cupoMax;
 
       rebuildDuracionOptions(duracionSelect, duracionMax);
     }

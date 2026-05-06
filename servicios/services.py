@@ -24,6 +24,9 @@ from servicios.service_layer.api_validadores import (
 from servicios.service_layer.api_gateway import (
 	ServiciosApiGatewayService,
 )
+from servicios.service_layer.clima_servicios import (
+	ClimaService,
+)
 from servicios.service_layer.api_servicios import (
 	CrearSolicitudServicioAppService,
 )

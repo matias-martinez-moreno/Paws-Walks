@@ -1,20 +1,21 @@
 {% extends "servicios/base_dashboard.html" %}
-{% block title %}Mis mascotas{% endblock %}
+{% load servicios_extras i18n %}
+{% block title %}{% trans "Mis mascotas" %}{% endblock %}
 
 {% block top_greeting %}
-<h1 class="page-header__title">Mis mascotas</h1>
-<p class="page-header__subtitle">Gestiona su ficha de cuidado y salud</p>
+<h1 class="page-header__title">{% trans "Mis mascotas" %}</h1>
+<p class="page-header__subtitle">{% trans "Gestiona su ficha de cuidado y salud" %}</p>
 {% endblock %}
 
 {% block sidebar_links %}
-<div class="sidebar-section">Principal</div>
-<a class="nav-link" href="{% url 'dashboard_dueño' %}"><i class="bi bi-house-door"></i> Panel</a>
-<div class="sidebar-section">Gestión</div>
-<a class="nav-link" href="{% url 'dueño_nueva_reserva' %}"><i class="bi bi-plus-circle"></i> Hacer reserva</a>
-<a class="nav-link" href="{% url 'dueño_mis_reservas' %}"><i class="bi bi-calendar3"></i> Mis reservas</a>
-<a class="nav-link active" href="{% url 'dueño_mis_mascotas' %}"><i class="bi bi-heart"></i> Mis mascotas</a>
-<div class="sidebar-section">Cuenta</div>
-<a class="nav-link" href="{% url 'dueño_mi_perfil' %}"><i class="bi bi-person"></i> Mi perfil</a>
+<div class="sidebar-section">{% trans "Principal" %}</div>
+<a class="nav-link" href="{% url 'dashboard_dueño' %}"><i class="bi bi-house-door"></i> {% trans "Panel" %}</a>
+<div class="sidebar-section">{% trans "Gestión" %}</div>
+<a class="nav-link" href="{% url 'dueño_nueva_reserva' %}"><i class="bi bi-plus-circle"></i> {% trans "Hacer reserva" %}</a>
+<a class="nav-link" href="{% url 'dueño_mis_reservas' %}"><i class="bi bi-calendar3"></i> {% trans "Mis reservas" %}</a>
+<a class="nav-link active" href="{% url 'dueño_mis_mascotas' %}"><i class="bi bi-heart"></i> {% trans "Mis mascotas" %}</a>
+<div class="sidebar-section">{% trans "Cuenta" %}</div>
+<a class="nav-link" href="{% url 'dueño_mi_perfil' %}"><i class="bi bi-person"></i> {% trans "Mi perfil" %}</a>
 {% endblock %}
 
 {% block content %}
@@ -22,72 +23,72 @@
   <section class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
     <div class="flex flex-wrap items-center justify-between gap-3">
       <div>
-        <h2 class="text-base font-bold text-slate-800">Perfil de tus mascotas</h2>
-        <p class="text-xs text-slate-500">Gestiona fichas y filtra rápido.</p>
+        <h2 class="text-base font-bold text-slate-800">{% trans "Perfil de tus mascotas" %}</h2>
+        <p class="text-xs text-slate-500">{% trans "Gestiona fichas y filtra rápido." %}</p>
       </div>
       <div class="flex items-center gap-2">
         <span class="inline-flex items-center rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 text-[11px] font-semibold text-slate-600">
-          Total: {{ mascotas|length }}
+          {% trans "Total:" %} {{ mascotas|length }}
         </span>
-        <button type="button" class="bg-pw-orange hover:bg-pw-orange-dark text-white font-semibold rounded-lg px-3 py-2 text-sm transition-all" data-modal="addPetModal"><i class="bi bi-plus-lg mr-1"></i>Agregar</button>
+        <button type="button" class="bg-pw-orange hover:bg-pw-orange-dark text-white font-semibold rounded-lg px-3 py-2 text-sm transition-all" data-modal="addPetModal"><i class="bi bi-plus-lg mr-1"></i>{% trans "Agregar" %}</button>
       </div>
     </div>
 
     {% if mascotas %}
     <div class="mt-3 grid grid-cols-2 gap-2 md:grid-cols-4 xl:grid-cols-8">
       <div class="col-span-2 xl:col-span-2">
-        <label for="filtroMascotaNombre" class="mb-1 block text-[11px] font-semibold uppercase tracking-wide text-slate-500">Nombre o raza</label>
+        <label for="filtroMascotaNombre" class="mb-1 block text-[11px] font-semibold uppercase tracking-wide text-slate-500">{% trans "Nombre o raza" %}</label>
         <input id="filtroMascotaNombre" type="text" class="w-full rounded-lg border border-slate-300 px-2.5 py-2 text-xs focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" placeholder="Ej: Luna, labrador">
       </div>
       <div>
-        <label for="filtroMascotaTipo" class="mb-1 block text-[11px] font-semibold uppercase tracking-wide text-slate-500">Tipo</label>
+        <label for="filtroMascotaTipo" class="mb-1 block text-[11px] font-semibold uppercase tracking-wide text-slate-500">{% trans "Tipo" %}</label>
         <select id="filtroMascotaTipo" class="w-full rounded-lg border border-slate-300 px-2.5 py-2 text-xs focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none">
-          <option value="">Todos</option>
+          <option value="">{% trans "Todos" %}</option>
           {% for val,label in tipos_mascota %}<option value="{{ val }}">{{ label }}</option>{% endfor %}
         </select>
       </div>
       <div>
-        <label for="filtroMascotaSexo" class="mb-1 block text-[11px] font-semibold uppercase tracking-wide text-slate-500">Sexo</label>
+        <label for="filtroMascotaSexo" class="mb-1 block text-[11px] font-semibold uppercase tracking-wide text-slate-500">{% trans "Sexo" %}</label>
         <select id="filtroMascotaSexo" class="w-full rounded-lg border border-slate-300 px-2.5 py-2 text-xs focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none">
-          <option value="">Todos</option>
+          <option value="">{% trans "Todos" %}</option>
           {% for val,label in sexos_mascota %}<option value="{{ val }}">{{ label }}</option>{% endfor %}
         </select>
       </div>
       <div>
-        <label for="filtroMascotaTamano" class="mb-1 block text-[11px] font-semibold uppercase tracking-wide text-slate-500">Tamaño</label>
+        <label for="filtroMascotaTamano" class="mb-1 block text-[11px] font-semibold uppercase tracking-wide text-slate-500">{% trans "Tamaño" %}</label>
         <select id="filtroMascotaTamano" class="w-full rounded-lg border border-slate-300 px-2.5 py-2 text-xs focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none">
-          <option value="">Todos</option>
+          <option value="">{% trans "Todos" %}</option>
           {% for val,label in tamanos_mascota %}<option value="{{ val }}">{{ label }}</option>{% endfor %}
         </select>
       </div>
       <div>
-        <label for="filtroMascotaVacunas" class="mb-1 block text-[11px] font-semibold uppercase tracking-wide text-slate-500">Vacunas</label>
+        <label for="filtroMascotaVacunas" class="mb-1 block text-[11px] font-semibold uppercase tracking-wide text-slate-500">{% trans "Vacunas" %}</label>
         <select id="filtroMascotaVacunas" class="w-full rounded-lg border border-slate-300 px-2.5 py-2 text-xs focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none">
-          <option value="">Todas</option>
-          <option value="si">Al día</option>
-          <option value="no">Pendientes</option>
+          <option value="">{% trans "Todas" %}</option>
+          <option value="si">{% trans "Al día" %}</option>
+          <option value="no">{% trans "Vacunas pendientes" %}</option>
         </select>
       </div>
       <div>
-        <label for="filtroMascotaEsterilizado" class="mb-1 block text-[11px] font-semibold uppercase tracking-wide text-slate-500">Esterilizado</label>
+        <label for="filtroMascotaEsterilizado" class="mb-1 block text-[11px] font-semibold uppercase tracking-wide text-slate-500">{% trans "Esterilizado" %}</label>
         <select id="filtroMascotaEsterilizado" class="w-full rounded-lg border border-slate-300 px-2.5 py-2 text-xs focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none">
-          <option value="">Todos</option>
-          <option value="si">Sí</option>
-          <option value="no">No</option>
+          <option value="">{% trans "Todos" %}</option>
+          <option value="si">{% trans "Sí" %}</option>
+          <option value="no">{% trans "No" %}</option>
         </select>
       </div>
       <div>
-        <label for="filtroMascotaResenas" class="mb-1 block text-[11px] font-semibold uppercase tracking-wide text-slate-500">Reseñas</label>
+        <label for="filtroMascotaResenas" class="mb-1 block text-[11px] font-semibold uppercase tracking-wide text-slate-500">{% trans "Reseñas" %}</label>
         <select id="filtroMascotaResenas" class="w-full rounded-lg border border-slate-300 px-2.5 py-2 text-xs focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none">
-          <option value="">Todas</option>
-          <option value="si">Con reseñas</option>
-          <option value="no">Sin reseñas</option>
+          <option value="">{% trans "Todas" %}</option>
+          <option value="si">{% trans "Con reseñas" %}</option>
+          <option value="no">{% trans "Sin reseñas" %}</option>
         </select>
       </div>
     </div>
     <div class="mt-2 flex flex-wrap items-center justify-between gap-2">
       <p id="resumenFiltrosMascotas" class="text-[11px] text-slate-500"></p>
-      <button id="btnLimpiarFiltrosMascotas" type="button" class="rounded-lg border border-slate-300 px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50">Limpiar</button>
+      <button id="btnLimpiarFiltrosMascotas" type="button" class="rounded-lg border border-slate-300 px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50">{% trans "Limpiar" %}</button>
     </div>
     {% endif %}
   </section>
@@ -134,28 +135,28 @@
               {% if m.calificacion_count %}
               <p class="mt-1 text-sm text-amber-600"><i class="bi bi-star-fill"></i> {{ m.calificacion_promedio }} ({{ m.calificacion_count }})</p>
               {% else %}
-              <p class="mt-1 text-xs text-slate-500"><i class="bi bi-star"></i> Sin calificaciones aún</p>
+              <p class="mt-1 text-xs text-slate-500"><i class="bi bi-star"></i> {% trans "Sin calificaciones aún" %}</p>
               {% endif %}
             </div>
           </div>
         </div>
 
         <div class="mt-4 flex flex-wrap gap-2 text-xs">
-          <span class="rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 font-semibold text-slate-600">{% if m.sexo %}{{ m.get_sexo_display }}{% else %}Sexo no indicado{% endif %}</span>
-          <span class="rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 font-semibold text-slate-600">{% if m.tamano %}{{ m.get_tamano_display }}{% else %}Tamaño no indicado{% endif %}</span>
+          <span class="rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 font-semibold text-slate-600">{% if m.sexo %}{{ m.get_sexo_display }}{% else %}{% trans "Sexo no indicado" %}{% endif %}</span>
+          <span class="rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 font-semibold text-slate-600">{% if m.tamano %}{{ m.get_tamano_display }}{% else %}{% trans "Tamaño no indicado" %}{% endif %}</span>
           <span class="rounded-full px-2.5 py-1 font-semibold {% if m.vacunasAlDia %}border border-emerald-200 bg-emerald-50 text-emerald-700{% else %}border border-amber-200 bg-amber-50 text-amber-700{% endif %}">
-            {% if m.vacunasAlDia %}Vacunas al día{% else %}Vacunas pendientes{% endif %}
+            {% if m.vacunasAlDia %}{% trans "Vacunas al día" %}{% else %}{% trans "Vacunas pendientes" %}{% endif %}
           </span>
         </div>
 
         <div class="mt-4 grid grid-cols-2 gap-3 text-sm text-slate-600">
-          <div class="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2"><strong class="text-slate-700">Edad:</strong> {{ m.edad }} año{{ m.edad|pluralize }}</div>
-          <div class="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2"><strong class="text-slate-700">Peso:</strong> {% if m.peso %}{{ m.peso }} kg{% else %}No indicado{% endif %}</div>
-          <div class="col-span-2 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2"><strong class="text-slate-700">Esterilizado:</strong> {% if m.esterilizado %}Sí{% else %}No{% endif %}</div>
+          <div class="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2"><strong class="text-slate-700">{% trans "Edad:" %}</strong> {{ m.edad }} año{{ m.edad|pluralize }}</div>
+          <div class="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2"><strong class="text-slate-700">{% trans "Peso:" %}</strong> {% if m.peso %}{{ m.peso }} kg{% else %}{% trans "No indicado" %}{% endif %}</div>
+          <div class="col-span-2 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2"><strong class="text-slate-700">{% trans "Esterilizado:" %}</strong> {% if m.esterilizado %}{% trans "Sí" %}{% else %}{% trans "No" %}{% endif %}</div>
         </div>
 
         <div class="mt-3 rounded-lg border border-amber-100 bg-amber-50 px-3 py-2">
-          <p class="text-xs font-semibold uppercase tracking-wide text-amber-700">Reseñas recientes de cuidadores</p>
+          <p class="text-xs font-semibold uppercase tracking-wide text-amber-700">{% trans "Reseñas recientes de cuidadores" %}</p>
           {% if m.calificacion_comentarios %}
           <div class="mt-1.5 space-y-1.5">
             {% for c in m.calificacion_comentarios|slice:":2" %}
@@ -164,36 +165,36 @@
           </div>
           {% if m.calificacion_count %}
           <button type="button" class="mt-2 inline-flex items-center gap-1 rounded-lg border border-amber-300 bg-white px-2.5 py-1 text-xs font-semibold text-amber-700 hover:bg-amber-100" data-modal="petReviewsModal-{{ m.idMascota }}">
-            <i class="bi bi-card-list"></i>Ver reseñas detalladas
+            <i class="bi bi-card-list"></i>{% trans "Ver reseñas detalladas" %}
           </button>
           {% endif %}
           {% else %}
-          <p class="mt-1.5 text-xs text-slate-500">Aún no hay comentarios para esta mascota.</p>
+          <p class="mt-1.5 text-xs text-slate-500">{% trans "Aún no hay comentarios para esta mascota." %}</p>
           {% endif %}
         </div>
 
         {% if m.condicionesMedicas %}
         <div class="mt-3 rounded-lg border border-rose-100 bg-rose-50 px-3 py-2 text-sm text-rose-700">
-          <strong>Condiciones médicas:</strong> {{ m.condicionesMedicas }}
+          <strong>{% trans "Condiciones médicas:" %}</strong> {{ m.condicionesMedicas }}
         </div>
         {% endif %}
 
         {% if m.notas %}
         <div class="mt-3 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-600">
-          <strong class="text-slate-700">Notas:</strong> {{ m.notas }}
+          <strong class="text-slate-700">{% trans "Notas:" %}</strong> {{ m.notas }}
         </div>
         {% endif %}
 
         <div class="mt-4 grid grid-cols-2 gap-2">
           <button type="button" class="w-full rounded-xl border border-slate-300 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50" data-modal="editPetModal-{{ m.idMascota }}">
-            <i class="bi bi-pencil-square mr-1"></i>Editar
+            <i class="bi bi-pencil-square mr-1"></i>{% trans "Editar" %}
           </button>
           <form method="post">
             {% csrf_token %}
             <input type="hidden" name="action" value="eliminar">
             <input type="hidden" name="mascota_id" value="{{ m.idMascota }}">
             <button type="submit" class="w-full rounded-xl border border-red-200 py-2 text-sm font-semibold text-red-600 transition hover:bg-red-50" onclick="return confirm('¿Eliminar {{ m.nombreMascota }}?')">
-              <i class="bi bi-trash mr-1"></i>Eliminar
+              <i class="bi bi-trash mr-1"></i>{% trans "Eliminar" %}
             </button>
           </form>
         </div>
@@ -203,17 +204,17 @@
   </section>
 
   <section id="mascotasSinResultados" class="hidden rounded-2xl border border-dashed border-slate-300 bg-white p-8 text-center shadow-sm">
-    <p class="text-base font-semibold text-slate-700">No hay mascotas que coincidan con los filtros</p>
-    <p class="mt-1 text-sm text-slate-500">Ajusta los criterios o usa Limpiar para volver a ver todas.</p>
+    <p class="text-base font-semibold text-slate-700">{% trans "No hay mascotas que coincidan con los filtros" %}</p>
+    <p class="mt-1 text-sm text-slate-500">{% trans "Ajusta los criterios o usa Limpiar para volver a ver todas." %}</p>
   </section>
   {% else %}
   <section class="rounded-2xl border border-dashed border-slate-300 bg-white p-10 text-center shadow-sm">
     <div class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-rose-50 text-pw-orange">
       <i class="bi bi-heart text-3xl"></i>
     </div>
-    <p class="text-base font-semibold text-slate-700">Aún no has registrado mascotas</p>
-    <p class="mt-1 text-sm text-slate-500">Crea su ficha para reservar paseos y guardería más rápido.</p>
-    <button type="button" class="mt-5 bg-pw-orange hover:bg-pw-orange-dark text-white font-semibold rounded-xl px-5 py-2.5 text-sm transition-all hover:shadow-lg hover:shadow-pw-orange/20" data-modal="addPetModal"><i class="bi bi-plus mr-2"></i>Agregar primera mascota</button>
+    <p class="text-base font-semibold text-slate-700">{% trans "Aún no has registrado mascotas" %}</p>
+    <p class="mt-1 text-sm text-slate-500">{% trans "Crea su ficha para reservar paseos y guardería más rápido." %}</p>
+    <button type="button" class="mt-5 bg-pw-orange hover:bg-pw-orange-dark text-white font-semibold rounded-xl px-5 py-2.5 text-sm transition-all hover:shadow-lg hover:shadow-pw-orange/20" data-modal="addPetModal"><i class="bi bi-plus mr-2"></i>{% trans "Agregar primera mascota" %}</button>
   </section>
   {% endif %}
 
@@ -221,7 +222,7 @@
     <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" data-modal-close="addPetModal"></div>
     <div class="relative bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6 z-10 border border-slate-100">
       <div class="flex items-center justify-between mb-4">
-        <h5 class="font-bold text-slate-800">Agregar mascota</h5>
+        <h5 class="font-bold text-slate-800">{% trans "Agregar mascota" %}</h5>
         <button type="button" class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-slate-100 text-slate-500" data-modal-close="addPetModal" aria-label="Cerrar"><i class="bi bi-x-lg"></i></button>
       </div>
       <form method="post" enctype="multipart/form-data" class="space-y-4">
@@ -229,38 +230,38 @@
         <input type="hidden" name="action" value="agregar">
 
         <div>
-          <label class="block text-sm font-semibold text-slate-700 mb-1.5">Foto</label>
+          <label class="block text-sm font-semibold text-slate-700 mb-1.5">{% trans "Foto" %}</label>
           <input type="file" name="foto" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" accept="image/*" required>
-          <span class="text-xs text-slate-500 mt-1 block">Sube una foto para completar el registro.</span>
+          <span class="text-xs text-slate-500 mt-1 block">{% trans "Sube una foto para completar el registro." %}</span>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
           <div class="md:col-span-2">
-            <label class="block text-sm font-semibold text-slate-700 mb-1.5">Nombre</label>
+            <label class="block text-sm font-semibold text-slate-700 mb-1.5">{% trans "Nombre" %}</label>
             <input name="nombreMascota" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" maxlength="100" required>
           </div>
           <div>
-            <label class="block text-sm font-semibold text-slate-700 mb-1.5">Tipo</label>
+            <label class="block text-sm font-semibold text-slate-700 mb-1.5">{% trans "Tipo" %}</label>
             <select name="tipo" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" required>
-              <option value="" selected disabled>Selecciona tipo</option>
+              <option value="" selected disabled>{% trans "Selecciona tipo" %}</option>
               {% for val,label in tipos_mascota %}<option value="{{ val }}">{{ label }}</option>{% endfor %}
             </select>
           </div>
           <div>
-            <label class="block text-sm font-semibold text-slate-700 mb-1.5">Raza</label>
+            <label class="block text-sm font-semibold text-slate-700 mb-1.5">{% trans "Raza" %}</label>
             <input name="raza" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" maxlength="100" placeholder="Ej: Labrador, criollo, siamés" required>
           </div>
           <div>
-            <label class="block text-sm font-semibold text-slate-700 mb-1.5">Sexo</label>
+            <label class="block text-sm font-semibold text-slate-700 mb-1.5">{% trans "Sexo" %}</label>
             <select name="sexo" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" required>
-              <option value="" selected disabled>Selecciona sexo</option>
+              <option value="" selected disabled>{% trans "Selecciona sexo" %}</option>
               {% for val,label in sexos_mascota %}<option value="{{ val }}">{{ label }}</option>{% endfor %}
             </select>
           </div>
           <div>
-            <label class="block text-sm font-semibold text-slate-700 mb-1.5">Tamaño</label>
+            <label class="block text-sm font-semibold text-slate-700 mb-1.5">{% trans "Tamaño" %}</label>
             <select name="tamano" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" required>
-              <option value="" selected disabled>Selecciona tamaño</option>
+              <option value="" selected disabled>{% trans "Selecciona tamaño" %}</option>
               {% for val,label in tamanos_mascota %}<option value="{{ val }}">{{ label }}</option>{% endfor %}
             </select>
           </div>
@@ -268,42 +269,42 @@
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
           <div>
-            <label class="block text-sm font-semibold text-slate-700 mb-1.5">Edad (años)</label>
+            <label class="block text-sm font-semibold text-slate-700 mb-1.5">{% trans "Edad (años)" %}</label>
             <input name="edad" type="number" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" min="0" required>
           </div>
           <div>
-            <label class="block text-sm font-semibold text-slate-700 mb-1.5">Peso (kg)</label>
+            <label class="block text-sm font-semibold text-slate-700 mb-1.5">{% trans "Peso (kg)" %}</label>
             <input name="peso" type="number" step="0.1" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" min="0" required>
           </div>
           <div>
-            <label class="block text-sm font-semibold text-slate-700 mb-1.5">Esterilizado</label>
+            <label class="block text-sm font-semibold text-slate-700 mb-1.5">{% trans "Esterilizado" %}</label>
             <select name="esterilizado" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" required>
-              <option value="" selected disabled>Selecciona una opción</option>
-              <option value="no">No</option>
-              <option value="si">Sí</option>
+              <option value="" selected disabled>{% trans "Selecciona una opción" %}</option>
+              <option value="no">{% trans "No" %}</option>
+              <option value="si">{% trans "Sí" %}</option>
             </select>
           </div>
           <div>
-            <label class="block text-sm font-semibold text-slate-700 mb-1.5">Vacunas al día</label>
+            <label class="block text-sm font-semibold text-slate-700 mb-1.5">{% trans "Vacunas al día" %}</label>
             <select name="vacunasAlDia" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" required>
-              <option value="" selected disabled>Selecciona una opción</option>
-              <option value="si">Sí</option>
-              <option value="no">No</option>
+              <option value="" selected disabled>{% trans "Selecciona una opción" %}</option>
+              <option value="si">{% trans "Sí" %}</option>
+              <option value="no">{% trans "No" %}</option>
             </select>
           </div>
         </div>
 
         <div>
-          <label class="block text-sm font-semibold text-slate-700 mb-1.5">Condiciones médicas o alergias</label>
+          <label class="block text-sm font-semibold text-slate-700 mb-1.5">{% trans "Condiciones médicas o alergias" %}</label>
           <textarea name="condicionesMedicas" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" rows="2" placeholder="Ej: alergia a pollo, tratamiento dermatológico, medicación actual. Si no tiene, escribe 'ninguna'." required></textarea>
         </div>
 
         <div>
-          <label class="block text-sm font-semibold text-slate-700 mb-1.5">Notas de comportamiento</label>
+          <label class="block text-sm font-semibold text-slate-700 mb-1.5">{% trans "Notas de comportamiento" %}</label>
           <textarea name="notas" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" rows="2" placeholder="Ej: se estresa con ruidos fuertes, socializa bien con otros perros. Si no hay observaciones, escribe 'ninguna'." required></textarea>
         </div>
 
-        <button type="submit" class="w-full bg-pw-orange hover:bg-pw-orange-dark text-white font-semibold rounded-xl px-4 py-3 text-sm transition-all hover:shadow-lg hover:shadow-pw-orange/20"><i class="bi bi-plus-lg mr-2"></i>Guardar mascota</button>
+        <button type="submit" class="w-full bg-pw-orange hover:bg-pw-orange-dark text-white font-semibold rounded-xl px-4 py-3 text-sm transition-all hover:shadow-lg hover:shadow-pw-orange/20"><i class="bi bi-plus-lg mr-2"></i>{% trans "Guardar mascota" %}</button>
       </form>
     </div>
   </div>
@@ -323,30 +324,30 @@
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
           <div class="md:col-span-2">
-            <label class="block text-sm font-semibold text-slate-700 mb-1.5">Nombre</label>
+            <label class="block text-sm font-semibold text-slate-700 mb-1.5">{% trans "Nombre" %}</label>
             <input name="nombreMascota" value="{{ m.nombreMascota }}" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" maxlength="100" required>
           </div>
           <div>
-            <label class="block text-sm font-semibold text-slate-700 mb-1.5">Tipo</label>
+            <label class="block text-sm font-semibold text-slate-700 mb-1.5">{% trans "Tipo" %}</label>
             <select name="tipo" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" required>
               {% for val,label in tipos_mascota %}<option value="{{ val }}" {% if m.tipo == val %}selected{% endif %}>{{ label }}</option>{% endfor %}
             </select>
           </div>
           <div>
-            <label class="block text-sm font-semibold text-slate-700 mb-1.5">Raza</label>
+            <label class="block text-sm font-semibold text-slate-700 mb-1.5">{% trans "Raza" %}</label>
             <input name="raza" value="{{ m.raza|default:'' }}" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" maxlength="100">
           </div>
           <div>
-            <label class="block text-sm font-semibold text-slate-700 mb-1.5">Sexo</label>
+            <label class="block text-sm font-semibold text-slate-700 mb-1.5">{% trans "Sexo" %}</label>
             <select name="sexo" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none">
-              <option value="">No especificar</option>
+              <option value="">{% trans "No especificar" %}</option>
               {% for val,label in sexos_mascota %}<option value="{{ val }}" {% if m.sexo == val %}selected{% endif %}>{{ label }}</option>{% endfor %}
             </select>
           </div>
           <div>
-            <label class="block text-sm font-semibold text-slate-700 mb-1.5">Tamaño</label>
+            <label class="block text-sm font-semibold text-slate-700 mb-1.5">{% trans "Tamaño" %}</label>
             <select name="tamano" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none">
-              <option value="">No especificar</option>
+              <option value="">{% trans "No especificar" %}</option>
               {% for val,label in tamanos_mascota %}<option value="{{ val }}" {% if m.tamano == val %}selected{% endif %}>{{ label }}</option>{% endfor %}
             </select>
           </div>
@@ -354,40 +355,40 @@
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
           <div>
-            <label class="block text-sm font-semibold text-slate-700 mb-1.5">Edad (años)</label>
+            <label class="block text-sm font-semibold text-slate-700 mb-1.5">{% trans "Edad (años)" %}</label>
             <input name="edad" type="number" min="0" value="{{ m.edad }}" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" required>
           </div>
           <div>
-            <label class="block text-sm font-semibold text-slate-700 mb-1.5">Peso (kg)</label>
+            <label class="block text-sm font-semibold text-slate-700 mb-1.5">{% trans "Peso (kg)" %}</label>
             <input name="peso" type="number" step="0.1" min="0" value="{{ m.peso|default:'' }}" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none">
           </div>
           <div>
-            <label class="block text-sm font-semibold text-slate-700 mb-1.5">Esterilizado</label>
+            <label class="block text-sm font-semibold text-slate-700 mb-1.5">{% trans "Esterilizado" %}</label>
             <select name="esterilizado" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none">
-              <option value="si" {% if m.esterilizado %}selected{% endif %}>Sí</option>
-              <option value="no" {% if not m.esterilizado %}selected{% endif %}>No</option>
+              <option value="si" {% if m.esterilizado %}selected{% endif %}>{% trans "Sí" %}</option>
+              <option value="no" {% if not m.esterilizado %}selected{% endif %}>{% trans "No" %}</option>
             </select>
           </div>
           <div>
-            <label class="block text-sm font-semibold text-slate-700 mb-1.5">Vacunas al día</label>
+            <label class="block text-sm font-semibold text-slate-700 mb-1.5">{% trans "Vacunas al día" %}</label>
             <select name="vacunasAlDia" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none">
-              <option value="si" {% if m.vacunasAlDia %}selected{% endif %}>Sí</option>
-              <option value="no" {% if not m.vacunasAlDia %}selected{% endif %}>No</option>
+              <option value="si" {% if m.vacunasAlDia %}selected{% endif %}>{% trans "Sí" %}</option>
+              <option value="no" {% if not m.vacunasAlDia %}selected{% endif %}>{% trans "No" %}</option>
             </select>
           </div>
         </div>
 
         <div>
-          <label class="block text-sm font-semibold text-slate-700 mb-1.5">Condiciones médicas o alergias</label>
+          <label class="block text-sm font-semibold text-slate-700 mb-1.5">{% trans "Condiciones médicas o alergias" %}</label>
           <textarea name="condicionesMedicas" rows="2" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none">{{ m.condicionesMedicas|default:'' }}</textarea>
         </div>
 
         <div>
-          <label class="block text-sm font-semibold text-slate-700 mb-1.5">Notas de comportamiento</label>
+          <label class="block text-sm font-semibold text-slate-700 mb-1.5">{% trans "Notas de comportamiento" %}</label>
           <textarea name="notas" rows="2" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none">{{ m.notas|default:'' }}</textarea>
         </div>
 
-        <button type="submit" class="w-full bg-pw-orange hover:bg-pw-orange-dark text-white font-semibold rounded-xl px-4 py-3 text-sm transition-all hover:shadow-lg hover:shadow-pw-orange/20"><i class="bi bi-check2-circle mr-2"></i>Guardar cambios</button>
+        <button type="submit" class="w-full bg-pw-orange hover:bg-pw-orange-dark text-white font-semibold rounded-xl px-4 py-3 text-sm transition-all hover:shadow-lg hover:shadow-pw-orange/20"><i class="bi bi-check2-circle mr-2"></i>{% trans "Guardar cambios" %}</button>
       </form>
     </div>
   </div>
@@ -402,15 +403,15 @@
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
         <div class="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3">
-          <p class="text-xs uppercase tracking-wide text-slate-500">Promedio</p>
+          <p class="text-xs uppercase tracking-wide text-slate-500">{% trans "Promedio" %}</p>
           <p class="text-xl font-bold text-slate-800">{{ m.calificacion_promedio|default:"0.0" }}/5</p>
         </div>
         <div class="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3">
-          <p class="text-xs uppercase tracking-wide text-slate-500">Total reseñas</p>
+          <p class="text-xs uppercase tracking-wide text-slate-500">{% trans "Total reseñas" %}</p>
           <p class="text-xl font-bold text-slate-800">{{ m.calificacion_count|default:0 }}</p>
         </div>
         <div class="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3">
-          <p class="text-xs uppercase tracking-wide text-slate-500">Comentarios visibles</p>
+          <p class="text-xs uppercase tracking-wide text-slate-500">{% trans "Comentarios visibles" %}</p>
           <p class="text-xl font-bold text-slate-800">{{ m.calificacion_comentarios|length }}</p>
         </div>
       </div>
@@ -433,11 +434,11 @@
       </div>
       {% elif m.calificacion_count %}
       <div class="rounded-xl border border-slate-200 bg-slate-50 p-6 text-center text-sm text-slate-600">
-        Esta mascota tiene calificaciones, pero sin comentarios escritos.
+        {% trans "Esta mascota tiene calificaciones, pero sin comentarios escritos." %}
       </div>
       {% else %}
       <div class="rounded-xl border border-slate-200 bg-slate-50 p-6 text-center text-sm text-slate-600">
-        Esta mascota aún no tiene reseñas.
+        {% trans "Esta mascota aún no tiene reseñas." %}
       </div>
       {% endif %}
     </div>

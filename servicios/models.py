@@ -1,52 +1,53 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator, MaxValueValidator
+from django.utils.translation import gettext_lazy as _
 from decimal import Decimal
 import uuid
 
 
 class TipoMascota(models.TextChoices):
-    PERRO = 'perro', 'Perro'
-    GATO = 'gato', 'Gato'
+    PERRO = 'perro', _('Perro')
+    GATO = 'gato', _('Gato')
 
 
 class SexoMascota(models.TextChoices):
-    MACHO = 'macho', 'Macho'
-    HEMBRA = 'hembra', 'Hembra'
+    MACHO = 'macho', _('Macho')
+    HEMBRA = 'hembra', _('Hembra')
 
 
 class TamanoMascota(models.TextChoices):
-    PEQUENO = 'pequeno', 'Pequeño'
-    MEDIANO = 'mediano', 'Mediano'
-    GRANDE = 'grande', 'Grande'
+    PEQUENO = 'pequeno', _('Pequeño')
+    MEDIANO = 'mediano', _('Mediano')
+    GRANDE = 'grande', _('Grande')
 
 
 class RolUsuario(models.TextChoices):
-    DUEÑO = 'dueño', 'Dueño'
-    CUIDADOR = 'cuidador', 'Cuidador'
+    DUEÑO = 'dueño', _('Dueño')
+    CUIDADOR = 'cuidador', _('Cuidador')
 
 
 class TipoServicio(models.TextChoices):
-    PASEO = 'paseo', 'Paseo'
-    GUARDERIA = 'guarderia', 'Guardería'
+    PASEO = 'paseo', _('Paseo')
+    GUARDERIA = 'guarderia', _('Guardería')
 
 
 class DiaSemana(models.TextChoices):
-    LUNES = 'lunes', 'Lunes'
-    MARTES = 'martes', 'Martes'
-    MIERCOLES = 'miercoles', 'Miércoles'
-    JUEVES = 'jueves', 'Jueves'
-    VIERNES = 'viernes', 'Viernes'
-    SABADO = 'sabado', 'Sábado'
-    DOMINGO = 'domingo', 'Domingo'
+    LUNES = 'lunes', _('Lunes')
+    MARTES = 'martes', _('Martes')
+    MIERCOLES = 'miercoles', _('Miércoles')
+    JUEVES = 'jueves', _('Jueves')
+    VIERNES = 'viernes', _('Viernes')
+    SABADO = 'sabado', _('Sábado')
+    DOMINGO = 'domingo', _('Domingo')
 
 
 class EstadoSolicitud(models.TextChoices):
-    PENDIENTE = 'pendiente', 'Pendiente'
-    ACEPTADO = 'aceptado', 'Aceptado'
-    RECHAZADO = 'rechazado', 'Rechazado'
-    CANCELADO = 'cancelado', 'Cancelado'
-    COMPLETADO = 'completado', 'Finalizado'
+    PENDIENTE = 'pendiente', _('Pendiente')
+    ACEPTADO = 'aceptado', _('Aceptado')
+    RECHAZADO = 'rechazado', _('Rechazado')
+    CANCELADO = 'cancelado', _('Cancelado')
+    COMPLETADO = 'completado', _('Finalizado')
 
 
 class Usuario(models.Model):
@@ -245,11 +246,11 @@ class PrecioServicio(models.Model):
 
 
 class EstadoPago(models.TextChoices):
-    PENDIENTE = 'pendiente', 'Pendiente'
-    PROCESANDO = 'procesando', 'Procesando'
-    COMPLETADO = 'completado', 'Completado'
-    RECHAZADO = 'rechazado', 'Rechazado'
-    REEMBOLSADO = 'reembolsado', 'Reembolsado'
+    PENDIENTE = 'pendiente', _('Pendiente')
+    PROCESANDO = 'procesando', _('Procesando')
+    COMPLETADO = 'completado', _('Completado')
+    RECHAZADO = 'rechazado', _('Rechazado')
+    REEMBOLSADO = 'reembolsado', _('Reembolsado')
 
 
 class SolicitudServicio(models.Model):
@@ -317,22 +318,22 @@ class CalificacionMascota(models.Model):
 
 
 class CategoriaNotificacion(models.TextChoices):
-    NEGOCIO = 'negocio', 'Negocio'
-    SISTEMA = 'sistema', 'Sistema'
+    NEGOCIO = 'negocio', _('Negocio')
+    SISTEMA = 'sistema', _('Sistema')
 
 
 class TipoNotificacion(models.TextChoices):
-    NUEVA_RESERVA = 'nueva_reserva', 'Nueva reserva'
-    RESERVA_ACEPTADA = 'reserva_aceptada', 'Reserva aceptada'
-    RESERVA_RECHAZADA = 'reserva_rechazada', 'Reserva rechazada'
-    RESERVA_CANCELADA = 'reserva_cancelada', 'Reserva cancelada'
-    SERVICIO_COMPLETADO = 'servicio_completado', 'Servicio completado'
-    RESENA_PENDIENTE = 'resena_pendiente', 'Reseña pendiente'
-    MENSAJE_CHAT = 'mensaje_chat', 'Mensaje de chat'
-    MASCOTA_CREADA = 'mascota_creada', 'Mascota creada'
-    MASCOTA_EDITADA = 'mascota_editada', 'Mascota editada'
-    MASCOTA_ELIMINADA = 'mascota_eliminada', 'Mascota eliminada'
-    PERFIL_ACTUALIZADO = 'perfil_actualizado', 'Perfil actualizado'
+    NUEVA_RESERVA = 'nueva_reserva', _('Nueva reserva')
+    RESERVA_ACEPTADA = 'reserva_aceptada', _('Reserva aceptada')
+    RESERVA_RECHAZADA = 'reserva_rechazada', _('Reserva rechazada')
+    RESERVA_CANCELADA = 'reserva_cancelada', _('Reserva cancelada')
+    SERVICIO_COMPLETADO = 'servicio_completado', _('Servicio completado')
+    RESENA_PENDIENTE = 'resena_pendiente', _('Reseña pendiente')
+    MENSAJE_CHAT = 'mensaje_chat', _('Mensaje de chat')
+    MASCOTA_CREADA = 'mascota_creada', _('Mascota creada')
+    MASCOTA_EDITADA = 'mascota_editada', _('Mascota editada')
+    MASCOTA_ELIMINADA = 'mascota_eliminada', _('Mascota eliminada')
+    PERFIL_ACTUALIZADO = 'perfil_actualizado', _('Perfil actualizado')
 
 
 class Notificacion(models.Model):

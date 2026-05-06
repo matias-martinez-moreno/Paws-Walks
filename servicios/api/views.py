@@ -1,7 +1,9 @@
 from rest_framework import status
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from django.db.models import Count, Q
+from django.utils import timezone
 
 from servicios.domain.exceptions import DomainError
 from servicios.api.serializers import (
@@ -110,6 +112,17 @@ class SolicitudServicioCancelarAPIView(BaseServiciosAPIView):
         return Response(out_serializer.data, status=status.HTTP_200_OK)
 
 
+class ClimaAPIView(BaseServiciosAPIView):
+    # endpoint para consultar el clima de una ciudad (Adapter pattern)
+
+    def get(self, request):
+        ciudad = request.query_params.get("ciudad", "").strip()
+        if not ciudad:
+            return Response({"error": "Parámetro 'ciudad' requerido."}, status=status.HTTP_400_BAD_REQUEST)
+        resultado = self._gateway.obtener_clima_ciudad(ciudad)
+        return Response(resultado, status=status.HTTP_200_OK)
+
+
 class DisponibilidadCuidadoresAPIView(BaseServiciosAPIView):
     # endpoint drf para buscar cuidadores disponibles
 
@@ -146,4 +159,99 @@ class DisponibilidadCuidadoresAPIView(BaseServiciosAPIView):
             },
             status=status.HTTP_200_OK,
         )
+
+
+class SistemaEstadoAPIView(APIView):
+    """Endpoint público: estado general del sistema para consumo externo."""
+    permission_classes = [AllowAny]
+
+    def get(self, request):
+        from servicios.models import Usuario, SolicitudServicio, Resena
+        from datetime import timedelta
+
+        try:
+            total_usuarios = Usuario.objects.count()
+            total_dueños = Usuario.objects.filter(rol='dueño').count()
+            total_cuidadores = Usuario.objects.filter(rol='cuidador').count()
+
+            total_solicitudes = SolicitudServicio.objects.count()
+            solicitudes_completadas = SolicitudServicio.objects.filter(estado='completado').count()
+            solicitudes_pendientes = SolicitudServicio.objects.filter(estado='pendiente').count()
+
+            total_resenas = Resena.objects.count()
+            promedio_rating = Resena.objects.aggregate(avg=Count('estrellas'))
+
+            hoy = timezone.now().date()
+            hace_30_dias = hoy - timedelta(days=30)
+            solicitudes_mes = SolicitudServicio.objects.filter(
+                fecha__gte=hace_30_dias
+            ).count()
+
+            return Response({
+                "sistema": "Paws & Walks - Plataforma de Cuidado de Mascotas",
+                "timestamp": timezone.now().isoformat(),
+                "usuarios": {
+                    "total": total_usuarios,
+                    "dueños": total_dueños,
+                    "cuidadores": total_cuidadores,
+                },
+                "solicitudes": {
+                    "total": total_solicitudes,
+                    "completadas": solicitudes_completadas,
+                    "pendientes": solicitudes_pendientes,
+                    "ultimo_mes": solicitudes_mes,
+                },
+                "reseñas": {
+                    "total": total_resenas,
+                },
+                "estado": "operativo"
+            }, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response(
+                {"error": str(e), "estado": "error"},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+
+class CuidadoresListadoAPIView(APIView):
+    """Endpoint público: listado de cuidadores disponibles para consumo externo."""
+    permission_classes = [AllowAny]
+
+    def get(self, request):
+        from servicios.models import Usuario, Resena
+        from servicios.api.serializers import UsuarioPublicoSerializer
+
+        try:
+            cuidadores = Usuario.objects.filter(
+                rol='cuidador',
+                verificado=True
+            ).prefetch_related('resena_set')
+
+            result = []
+            for cuidador in cuidadores:
+                resenas = Resena.objects.filter(idPara=cuidador)
+                promedio = resenas.aggregate(
+                    avg_estrellas=Count('estrellas')
+                )['avg_estrellas'] or 0
+
+                result.append({
+                    "id": str(cuidador.idUsuario),
+                    "nombre": f"{cuidador.nombre} {cuidador.apellido}",
+                    "ciudad": cuidador.ciudad,
+                    "foto": cuidador.fotoPerfil.url if cuidador.fotoPerfil else None,
+                    "verificado": cuidador.verificado,
+                    "total_reseñas": resenas.count(),
+                    "rating_promedio": round(promedio, 2),
+                })
+
+            return Response({
+                "count": len(result),
+                "resultados": result,
+                "timestamp": timezone.now().isoformat()
+            }, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response(
+                {"error": str(e), "estado": "error"},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
 

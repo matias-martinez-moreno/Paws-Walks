@@ -33,8 +33,8 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     "servicios",
-    # habilita drf para api
     "rest_framework",
+    "drf_spectacular",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -46,6 +46,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.locale.LocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -124,6 +125,14 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "es"
 
+from django.utils.translation import gettext_lazy as _
+LANGUAGES = [
+    ("es", _("Español")),
+    ("en", _("English")),
+]
+
+LOCALE_PATHS = [BASE_DIR / "locale"]
+
 TIME_ZONE = "America/Bogota"
 
 USE_I18N = True
@@ -151,6 +160,19 @@ ENV_TYPE = os.environ.get("ENV_TYPE", "MOCK")
 # Vacío = usa el servicio interno de Django como fallback.
 DISPONIBILIDAD_SERVICE_URL = os.environ.get("DISPONIBILIDAD_SERVICE_URL", "")
 
+# API de terceros: OpenWeatherMap (Patrón Adapter).
+# Obtener clave gratuita en: https://openweathermap.org/api
+# Vacío = ClimaAdapterMock (datos simulados para desarrollo).
+OPENWEATHER_API_KEY = os.environ.get("OPENWEATHER_API_KEY", "")
+
+# Celery — Message Broker (Redis)
+CELERY_BROKER_URL = os.environ.get("CELERY_BROKER_URL", "redis://localhost:6379/0")
+CELERY_RESULT_BACKEND = os.environ.get("CELERY_BROKER_URL", "redis://localhost:6379/0")
+CELERY_ACCEPT_CONTENT = ["json"]
+CELERY_TASK_SERIALIZER = "json"
+CELERY_RESULT_SERIALIZER = "json"
+CELERY_TIMEZONE = "America/Bogota"
+
 LOGIN_URL = "/login/"
 
 REST_FRAMEWORK = {
@@ -161,6 +183,14 @@ REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.IsAuthenticated",
     ],
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+}
+
+SPECTACULAR_SETTINGS = {
+    "TITLE": "Paws & Walks API",
+    "DESCRIPTION": "API REST para plataforma de cuidado de mascotas con microservicios",
+    "VERSION": "2.0.0",
+    "SERVE_INCLUDE_SCHEMA": False,
 }
 
 # Cache en memoria para sesiones: reduce latencia del login (sin escribir en BD en cada request)

@@ -1,0 +1,2034 @@
+# English — Paws & Walks
+msgid ""
+msgstr ""
+"Language: en\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+# ── Auth
+# ──────────────────────────────────────────────────────────────────────
+msgid "Iniciar sesión"
+msgstr "Log in"
+
+msgid "Bienvenido de nuevo"
+msgstr "Welcome back"
+
+msgid "Ingresa con tu usuario y contraseña para continuar."
+msgstr "Enter your username and password to continue."
+
+msgid "Usuario"
+msgstr "Username"
+
+msgid "Contraseña"
+msgstr "Password"
+
+msgid "¿No tienes cuenta?"
+msgstr "Don't have an account?"
+
+msgid "Crear una cuenta"
+msgstr "Create an account"
+
+msgid "¿Olvidaste tu contraseña?"
+msgstr "Forgot your password?"
+
+msgid "Crear cuenta"
+msgstr "Create account"
+
+msgid "Completa los datos para registrarte en Paws & Walks."
+msgstr "Fill in your details to register on Paws & Walks."
+
+msgid "Nombre"
+msgstr "First name"
+
+msgid "Apellido"
+msgstr "Last name"
+
+msgid "Correo"
+msgstr "Email"
+
+msgid "Tipo de cuenta"
+msgstr "Account type"
+
+# ── Base layout
+# ───────────────────────────────────────────────────────────────
+msgid "Cerrar sesión"
+msgstr "Log out"
+
+msgid "Panel de control"
+msgstr "Dashboard"
+
+msgid "Idioma"
+msgstr "Language"
+
+msgid "Español"
+msgstr "Spanish"
+
+msgid "English"
+msgstr "English"
+
+msgid "Notificaciones"
+msgstr "Notifications"
+
+# ── Sidebar
+# ───────────────────────────────────────────────────────────────────
+msgid "Principal"
+msgstr "Main"
+
+msgid "Gestión"
+msgstr "Management"
+
+msgid "Cuenta"
+msgstr "Account"
+
+msgid "Panel"
+msgstr "Dashboard"
+
+msgid "Hacer reserva"
+msgstr "New booking"
+
+msgid "Mis reservas"
+msgstr "My bookings"
+
+msgid "Mis mascotas"
+msgstr "My pets"
+
+msgid "Mi perfil"
+msgstr "My profile"
+
+msgid "Mi calendario"
+msgstr "My calendar"
+
+msgid "Mis servicios"
+msgstr "My services"
+
+# ── Dashboard headers
+# ─────────────────────────────────────────────────────────
+msgid "Panel de dueño"
+msgstr "Owner dashboard"
+
+msgid "Tu resumen de mascotas, reservas y notificaciones"
+msgstr "Your summary of pets, bookings and notifications"
+
+msgid "Panel de cuidador"
+msgstr "Caregiver dashboard"
+
+msgid "Prioridades del día: solicitudes, citas y notificaciones"
+msgstr "Today's priorities: requests, appointments and notifications"
+
+msgid "Historial, finalizaciones y calificaciones"
+msgstr "History, completions and ratings"
+
+msgid "Gestiona su ficha de cuidado y salud"
+msgstr "Manage their care and health profile"
+
+msgid "Información de tu cuenta"
+msgstr "Your account information"
+
+msgid "Datos personales y cuenta"
+msgstr "Personal data and account"
+
+msgid "Configura paseos y guarderías disponibles"
+msgstr "Configure available walks and daycare services"
+
+msgid "Citas programadas y finalizadas"
+msgstr "Scheduled and completed appointments"
+
+msgid "Nueva reserva"
+msgstr "New booking"
+
+msgid "Busca por día y elige los horarios disponibles del cuidador"
+msgstr "Search by day and choose the caregiver's available slots"
+
+# ── Reservas (mis reservas)
+# ───────────────────────────────────────────────────
+msgid "Próximas"
+msgstr "Upcoming"
+
+msgid "Mascota"
+msgstr "Pet"
+
+msgid "Servicio"
+msgstr "Service"
+
+msgid "Cuidador"
+msgstr "Caregiver"
+
+msgid "Cuándo"
+msgstr "When"
+
+msgid "Estado y pago"
+msgstr "Status & payment"
+
+msgid "Acciones"
+msgstr "Actions"
+
+msgid "Monto pendiente"
+msgstr "Amount pending"
+
+msgid "Sin franja horaria"
+msgstr "No time slot"
+
+msgid "Pago pendiente"
+msgstr "Payment pending"
+
+msgid "Ver detalles completos"
+msgstr "View full details"
+
+msgid "Ver perfil"
+msgstr "View profile"
+
+msgid "Chat"
+msgstr "Chat"
+
+msgid "Cancelar"
+msgstr "Cancel"
+
+msgid "Detalle del servicio"
+msgstr "Service detail"
+
+msgid "Logística"
+msgstr "Logistics"
+
+msgid "Pago y seguimiento"
+msgstr "Payment & tracking"
+
+msgid "Anotaciones del cuidador"
+msgstr "Caregiver notes"
+
+msgid "Sin reservas próximas"
+msgstr "No upcoming bookings"
+
+msgid "Crear reserva"
+msgstr "Create booking"
+
+msgid "Historial"
+msgstr "History"
+
+msgid "Estado"
+msgstr "Status"
+
+msgid "resultados"
+msgstr "results"
+
+msgid "Monto no registrado"
+msgstr "Amount not recorded"
+
+msgid "Pendiente de finalizar por cuidador"
+msgstr "Pending completion by caregiver"
+
+msgid "Calificar cuidador"
+msgstr "Rate caregiver"
+
+msgid "Sin historial aún"
+msgstr "No history yet"
+
+msgid "¿Cómo fue tu experiencia?"
+msgstr "How was your experience?"
+
+msgid "Comentario (opcional)"
+msgstr "Comment (optional)"
+
+msgid "Cuéntanos más..."
+msgstr "Tell us more..."
+
+msgid "Enviar"
+msgstr "Send"
+
+msgid "Conversación con contexto de la reserva"
+msgstr "Conversation in booking context"
+
+msgid "Escribe un mensaje..."
+msgstr "Write a message..."
+
+# ── Notificaciones
+# ────────────────────────────────────────────────────────────
+msgid "no leídas"
+msgstr "unread"
+
+msgid "total"
+msgstr "total"
+
+msgid "Todas las categorías"
+msgstr "All categories"
+
+msgid "Todas"
+msgstr "All"
+
+msgid "No leídas"
+msgstr "Unread"
+
+msgid "Leídas"
+msgstr "Read"
+
+msgid "Filtrar"
+msgstr "Filter"
+
+msgid "Limpiar"
+msgstr "Clear"
+
+msgid "Seleccionar todas"
+msgstr "Select all"
+
+msgid "seleccionadas"
+msgstr "selected"
+
+msgid "Marcar leídas"
+msgstr "Mark as read"
+
+msgid "Eliminar seleccionadas"
+msgstr "Delete selected"
+
+# ── TextChoices (models.py)
+# ───────────────────────────────────────────────────
+msgid "Perro"
+msgstr "Dog"
+
+msgid "Gato"
+msgstr "Cat"
+
+msgid "Macho"
+msgstr "Male"
+
+msgid "Hembra"
+msgstr "Female"
+
+msgid "Pequeño"
+msgstr "Small"
+
+msgid "Mediano"
+msgstr "Medium"
+
+msgid "Grande"
+msgstr "Large"
+
+msgid "Dueño"
+msgstr "Owner"
+
+msgid "Paseo"
+msgstr "Walk"
+
+msgid "Guardería"
+msgstr "Daycare"
+
+msgid "Lunes"
+msgstr "Monday"
+
+msgid "Martes"
+msgstr "Tuesday"
+
+msgid "Miércoles"
+msgstr "Wednesday"
+
+msgid "Jueves"
+msgstr "Thursday"
+
+msgid "Viernes"
+msgstr "Friday"
+
+msgid "Sábado"
+msgstr "Saturday"
+
+msgid "Domingo"
+msgstr "Sunday"
+
+msgid "Pendiente"
+msgstr "Pending"
+
+msgid "Aceptado"
+msgstr "Accepted"
+
+msgid "Rechazado"
+msgstr "Rejected"
+
+msgid "Cancelado"
+msgstr "Cancelled"
+
+msgid "Finalizado"
+msgstr "Completed"
+
+msgid "Procesando"
+msgstr "Processing"
+
+msgid "Completado"
+msgstr "Done"
+
+msgid "Reembolsado"
+msgstr "Refunded"
+
+msgid "Negocio"
+msgstr "Business"
+
+msgid "Sistema"
+msgstr "System"
+
+msgid "Reserva aceptada"
+msgstr "Booking accepted"
+
+msgid "Reserva rechazada"
+msgstr "Booking rejected"
+
+msgid "Reserva cancelada"
+msgstr "Booking cancelled"
+
+msgid "Servicio completado"
+msgstr "Service completed"
+
+msgid "Reseña pendiente"
+msgstr "Review pending"
+
+msgid "Mensaje de chat"
+msgstr "Chat message"
+
+msgid "Mascota creada"
+msgstr "Pet added"
+
+msgid "Mascota editada"
+msgstr "Pet updated"
+
+msgid "Mascota eliminada"
+msgstr "Pet removed"
+
+msgid "Perfil actualizado"
+msgstr "Profile updated"
+
+# ── Dashboard dueño
+# ───────────────────────────────────────────────────────────
+msgid "Reservas próximas"
+msgstr "Upcoming bookings"
+
+msgid "Pendientes %(pend)s · Aceptadas %(acep)s"
+msgstr "Pending %(pend)s · Accepted %(acep)s"
+
+msgid "Reservas hechas"
+msgstr "Bookings made"
+
+msgid "Historial total dentro de la app"
+msgstr "Total history in the app"
+
+msgid "Mascotas registradas"
+msgstr "Registered pets"
+
+msgid "Gestionar mascotas"
+msgstr "Manage pets"
+
+msgid "Notificaciones no leídas"
+msgstr "Unread notifications"
+
+msgid "Ver notificaciones"
+msgstr "View notifications"
+
+msgid "Próximas reservas"
+msgstr "Upcoming bookings"
+
+msgid "Prioriza primero las pendientes de confirmación"
+msgstr "Prioritize pending confirmations first"
+
+msgid "No tienes reservas próximas"
+msgstr "You have no upcoming bookings"
+
+msgid "Agenda un paseo o guardería para tu mascota."
+msgstr "Schedule a walk or daycare for your pet."
+
+msgid "Atajos rápidos"
+msgstr "Quick links"
+
+msgid "Accede a lo que más usas"
+msgstr "Access what you use most"
+
+msgid "Revisar reservas"
+msgstr "Review bookings"
+
+msgid "Actualizar perfil"
+msgstr "Update profile"
+
+msgid "Notificaciones recientes"
+msgstr "Recent notifications"
+
+msgid "Lo más nuevo de reservas y sistema"
+msgstr "Latest from bookings and system"
+
+msgid "Ver todas"
+msgstr "See all"
+
+msgid "No hay notificaciones recientes"
+msgstr "No recent notifications"
+
+msgid "Mascotas"
+msgstr "Pets"
+
+msgid "Perfil y reputación de tus mascotas"
+msgstr "Profile and ratings of your pets"
+
+msgid "Gestionar"
+msgstr "Manage"
+
+msgid "Sin calificaciones aún"
+msgstr "No ratings yet"
+
+msgid "Aún no registras mascotas"
+msgstr "You haven't registered any pets yet"
+
+msgid "Agregar mascota"
+msgstr "Add pet"
+
+# ── Dashboard cuidador
+# ────────────────────────────────────────────────────────
+msgid "Tu cuenta está en revisión."
+msgstr "Your account is under review."
+
+msgid "Los dueños podrán reservarte cuando finalice la verificación."
+msgstr "Owners will be able to book you once verification is complete."
+
+msgid "Citas próximas"
+msgstr "Upcoming appointments"
+
+msgid "Abrir calendario"
+msgstr "Open calendar"
+
+msgid "Solicitudes pendientes"
+msgstr "Pending requests"
+
+msgid "Por aceptar o rechazar"
+msgstr "To accept or reject"
+
+msgid "Servicios activos"
+msgstr "Active services"
+
+msgid "Gestionar servicios"
+msgstr "Manage services"
+
+msgid "Responde rápido para mantener tu tasa de aceptación"
+msgstr "Respond quickly to maintain your acceptance rate"
+
+msgid "No tienes solicitudes pendientes"
+msgstr "You have no pending requests"
+
+msgid "Accesos clave del día"
+msgstr "Key daily shortcuts"
+
+msgid "Responder pendientes"
+msgstr "Respond to pending"
+
+msgid "Finalizar arrendamientos"
+msgstr "Complete rentals"
+
+msgid "Editar servicios"
+msgstr "Edit services"
+
+msgid "Revisar alertas"
+msgstr "Review alerts"
+
+msgid "Tarifas activas:"
+msgstr "Active rates:"
+
+msgid "No activo"
+msgstr "Inactive"
+
+msgid "Próximas citas"
+msgstr "Upcoming appointments"
+
+msgid "Servicios aceptados para ejecutar"
+msgstr "Accepted services to perform"
+
+msgid "Ver agenda"
+msgstr "View schedule"
+
+msgid "No tienes citas próximas"
+msgstr "You have no upcoming appointments"
+
+msgid "Alertas de reservas y sistema"
+msgstr "Booking and system alerts"
+
+# ── Perfil
+# ────────────────────────────────────────────────────────────────────
+msgid "Verificado"
+msgstr "Verified"
+
+msgid "Editar perfil"
+msgstr "Edit profile"
+
+msgid "Información personal"
+msgstr "Personal information"
+
+msgid "Teléfono"
+msgstr "Phone"
+
+msgid "Ciudad"
+msgstr "City"
+
+msgid "Dirección"
+msgstr "Address"
+
+msgid "No configurada"
+msgstr "Not set"
+
+msgid "Cédula"
+msgstr "ID number"
+
+msgid "Fecha de nacimiento"
+msgstr "Date of birth"
+
+msgid "Cambiar foto"
+msgstr "Change photo"
+
+msgid "País"
+msgstr "Country"
+
+msgid ""
+"Los campos nombre de usuario, fecha de nacimiento y rol no son editables."
+msgstr "The username, date of birth and role fields are not editable."
+
+msgid "Guardar cambios"
+msgstr "Save changes"
+
+msgid "Datos personales"
+msgstr "Personal data"
+
+msgid "Experiencia"
+msgstr "Experience"
+
+msgid "No registrada"
+msgstr "Not registered"
+
+# ── Mascotas
+# ──────────────────────────────────────────────────────────────────
+msgid "Perfil de tus mascotas"
+msgstr "Your pets' profiles"
+
+msgid "Gestiona fichas y filtra rápido."
+msgstr "Manage profiles and filter quickly."
+
+msgid "Total:"
+msgstr "Total:"
+
+msgid "Agregar"
+msgstr "Add"
+
+msgid "Nombre o raza"
+msgstr "Name or breed"
+
+msgid "Tipo"
+msgstr "Type"
+
+msgid "Todos"
+msgstr "All"
+
+msgid "Sexo"
+msgstr "Gender"
+
+msgid "Tamaño"
+msgstr "Size"
+
+msgid "Vacunas"
+msgstr "Vaccines"
+
+msgid "Al día"
+msgstr "Up to date"
+
+msgid "Vacunas pendientes"
+msgstr "Vaccines pending"
+
+msgid "Esterilizado"
+msgstr "Neutered"
+
+msgid "Reseñas"
+msgstr "Reviews"
+
+msgid "Con reseñas"
+msgstr "With reviews"
+
+msgid "Sin reseñas"
+msgstr "Without reviews"
+
+msgid "Sexo no indicado"
+msgstr "Gender not specified"
+
+msgid "Tamaño no indicado"
+msgstr "Size not specified"
+
+msgid "Vacunas al día"
+msgstr "Vaccines up to date"
+
+msgid "Edad:"
+msgstr "Age:"
+
+msgid "Peso:"
+msgstr "Weight:"
+
+msgid "No indicado"
+msgstr "Not specified"
+
+msgid "Esterilizado:"
+msgstr "Neutered:"
+
+msgid "Reseñas recientes de cuidadores"
+msgstr "Recent caregiver reviews"
+
+msgid "Ver reseñas detalladas"
+msgstr "View detailed reviews"
+
+msgid "Aún no hay comentarios para esta mascota."
+msgstr "No comments yet for this pet."
+
+msgid "Condiciones médicas:"
+msgstr "Medical conditions:"
+
+msgid "Notas:"
+msgstr "Notes:"
+
+msgid "Editar"
+msgstr "Edit"
+
+msgid "Eliminar"
+msgstr "Delete"
+
+msgid "No hay mascotas que coincidan con los filtros"
+msgstr "No pets match the filters"
+
+msgid "Ajusta los criterios o usa Limpiar para volver a ver todas."
+msgstr "Adjust filters or clear to see all."
+
+msgid "Aún no has registrado mascotas"
+msgstr "You haven't added any pets yet"
+
+msgid "Crea su ficha para reservar paseos y guardería más rápido."
+msgstr "Create their profile to book walks and daycare faster."
+
+msgid "Agregar primera mascota"
+msgstr "Add first pet"
+
+msgid "Foto"
+msgstr "Photo"
+
+msgid "Sube una foto para completar el registro."
+msgstr "Upload a photo to complete the registration."
+
+msgid "Selecciona tipo"
+msgstr "Select type"
+
+msgid "Raza"
+msgstr "Breed"
+
+msgid "Selecciona sexo"
+msgstr "Select gender"
+
+msgid "Selecciona tamaño"
+msgstr "Select size"
+
+msgid "Edad (años)"
+msgstr "Age (years)"
+
+msgid "Peso (kg)"
+msgstr "Weight (kg)"
+
+msgid "Selecciona una opción"
+msgstr "Select an option"
+
+msgid "Condiciones médicas o alergias"
+msgstr "Medical conditions or allergies"
+
+msgid "Notas de comportamiento"
+msgstr "Behavior notes"
+
+msgid "Guardar mascota"
+msgstr "Save pet"
+
+msgid "No especificar"
+msgstr "Don't specify"
+
+msgid "Promedio"
+msgstr "Average"
+
+msgid "Total reseñas"
+msgstr "Total reviews"
+
+msgid "Comentarios visibles"
+msgstr "Visible comments"
+
+msgid "Esta mascota tiene calificaciones, pero sin comentarios escritos."
+msgstr "This pet has ratings but no written comments."
+
+msgid "Esta mascota aún no tiene reseñas."
+msgstr "This pet has no reviews yet."
+
+msgid "Sí"
+msgstr "Yes"
+
+msgid "No"
+msgstr "No"
+
+# ── Calendario
+# ────────────────────────────────────────────────────────────────
+msgid "Solicitudes pendientes de confirmar"
+msgstr "Requests pending confirmation"
+
+msgid "Fecha"
+msgstr "Date"
+
+msgid "Hora"
+msgstr "Time"
+
+msgid "Monto"
+msgstr "Amount"
+
+msgid "Sin reseñas de cuidadores"
+msgstr "No caregiver reviews"
+
+msgid "Ver perfil dueño"
+msgstr "View owner profile"
+
+msgid "Aceptar"
+msgstr "Accept"
+
+msgid "Rechazar"
+msgstr "Reject"
+
+msgid "Citas como reuniones"
+msgstr "Appointments"
+
+msgid "Tus paseos y guarderías programados"
+msgstr "Your scheduled walks and daycares"
+
+msgid "Finalizar arrendamiento"
+msgstr "Complete rental"
+
+msgid "Espera fin de la franja"
+msgstr "Waiting for slot to end"
+
+msgid "Finalizar (prueba)"
+msgstr "Complete (test)"
+
+msgid "Sin citas próximas"
+msgstr "No upcoming appointments"
+
+msgid "Calificar dueño"
+msgstr "Rate owner"
+
+msgid "¿Cómo fue tu experiencia con el dueño?"
+msgstr "How was your experience with the owner?"
+
+msgid "¿Cómo fue tu experiencia con la mascota?"
+msgstr "How was your experience with the pet?"
+
+msgid "Calificar mascota"
+msgstr "Rate pet"
+
+# ── Servicios cuidador
+# ────────────────────────────────────────────────────────
+msgid "Paseos"
+msgstr "Walks"
+
+msgid "Guarderías"
+msgstr "Daycares"
+
+msgid "Activo"
+msgstr "Active"
+
+msgid "Bloques"
+msgstr "Slots"
+
+msgid "Cupos"
+msgstr "Spots"
+
+msgid "Horario"
+msgstr "Schedule"
+
+msgid "Sin horarios configurados"
+msgstr "No schedules configured"
+
+msgid "Eliminar todo"
+msgstr "Delete all"
+
+msgid "Aún no tienes paseos configurados"
+msgstr "You have no walks configured yet"
+
+msgid "Agregar paseo"
+msgstr "Add walk"
+
+msgid "Aún no tienes guarderías configuradas"
+msgstr "You have no daycares configured yet"
+
+msgid "Agregar guardería"
+msgstr "Add daycare"
+
+msgid "Configurar paseo"
+msgstr "Configure walk"
+
+msgid "Configurar guardería"
+msgstr "Configure daycare"
+
+msgid "Volver a mis servicios"
+msgstr "Back to my services"
+
+# ── Nueva reserva
+# ─────────────────────────────────────────────────────────────
+msgid "Buscar disponibilidad"
+msgstr "Search availability"
+
+msgid ""
+"Paseo: fecha y ubicación. Guarderia: fecha inicio/fin y luego eliges bloque "
+"completo o tiempo personalizado."
+msgstr ""
+"Walk: date and location. Daycare: start/end date, then choose full block or "
+"custom time."
+
+msgid "Tipo de servicio"
+msgstr "Service type"
+
+msgid "Mascota"
+msgstr "Pet"
+
+msgid "Seleccionar..."
+msgstr "Select..."
+
+msgid "Para paseo solo se muestran mascotas tipo perro."
+msgstr "Only dog-type pets are shown for walks."
+
+msgid "Ubicacion del paseo"
+msgstr "Walk location"
+
+msgid "Mi ubicacion"
+msgstr "My location"
+
+msgid ""
+"1) Escribe un barrio, dirección o referencia y pulsa la lupa. 2) También "
+"puedes usar Mi ubicación. 3) Si prefieres, haz clic en el mapa para marcar "
+"el punto exacto."
+msgstr ""
+"1) Type a neighborhood, address or reference and press the magnifier. 2) You"
+" can also use My location. 3) Or click the map to pin the exact point."
+
+msgid "Consultando clima..."
+msgstr "Checking weather..."
+
+msgid "Humedad:"
+msgstr "Humidity:"
+
+msgid ""
+"Solo se mostrarán cuidadores que cubren esa zona según su radio configurado."
+msgstr "Only caregivers whose configured radius covers that area will appear."
+
+msgid "Fecha inicio"
+msgstr "Start date"
+
+msgid "Fecha fin"
+msgstr "End date"
+
+msgid "Lugar de referencia para guardería"
+msgstr "Reference location for daycare"
+
+msgid "Mi ubicación"
+msgstr "My location"
+
+msgid "Km máx"
+msgstr "Max km"
+
+msgid ""
+"1) Escribe la zona o dirección de referencia y pulsa la lupa. 2) También "
+"puedes usar Mi ubicación. 3) Opcional: escribe los km máximos para ver solo "
+"guarderías cercanas a ese punto."
+msgstr ""
+"1) Type the reference area or address and press the magnifier. 2) You can "
+"also use My location. 3) Optional: enter the max km to show only daycares "
+"near that point."
+
+msgid ""
+"En el resultado eliges si reservas todo el bloque de guardería o solo un "
+"tiempo dentro del bloque."
+msgstr ""
+"In the results you choose whether to book the full daycare block or just a "
+"custom time within it."
+
+msgid "Filtros rápidos"
+msgstr "Quick filters"
+
+msgid "Duración de paseo"
+msgstr "Walk duration"
+
+msgid "Duración"
+msgstr "Duration"
+
+msgid "1 hora"
+msgstr "1 hour"
+
+msgid "1.5 horas"
+msgstr "1.5 hours"
+
+msgid "2 horas"
+msgstr "2 hours"
+
+msgid "2.5 horas"
+msgstr "2.5 hours"
+
+msgid "3 horas"
+msgstr "3 hours"
+
+msgid "Precio mín/h"
+msgstr "Min price/h"
+
+msgid "Precio máx/h"
+msgstr "Max price/h"
+
+msgid "Hora inicio desde"
+msgstr "Start time from"
+
+msgid "Hora fin hasta"
+msgstr "End time until"
+
+msgid "Estos filtros aparecen después de la primera búsqueda."
+msgstr "These filters appear after the first search."
+
+msgid "Buscar cuidadores"
+msgstr "Search caregivers"
+
+msgid "Resultados disponibles"
+msgstr "Available results"
+
+msgid "todas las franjas horarias"
+msgstr "all time slots"
+
+msgid "Horario disponible:"
+msgstr "Available schedule:"
+
+msgid "Bloque disponible:"
+msgstr "Available block:"
+
+msgid "Cupos disponibles:"
+msgstr "Available spots:"
+
+msgid "Rango consultado:"
+msgstr "Date range:"
+
+msgid "Slots disponibles en el rango:"
+msgstr "Available slots in range:"
+
+msgid "Slot sugerido:"
+msgstr "Suggested slot:"
+
+msgid "cupos"
+msgstr "spots"
+
+msgid "Valor estimado para el slot seleccionado"
+msgstr "Estimated value for the selected slot"
+
+msgid "Slot de guarderia disponible"
+msgstr "Available daycare slot"
+
+msgid "Cupos del slot elegido:"
+msgstr "Spots in chosen slot:"
+
+msgid "Tiempo de guarderia"
+msgstr "Daycare time"
+
+msgid "Reservar todo el bloque"
+msgstr "Book entire block"
+
+msgid "Reservar tiempo personalizado"
+msgstr "Book custom time"
+
+msgid ""
+"Si eliges tiempo personalizado, se aplica por día dentro del bloque "
+"disponible."
+msgstr ""
+"If you choose custom time, it applies per day within the available block."
+
+msgid "Reservar"
+msgstr "Book"
+
+msgid "No encontramos cuidadores para ese filtro."
+msgstr "No caregivers found for that filter."
+
+msgid "Prueba con otro rango de fechas u horario de guardería."
+msgstr "Try a different date range or daycare schedule."
+
+msgid "Prueba con otra fecha, duración o ubicación del paseo."
+msgstr "Try a different date, duration or walk location."
+
+msgid "✓ Apto para pasear"
+msgstr "✓ Good for walking"
+
+msgid "✗ Clima poco favorable"
+msgstr "✗ Unfavorable weather"
+
+msgid "Condiciones actuales de la zona"
+msgstr "Current conditions for the area"
+
+msgid "Referencia para"
+msgstr "Reference for"
+
+msgid "Escribe una ubicación primero"
+msgstr "Enter a location first"
+
+msgid "No encontramos esa ubicación"
+msgstr "Location not found"
+
+msgid "Tu navegador no soporta geolocalizacion"
+msgstr "Your browser does not support geolocation"
+
+msgid "Próximamente saldrá el mapa del recorrido que hizo tu cachorro."
+msgstr ""
+
+msgid "Sin franja horaria registrada."
+msgstr ""
+
+msgid "Cupos del bloque:"
+msgstr ""
+
+msgid "Lugar:"
+msgstr ""
+
+msgid "Ubicación:"
+msgstr ""
+
+msgid "Recogida:"
+msgstr ""
+
+msgid "Hora asignada:"
+msgstr ""
+
+msgid "Franja:"
+msgstr ""
+
+msgid "Estado servicio:"
+msgstr ""
+
+msgid "Estado pago:"
+msgstr ""
+
+msgid "Monto:"
+msgstr ""
+
+msgid "Referencia:"
+msgstr ""
+
+msgid "Mensajes en chat:"
+msgstr ""
+
+msgid "Última actualización:"
+msgstr ""
+
+msgid "Último mensaje:"
+msgstr ""
+
+msgid "Aún no hay anotaciones del cuidador para este servicio."
+msgstr ""
+
+msgid "Próximamente podrás ver el mapa completo del recorrido de tu cachorro."
+msgstr ""
+
+msgid "Destinatario:"
+msgstr ""
+
+msgid "Mascota:"
+msgstr ""
+
+msgid "Servicio:"
+msgstr ""
+
+msgid "Fecha:"
+msgstr ""
+
+msgid "Estado:"
+msgstr ""
+
+msgid "Pago:"
+msgstr ""
+
+msgid "Ocultar detalles"
+msgstr ""
+
+msgid "Sin mensajes aún. Escribe el primero."
+msgstr ""
+
+msgid "con"
+msgstr ""
+
+msgid "Solicitud"
+msgstr ""
+
+msgid "Tú"
+msgstr ""
+
+msgid "Leída"
+msgstr ""
+
+msgid "Nueva"
+msgstr ""
+
+msgid "Ver"
+msgstr ""
+
+msgid "Marcar leída"
+msgstr ""
+
+msgid "¿Eliminar?"
+msgstr ""
+
+msgid "Sin notificaciones"
+msgstr ""
+
+msgid "Ajusta los filtros o vuelve después para nuevas alertas"
+msgstr ""
+
+msgid "¿Eliminar seleccionadas?"
+msgstr ""
+
+msgid "Configuración de paseo"
+msgstr ""
+
+msgid "Tarifa por hora, radio de cobertura y perfil visible."
+msgstr ""
+
+msgid "Tarifa por hora (COP)"
+msgstr ""
+
+msgid "Ej: 18000"
+msgstr ""
+
+msgid "Descripción del servicio"
+msgstr ""
+
+msgid "Cuenta cómo es tu paseo, zonas favoritas y condiciones."
+msgstr ""
+
+msgid "Ubicación"
+msgstr ""
+
+msgid "Ej: Medellín"
+msgstr ""
+
+msgid "Buscar ubicación escrita"
+msgstr ""
+
+msgid "Radio de cobertura (km)"
+msgstr ""
+
+msgid "Usar mi ubicación"
+msgstr ""
+
+msgid "Paseo disponible solo para perros."
+msgstr ""
+
+msgid "Guardar configuración de paseo"
+msgstr ""
+
+msgid "¿Eliminar servicio de paseo?"
+msgstr ""
+
+msgid "Eliminar paseo"
+msgstr ""
+
+msgid "Agregar bloque de paseo"
+msgstr ""
+
+msgid ""
+"Solo eliges hora de inicio y duración. No necesitas fecha de fin ni volver a"
+" escribir el lugar."
+msgstr ""
+
+msgid "Añadir rápido (opcional)"
+msgstr ""
+
+msgid "Entre semana"
+msgstr ""
+
+msgid "Fines de semana"
+msgstr ""
+
+msgid "Todos los días"
+msgstr ""
+
+msgid "Sin atajo seleccionado"
+msgstr ""
+
+msgid "Se aplican al pulsar \"Agregar un día\" con la hora y duración elegidas."
+msgstr ""
+
+msgid "Día"
+msgstr ""
+
+msgid "Selecciona un día"
+msgstr ""
+
+msgid "Inicio"
+msgstr ""
+
+msgid "Selecciona duración"
+msgstr ""
+
+msgid "Cupo máximo del bloque"
+msgstr ""
+
+msgid "1 perro"
+msgstr ""
+
+msgid "2 perros"
+msgstr ""
+
+msgid "3 perros"
+msgstr ""
+
+msgid "4 perros"
+msgstr ""
+
+msgid "Para paseo el cupo permitido es de 1 a 4 perros."
+msgstr ""
+
+msgid "Agregar bloque (pendiente)"
+msgstr ""
+
+msgid "Pendientes por guardar"
+msgstr ""
+
+msgid "Bloques configurados"
+msgstr ""
+
+msgid "Cupo máximo:"
+msgstr ""
+
+msgid "¿Eliminar bloque?"
+msgstr ""
+
+msgid "Todavía no has agregado bloques de paseo."
+msgstr ""
+
+msgid "Atajo activo: Entre semana"
+msgstr ""
+
+msgid "Atajo activo: Fines de semana"
+msgstr ""
+
+msgid "Atajo activo: Todos los días"
+msgstr ""
+
+msgid "Atajo"
+msgstr ""
+
+msgid "min"
+msgstr ""
+
+msgid "Quitar"
+msgstr ""
+
+msgid "Completa hora de inicio y duración antes de agregar."
+msgstr ""
+
+msgid "Selecciona un día o usa un atajo de días."
+msgstr ""
+
+msgid "Configuración de guardería"
+msgstr ""
+
+msgid "Tarifa por hora y disponibilidad flexible por bloques."
+msgstr ""
+
+msgid "Ej: 14000"
+msgstr ""
+
+msgid "Describe el espacio, cuidados y condiciones."
+msgstr ""
+
+msgid "Tipo de mascota para guardería"
+msgstr ""
+
+msgid "Perros"
+msgstr ""
+
+msgid "Gatos"
+msgstr ""
+
+msgid "Guardar configuración de guardería"
+msgstr ""
+
+msgid "¿Eliminar servicio de guardería?"
+msgstr ""
+
+msgid "Eliminar guardería"
+msgstr ""
+
+msgid "Agregar bloque de guardería"
+msgstr ""
+
+msgid ""
+"Define tu disponibilidad en una sola acción: por rango de días, por un solo "
+"día o día completo."
+msgstr ""
+
+msgid ""
+"Ejemplos: lunes 08:00 a sábado 21:00, domingo todo el día, o solo martes por"
+" unas horas."
+msgstr ""
+
+msgid "Desde"
+msgstr ""
+
+msgid "Hasta"
+msgstr ""
+
+msgid "Solo este día"
+msgstr ""
+
+msgid "Horario del bloque"
+msgstr ""
+
+msgid "Por horas"
+msgstr ""
+
+msgid "Todo el día"
+msgstr ""
+
+msgid "Por horas: define inicio y fin. Todo el día: se usa 00:00 a 23:30."
+msgstr ""
+
+msgid "Hora inicial"
+msgstr ""
+
+msgid "Hora final"
+msgstr ""
+
+msgid "Mañana"
+msgstr ""
+
+msgid "Tarde"
+msgstr ""
+
+msgid "Largo"
+msgstr ""
+
+msgid "1 mascota"
+msgstr ""
+
+msgid "2 mascotas"
+msgstr ""
+
+msgid "3 mascotas"
+msgstr ""
+
+msgid "4 mascotas"
+msgstr ""
+
+msgid "5 mascotas"
+msgstr ""
+
+msgid "Todavía no has agregado bloques de guardería."
+msgstr ""
+
+msgid ""
+"Todo el día deja el bloque listo para estancias largas (00:00 a 23:30)."
+msgstr ""
+
+msgid "Por horas: define el intervalo exacto en que recibes mascotas."
+msgstr ""
+
+msgid "Completa día(s) y horario antes de agregar."
+msgstr ""
+
+msgid "Calificaciones y reseñas recibidas"
+msgstr ""
+
+msgid "Opiniones de otros usuarios después de completar servicios."
+msgstr ""
+
+msgid "Ordenar:"
+msgstr ""
+
+msgid "Con comentario"
+msgstr ""
+
+msgid "Distribución de estrellas"
+msgstr ""
+
+msgid "estrellas"
+msgstr ""
+
+msgid "Servicio para"
+msgstr ""
+
+msgid "Sin comentario escrito."
+msgstr ""
+
+msgid "Aún no hay calificaciones recibidas."
+msgstr ""
+
+msgid "Cuando completes servicios, las reseñas aparecerán aquí."
+msgstr ""
+
+msgid "Ayuda"
+msgstr ""
+
+msgid "Guía de uso"
+msgstr ""
+
+msgid "Soporte"
+msgstr ""
+
+msgid "Finanzas"
+msgstr ""
+
+msgid "Mis pagos"
+msgstr ""
+
+msgid "Abrir menú"
+msgstr ""
+
+msgid "Plegar o desplegar menú"
+msgstr ""
+
+msgid "Hola, %(nombre)s"
+msgstr ""
+
+#: servicios/templates/servicios/login.html
+msgid "Tu aliado confiable para el cuidado diario de tus mascotas."
+msgstr "Tu aliado confiable para el cuidado diario de tus mascotas."
+
+#: servicios/templates/servicios/login.html
+msgid ""
+"Conectamos dueños con cuidadores verificados para paseos y guardería, con "
+"seguimiento claro de cada reserva, horarios y estado del servicio."
+msgstr ""
+"Conectamos dueños con cuidadores verificados para paseos y guardería, con "
+"seguimiento claro de cada reserva, horarios y estado del servicio."
+
+#: servicios/templates/servicios/login.html
+msgid "Cuidadores verificados"
+msgstr "Cuidadores verificados"
+
+#: servicios/templates/servicios/login.html
+msgid ""
+"Perfiles con datos completos y reputación visible para elegir con confianza."
+msgstr ""
+"Perfiles con datos completos y reputación visible para elegir con confianza."
+
+#: servicios/templates/servicios/login.html
+msgid "Reserva y seguimiento en tiempo real"
+msgstr "Reserva y seguimiento en tiempo real"
+
+#: servicios/templates/servicios/login.html
+msgid ""
+"Agenda por día, consulta disponibilidad y revisa cada cambio desde tu panel."
+msgstr ""
+"Agenda por día, consulta disponibilidad y revisa cada cambio desde tu panel."
+
+#: servicios/templates/servicios/login.html
+msgid "Tranquilidad garantizada"
+msgstr "Tranquilidad garantizada"
+
+#: servicios/templates/servicios/login.html
+msgid "Toda la información de tu mascota y tus reservas en un solo lugar."
+msgstr "Toda la información de tu mascota y tus reservas en un solo lugar."
+
+#: servicios/templates/servicios/login.html
+msgid "Términos y condiciones"
+msgstr "Términos y condiciones"
+
+#: servicios/templates/servicios/login.html
+msgid "Política de privacidad"
+msgstr "Política de privacidad"
+
+#: servicios/templates/servicios/login.html
+msgid "Contacto"
+msgstr "Contacto"
+
+#: servicios/templates/servicios/signup.html
+msgid ""
+"Crea tu cuenta y gestiona reservas de paseo y guardería desde un solo lugar."
+msgstr ""
+"Crea tu cuenta y gestiona reservas de paseo y guardería desde un solo lugar."
+
+#: servicios/templates/servicios/signup.html
+msgid "Perfiles confiables"
+msgstr "Perfiles confiables"
+
+#: servicios/templates/servicios/signup.html
+msgid "Dueños y cuidadores con historial visible dentro de la plataforma."
+msgstr "Dueños y cuidadores con historial visible dentro de la plataforma."
+
+#: servicios/templates/servicios/signup.html
+msgid "Reservas organizadas"
+msgstr "Reservas organizadas"
+
+#: servicios/templates/servicios/signup.html
+msgid "Consulta disponibilidad, agenda servicios y sigue cada solicitud."
+msgstr "Consulta disponibilidad, agenda servicios y sigue cada solicitud."
+
+#: servicios/templates/servicios/signup.html
+msgid "Nacimiento"
+msgstr "Nacimiento"
+
+#: servicios/templates/servicios/signup.html
+msgid "Mayor 15 años"
+msgstr "Mayor 15 años"
+
+#: servicios/templates/servicios/signup.html
+msgid "Repetir contraseña"
+msgstr "Repetir contraseña"
+
+#: servicios/templates/servicios/signup.html
+msgid "¿Ya tienes cuenta?"
+msgstr "¿Ya tienes cuenta?"
+
+#: servicios/templates/servicios/password_reset_request.html
+msgid ""
+"Recupera tu acceso para seguir gestionando reservas, mascotas y servicios."
+msgstr ""
+"Recupera tu acceso para seguir gestionando reservas, mascotas y servicios."
+
+#: servicios/templates/servicios/password_reset_request.html
+msgid "Cuenta protegida"
+msgstr "Cuenta protegida"
+
+#: servicios/templates/servicios/password_reset_request.html
+msgid "Te ayudamos a restablecer tu contraseña de forma segura."
+msgstr "Te ayudamos a restablecer tu contraseña de forma segura."
+
+#: servicios/templates/servicios/password_reset_request.html
+msgid "Vuelve al control"
+msgstr "Vuelve al control"
+
+#: servicios/templates/servicios/password_reset_request.html
+msgid "Recupera acceso para revisar citas, reservas y notificaciones."
+msgstr "Recupera acceso para revisar citas, reservas y notificaciones."
+
+#: servicios/templates/servicios/password_reset_request.html
+msgid ""
+"Escribe tu correo o usuario. Si existe una cuenta asociada, te enviaremos "
+"instrucciones para restablecer tu contraseña."
+msgstr ""
+"Escribe tu correo o usuario. Si existe una cuenta asociada, te enviaremos "
+"instrucciones para restablecer tu contraseña."
+
+#: servicios/templates/servicios/password_reset_request.html
+msgid "Correo o usuario"
+msgstr "Correo o usuario"
+
+#: servicios/templates/servicios/password_reset_request.html
+msgid "tucorreo@ejemplo.com o tu_usuario"
+msgstr "tucorreo@ejemplo.com o tu_usuario"
+
+#: servicios/templates/servicios/password_reset_request.html
+msgid "Enviar instrucciones"
+msgstr "Enviar instrucciones"
+
+#: servicios/templates/servicios/password_reset_request.html
+msgid "Volver a iniciar sesión"
+msgstr "Volver a iniciar sesión"
+
+#: servicios/templates/servicios/ver_perfil_otro.html
+msgid "Perfil de {{ nombre }}"
+msgstr "Perfil de {{ nombre }}"
+
+#: servicios/templates/servicios/ver_perfil_otro.html
+msgid "Datos de contacto"
+msgstr "Datos de contacto"
+
+#: servicios/templates/servicios/ver_perfil_otro.html
+msgid "Servicios"
+msgstr "Servicios"
+
+#: servicios/templates/servicios/ver_perfil_otro.html
+msgid "Sin descripción"
+msgstr "Sin descripción"
+
+#: servicios/templates/servicios/ver_perfil_otro.html
+msgid "Mascota asignada al servicio"
+msgstr "Mascota asignada al servicio"
+
+#: servicios/templates/servicios/ver_perfil_otro.html
+msgid "Información inicial de la mascota para esta reserva."
+msgstr "Información inicial de la mascota para esta reserva."
+
+#: servicios/templates/servicios/ver_perfil_otro.html
+msgid "Edad"
+msgstr "Edad"
+
+#: servicios/templates/servicios/ver_perfil_otro.html
+msgid "año"
+msgstr "año"
+
+#: servicios/templates/servicios/ver_perfil_otro.html
+msgid "Peso"
+msgstr "Peso"
+
+#: servicios/templates/servicios/ver_perfil_otro.html
+msgid "Calificaciones y reseñas de la mascota"
+msgstr "Calificaciones y reseñas de la mascota"
+
+#: servicios/templates/servicios/ver_perfil_otro.html
+msgid "Opiniones de cuidadores que ya atendieron a {{ mascota }}."
+msgstr "Opiniones de cuidadores que ya atendieron a {{ mascota }}."
+
+#: servicios/templates/servicios/ver_perfil_otro.html
+msgid "Aún no hay calificaciones para esta mascota."
+msgstr "Aún no hay calificaciones para esta mascota."
+
+#: servicios/templates/servicios/ver_perfil_otro.html
+msgid "Volver"
+msgstr "Volver"
+
+#: servicios/templates/servicios/crear_solicitud.html
+msgid "Nueva Solicitud"
+msgstr "Nueva Solicitud"
+
+#: servicios/templates/servicios/crear_solicitud.html
+msgid "Solicitud de Servicio"
+msgstr "Solicitud de Servicio"
+
+#: servicios/templates/servicios/crear_solicitud.html
+msgid "Reserva un servicio con un cuidador verificado."
+msgstr "Reserva un servicio con un cuidador verificado."
+
+#: servicios/templates/servicios/crear_solicitud.html
+msgid "— Seleccione —"
+msgstr "— Seleccione —"
+
+#: servicios/templates/servicios/crear_solicitud.html
+msgid "Fecha fin (guardería)"
+msgstr "Fecha fin (guardería)"
+
+#: servicios/templates/servicios/crear_solicitud.html
+msgid "Evento / Horario"
+msgstr "Evento / Horario"
+
+#: servicios/templates/servicios/crear_solicitud.html
+msgid "— Seleccione cuidador, tipo y fecha —"
+msgstr "— Seleccione cuidador, tipo y fecha —"
+
+#: servicios/templates/servicios/crear_solicitud.html
+msgid "Para paseo con slots, el sistema asignará la hora según proximidad."
+msgstr "Para paseo con slots, el sistema asignará la hora según proximidad."
+
+#: servicios/templates/servicios/crear_solicitud.html
+msgid "Ventana (paseo, legacy)"
+msgstr "Ventana (paseo, legacy)"
+
+#: servicios/templates/servicios/crear_solicitud.html
+msgid "Bloque horario (legacy)"
+msgstr "Bloque horario (legacy)"
+
+#: servicios/templates/servicios/crear_solicitud.html
+msgid "Se cargan al elegir cuidador, tipo y fecha."
+msgstr "Se cargan al elegir cuidador, tipo y fecha."
+
+#: servicios/templates/servicios/crear_solicitud.html
+msgid "Crear Solicitud"
+msgstr "Crear Solicitud"
+
+#: servicios/templates/servicios/crear_solicitud.html
+msgid "Seleccione un cuidador."
+msgstr "Seleccione un cuidador."
+
+#: servicios/templates/servicios/crear_solicitud.html
+msgid "Seleccione el tipo de servicio."
+msgstr "Seleccione el tipo de servicio."
+
+#: servicios/templates/servicios/crear_solicitud.html
+msgid "— Sin disponibilidad —"
+msgstr "— Sin disponibilidad —"
+
+#: servicios/templates/servicios/crear_solicitud.html
+msgid "No hay horarios para este día."
+msgstr "No hay horarios para este día."
+
+#: servicios/templates/servicios/crear_solicitud.html
+msgid "opción(es) disponible(s)"
+msgstr "opción(es) disponible(s)"
+
+#: servicios/templates/servicios/terminos_condiciones.html
+msgid ""
+"Última actualización: marzo 2026. Al usar Paws & Walks usted acepta los "
+"siguientes términos y el marco legal indicado."
+msgstr ""
+"Última actualización: marzo 2026. Al usar Paws & Walks usted acepta los "
+"siguientes términos y el marco legal indicado."
+
+#: servicios/templates/servicios/terminos_condiciones.html
+msgid "Aviso importante:"
+msgstr "Aviso importante:"
+
+#: servicios/templates/servicios/terminos_condiciones.html
+msgid ""
+"Paws & Walks actúa como intermediario entre dueños de mascotas y cuidadores."
+" No somos responsables de los servicios prestados entre usuarios. El uso de "
+"la plataforma implica la aceptación de nuestros términos."
+msgstr ""
+"Paws & Walks actúa como intermediario entre dueños de mascotas y cuidadores."
+" No somos responsables de los servicios prestados entre usuarios. El uso de "
+"la plataforma implica la aceptación de nuestros términos."
+
+#: servicios/templates/servicios/terminos_condiciones.html
+msgid "1. Objeto y aceptación"
+msgstr "1. Objeto y aceptación"
+
+#: servicios/templates/servicios/terminos_condiciones.html
+msgid "2. Marco legal colombiano aplicable"
+msgstr "2. Marco legal colombiano aplicable"
+
+#: servicios/templates/servicios/terminos_condiciones.html
+msgid "3. Naturaleza del servicio e intermediación"
+msgstr "3. Naturaleza del servicio e intermediación"
+
+#: servicios/templates/servicios/terminos_condiciones.html
+msgid "4. Registro y obligaciones del usuario"
+msgstr "4. Registro y obligaciones del usuario"
+
+#: servicios/templates/servicios/terminos_condiciones.html
+msgid "5. Protección de datos personales"
+msgstr "5. Protección de datos personales"
+
+#: servicios/templates/servicios/terminos_condiciones.html
+msgid "6. Limitación de responsabilidad"
+msgstr "6. Limitación de responsabilidad"
+
+#: servicios/templates/servicios/terminos_condiciones.html
+msgid "7. Propiedad intelectual y uso de la Plataforma"
+msgstr "7. Propiedad intelectual y uso de la Plataforma"
+
+#: servicios/templates/servicios/terminos_condiciones.html
+msgid "8. Modificaciones y ley aplicable"
+msgstr "8. Modificaciones y ley aplicable"
+
+#: servicios/templates/servicios/terminos_condiciones.html
+msgid "9. Contacto"
+msgstr "9. Contacto"
+
+#: servicios/templates/servicios/remaining_templates.html
+msgid "Transacciones y resúmenes cuando recibes pagos"
+msgstr "Transacciones y resúmenes cuando recibes pagos"
+
+#: servicios/templates/servicios/remaining_templates.html
+msgid "Total recibido"
+msgstr "Total recibido"
+
+#: servicios/templates/servicios/remaining_templates.html
+msgid "Transacciones"
+msgstr "Transacciones"
+
+#: servicios/templates/servicios/remaining_templates.html
+msgid "Este mes"
+msgstr "Este mes"
+
+#: servicios/templates/servicios/remaining_templates.html
+msgid "Resumen mensual"
+msgstr "Resumen mensual"
+
+#: servicios/templates/servicios/remaining_templates.html
+msgid "Sin transacciones aún"
+msgstr "Sin transacciones aún"
+
+#: servicios/templates/servicios/remaining_templates.html
+msgid "Últimas transacciones"
+msgstr "Últimas transacciones"
+
+#: servicios/templates/servicios/remaining_templates.html
+msgid "Los pagos aparecerán aquí cuando completes servicios"
+msgstr "Los pagos aparecerán aquí cuando completes servicios"
+
+#: servicios/templates/servicios/remaining_templates.html
+msgid "¿Necesitas ayuda? Chatea con nosotros"
+msgstr "¿Necesitas ayuda? Chatea con nosotros"
+
+#: servicios/templates/servicios/remaining_templates.html
+msgid "Chat de soporte"
+msgstr "Chat de soporte"
+
+#: servicios/templates/servicios/remaining_templates.html
+msgid "En línea"
+msgstr "En línea"
+
+#: servicios/templates/servicios/remaining_templates.html
+msgid "¡Hola! Soy el equipo de Paws & Walks. ¿En qué podemos ayudarte hoy?"
+msgstr "¡Hola! Soy el equipo de Paws & Walks. ¿En qué podemos ayudarte hoy?"
+
+#: servicios/templates/servicios/remaining_templates.html
+msgid "Puedes consultar nuestra"
+msgstr "Puedes consultar nuestra"
+
+#: servicios/templates/servicios/remaining_templates.html
+msgid "para cuidadores o escribirnos aquí si tienes dudas."
+msgstr "para cuidadores o escribirnos aquí si tienes dudas."
+
+#: servicios/templates/servicios/remaining_templates.html
+msgid "Escribe tu mensaje..."
+msgstr "Escribe tu mensaje..."
+
+#: servicios/templates/servicios/remaining_templates.html
+msgid ""
+"Este es un chat de demostración. En producción se conectaría con un sistema "
+"de soporte real."
+msgstr ""
+"Este es un chat de demostración. En producción se conectaría con un sistema "
+"de soporte real."
+
+#: servicios/templates/servicios/remaining_templates.html
+msgid ""
+"Gracias por tu mensaje. Un agente te responderá pronto. ¿Hay algo más en lo "
+"que podamos ayudarte?"
+msgstr ""
+"Gracias por tu mensaje. Un agente te responderá pronto. ¿Hay algo más en lo "
+"que podamos ayudarte?"
+
+#: servicios/templates/servicios/remaining_templates.html
+msgid "para dueños o escribirnos aquí si tienes dudas."
+msgstr "para dueños o escribirnos aquí si tienes dudas."
+
+#: servicios/templates/servicios/remaining_templates.html
+msgid "Cómo usar Paws & Walks como dueño de mascota"
+msgstr "Cómo usar Paws & Walks como dueño de mascota"
+
+#: servicios/templates/servicios/remaining_templates.html
+msgid "Registra tus mascotas"
+msgstr "Registra tus mascotas"
+
+#: servicios/templates/servicios/remaining_templates.html
+msgid "En"
+msgstr "En"
+
+#: servicios/templates/servicios/remaining_templates.html
+msgid ""
+"agrega cada mascota con su nombre, tipo, raza, edad y foto. Necesitarás esta"
+" información para hacer reservas."
+msgstr ""
+"agrega cada mascota con su nombre, tipo, raza, edad y foto. Necesitarás esta"
+" información para hacer reservas."
+
+#: servicios/templates/servicios/remaining_templates.html
+msgid "Busca cuidadores"
+msgstr "Busca cuidadores"
+
+#: servicios/templates/servicios/remaining_templates.html
+msgid ""
+"elige el tipo de servicio (Paseo o Guardería), la mascota, fecha y horario. "
+"La app te mostrará cuidadores disponibles cerca de ti."
+msgstr ""
+"elige el tipo de servicio (Paseo o Guardería), la mascota, fecha y horario. "
+"La app te mostrará cuidadores disponibles cerca de ti."
+
+#: servicios/templates/servicios/remaining_templates.html
+msgid "Envía tu solicitud"
+msgstr "Envía tu solicitud"
+
+#: servicios/templates/servicios/remaining_templates.html
+msgid ""
+"Selecciona un cuidador y envía la solicitud. El cuidador la revisará y la "
+"aceptará o rechazará. Puedes ver su perfil antes de reservar."
+msgstr ""
+"Selecciona un cuidador y envía la solicitud. El cuidador la revisará y la "
+"aceptará o rechazará. Puedes ver su perfil antes de reservar."
+
+#: servicios/templates/servicios/remaining_templates.html
+msgid "Comunícate y coordina"
+msgstr "Comunícate y coordina"
+
+#: servicios/templates/servicios/remaining_templates.html
+msgid ""
+"verás cada reunión programada. Usa el chat para coordinar con el cuidador y "
+"el botón"
+msgstr ""
+"verás cada reunión programada. Usa el chat para coordinar con el cuidador y "
+"el botón"
+
+#: servicios/templates/servicios/remaining_templates.html
+msgid "para ver sus datos de contacto."
+msgstr "para ver sus datos de contacto."
+
+#: servicios/templates/servicios/remaining_templates.html
+msgid "Califica el servicio"
+msgstr "Califica el servicio"
+
+#: servicios/templates/servicios/remaining_templates.html
+msgid ""
+"Cuando el servicio se complete, podrás calificar al cuidador con estrellas y"
+" un comentario. ¡Tu opinión ayuda a otros dueños!"
+msgstr ""
+"Cuando el servicio se complete, podrás calificar al cuidador con estrellas y"
+" un comentario. ¡Tu opinión ayuda a otros dueños!"
+
+#: servicios/templates/servicios/remaining_templates.html
+msgid "Cómo usar Paws & Walks como cuidador"
+msgstr "Cómo usar Paws & Walks como cuidador"
+
+#: servicios/templates/servicios/remaining_templates.html
+msgid "Configura tu perfil"
+msgstr "Configura tu perfil"
+
+#: servicios/templates/servicios/remaining_templates.html
+msgid "Completa tu perfil en"
+msgstr "Completa tu perfil en"
+
+#: servicios/templates/servicios/remaining_templates.html
+msgid ""
+"con foto, datos de contacto y ciudad. Los dueños te encontrarán más "
+"fácilmente."
+msgstr ""
+"con foto, datos de contacto y ciudad. Los dueños te encontrarán más "
+"fácilmente."
+
+#: servicios/templates/servicios/remaining_templates.html
+msgid "Activa tus servicios"
+msgstr "Activa tus servicios"
+
+#: servicios/templates/servicios/remaining_templates.html
+msgid "y"
+msgstr "y"
+
+#: servicios/templates/servicios/remaining_templates.html
+msgid ""
+"activa los servicios que ofreces. Define tu zona de cobertura (para paseos),"
+" tarifas y horarios disponibles. Cada reunión puede tener su propio lugar y "
+"precio."
+msgstr ""
+"activa los servicios que ofreces. Define tu zona de cobertura (para paseos),"
+" tarifas y horarios disponibles. Cada reunión puede tener su propio lugar y "
+"precio."
+
+#: servicios/templates/servicios/remaining_templates.html
+msgid "Gestiona solicitudes"
+msgstr "Gestiona solicitudes"
+
+#: servicios/templates/servicios/remaining_templates.html
+msgid ""
+"verás las solicitudes pendientes. Acepta o rechaza según tu disponibilidad. "
+"Una vez aceptada, podrás chatear con el dueño y ver su perfil."
+msgstr ""
+"verás las solicitudes pendientes. Acepta o rechaza según tu disponibilidad. "
+"Una vez aceptada, podrás chatear con el dueño y ver su perfil."
+
+#: servicios/templates/servicios/remaining_templates.html
+msgid "Realiza el servicio"
+msgstr "Realiza el servicio"
+
+#: servicios/templates/servicios/remaining_templates.html
+msgid ""
+"El día acordado, realiza el paseo o guardería. Al finalizar, marca el "
+"servicio como"
+msgstr ""
+"El día acordado, realiza el paseo o guardería. Al finalizar, marca el "
+"servicio como"
+
+#: servicios/templates/servicios/remaining_templates.html
+msgid "finalizado"
+msgstr "finalizado"
+
+#: servicios/templates/servicios/remaining_templates.html
+msgid "El pago aparecerá en"
+msgstr "El pago aparecerá en"
+
+#: servicios/templates/servicios/remaining_templates.html
+msgid "Recibe tus pagos"
+msgstr "Recibe tus pagos"
+
+#: servicios/templates/servicios/remaining_templates.html
+msgid "Consulta"
+msgstr "Consulta"
+
+#: servicios/templates/servicios/remaining_templates.html
+msgid ""
+"para ver transacciones, resúmenes diarios y mensuales de lo que has "
+"recibido."
+msgstr ""
+"para ver transacciones, resúmenes diarios y mensuales de lo que has "
+"recibido."
+
+#: servicios/templates/servicios/remaining_templates.html
+msgid "Ahora"
+msgstr "Ahora"

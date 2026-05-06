@@ -1,11 +1,11 @@
-<div class="mt-6 bg-white rounded-2xl shadow-sm border border-slate-100/80 overflow-hidden">
+{% load i18n %}<div class="mt-6 bg-white rounded-2xl shadow-sm border border-slate-100/80 overflow-hidden">
   <div class="px-6 py-4 border-b border-slate-100 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
     <div>
-      <h3 class="font-semibold text-slate-800">Calificaciones y resenas recibidas</h3>
-      <p class="text-sm text-slate-500">Opiniones de otros usuarios despues de completar servicios.</p>
+      <h3 class="font-semibold text-slate-800">{% trans "Calificaciones y reseñas recibidas" %}</h3>
+      <p class="text-sm text-slate-500">{% trans "Opiniones de otros usuarios después de completar servicios." %}</p>
     </div>
     <form method="get" class="flex items-center gap-2">
-      <label for="ordenResenas" class="text-sm text-slate-600">Ordenar:</label>
+      <label for="ordenResenas" class="text-sm text-slate-600">{% trans "Ordenar:" %}</label>
       <select id="ordenResenas" name="orden_resenas" class="rounded-lg border border-slate-300 py-1.5 px-2.5 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" onchange="this.form.submit()">
         {% for opcion in resenas_orden_opciones %}
         <option value="{{ opcion.value }}" {% if opcion.value == resenas_orden_actual %}selected{% endif %}>{{ opcion.label }}</option>
@@ -17,15 +17,15 @@
   <div class="p-4 md:p-6 space-y-4">
     <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
       <div class="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3">
-        <p class="text-xs uppercase tracking-wide text-slate-500">Promedio</p>
+        <p class="text-xs uppercase tracking-wide text-slate-500">{% trans "Promedio" %}</p>
         <p class="text-xl font-bold text-slate-800">{{ resenas_promedio|default:"0.0" }}/5</p>
       </div>
       <div class="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3">
-        <p class="text-xs uppercase tracking-wide text-slate-500">Total resenas</p>
+        <p class="text-xs uppercase tracking-wide text-slate-500">{% trans "Total reseñas" %}</p>
         <p class="text-xl font-bold text-slate-800">{{ resenas_total }}</p>
       </div>
       <div class="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3">
-        <p class="text-xs uppercase tracking-wide text-slate-500">Con comentario</p>
+        <p class="text-xs uppercase tracking-wide text-slate-500">{% trans "Con comentario" %}</p>
         <p class="text-xl font-bold text-slate-800">{{ resenas_con_comentario }}</p>
       </div>
     </div>
@@ -33,10 +33,10 @@
     {% if resenas_total %}
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
       <div class="lg:col-span-1 rounded-xl border border-slate-200 bg-slate-50 p-4 space-y-2">
-        <p class="text-sm font-semibold text-slate-700">Distribucion de estrellas</p>
+        <p class="text-sm font-semibold text-slate-700">{% trans "Distribución de estrellas" %}</p>
         {% for fila in resenas_distribucion %}
         <div class="flex items-center gap-2">
-          <span class="w-16 text-xs text-slate-600">{{ fila.estrellas }} estrellas</span>
+          <span class="w-16 text-xs text-slate-600">{{ fila.estrellas }} {% trans "estrellas" %}</span>
           <progress class="h-2 flex-1 overflow-hidden rounded-full" value="{{ fila.total }}" max="{{ resenas_total }}"></progress>
           <span class="w-8 text-right text-xs text-slate-500">{{ fila.total }}</span>
         </div>
@@ -50,9 +50,9 @@
             <div>
               <p class="font-semibold text-slate-800">{{ resena.idDe.nombre }} {{ resena.idDe.apellido }}</p>
               {% if resena.idSolicitud and resena.idSolicitud.idMascota %}
-              <p class="text-xs text-slate-500">Servicio para {{ resena.idSolicitud.idMascota.nombreMascota }}</p>
+              <p class="text-xs text-slate-500">{% trans "Servicio para" %} {{ resena.idSolicitud.idMascota.nombreMascota }}</p>
               {% else %}
-              <p class="text-xs text-slate-500">Servicio completado</p>
+              <p class="text-xs text-slate-500">{% trans "Servicio completado" %}</p>
               {% endif %}
             </div>
             <div class="text-right">
@@ -67,7 +67,7 @@
           {% if resena.comentario %}
           <p class="mt-3 text-sm text-slate-700">{{ resena.comentario }}</p>
           {% else %}
-          <p class="mt-3 text-sm text-slate-400 italic">Sin comentario escrito.</p>
+          <p class="mt-3 text-sm text-slate-400 italic">{% trans "Sin comentario escrito." %}</p>
           {% endif %}
         </article>
         {% endfor %}
@@ -75,8 +75,8 @@
     </div>
     {% else %}
     <div class="rounded-xl border-2 border-dashed border-slate-200 bg-slate-50 p-8 text-center">
-      <p class="text-sm font-semibold text-slate-700">Aun no hay calificaciones recibidas.</p>
-      <p class="text-xs text-slate-500 mt-1">Cuando completes servicios, las resenas apareceran aqui.</p>
+      <p class="text-sm font-semibold text-slate-700">{% trans "Aún no hay calificaciones recibidas." %}</p>
+      <p class="text-xs text-slate-500 mt-1">{% trans "Cuando completes servicios, las reseñas aparecerán aquí." %}</p>
     </div>
     {% endif %}
   </div>

@@ -1,4 +1,4 @@
-{% load servicios_extras l10n %}
+{% load servicios_extras l10n i18n %}
 <div class="grid gap-6 lg:grid-cols-5">
   <div class="lg:col-span-3 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
     <div class="mb-5 flex items-center gap-3">
@@ -6,8 +6,8 @@
         <i class="bi bi-paw-fill"></i>
       </div>
       <div>
-        <h3 class="text-lg font-bold text-slate-800">Configuracion de paseo</h3>
-        <p class="text-sm text-slate-500">Tarifa por hora, radio de cobertura y perfil visible.</p>
+        <h3 class="text-lg font-bold text-slate-800">{% trans "Configuración de paseo" %}</h3>
+        <p class="text-sm text-slate-500">{% trans "Tarifa por hora, radio de cobertura y perfil visible." %}</p>
       </div>
     </div>
 
@@ -22,27 +22,27 @@
       <input type="hidden" name="descripcionGuarderia" value="{% if precios_activos.guarderia %}{{ precios_activos.guarderia.descripcion|default:'' }}{% endif %}">
 
       <div>
-        <label class="mb-1.5 block text-sm font-semibold text-slate-700">Tarifa por hora (COP)</label>
-        <input name="tarifaPaseo" type="number" min="1" required value="{% if precios_activos.paseo %}{{ precios_activos.paseo.precioCOP }}{% endif %}" class="w-full rounded-xl border border-slate-300 px-4 py-2.5 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" placeholder="Ej: 18000">
+        <label class="mb-1.5 block text-sm font-semibold text-slate-700">{% trans "Tarifa por hora (COP)" %}</label>
+        <input name="tarifaPaseo" type="number" min="1" required value="{% if precios_activos.paseo %}{{ precios_activos.paseo.precioCOP }}{% endif %}" class="w-full rounded-xl border border-slate-300 px-4 py-2.5 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" placeholder="{% trans "Ej: 18000" %}">
       </div>
 
       <div>
-        <label class="mb-1.5 block text-sm font-semibold text-slate-700">Descripcion del servicio</label>
-        <textarea name="descripcionPaseo" rows="3" class="w-full rounded-xl border border-slate-300 px-4 py-2.5 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" placeholder="Cuenta como es tu paseo, zonas favoritas y condiciones.">{% if precios_activos.paseo %}{{ precios_activos.paseo.descripcion|default:'' }}{% endif %}</textarea>
+        <label class="mb-1.5 block text-sm font-semibold text-slate-700">{% trans "Descripción del servicio" %}</label>
+        <textarea name="descripcionPaseo" rows="3" class="w-full rounded-xl border border-slate-300 px-4 py-2.5 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" placeholder="{% trans "Cuenta cómo es tu paseo, zonas favoritas y condiciones." %}">{% if precios_activos.paseo %}{{ precios_activos.paseo.descripcion|default:'' }}{% endif %}</textarea>
       </div>
 
       <div class="grid gap-4 sm:grid-cols-2">
         <div>
-          <label class="mb-1.5 block text-sm font-semibold text-slate-700">Ubicacion</label>
+          <label class="mb-1.5 block text-sm font-semibold text-slate-700">{% trans "Ubicación" %}</label>
           <div class="relative">
-            <input name="ciudad" id="ciudadServiciosPaseo" value="{{ servicio_ciudad|default:'' }}" class="w-full rounded-xl border border-slate-300 px-4 py-2.5 pr-11 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" placeholder="Ej: Medellin">
-            <button type="button" id="btnBuscarCiudadPaseo" class="absolute right-2 top-1/2 -translate-y-1/2 rounded-lg p-1.5 text-slate-500 hover:bg-slate-100 hover:text-slate-700" aria-label="Buscar ubicacion escrita">
+            <input name="ciudad" id="ciudadServiciosPaseo" value="{{ servicio_ciudad|default:'' }}" class="w-full rounded-xl border border-slate-300 px-4 py-2.5 pr-11 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" placeholder="{% trans "Ej: Medellín" %}">
+            <button type="button" id="btnBuscarCiudadPaseo" class="absolute right-2 top-1/2 -translate-y-1/2 rounded-lg p-1.5 text-slate-500 hover:bg-slate-100 hover:text-slate-700" aria-label="{% trans "Buscar ubicación escrita" %}">
               <i class="bi bi-search"></i>
             </button>
           </div>
         </div>
         <div>
-          <label class="mb-1.5 block text-sm font-semibold text-slate-700">Radio de cobertura (km)</label>
+          <label class="mb-1.5 block text-sm font-semibold text-slate-700">{% trans "Radio de cobertura (km)" %}</label>
           <select name="radioKm" required class="w-full rounded-xl border border-slate-300 px-4 py-2.5 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none">
             <option value="1" {% if servicio_radio_km|floatformat:0 == "1" or not servicio_radio_km %}selected{% endif %}>1 km</option>
             <option value="2" {% if servicio_radio_km|floatformat:0 == "2" %}selected{% endif %}>2 km</option>
@@ -55,18 +55,18 @@
       <input type="hidden" id="longitudServiciosPaseo" name="longitud" value="{{ servicio_longitud|default_if_none:''|unlocalize }}">
       <div class="space-y-2">
         <div class="flex flex-wrap gap-2">
-          <button type="button" id="btnUbicacionPaseo" class="rounded-lg border border-pw-orange px-3 py-1.5 text-xs font-semibold text-pw-orange hover:bg-pw-orange hover:text-white">Usar mi ubicacion</button>
+          <button type="button" id="btnUbicacionPaseo" class="rounded-lg border border-pw-orange px-3 py-1.5 text-xs font-semibold text-pw-orange hover:bg-pw-orange hover:text-white">{% trans "Usar mi ubicación" %}</button>
         </div>
         <div id="mapServiciosPaseo" class="h-44 rounded-xl border border-slate-200"></div>
       </div>
 
       <input type="hidden" name="tiposMascotaCheck" value="perro">
       <div class="rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-800">
-        Paseo disponible solo para perros.
+        {% trans "Paseo disponible solo para perros." %}
       </div>
 
       <button type="submit" class="w-full rounded-xl bg-pw-orange px-4 py-2.5 text-sm font-semibold text-white hover:bg-pw-orange-dark">
-        Guardar configuracion de paseo
+        {% trans "Guardar configuración de paseo" %}
       </button>
     </form>
 
@@ -75,44 +75,44 @@
       {% csrf_token %}
       <input type="hidden" name="action" value="eliminar_servicio">
       <input type="hidden" name="tipoServicio" value="paseo">
-      <button type="submit" class="w-full rounded-xl border border-red-300 px-4 py-2.5 text-sm font-semibold text-red-700 hover:bg-red-50" onclick="return confirm('¿Eliminar servicio de paseo?');">Eliminar paseo</button>
+      <button type="submit" class="w-full rounded-xl border border-red-300 px-4 py-2.5 text-sm font-semibold text-red-700 hover:bg-red-50" onclick="return confirm('{% trans "¿Eliminar servicio de paseo?" %}');">{% trans "Eliminar paseo" %}</button>
     </form>
     {% endif %}
   </div>
 
   <div class="lg:col-span-2 space-y-6">
     <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-      <h4 class="text-sm font-bold text-slate-800">Agregar bloque de paseo</h4>
-      <p class="mt-1 text-xs text-slate-500">Solo eliges hora de inicio y duración. No necesitas fecha de fin ni volver a escribir el lugar.</p>
+      <h4 class="text-sm font-bold text-slate-800">{% trans "Agregar bloque de paseo" %}</h4>
+      <p class="mt-1 text-xs text-slate-500">{% trans "Solo eliges hora de inicio y duración. No necesitas fecha de fin ni volver a escribir el lugar." %}</p>
       <form method="post" class="mt-4 space-y-3" id="formAgregarBloquePaseo" onsubmit="return false;">
         {% csrf_token %}
         <input type="hidden" id="nombreLugarPaseoBloque" value="{{ servicio_ciudad|default:'' }}">
 
         <input type="hidden" name="preset" id="presetPaseo" value="">
         <div>
-          <label class="mb-1 block text-xs font-semibold text-slate-600">Añadir rapido (opcional)</label>
+          <label class="mb-1 block text-xs font-semibold text-slate-600">{% trans "Añadir rápido (opcional)" %}</label>
           <div class="grid grid-cols-3 gap-2">
-            <button type="button" data-preset-btn="paseo" data-preset-value="entre_semana" class="rounded-lg border border-slate-300 px-2 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50">Entre semana</button>
-            <button type="button" data-preset-btn="paseo" data-preset-value="fines_semana" class="rounded-lg border border-slate-300 px-2 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50">Fines de semana</button>
-            <button type="button" data-preset-btn="paseo" data-preset-value="todos" class="rounded-lg border border-slate-300 px-2 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50">Todos los dias</button>
+            <button type="button" data-preset-btn="paseo" data-preset-value="entre_semana" class="rounded-lg border border-slate-300 px-2 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50">{% trans "Entre semana" %}</button>
+            <button type="button" data-preset-btn="paseo" data-preset-value="fines_semana" class="rounded-lg border border-slate-300 px-2 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50">{% trans "Fines de semana" %}</button>
+            <button type="button" data-preset-btn="paseo" data-preset-value="todos" class="rounded-lg border border-slate-300 px-2 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50">{% trans "Todos los días" %}</button>
           </div>
           <div class="mt-1 flex items-center justify-between">
-            <p id="presetPaseoEstado" class="text-[11px] text-slate-500">Sin atajo seleccionado</p>
-            <button type="button" id="presetPaseoLimpiar" class="text-[11px] font-semibold text-slate-500 hover:text-slate-700">Limpiar</button>
+            <p id="presetPaseoEstado" class="text-[11px] text-slate-500">{% trans "Sin atajo seleccionado" %}</p>
+            <button type="button" id="presetPaseoLimpiar" class="text-[11px] font-semibold text-slate-500 hover:text-slate-700">{% trans "Limpiar" %}</button>
           </div>
-          <p class="mt-1 text-[11px] text-slate-500">Se aplican al pulsar "Agregar un dia" con la hora y duración elegidas.</p>
+          <p class="mt-1 text-[11px] text-slate-500">{% trans "Se aplican al pulsar \"Agregar un día\" con la hora y duración elegidas." %}</p>
         </div>
 
         <div id="diaPaseoWrap">
-          <label class="mb-1 block text-xs font-semibold text-slate-600">Dia</label>
+          <label class="mb-1 block text-xs font-semibold text-slate-600">{% trans "Día" %}</label>
           <select id="diaPaseoSelect" name="diaSemana" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none">
-            <option value="" selected disabled>Selecciona un dia</option>
+            <option value="" selected disabled>{% trans "Selecciona un día" %}</option>
             {% for val, label in dias_semana %}<option value="{{ val }}">{{ label }}</option>{% endfor %}
           </select>
         </div>
         <div class="grid grid-cols-2 gap-2">
           <div>
-            <label class="mb-1 block text-xs font-semibold text-slate-600">Inicio</label>
+            <label class="mb-1 block text-xs font-semibold text-slate-600">{% trans "Inicio" %}</label>
             <input id="horaPaseoInicioInput" name="horaInicio" type="time" value="09:00" step="1800" required class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none">
             <div class="mt-1 flex flex-wrap gap-1">
               <button type="button" class="rounded-md border border-slate-200 px-1.5 py-0.5 text-[11px] text-slate-600 hover:bg-slate-100" data-hora-paseo="07:00">7:00</button>
@@ -121,14 +121,14 @@
             </div>
           </div>
           <div>
-            <label class="mb-1 block text-xs font-semibold text-slate-600">Duracion</label>
+            <label class="mb-1 block text-xs font-semibold text-slate-600">{% trans "Duración" %}</label>
             <select id="duracionPaseoInput" name="duracionPaseoSelect" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none">
-              <option value="">Selecciona duración</option>
-              <option value="60">1 hora</option>
-              <option value="90">1.5 horas</option>
-              <option value="120" selected>2 horas</option>
-              <option value="150">2.5 horas</option>
-              <option value="180">3 horas</option>
+              <option value="">{% trans "Selecciona duración" %}</option>
+              <option value="60">{% trans "1 hora" %}</option>
+              <option value="90">{% trans "1.5 horas" %}</option>
+              <option value="120" selected>{% trans "2 horas" %}</option>
+              <option value="150">{% trans "2.5 horas" %}</option>
+              <option value="180">{% trans "3 horas" %}</option>
             </select>
             <div class="mt-1 flex flex-wrap gap-1">
               <button type="button" data-duracion-paseo="60" class="rounded-md border border-slate-200 px-1.5 py-0.5 text-[11px] text-slate-600 hover:bg-slate-100">1h</button>
@@ -139,26 +139,26 @@
         </div>
         <input type="hidden" id="horaFinPaseoInput" name="horaFin">
         <div>
-          <label class="mb-1 block text-xs font-semibold text-slate-600">Cupo maximo del bloque</label>
+          <label class="mb-1 block text-xs font-semibold text-slate-600">{% trans "Cupo máximo del bloque" %}</label>
           <select id="capacidadPaseoInput" name="capacidadMaxima" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none">
-            <option value="1">1 perro</option>
-            <option value="2">2 perros</option>
-            <option value="3">3 perros</option>
-            <option value="4" selected>4 perros</option>
+            <option value="1">{% trans "1 perro" %}</option>
+            <option value="2">{% trans "2 perros" %}</option>
+            <option value="3">{% trans "3 perros" %}</option>
+            <option value="4" selected>{% trans "4 perros" %}</option>
           </select>
-          <p class="mt-1 text-[11px] text-slate-500">Para paseo el cupo permitido es de 1 a 4 perros.</p>
+          <p class="mt-1 text-[11px] text-slate-500">{% trans "Para paseo el cupo permitido es de 1 a 4 perros." %}</p>
         </div>
-        <button type="button" id="btnAgregarBloquePaseoLocal" class="w-full rounded-lg bg-slate-900 px-3 py-2 text-sm font-semibold text-white hover:bg-slate-800">Agregar bloque (pendiente)</button>
+        <button type="button" id="btnAgregarBloquePaseoLocal" class="w-full rounded-lg bg-slate-900 px-3 py-2 text-sm font-semibold text-white hover:bg-slate-800">{% trans "Agregar bloque (pendiente)" %}</button>
       </form>
 
       <div id="bloquesPaseoPendientesWrap" class="mt-3 hidden rounded-lg border border-amber-200 bg-amber-50 p-3">
-        <p class="text-xs font-semibold uppercase tracking-wide text-amber-700">Pendientes por guardar</p>
+        <p class="text-xs font-semibold uppercase tracking-wide text-amber-700">{% trans "Pendientes por guardar" %}</p>
         <div id="bloquesPaseoPendientesList" class="mt-2 space-y-2"></div>
       </div>
     </div>
 
     <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-      <h4 class="text-sm font-bold text-slate-800">Bloques configurados</h4>
+      <h4 class="text-sm font-bold text-slate-800">{% trans "Bloques configurados" %}</h4>
       {% if horarios_paseo_por_dia %}
       <div class="mt-3 space-y-3">
         {% for dia_val, dia_label, items in horarios_paseo_por_dia %}
@@ -172,14 +172,14 @@
                   <div>
                     <p class="text-sm font-semibold text-slate-700">{{ e.horaInicio|hora_corta }} - {{ e.horaFin|hora_corta }}</p>
                     {% if e.nombreLugar %}<p class="text-xs text-slate-500">{{ e.nombreLugar }}</p>{% endif %}
-                    <p class="text-xs text-slate-500">Cupo maximo: {{ e.capacidadMaxima }} perro{{ e.capacidadMaxima|pluralize }}</p>
+                    <p class="text-xs text-slate-500">{% trans "Cupo máximo:" %} {{ e.capacidadMaxima }} perro{{ e.capacidadMaxima|pluralize }}</p>
                   </div>
                   <form method="post">
                     {% csrf_token %}
                     <input type="hidden" name="action" value="eliminar_evento">
                     <input type="hidden" name="evento_id" value="{{ e.idEvento }}">
                     <input type="hidden" name="editar_tipo" value="paseo">
-                    <button type="submit" class="rounded-md p-1 text-slate-400 hover:bg-red-50 hover:text-red-600" onclick="return confirm('¿Eliminar bloque?');"><i class="bi bi-trash"></i></button>
+                    <button type="submit" class="rounded-md p-1 text-slate-400 hover:bg-red-50 hover:text-red-600" onclick="return confirm('{% trans "¿Eliminar bloque?" %}');"><i class="bi bi-trash"></i></button>
                   </form>
                 </div>
               </div>
@@ -190,13 +190,25 @@
         {% endfor %}
       </div>
       {% else %}
-      <p class="mt-3 text-sm text-slate-500">Todavia no has agregado bloques de paseo.</p>
+      <p class="mt-3 text-sm text-slate-500">{% trans "Todavía no has agregado bloques de paseo." %}</p>
       {% endif %}
     </div>
   </div>
 </div>
 
 <script>
+var STR_PASEO = {
+  atajoEntreS: "{% trans "Atajo activo: Entre semana" %}",
+  atajoFinesS: "{% trans "Atajo activo: Fines de semana" %}",
+  atajoTodos: "{% trans "Atajo activo: Todos los días" %}",
+  sinAtajo: "{% trans "Sin atajo seleccionado" %}",
+  atajo: "{% trans "Atajo" %}",
+  min: "{% trans "min" %}",
+  quitar: "{% trans "Quitar" %}",
+  completaHora: "{% trans "Completa hora de inicio y duración antes de agregar." %}",
+  seleccionaDia: "{% trans "Selecciona un día o usa un atajo de días." %}"
+};
+
 (function () {
   var ciudadServicios = document.getElementById("ciudadServiciosPaseo");
   var nombreLugarBloque = document.getElementById("nombreLugarPaseoBloque");
@@ -239,13 +251,13 @@
 
       var descripcion = "";
       if (item.preset) {
-        descripcion = "Atajo " + item.preset + " · " + item.horaInicio + " · " + item.duracionMinutos + " min";
+        descripcion = STR_PASEO.atajo + " " + item.preset + " · " + item.horaInicio + " · " + item.duracionMinutos + " " + STR_PASEO.min;
       } else {
-        descripcion = item.diaSemana + " · " + item.horaInicio + " · " + item.duracionMinutos + " min";
+        descripcion = item.diaSemana + " · " + item.horaInicio + " · " + item.duracionMinutos + " " + STR_PASEO.min;
       }
       row.innerHTML =
         '<p class="text-xs text-slate-700">' + descripcion + '</p>' +
-        '<button type="button" class="rounded border border-amber-300 px-2 py-1 text-[11px] font-semibold text-amber-700 hover:bg-amber-100">Quitar</button>';
+        '<button type="button" class="rounded border border-amber-300 px-2 py-1 text-[11px] font-semibold text-amber-700 hover:bg-amber-100">' + STR_PASEO.quitar + '</button>';
 
       var btnQuitar = row.querySelector("button");
       btnQuitar.addEventListener("click", function () {
@@ -275,9 +287,9 @@
   var botones = document.querySelectorAll('[data-preset-btn="paseo"]');
 
   var labels = {
-    entre_semana: "Atajo activo: Entre semana",
-    fines_semana: "Atajo activo: Fines de semana",
-    todos: "Atajo activo: Todos los dias"
+    entre_semana: STR_PASEO.atajoEntreS,
+    fines_semana: STR_PASEO.atajoFinesS,
+    todos: STR_PASEO.atajoTodos
   };
 
   function renderPreset() {
@@ -294,7 +306,7 @@
       }
     });
     var tienePreset = !!hidden.value;
-    estado.textContent = labels[hidden.value] || "Sin atajo seleccionado";
+    estado.textContent = labels[hidden.value] || STR_PASEO.sinAtajo;
     if (diaWrap && diaSelect) {
       diaWrap.style.display = tienePreset ? "none" : "block";
       diaSelect.disabled = tienePreset;
@@ -370,11 +382,11 @@
     };
 
     if (!item.horaInicio || !duracion) {
-      window.alert("Completa hora de inicio y duración antes de agregar.");
+      window.alert(STR_PASEO.completaHora);
       return;
     }
     if (!item.preset && !item.diaSemana) {
-      window.alert("Selecciona un día o usa un atajo de días.");
+      window.alert(STR_PASEO.seleccionaDia);
       return;
     }
 

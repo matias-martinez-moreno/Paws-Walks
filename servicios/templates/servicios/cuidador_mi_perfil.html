@@ -1,19 +1,20 @@
 {% extends "servicios/base_dashboard.html" %}
-{% block title %}Mi perfil – Cuidador{% endblock %}
+{% load i18n %}
+{% block title %}{% trans "Mi perfil" %}{% endblock %}
 
 {% block top_greeting %}
-<h1 class="page-header__title">Mi perfil</h1>
-<p class="page-header__subtitle">Datos personales y cuenta</p>
+<h1 class="page-header__title">{% trans "Mi perfil" %}</h1>
+<p class="page-header__subtitle">{% trans "Datos personales y cuenta" %}</p>
 {% endblock %}
 
 {% block sidebar_links %}
-<div class="sidebar-section">Principal</div>
-<a class="nav-link" href="{% url 'dashboard_cuidador' %}"><i class="bi bi-house-door"></i> Panel</a>
-<div class="sidebar-section">Gestión</div>
-<a class="nav-link" href="{% url 'cuidador_calendario' %}"><i class="bi bi-calendar3"></i> Mi calendario</a>
-<a class="nav-link" href="{% url 'cuidador_servicios' %}"><i class="bi bi-gear-wide-connected"></i> Mis servicios</a>
-<div class="sidebar-section">Cuenta</div>
-<a class="nav-link active" href="{% url 'cuidador_mi_perfil' %}"><i class="bi bi-person"></i> Mi perfil</a>
+<div class="sidebar-section">{% trans "Principal" %}</div>
+<a class="nav-link" href="{% url 'dashboard_cuidador' %}"><i class="bi bi-house-door"></i> {% trans "Panel" %}</a>
+<div class="sidebar-section">{% trans "Gestión" %}</div>
+<a class="nav-link" href="{% url 'cuidador_calendario' %}"><i class="bi bi-calendar3"></i> {% trans "Mi calendario" %}</a>
+<a class="nav-link" href="{% url 'cuidador_servicios' %}"><i class="bi bi-gear-wide-connected"></i> {% trans "Mis servicios" %}</a>
+<div class="sidebar-section">{% trans "Cuenta" %}</div>
+<a class="nav-link active" href="{% url 'cuidador_mi_perfil' %}"><i class="bi bi-person"></i> {% trans "Mi perfil" %}</a>
 {% endblock %}
 
 {% block content %}
@@ -30,23 +31,23 @@
     <small class="text-slate-500">@{{ usuario.username }}</small>
     <div class="mt-2">
       <span class="inline-flex items-center rounded-full px-3 py-1 text-xs font-medium bg-orange-50 text-pw-orange">{{ usuario.get_rol_display }}</span>
-      {% if usuario.verificado %}<span class="inline-flex items-center rounded-full px-3 py-1 text-xs font-medium bg-emerald-50 text-emerald-600 ml-1">Verificado</span>{% endif %}
+      {% if usuario.verificado %}<span class="inline-flex items-center rounded-full px-3 py-1 text-xs font-medium bg-emerald-50 text-emerald-600 ml-1">{% trans "Verificado" %}</span>{% endif %}
     </div>
-    <a href="?edit=1" class="block w-full mt-4 border-2 border-pw-orange text-pw-orange hover:bg-pw-orange hover:text-white font-semibold rounded-xl py-2.5 text-center transition-all hover:shadow-lg hover:shadow-pw-orange/20"><i class="bi bi-pencil mr-2"></i>Editar perfil</a>
+    <a href="?edit=1" class="block w-full mt-4 border-2 border-pw-orange text-pw-orange hover:bg-pw-orange hover:text-white font-semibold rounded-xl py-2.5 text-center transition-all hover:shadow-lg hover:shadow-pw-orange/20"><i class="bi bi-pencil mr-2"></i>{% trans "Editar perfil" %}</a>
   </div>
   <div class="lg:col-span-2 bg-white rounded-2xl shadow-sm border border-slate-100/80 overflow-hidden">
-    <div class="px-6 py-4 border-b border-slate-100 font-semibold text-slate-800">Información personal</div>
+    <div class="px-6 py-4 border-b border-slate-100 font-semibold text-slate-800">{% trans "Información personal" %}</div>
     <div class="p-4">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-slate-700">
-        <div><strong class="text-slate-500 block mb-1">Nombre</strong>{{ usuario.nombre }}</div>
-        <div><strong class="text-slate-500 block mb-1">Apellido</strong>{{ usuario.apellido }}</div>
-        <div><strong class="text-slate-500 block mb-1">Correo</strong>{{ usuario.correo }}</div>
-        <div><strong class="text-slate-500 block mb-1">Teléfono</strong>{{ usuario.telefono }}</div>
-        <div><strong class="text-slate-500 block mb-1">Ciudad</strong>{{ usuario.ciudad }}</div>
-        <div><strong class="text-slate-500 block mb-1">Dirección</strong>{% if usuario.direccion %}{{ usuario.direccion }}{% else %}<span class="text-slate-500">No configurada</span>{% endif %}</div>
-        <div class="md:col-span-2"><strong class="text-slate-500 block mb-1">Experiencia</strong>{% if perfil and perfil.descripcion %}{{ perfil.descripcion }}{% else %}<span class="text-slate-500">No registrada</span>{% endif %}</div>
-        <div><strong class="text-slate-500 block mb-1">Cédula</strong>{{ usuario.cedula }}</div>
-        <div><strong class="text-slate-500 block mb-1">Fecha de nacimiento</strong>{{ usuario.fechaNacimiento|date:"d \d\e F \d\e Y" }}</div>
+        <div><strong class="text-slate-500 block mb-1">{% trans "Nombre" %}</strong>{{ usuario.nombre }}</div>
+        <div><strong class="text-slate-500 block mb-1">{% trans "Apellido" %}</strong>{{ usuario.apellido }}</div>
+        <div><strong class="text-slate-500 block mb-1">{% trans "Correo" %}</strong>{{ usuario.correo }}</div>
+        <div><strong class="text-slate-500 block mb-1">{% trans "Teléfono" %}</strong>{{ usuario.telefono }}</div>
+        <div><strong class="text-slate-500 block mb-1">{% trans "Ciudad" %}</strong>{{ usuario.ciudad }}</div>
+        <div><strong class="text-slate-500 block mb-1">{% trans "Dirección" %}</strong>{% if usuario.direccion %}{{ usuario.direccion }}{% else %}<span class="text-slate-500">{% trans "No configurada" %}</span>{% endif %}</div>
+        <div class="md:col-span-2"><strong class="text-slate-500 block mb-1">{% trans "Experiencia" %}</strong>{% if perfil and perfil.descripcion %}{{ perfil.descripcion }}{% else %}<span class="text-slate-500">{% trans "No registrada" %}</span>{% endif %}</div>
+        <div><strong class="text-slate-500 block mb-1">{% trans "Cédula" %}</strong>{{ usuario.cedula }}</div>
+        <div><strong class="text-slate-500 block mb-1">{% trans "Fecha de nacimiento" %}</strong>{{ usuario.fechaNacimiento|date:"d \d\e F \d\e Y" }}</div>
       </div>
     </div>
   </div>
@@ -58,8 +59,8 @@
 <div class="max-w-3xl">
 <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
   <div class="px-6 py-4 border-b border-slate-100 font-semibold text-slate-800 flex items-center justify-between">
-    <span><i class="bi bi-person-gear mr-2"></i>Datos personales</span>
-    <a href="{% url 'cuidador_mi_perfil' %}" class="border border-slate-300 text-slate-600 hover:bg-slate-50 font-semibold rounded-xl px-3 py-1.5 text-sm transition"><i class="bi bi-x-lg mr-1"></i>Cancelar</a>
+    <span><i class="bi bi-person-gear mr-2"></i>{% trans "Datos personales" %}</span>
+    <a href="{% url 'cuidador_mi_perfil' %}" class="border border-slate-300 text-slate-600 hover:bg-slate-50 font-semibold rounded-xl px-3 py-1.5 text-sm transition"><i class="bi bi-x-lg mr-1"></i>{% trans "Cancelar" %}</a>
   </div>
   <div class="p-4">
     <form method="post" enctype="multipart/form-data">
@@ -73,19 +74,19 @@
           <div class="w-[90px] h-[90px] rounded-full bg-pw-orange text-white inline-flex items-center justify-center text-2xl font-bold mb-2" id="placeholderAvatar">{{ usuario.nombre|first|upper }}</div>
           <img src="" alt="foto" class="w-[90px] h-[90px] rounded-full object-cover border-2 border-slate-200 mb-2 hidden" id="previewImg">
         {% endif %}
-        <div><label class="inline-flex items-center border-2 border-pw-orange text-pw-orange hover:bg-pw-orange hover:text-white font-semibold rounded-xl px-3 py-1.5 text-sm cursor-pointer transition" for="fotoInput"><i class="bi bi-camera mr-1"></i>Foto</label>
+        <div><label class="inline-flex items-center border-2 border-pw-orange text-pw-orange hover:bg-pw-orange hover:text-white font-semibold rounded-xl px-3 py-1.5 text-sm cursor-pointer transition" for="fotoInput"><i class="bi bi-camera mr-1"></i>{% trans "Cambiar foto" %}</label>
         <input type="file" name="fotoPerfil" id="fotoInput" accept="image/*" class="hidden" onchange="previewFoto(this)"></div>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div><label class="block text-sm font-semibold text-slate-700 mb-1.5">Nombre</label><input name="nombre" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" value="{{ usuario.nombre }}" maxlength="50" required></div>
-        <div><label class="block text-sm font-semibold text-slate-700 mb-1.5">Apellido</label><input name="apellido" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" value="{{ usuario.apellido }}" maxlength="50" required></div>
-        <div><label class="block text-sm font-semibold text-slate-700 mb-1.5">Correo</label><input name="correo" type="email" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" value="{{ usuario.correo }}" required></div>
-        <div><label class="block text-sm font-semibold text-slate-700 mb-1.5">Cédula</label><input name="cedula" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" value="{{ usuario.cedula }}" maxlength="20" required></div>
-        <div><label class="block text-sm font-semibold text-slate-700 mb-1.5">Ciudad</label><input name="ciudad" id="ciudadInput" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" value="{{ usuario.ciudad }}" maxlength="100"></div>
-        <div><label class="block text-sm font-semibold text-slate-700 mb-1.5">Dirección</label><input name="direccion" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" value="{{ usuario.direccion|default:'' }}" maxlength="200" placeholder="Ej: Calle 10 # 20-30"></div>
+        <div><label class="block text-sm font-semibold text-slate-700 mb-1.5">{% trans "Nombre" %}</label><input name="nombre" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" value="{{ usuario.nombre }}" maxlength="50" required></div>
+        <div><label class="block text-sm font-semibold text-slate-700 mb-1.5">{% trans "Apellido" %}</label><input name="apellido" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" value="{{ usuario.apellido }}" maxlength="50" required></div>
+        <div><label class="block text-sm font-semibold text-slate-700 mb-1.5">{% trans "Correo" %}</label><input name="correo" type="email" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" value="{{ usuario.correo }}" required></div>
+        <div><label class="block text-sm font-semibold text-slate-700 mb-1.5">{% trans "Cédula" %}</label><input name="cedula" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" value="{{ usuario.cedula }}" maxlength="20" required></div>
+        <div><label class="block text-sm font-semibold text-slate-700 mb-1.5">{% trans "Ciudad" %}</label><input name="ciudad" id="ciudadInput" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" value="{{ usuario.ciudad }}" maxlength="100"></div>
+        <div><label class="block text-sm font-semibold text-slate-700 mb-1.5">{% trans "Dirección" %}</label><input name="direccion" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" value="{{ usuario.direccion|default:'' }}" maxlength="200" placeholder="Ej: Calle 10 # 20-30"></div>
         <div class="md:col-span-2">
-          <label class="block text-sm font-semibold text-slate-700 mb-1.5">Teléfono de contacto</label>
+          <label class="block text-sm font-semibold text-slate-700 mb-1.5">{% trans "Teléfono" %}</label>
           <div class="grid grid-cols-3 gap-2">
             <select name="prefijo" class="col-span-1 rounded-xl border border-slate-300 py-2.5 px-3 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" required>
               {% for pref in prefijos_telefono %}
@@ -99,11 +100,11 @@
           </div>
         </div>
         <div class="md:col-span-2">
-          <label class="block text-sm font-semibold text-slate-700 mb-1.5">Experiencia</label>
+          <label class="block text-sm font-semibold text-slate-700 mb-1.5">{% trans "Experiencia" %}</label>
           <textarea name="experiencia" rows="3" class="w-full rounded-xl border border-slate-300 py-2.5 px-4 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" placeholder="Cuenta tu experiencia cuidando mascotas.">{{ experiencia_valor|default:'' }}</textarea>
         </div>
       </div>
-      <button type="submit" class="w-full bg-pw-orange hover:bg-pw-orange-dark text-white font-semibold rounded-xl py-2.5 mt-4 transition"><i class="bi bi-check-lg mr-1"></i>Guardar datos personales</button>
+      <button type="submit" class="w-full bg-pw-orange hover:bg-pw-orange-dark text-white font-semibold rounded-xl py-2.5 mt-4 transition"><i class="bi bi-check-lg mr-1"></i>{% trans "Guardar cambios" %}</button>
     </form>
   </div>
 </div>

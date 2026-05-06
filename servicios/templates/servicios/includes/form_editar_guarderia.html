@@ -1,4 +1,4 @@
-{% load servicios_extras l10n %}
+{% load servicios_extras l10n i18n %}
 <div class="grid gap-6 lg:grid-cols-5">
   <div class="lg:col-span-3 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
     <div class="mb-5 flex items-center gap-3">
@@ -6,8 +6,8 @@
         <i class="bi bi-house-heart"></i>
       </div>
       <div>
-        <h3 class="text-lg font-bold text-slate-800">Configuracion de guarderia</h3>
-        <p class="text-sm text-slate-500">Tarifa por hora y disponibilidad flexible por bloques.</p>
+        <h3 class="text-lg font-bold text-slate-800">{% trans "Configuración de guardería" %}</h3>
+        <p class="text-sm text-slate-500">{% trans "Tarifa por hora y disponibilidad flexible por bloques." %}</p>
       </div>
     </div>
 
@@ -22,20 +22,20 @@
       <input type="hidden" name="descripcionPaseo" value="{% if precios_activos.paseo %}{{ precios_activos.paseo.descripcion|default:'' }}{% endif %}">
 
       <div>
-        <label class="mb-1.5 block text-sm font-semibold text-slate-700">Tarifa por hora (COP)</label>
-        <input name="tarifaGuarderia" type="number" min="1" required value="{% if precios_activos.guarderia %}{{ precios_activos.guarderia.precioCOP }}{% endif %}" class="w-full rounded-xl border border-slate-300 px-4 py-2.5 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" placeholder="Ej: 14000">
+        <label class="mb-1.5 block text-sm font-semibold text-slate-700">{% trans "Tarifa por hora (COP)" %}</label>
+        <input name="tarifaGuarderia" type="number" min="1" required value="{% if precios_activos.guarderia %}{{ precios_activos.guarderia.precioCOP }}{% endif %}" class="w-full rounded-xl border border-slate-300 px-4 py-2.5 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" placeholder="{% trans "Ej: 14000" %}">
       </div>
 
       <div>
-        <label class="mb-1.5 block text-sm font-semibold text-slate-700">Descripcion del servicio</label>
-        <textarea name="descripcionGuarderia" rows="3" class="w-full rounded-xl border border-slate-300 px-4 py-2.5 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" placeholder="Describe el espacio, cuidados y condiciones.">{% if precios_activos.guarderia %}{{ precios_activos.guarderia.descripcion|default:'' }}{% endif %}</textarea>
+        <label class="mb-1.5 block text-sm font-semibold text-slate-700">{% trans "Descripción del servicio" %}</label>
+        <textarea name="descripcionGuarderia" rows="3" class="w-full rounded-xl border border-slate-300 px-4 py-2.5 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" placeholder="{% trans "Describe el espacio, cuidados y condiciones." %}">{% if precios_activos.guarderia %}{{ precios_activos.guarderia.descripcion|default:'' }}{% endif %}</textarea>
       </div>
 
       <div>
-        <label class="mb-1.5 block text-sm font-semibold text-slate-700">Ubicacion</label>
+        <label class="mb-1.5 block text-sm font-semibold text-slate-700">{% trans "Ubicación" %}</label>
         <div class="relative">
-          <input name="ciudad" id="ciudadServiciosGuarderia" value="{{ servicio_ciudad|default:'' }}" class="w-full rounded-xl border border-slate-300 px-4 py-2.5 pr-11 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" placeholder="Ej: Medellin">
-          <button type="button" id="btnBuscarCiudadGuarderia" class="absolute right-2 top-1/2 -translate-y-1/2 rounded-lg p-1.5 text-slate-500 hover:bg-slate-100 hover:text-slate-700" aria-label="Buscar ubicacion escrita">
+          <input name="ciudad" id="ciudadServiciosGuarderia" value="{{ servicio_ciudad|default:'' }}" class="w-full rounded-xl border border-slate-300 px-4 py-2.5 pr-11 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none" placeholder="{% trans "Ej: Medellín" %}">
+          <button type="button" id="btnBuscarCiudadGuarderia" class="absolute right-2 top-1/2 -translate-y-1/2 rounded-lg p-1.5 text-slate-500 hover:bg-slate-100 hover:text-slate-700" aria-label="{% trans "Buscar ubicación escrita" %}">
             <i class="bi bi-search"></i>
           </button>
         </div>
@@ -45,19 +45,19 @@
       <input type="hidden" id="longitudServiciosGuarderia" name="longitud" value="{{ servicio_longitud|default_if_none:''|unlocalize }}">
       <div class="space-y-2">
         <div class="flex flex-wrap gap-2">
-          <button type="button" id="btnUbicacionGuarderia" class="rounded-lg border border-pw-orange px-3 py-1.5 text-xs font-semibold text-pw-orange hover:bg-pw-orange hover:text-white">Usar mi ubicacion</button>
+          <button type="button" id="btnUbicacionGuarderia" class="rounded-lg border border-pw-orange px-3 py-1.5 text-xs font-semibold text-pw-orange hover:bg-pw-orange hover:text-white">{% trans "Usar mi ubicación" %}</button>
         </div>
         <div id="mapServiciosGuarderia" class="h-44 rounded-xl border border-slate-200"></div>
       </div>
 
       <div>
-        <p class="mb-1.5 text-sm font-semibold text-slate-700">Tipo de mascota para guarderia</p>
-        <label class="mr-3 inline-flex items-center gap-2 text-sm text-slate-700"><input type="radio" name="tipoMascotaGuarderia" value="perro" {% if not perfil or perfil.tiposMascotaPreferidos == 'perro' or perfil.tiposMascotaPreferidos == 'ambos' %}checked{% endif %}>Perros</label>
-        <label class="inline-flex items-center gap-2 text-sm text-slate-700"><input type="radio" name="tipoMascotaGuarderia" value="gato" {% if perfil and perfil.tiposMascotaPreferidos == 'gato' %}checked{% endif %}>Gatos</label>
+        <p class="mb-1.5 text-sm font-semibold text-slate-700">{% trans "Tipo de mascota para guardería" %}</p>
+        <label class="mr-3 inline-flex items-center gap-2 text-sm text-slate-700"><input type="radio" name="tipoMascotaGuarderia" value="perro" {% if not perfil or perfil.tiposMascotaPreferidos == 'perro' or perfil.tiposMascotaPreferidos == 'ambos' %}checked{% endif %}>{% trans "Perros" %}</label>
+        <label class="inline-flex items-center gap-2 text-sm text-slate-700"><input type="radio" name="tipoMascotaGuarderia" value="gato" {% if perfil and perfil.tiposMascotaPreferidos == 'gato' %}checked{% endif %}>{% trans "Gatos" %}</label>
       </div>
 
       <button type="submit" class="w-full rounded-xl bg-pw-orange px-4 py-2.5 text-sm font-semibold text-white hover:bg-pw-orange-dark">
-        Guardar configuracion de guarderia
+        {% trans "Guardar configuración de guardería" %}
       </button>
     </form>
 
@@ -66,91 +66,91 @@
       {% csrf_token %}
       <input type="hidden" name="action" value="eliminar_servicio">
       <input type="hidden" name="tipoServicio" value="guarderia">
-      <button type="submit" class="w-full rounded-xl border border-red-300 px-4 py-2.5 text-sm font-semibold text-red-700 hover:bg-red-50" onclick="return confirm('¿Eliminar servicio de guarderia?');">Eliminar guarderia</button>
+      <button type="submit" class="w-full rounded-xl border border-red-300 px-4 py-2.5 text-sm font-semibold text-red-700 hover:bg-red-50" onclick="return confirm('{% trans "¿Eliminar servicio de guardería?" %}');">{% trans "Eliminar guardería" %}</button>
     </form>
     {% endif %}
   </div>
 
   <div class="lg:col-span-2 space-y-6">
     <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-      <h4 class="text-sm font-bold text-slate-800">Agregar bloque de guarderia</h4>
-      <p class="mt-1 text-xs text-slate-500">Define tu disponibilidad en una sola accion: por rango de dias, por un solo dia o dia completo.</p>
+      <h4 class="text-sm font-bold text-slate-800">{% trans "Agregar bloque de guardería" %}</h4>
+      <p class="mt-1 text-xs text-slate-500">{% trans "Define tu disponibilidad en una sola acción: por rango de días, por un solo día o día completo." %}</p>
       <form method="post" class="mt-4 space-y-3" id="formAgregarBloqueGuarderia" onsubmit="return false;">
         {% csrf_token %}
         <input type="hidden" id="nombreLugarGuarderiaBloque" value="{{ servicio_ciudad|default:'' }}">
 
         <div class="rounded-lg border border-rose-100 bg-rose-50 px-3 py-2 text-[11px] text-rose-700">
-          Ejemplos: lunes 08:00 a sabado 21:00, domingo todo el dia, o solo martes por unas horas.
+          {% trans "Ejemplos: lunes 08:00 a sábado 21:00, domingo todo el día, o solo martes por unas horas." %}
         </div>
 
         <div class="grid grid-cols-2 gap-2">
           <div id="diaGuarderiaWrap">
-            <label class="mb-1 block text-xs font-semibold text-slate-600">Desde</label>
+            <label class="mb-1 block text-xs font-semibold text-slate-600">{% trans "Desde" %}</label>
             <select id="diaGuarderiaSelect" name="diaSemana" required class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none">
-              <option value="" selected disabled>Selecciona un dia</option>
+              <option value="" selected disabled>{% trans "Selecciona un día" %}</option>
               {% for val, label in dias_semana %}<option value="{{ val }}">{{ label }}</option>{% endfor %}
             </select>
           </div>
           <div id="diaGuarderiaFinWrap">
-            <label class="mb-1 block text-xs font-semibold text-slate-600">Hasta</label>
+            <label class="mb-1 block text-xs font-semibold text-slate-600">{% trans "Hasta" %}</label>
             <select id="diaGuarderiaFinSelect" name="diaSemanaFin" required class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none">
-              <option value="" selected disabled>Selecciona un dia</option>
+              <option value="" selected disabled>{% trans "Selecciona un día" %}</option>
               {% for val, label in dias_semana %}<option value="{{ val }}">{{ label }}</option>{% endfor %}
             </select>
           </div>
         </div>
         <label class="inline-flex items-center gap-2 text-xs text-slate-600">
           <input id="soloUnDiaGuarderia" type="checkbox" class="rounded border-slate-300 text-pw-orange focus:ring-pw-orange/30">
-          Solo este dia
+          {% trans "Solo este día" %}
         </label>
 
         <div>
-          <label class="mb-1 block text-xs font-semibold text-slate-600">Horario del bloque</label>
+          <label class="mb-1 block text-xs font-semibold text-slate-600">{% trans "Horario del bloque" %}</label>
           <input type="hidden" id="modoHorarioGuarderia" value="por_horas">
           <div class="grid grid-cols-2 gap-2">
-            <button type="button" data-modo-horario-guarderia="por_horas" class="rounded-lg border border-slate-300 px-2 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50">Por horas</button>
-            <button type="button" data-modo-horario-guarderia="todo_dia" class="rounded-lg border border-slate-300 px-2 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50">Todo el dia</button>
+            <button type="button" data-modo-horario-guarderia="por_horas" class="rounded-lg border border-slate-300 px-2 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50">{% trans "Por horas" %}</button>
+            <button type="button" data-modo-horario-guarderia="todo_dia" class="rounded-lg border border-slate-300 px-2 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50">{% trans "Todo el día" %}</button>
           </div>
-          <p id="modoHorarioAyuda" class="mt-1 text-[11px] text-slate-500">Por horas: define inicio y fin. Todo el dia: se usa 00:00 a 23:30.</p>
+          <p id="modoHorarioAyuda" class="mt-1 text-[11px] text-slate-500">{% trans "Por horas: define inicio y fin. Todo el día: se usa 00:00 a 23:30." %}</p>
         </div>
 
         <div class="grid grid-cols-2 gap-2">
           <div>
-            <label class="mb-1 block text-xs font-semibold text-slate-600">Hora inicial</label>
+            <label class="mb-1 block text-xs font-semibold text-slate-600">{% trans "Hora inicial" %}</label>
             <input id="horaGuarderiaInicioInput" name="horaInicio" type="time" value="08:00" step="1800" required class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none">
           </div>
           <div>
-            <label class="mb-1 block text-xs font-semibold text-slate-600">Hora final</label>
+            <label class="mb-1 block text-xs font-semibold text-slate-600">{% trans "Hora final" %}</label>
             <input id="horaGuarderiaFinInput" name="horaFin" type="time" value="18:00" step="1800" required class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none">
           </div>
         </div>
         <div class="flex flex-wrap gap-1">
-          <button type="button" data-horario-guarderia="07:00|13:00" class="rounded-md border border-slate-200 px-2 py-0.5 text-[11px] text-slate-600 hover:bg-slate-100">Manana</button>
-          <button type="button" data-horario-guarderia="13:00|19:00" class="rounded-md border border-slate-200 px-2 py-0.5 text-[11px] text-slate-600 hover:bg-slate-100">Tarde</button>
-          <button type="button" data-horario-guarderia="08:00|21:00" class="rounded-md border border-slate-200 px-2 py-0.5 text-[11px] text-slate-600 hover:bg-slate-100">Largo</button>
+          <button type="button" data-horario-guarderia="07:00|13:00" class="rounded-md border border-slate-200 px-2 py-0.5 text-[11px] text-slate-600 hover:bg-slate-100">{% trans "Mañana" %}</button>
+          <button type="button" data-horario-guarderia="13:00|19:00" class="rounded-md border border-slate-200 px-2 py-0.5 text-[11px] text-slate-600 hover:bg-slate-100">{% trans "Tarde" %}</button>
+          <button type="button" data-horario-guarderia="08:00|21:00" class="rounded-md border border-slate-200 px-2 py-0.5 text-[11px] text-slate-600 hover:bg-slate-100">{% trans "Largo" %}</button>
         </div>
 
         <div>
-          <label class="mb-1 block text-xs font-semibold text-slate-600">Cupo maximo del bloque</label>
+          <label class="mb-1 block text-xs font-semibold text-slate-600">{% trans "Cupo máximo del bloque" %}</label>
           <select id="capacidadGuarderiaInput" name="capacidadMaxima" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-pw-orange focus:ring-2 focus:ring-orange-100 outline-none">
-            <option value="1" selected>1 mascota</option>
-            <option value="2">2 mascotas</option>
-            <option value="3">3 mascotas</option>
-            <option value="4">4 mascotas</option>
-            <option value="5">5 mascotas</option>
+            <option value="1" selected>{% trans "1 mascota" %}</option>
+            <option value="2">{% trans "2 mascotas" %}</option>
+            <option value="3">{% trans "3 mascotas" %}</option>
+            <option value="4">{% trans "4 mascotas" %}</option>
+            <option value="5">{% trans "5 mascotas" %}</option>
           </select>
         </div>
-        <button type="button" id="btnAgregarBloqueGuarderiaLocal" class="w-full rounded-lg bg-slate-900 px-3 py-2 text-sm font-semibold text-white hover:bg-slate-800">Agregar bloque (pendiente)</button>
+        <button type="button" id="btnAgregarBloqueGuarderiaLocal" class="w-full rounded-lg bg-slate-900 px-3 py-2 text-sm font-semibold text-white hover:bg-slate-800">{% trans "Agregar bloque (pendiente)" %}</button>
       </form>
 
       <div id="bloquesGuarderiaPendientesWrap" class="mt-3 hidden rounded-lg border border-rose-200 bg-rose-50 p-3">
-        <p class="text-xs font-semibold uppercase tracking-wide text-rose-700">Pendientes por guardar</p>
+        <p class="text-xs font-semibold uppercase tracking-wide text-rose-700">{% trans "Pendientes por guardar" %}</p>
         <div id="bloquesGuarderiaPendientesList" class="mt-2 space-y-2"></div>
       </div>
     </div>
 
     <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-      <h4 class="text-sm font-bold text-slate-800">Bloques configurados</h4>
+      <h4 class="text-sm font-bold text-slate-800">{% trans "Bloques configurados" %}</h4>
       {% if horarios_guarderia_por_dia %}
       <div class="mt-3 space-y-3">
         {% for dia_val, dia_label, items in horarios_guarderia_por_dia %}
@@ -164,14 +164,14 @@
                   <div>
                     <p class="text-sm font-semibold text-slate-700">{{ e.horaInicio|hora_corta }} - {{ e.horaFin|hora_corta }}</p>
                     {% if e.nombreLugar %}<p class="text-xs text-slate-500">{{ e.nombreLugar }}</p>{% endif %}
-                    <p class="text-xs text-slate-500">Cupo maximo: {{ e.capacidadMaxima }} mascota{{ e.capacidadMaxima|pluralize }}</p>
+                    <p class="text-xs text-slate-500">{% trans "Cupo máximo:" %} {{ e.capacidadMaxima }} mascota{{ e.capacidadMaxima|pluralize }}</p>
                   </div>
                   <form method="post">
                     {% csrf_token %}
                     <input type="hidden" name="action" value="eliminar_evento">
                     <input type="hidden" name="evento_id" value="{{ e.idEvento }}">
                     <input type="hidden" name="editar_tipo" value="guarderia">
-                    <button type="submit" class="rounded-md p-1 text-slate-400 hover:bg-red-50 hover:text-red-600" onclick="return confirm('¿Eliminar bloque?');"><i class="bi bi-trash"></i></button>
+                    <button type="submit" class="rounded-md p-1 text-slate-400 hover:bg-red-50 hover:text-red-600" onclick="return confirm('{% trans "¿Eliminar bloque?" %}');"><i class="bi bi-trash"></i></button>
                   </form>
                 </div>
               </div>
@@ -182,13 +182,20 @@
         {% endfor %}
       </div>
       {% else %}
-      <p class="mt-3 text-sm text-slate-500">Todavia no has agregado bloques de guarderia.</p>
+      <p class="mt-3 text-sm text-slate-500">{% trans "Todavía no has agregado bloques de guardería." %}</p>
       {% endif %}
     </div>
   </div>
 </div>
 
 <script>
+var STR_GUARDERIA = {
+  todoDia: "{% trans "Todo el día deja el bloque listo para estancias largas (00:00 a 23:30)." %}",
+  porHoras: "{% trans "Por horas: define el intervalo exacto en que recibes mascotas." %}",
+  quitar: "{% trans "Quitar" %}",
+  completaDatos: "{% trans "Completa día(s) y horario antes de agregar." %}"
+};
+
 (function () {
   var ciudadServicios = document.getElementById("ciudadServiciosGuarderia");
   var nombreLugarBloque = document.getElementById("nombreLugarGuarderiaBloque");

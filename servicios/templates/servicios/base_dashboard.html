@@ -1,4 +1,4 @@
-{% load static %}
+{% load static i18n %}
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -57,7 +57,7 @@
 
 <!-- Barra superior móvil -->
 <header class="lg:hidden fixed top-0 left-0 right-0 h-14 bg-white border-b border-slate-200 flex items-center px-4 z-[1000] gap-4">
-  <button type="button" class="border-none bg-transparent text-2xl text-slate-800 p-1" id="btnSidebarToggle" aria-label="Abrir menú"><i class="bi bi-list"></i></button>
+  <button type="button" class="border-none bg-transparent text-2xl text-slate-800 p-1" id="btnSidebarToggle" aria-label="{% trans "Abrir menú" %}"><i class="bi bi-list"></i></button>
   <div class="flex items-center gap-2">
     <img src="{% static 'servicios/img/logo.png' %}" alt="Paws & Walks" class="w-12 h-12 object-contain">
   </div>
@@ -73,7 +73,7 @@
     {% if usuario and usuario.rol == 'dueño' %}
     <a class="nav-link {% if request.resolver_match.url_name == 'dueño_notificaciones' %}active{% endif %}" href="{% url 'dueño_notificaciones' %}">
       <i class="bi bi-bell"></i>
-      <span>Notificaciones</span>
+      <span>{% trans "Notificaciones" %}</span>
       {% if notificaciones_no_leidas_total %}
       <span class="ml-auto inline-flex min-w-[1.35rem] h-5 px-1.5 items-center justify-center rounded-full bg-red-500 text-white text-[0.68rem] font-bold leading-none">{{ notificaciones_no_leidas_total }}</span>
       {% endif %}
@@ -81,7 +81,7 @@
     {% elif usuario and usuario.rol == 'cuidador' %}
     <a class="nav-link {% if request.resolver_match.url_name == 'cuidador_notificaciones' %}active{% endif %}" href="{% url 'cuidador_notificaciones' %}">
       <i class="bi bi-bell"></i>
-      <span>Notificaciones</span>
+      <span>{% trans "Notificaciones" %}</span>
       {% if notificaciones_no_leidas_total %}
       <span class="ml-auto inline-flex min-w-[1.35rem] h-5 px-1.5 items-center justify-center rounded-full bg-red-500 text-white text-[0.68rem] font-bold leading-none">{{ notificaciones_no_leidas_total }}</span>
       {% endif %}
@@ -109,12 +109,12 @@
     <form method="post" action="{% url 'logout' %}">
       {% csrf_token %}
       <button type="submit" class="w-full border border-red-600 rounded-lg py-2.5 font-semibold text-sm bg-red-600 text-white cursor-pointer transition-all flex items-center justify-center gap-2 hover:bg-red-700 hover:border-red-700">
-        <i class="bi bi-box-arrow-left"></i> Cerrar sesión
+        <i class="bi bi-box-arrow-left"></i> {% trans "Cerrar sesión" %}
       </button>
     </form>
   </div>
 </aside>
-<button type="button" class="sidebar-edge-toggle fixed top-[76px] left-[236px] w-7 h-7 border border-slate-200 rounded-full bg-white flex items-center justify-center cursor-pointer z-[1002] shadow-sm hover:bg-slate-50 hover:border-slate-300 hover:scale-105 hidden lg:flex" id="btnSidebarDesktopToggle" aria-label="Plegar o desplegar menú">
+<button type="button" class="sidebar-edge-toggle fixed top-[76px] left-[236px] w-7 h-7 border border-slate-200 rounded-full bg-white flex items-center justify-center cursor-pointer z-[1002] shadow-sm hover:bg-slate-50 hover:border-slate-300 hover:scale-105 hidden lg:flex" id="btnSidebarDesktopToggle" aria-label="{% trans "Plegar o desplegar menú" %}">
   <span class="edge-line w-0.5 h-3.5 bg-slate-400 rounded-full relative block" aria-hidden="true"></span>
 </button>
 
@@ -124,11 +124,20 @@
     <div class="flex items-center gap-3">
       <div class="page-header">
         {% block top_greeting %}
-        <h1 class="page-header__title">Hola, {{ usuario.nombre }}</h1>
-        <p class="page-header__subtitle">Panel de control</p>
+        <h1 class="page-header__title">{% blocktrans with nombre=usuario.nombre %}Hola, {{ nombre }}{% endblocktrans %}</h1>
+        <p class="page-header__subtitle">{% trans "Panel de control" %}</p>
         {% endblock %}
       </div>
     </div>
+    <!-- Selector de idioma -->
+    {% get_current_language as IDIOMA_ACTUAL %}
+    <form action="{% url 'set_language' %}" method="post" class="flex items-center gap-1">
+      {% csrf_token %}
+      <input name="next" type="hidden" value="{{ request.get_full_path }}">
+      <span class="text-xs text-slate-400 mr-1 hidden sm:inline">{% trans "Idioma" %}:</span>
+      <button name="language" value="es" class="px-2.5 py-1 text-xs font-bold rounded-lg border transition-all {% if IDIOMA_ACTUAL == 'es' %}bg-pw-orange text-white border-pw-orange{% else %}border-slate-300 text-slate-600 hover:border-pw-orange hover:text-pw-orange{% endif %}">ES</button>
+      <button name="language" value="en" class="px-2.5 py-1 text-xs font-bold rounded-lg border transition-all {% if IDIOMA_ACTUAL == 'en' %}bg-pw-orange text-white border-pw-orange{% else %}border-slate-300 text-slate-600 hover:border-pw-orange hover:text-pw-orange{% endif %}">EN</button>
+    </form>
   </div>
 
   <div class="p-4 lg:p-8 min-h-[calc(100vh-80px)]">

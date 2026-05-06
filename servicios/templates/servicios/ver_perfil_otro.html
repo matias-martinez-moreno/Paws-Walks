@@ -1,30 +1,30 @@
 {% extends "servicios/base_dashboard.html" %}
-{% load servicios_extras %}
-{% block title %}Perfil de {{ otro.nombre }}{% endblock %}
+{% load servicios_extras i18n %}
+{% block title %}{% blocktrans with nombre=otro.nombre %}Perfil de {{ nombre }}{% endblocktrans %}{% endblock %}
 
 {% block top_greeting %}
-<h1 class="page-header__title">Perfil de {{ otro.nombre }}</h1>
-<p class="page-header__subtitle">Datos de contacto</p>
+<h1 class="page-header__title">{% blocktrans with nombre=otro.nombre %}Perfil de {{ nombre }}{% endblocktrans %}</h1>
+<p class="page-header__subtitle">{% trans "Datos de contacto" %}</p>
 {% endblock %}
 
 {% block sidebar_links %}
 {% if usuario.rol == 'cuidador' %}
-<div class="sidebar-section">Principal</div>
-<a class="nav-link" href="{% url 'dashboard_cuidador' %}"><i class="bi bi-house-door"></i> Panel</a>
-<div class="sidebar-section">Gestión</div>
-<a class="nav-link" href="{% url 'cuidador_calendario' %}"><i class="bi bi-calendar3"></i> Mi calendario</a>
-<a class="nav-link" href="{% url 'cuidador_servicios' %}"><i class="bi bi-gear-wide-connected"></i> Mis servicios</a>
-<div class="sidebar-section">Cuenta</div>
-<a class="nav-link" href="{% url 'cuidador_mi_perfil' %}"><i class="bi bi-person"></i> Mi perfil</a>
+<div class="sidebar-section">{% trans "Principal" %}</div>
+<a class="nav-link" href="{% url 'dashboard_cuidador' %}"><i class="bi bi-house-door"></i> {% trans "Panel" %}</a>
+<div class="sidebar-section">{% trans "Gestión" %}</div>
+<a class="nav-link" href="{% url 'cuidador_calendario' %}"><i class="bi bi-calendar3"></i> {% trans "Mi calendario" %}</a>
+<a class="nav-link" href="{% url 'cuidador_servicios' %}"><i class="bi bi-gear-wide-connected"></i> {% trans "Mis servicios" %}</a>
+<div class="sidebar-section">{% trans "Cuenta" %}</div>
+<a class="nav-link" href="{% url 'cuidador_mi_perfil' %}"><i class="bi bi-person"></i> {% trans "Mi perfil" %}</a>
 {% else %}
-<div class="sidebar-section">Principal</div>
-<a class="nav-link" href="{% url 'dashboard_dueño' %}"><i class="bi bi-house-door"></i> Panel</a>
-<div class="sidebar-section">Gestión</div>
-<a class="nav-link" href="{% url 'dueño_nueva_reserva' %}"><i class="bi bi-plus-circle"></i> Hacer reserva</a>
-<a class="nav-link" href="{% url 'dueño_mis_reservas' %}"><i class="bi bi-calendar3"></i> Mis reservas</a>
-<a class="nav-link" href="{% url 'dueño_mis_mascotas' %}"><i class="bi bi-heart"></i> Mis mascotas</a>
-<div class="sidebar-section">Cuenta</div>
-<a class="nav-link" href="{% url 'dueño_mi_perfil' %}"><i class="bi bi-person"></i> Mi perfil</a>
+<div class="sidebar-section">{% trans "Principal" %}</div>
+<a class="nav-link" href="{% url 'dashboard_dueño' %}"><i class="bi bi-house-door"></i> {% trans "Panel" %}</a>
+<div class="sidebar-section">{% trans "Gestión" %}</div>
+<a class="nav-link" href="{% url 'dueño_nueva_reserva' %}"><i class="bi bi-plus-circle"></i> {% trans "Hacer reserva" %}</a>
+<a class="nav-link" href="{% url 'dueño_mis_reservas' %}"><i class="bi bi-calendar3"></i> {% trans "Mis reservas" %}</a>
+<a class="nav-link" href="{% url 'dueño_mis_mascotas' %}"><i class="bi bi-heart"></i> {% trans "Mis mascotas" %}</a>
+<div class="sidebar-section">{% trans "Cuenta" %}</div>
+<a class="nav-link" href="{% url 'dueño_mi_perfil' %}"><i class="bi bi-person"></i> {% trans "Mi perfil" %}</a>
 {% endif %}
 {% endblock %}
 
@@ -43,18 +43,18 @@
         <div class="flex-1">
           <h5 class="font-bold text-slate-800">{{ otro.nombre }} {{ otro.apellido }}</h5>
           <span class="inline-flex items-center rounded-full px-3 py-1 text-xs font-medium bg-orange-50 text-pw-orange">{{ otro.get_rol_display }}</span>
-          {% if otro.verificado %}<span class="inline-flex items-center rounded-full px-3 py-1 text-xs font-medium bg-emerald-50 text-emerald-600 ml-1">Verificado</span>{% endif %}
+          {% if otro.verificado %}<span class="inline-flex items-center rounded-full px-3 py-1 text-xs font-medium bg-emerald-50 text-emerald-600 ml-1">{% trans "Verificado" %}</span>{% endif %}
         </div>
       </div>
       <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-slate-700">
-        <div><strong class="text-slate-500 block mb-1">Correo</strong><a href="mailto:{{ otro.correo }}" class="text-pw-orange hover:underline">{{ otro.correo }}</a></div>
-        <div><strong class="text-slate-500 block mb-1">Teléfono</strong><a href="tel:{{ otro.telefono }}" class="text-pw-orange hover:underline">{{ otro.telefono }}</a></div>
-        <div><strong class="text-slate-500 block mb-1">Ciudad</strong>{{ otro.ciudad }}</div>
+        <div><strong class="text-slate-500 block mb-1">{% trans "Correo" %}</strong><a href="mailto:{{ otro.correo }}" class="text-pw-orange hover:underline">{{ otro.correo }}</a></div>
+        <div><strong class="text-slate-500 block mb-1">{% trans "Teléfono" %}</strong><a href="tel:{{ otro.telefono }}" class="text-pw-orange hover:underline">{{ otro.telefono }}</a></div>
+        <div><strong class="text-slate-500 block mb-1">{% trans "Ciudad" %}</strong>{{ otro.ciudad }}</div>
       </div>
       {% if perfil_cuidador %}
       <div class="mt-6 pt-6 border-t border-slate-100">
-        <h6 class="font-semibold text-slate-800 mb-2">Servicios</h6>
-        <p class="text-slate-600 text-sm">{{ perfil_cuidador.descripcion|default:"Sin descripción" }}</p>
+        <h6 class="font-semibold text-slate-800 mb-2">{% trans "Servicios" %}</h6>
+        <p class="text-slate-600 text-sm">{{ perfil_cuidador.descripcion|default:"{% trans "Sin descripción" %}" }}</p>
       </div>
       {% endif %}
     </div>
@@ -63,8 +63,8 @@
   {% if mascota_asignada %}
   <div class="mt-6 bg-white rounded-2xl shadow-sm border border-slate-100/80 overflow-hidden">
     <div class="px-6 py-4 border-b border-slate-100">
-      <h3 class="font-semibold text-slate-800">Mascota asignada al servicio</h3>
-      <p class="text-sm text-slate-500">Información inicial de la mascota para esta reserva.</p>
+      <h3 class="font-semibold text-slate-800">{% trans "Mascota asignada al servicio" %}</h3>
+      <p class="text-sm text-slate-500">{% trans "Información inicial de la mascota para esta reserva." %}</p>
     </div>
     <div class="p-6">
       <div class="flex flex-col gap-4 sm:flex-row sm:items-start">
@@ -92,21 +92,21 @@
       </div>
 
       <div class="mt-5 grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-slate-700">
-        <div><strong class="text-slate-500 block mb-1">Edad</strong>{{ mascota_asignada.edad }} año{{ mascota_asignada.edad|pluralize }}</div>
-        <div><strong class="text-slate-500 block mb-1">Peso</strong>{% if mascota_asignada.peso %}{{ mascota_asignada.peso }} kg{% else %}No indicado{% endif %}</div>
-        <div><strong class="text-slate-500 block mb-1">Esterilizado</strong>{% if mascota_asignada.esterilizado %}Sí{% else %}No{% endif %}</div>
-        <div><strong class="text-slate-500 block mb-1">Vacunas al día</strong>{% if mascota_asignada.vacunasAlDia %}Sí{% else %}No{% endif %}</div>
+        <div><strong class="text-slate-500 block mb-1">{% trans "Edad" %}</strong>{{ mascota_asignada.edad }} {% trans "año" %}{{ mascota_asignada.edad|pluralize }}</div>
+        <div><strong class="text-slate-500 block mb-1">{% trans "Peso" %}</strong>{% if mascota_asignada.peso %}{{ mascota_asignada.peso }} kg{% else %}{% trans "No indicado" %}{% endif %}</div>
+        <div><strong class="text-slate-500 block mb-1">{% trans "Esterilizado" %}</strong>{% if mascota_asignada.esterilizado %}{% trans "Sí" %}{% else %}{% trans "No" %}{% endif %}</div>
+        <div><strong class="text-slate-500 block mb-1">{% trans "Vacunas al día" %}</strong>{% if mascota_asignada.vacunasAlDia %}{% trans "Sí" %}{% else %}{% trans "No" %}{% endif %}</div>
       </div>
 
       {% if mascota_asignada.condicionesMedicas %}
       <div class="mt-4 rounded-lg border border-rose-100 bg-rose-50 px-3 py-2 text-sm text-rose-700">
-        <strong>Condiciones médicas:</strong> {{ mascota_asignada.condicionesMedicas }}
+        <strong>{% trans "Condiciones médicas:" %}</strong> {{ mascota_asignada.condicionesMedicas }}
       </div>
       {% endif %}
 
       {% if mascota_asignada.notas %}
       <div class="mt-3 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-700">
-        <strong>Notas:</strong> {{ mascota_asignada.notas }}
+        <strong>{% trans "Notas:" %}</strong> {{ mascota_asignada.notas }}
       </div>
       {% endif %}
     </div>
@@ -114,21 +114,21 @@
 
   <div class="mt-6 bg-white rounded-2xl shadow-sm border border-slate-100/80 overflow-hidden">
     <div class="px-6 py-4 border-b border-slate-100">
-      <h3 class="font-semibold text-slate-800">Calificaciones y reseñas de la mascota</h3>
-      <p class="text-sm text-slate-500">Opiniones de cuidadores que ya atendieron a {{ mascota_asignada.nombreMascota }}.</p>
+      <h3 class="font-semibold text-slate-800">{% trans "Calificaciones y reseñas de la mascota" %}</h3>
+      <p class="text-sm text-slate-500">{% blocktrans with mascota=mascota_asignada.nombreMascota %}Opiniones de cuidadores que ya atendieron a {{ mascota }}.{% endblocktrans %}</p>
     </div>
     <div class="p-4 md:p-6 space-y-4">
       <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
         <div class="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3">
-          <p class="text-xs uppercase tracking-wide text-slate-500">Promedio</p>
+          <p class="text-xs uppercase tracking-wide text-slate-500">{% trans "Promedio" %}</p>
           <p class="text-xl font-bold text-slate-800">{{ mascota_asignada.calificacion_promedio|default:"0.0" }}/5</p>
         </div>
         <div class="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3">
-          <p class="text-xs uppercase tracking-wide text-slate-500">Total reseñas</p>
+          <p class="text-xs uppercase tracking-wide text-slate-500">{% trans "Total reseñas" %}</p>
           <p class="text-xl font-bold text-slate-800">{{ mascota_asignada.calificacion_count|default:0 }}</p>
         </div>
         <div class="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3">
-          <p class="text-xs uppercase tracking-wide text-slate-500">Comentarios visibles</p>
+          <p class="text-xs uppercase tracking-wide text-slate-500">{% trans "Comentarios visibles" %}</p>
           <p class="text-xl font-bold text-slate-800">{{ mascota_asignada.calificacion_comentarios|length }}</p>
         </div>
       </div>
@@ -151,11 +151,11 @@
       </div>
       {% elif mascota_asignada.calificacion_count %}
       <div class="rounded-xl border border-slate-200 bg-slate-50 p-6 text-center text-sm text-slate-600">
-        Esta mascota tiene calificaciones, pero sin comentarios escritos.
+        {% trans "Esta mascota tiene calificaciones, pero sin comentarios escritos." %}
       </div>
       {% else %}
       <div class="rounded-xl border-2 border-dashed border-slate-200 bg-slate-50 p-8 text-center">
-        <p class="text-sm font-semibold text-slate-700">Aún no hay calificaciones para esta mascota.</p>
+        <p class="text-sm font-semibold text-slate-700">{% trans "Aún no hay calificaciones para esta mascota." %}</p>
       </div>
       {% endif %}
     </div>
@@ -164,7 +164,7 @@
 
   {% include "servicios/includes/resenas_recibidas_mi_perfil.html" %}
   <div class="mt-4">
-    <a href="{% if usuario.rol == 'cuidador' %}{% url 'cuidador_calendario' %}{% else %}{% url 'dueño_mis_reservas' %}{% endif %}" class="text-pw-orange font-semibold hover:underline text-sm"><i class="bi bi-arrow-left mr-1"></i>Volver</a>
+    <a href="{% if usuario.rol == 'cuidador' %}{% url 'cuidador_calendario' %}{% else %}{% url 'dueño_mis_reservas' %}{% endif %}" class="text-pw-orange font-semibold hover:underline text-sm"><i class="bi bi-arrow-left mr-1"></i>{% trans "Volver" %}</a>
   </div>
 </div>
 {% endblock %}

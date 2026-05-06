@@ -1,51 +1,51 @@
 {% extends "servicios/base_dashboard.html" %}
-{% load servicios_extras %}
+{% load servicios_extras i18n %}
 {% block title %}Panel – Cuidador{% endblock %}
 
 {% block top_greeting %}
-<h1 class="page-header__title">Panel de cuidador</h1>
-<p class="page-header__subtitle">Prioridades del día: solicitudes, citas y notificaciones</p>
+<h1 class="page-header__title">{% trans "Panel de cuidador" %}</h1>
+<p class="page-header__subtitle">{% trans "Prioridades del día: solicitudes, citas y notificaciones" %}</p>
 {% endblock %}
 
 {% block sidebar_links %}
-<div class="sidebar-section">Principal</div>
-<a class="nav-link active" href="{% url 'dashboard_cuidador' %}"><i class="bi bi-house-door"></i> Panel</a>
-<div class="sidebar-section">Gestión</div>
-<a class="nav-link" href="{% url 'cuidador_calendario' %}"><i class="bi bi-calendar3"></i> Mi calendario</a>
-<a class="nav-link" href="{% url 'cuidador_servicios' %}"><i class="bi bi-gear-wide-connected"></i> Mis servicios</a>
-<div class="sidebar-section">Cuenta</div>
-<a class="nav-link" href="{% url 'cuidador_mi_perfil' %}"><i class="bi bi-person"></i> Mi perfil</a>
+<div class="sidebar-section">{% trans "Principal" %}</div>
+<a class="nav-link active" href="{% url 'dashboard_cuidador' %}"><i class="bi bi-house-door"></i> {% trans "Panel" %}</a>
+<div class="sidebar-section">{% trans "Gestión" %}</div>
+<a class="nav-link" href="{% url 'cuidador_calendario' %}"><i class="bi bi-calendar3"></i> {% trans "Mi calendario" %}</a>
+<a class="nav-link" href="{% url 'cuidador_servicios' %}"><i class="bi bi-gear-wide-connected"></i> {% trans "Mis servicios" %}</a>
+<div class="sidebar-section">{% trans "Cuenta" %}</div>
+<a class="nav-link" href="{% url 'cuidador_mi_perfil' %}"><i class="bi bi-person"></i> {% trans "Mi perfil" %}</a>
 {% endblock %}
 
 {% block content %}
 {% if not usuario.verificado %}
 <div class="rounded-xl px-4 py-3 mb-4 bg-amber-50 border border-amber-200 text-amber-800 flex items-center gap-3" role="alert">
   <i class="bi bi-exclamation-triangle-fill text-xl"></i>
-  <div><strong>Tu cuenta está en revisión.</strong> Los dueños podrán reservarte cuando finalice la verificación.</div>
+  <div><strong>{% trans "Tu cuenta está en revisión." %}</strong> {% trans "Los dueños podrán reservarte cuando finalice la verificación." %}</div>
 </div>
 {% endif %}
 
 <div class="space-y-6">
   <section class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
     <article class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
-      <p class="text-xs uppercase tracking-wide text-slate-500">Citas próximas</p>
+      <p class="text-xs uppercase tracking-wide text-slate-500">{% trans "Citas próximas" %}</p>
       <p class="mt-1 text-3xl font-extrabold text-slate-800">{{ agendamientos_futuros|length }}</p>
-      <a class="text-xs font-semibold text-pw-orange hover:underline" href="{% url 'cuidador_calendario' %}">Abrir calendario</a>
+      <a class="text-xs font-semibold text-pw-orange hover:underline" href="{% url 'cuidador_calendario' %}">{% trans "Abrir calendario" %}</a>
     </article>
     <article class="rounded-2xl border border-amber-200 bg-white p-4 shadow-sm">
-      <p class="text-xs uppercase tracking-wide text-amber-600">Solicitudes pendientes</p>
+      <p class="text-xs uppercase tracking-wide text-amber-600">{% trans "Solicitudes pendientes" %}</p>
       <p class="mt-1 text-3xl font-extrabold text-amber-700">{{ solicitudes_pendientes|length }}</p>
-      <p class="text-xs text-slate-500">Por aceptar o rechazar</p>
+      <p class="text-xs text-slate-500">{% trans "Por aceptar o rechazar" %}</p>
     </article>
     <article class="rounded-2xl border border-red-200 bg-white p-4 shadow-sm">
-      <p class="text-xs uppercase tracking-wide text-red-500">No leídas</p>
+      <p class="text-xs uppercase tracking-wide text-red-500">{% trans "No leídas" %}</p>
       <p class="mt-1 text-3xl font-extrabold text-red-600">{{ notificaciones_no_leidas }}</p>
-      <a class="text-xs font-semibold text-pw-orange hover:underline" href="{% url 'cuidador_notificaciones' %}">Ver notificaciones</a>
+      <a class="text-xs font-semibold text-pw-orange hover:underline" href="{% url 'cuidador_notificaciones' %}">{% trans "Ver notificaciones" %}</a>
     </article>
     <article class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
-      <p class="text-xs uppercase tracking-wide text-slate-500">Servicios activos</p>
+      <p class="text-xs uppercase tracking-wide text-slate-500">{% trans "Servicios activos" %}</p>
       <p class="mt-1 text-3xl font-extrabold text-slate-800">{{ servicios_activos_total }}</p>
-      <a class="text-xs font-semibold text-pw-orange hover:underline" href="{% url 'cuidador_servicios' %}">Gestionar servicios</a>
+      <a class="text-xs font-semibold text-pw-orange hover:underline" href="{% url 'cuidador_servicios' %}">{% trans "Gestionar servicios" %}</a>
     </article>
   </section>
 
@@ -53,10 +53,10 @@
     <article class="xl:col-span-2 rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden">
       <header class="px-5 py-4 border-b border-slate-100 flex items-center justify-between">
         <div>
-          <h2 class="text-base font-bold text-slate-800">Solicitudes pendientes</h2>
-          <p class="text-xs text-slate-500">Responde rápido para mantener tu tasa de aceptación</p>
+          <h2 class="text-base font-bold text-slate-800">{% trans "Solicitudes pendientes" %}</h2>
+          <p class="text-xs text-slate-500">{% trans "Responde rápido para mantener tu tasa de aceptación" %}</p>
         </div>
-        <a href="{% url 'cuidador_calendario' %}" class="text-xs font-semibold text-pw-orange hover:underline">Gestionar</a>
+        <a href="{% url 'cuidador_calendario' %}" class="text-xs font-semibold text-pw-orange hover:underline">{% trans "Gestionar" %}</a>
       </header>
       {% if solicitudes_pendientes_resumen %}
       <div class="divide-y divide-slate-100">
@@ -66,33 +66,33 @@
             <p class="text-sm font-semibold text-slate-800">{{ s.idDueño.nombre }} {{ s.idDueño.apellido }} · {{ s.idMascota.nombreMascota }}</p>
             <p class="text-xs text-slate-500">{{ s.get_tipoServicio_display }} · {{ s.fecha|date:"d M Y" }}{% if s.fechaFin %} a {{ s.fechaFin|date:"d M Y" }}{% endif %}</p>
           </div>
-          <span class="inline-flex items-center rounded-full bg-amber-100 px-2.5 py-1 text-xs font-semibold text-amber-700">Pendiente</span>
+          <span class="inline-flex items-center rounded-full bg-amber-100 px-2.5 py-1 text-xs font-semibold text-amber-700">{% trans "Pendiente" %}</span>
         </div>
         {% endfor %}
       </div>
       {% else %}
       <div class="px-5 py-10 text-center">
-        <p class="text-sm font-semibold text-slate-700">No tienes solicitudes pendientes</p>
+        <p class="text-sm font-semibold text-slate-700">{% trans "No tienes solicitudes pendientes" %}</p>
       </div>
       {% endif %}
     </article>
 
     <article class="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden">
       <header class="px-5 py-4 border-b border-slate-100">
-        <h2 class="text-base font-bold text-slate-800">Atajos rápidos</h2>
-        <p class="text-xs text-slate-500">Accesos clave del día</p>
+        <h2 class="text-base font-bold text-slate-800">{% trans "Atajos rápidos" %}</h2>
+        <p class="text-xs text-slate-500">{% trans "Accesos clave del día" %}</p>
       </header>
       <div class="p-4 grid grid-cols-1 gap-2">
-        <a href="{% url 'cuidador_calendario' %}" class="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-100"><i class="bi bi-hourglass-split mr-1 text-pw-orange"></i>Responder pendientes</a>
-        <a href="{% url 'cuidador_calendario' %}" class="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-100"><i class="bi bi-check-circle mr-1 text-pw-orange"></i>Finalizar arrendamientos</a>
-        <a href="{% url 'cuidador_servicios' %}" class="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-100"><i class="bi bi-gear mr-1 text-pw-orange"></i>Editar servicios</a>
-        <a href="{% url 'cuidador_mi_perfil' %}" class="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-100"><i class="bi bi-person mr-1 text-pw-orange"></i>Actualizar perfil</a>
-        <a href="{% url 'cuidador_notificaciones' %}" class="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-100"><i class="bi bi-bell mr-1 text-pw-orange"></i>Revisar alertas</a>
+        <a href="{% url 'cuidador_calendario' %}" class="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-100"><i class="bi bi-hourglass-split mr-1 text-pw-orange"></i>{% trans "Responder pendientes" %}</a>
+        <a href="{% url 'cuidador_calendario' %}" class="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-100"><i class="bi bi-check-circle mr-1 text-pw-orange"></i>{% trans "Finalizar arrendamientos" %}</a>
+        <a href="{% url 'cuidador_servicios' %}" class="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-100"><i class="bi bi-gear mr-1 text-pw-orange"></i>{% trans "Editar servicios" %}</a>
+        <a href="{% url 'cuidador_mi_perfil' %}" class="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-100"><i class="bi bi-person mr-1 text-pw-orange"></i>{% trans "Actualizar perfil" %}</a>
+        <a href="{% url 'cuidador_notificaciones' %}" class="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-100"><i class="bi bi-bell mr-1 text-pw-orange"></i>{% trans "Revisar alertas" %}</a>
       </div>
       <div class="px-5 pb-5 pt-2 text-xs text-slate-500">
-        Tarifas activas:
-        paseo {% if precios_activos.paseo %}<strong class="text-slate-700">${{ precios_activos.paseo.precioCOP|formato_cop }} COP/h</strong>{% else %}<strong class="text-slate-700">No activo</strong>{% endif %}
-        · guardería {% if precios_activos.guarderia %}<strong class="text-slate-700">${{ precios_activos.guarderia.precioCOP|formato_cop }} COP/h</strong>{% else %}<strong class="text-slate-700">No activo</strong>{% endif %}
+        {% trans "Tarifas activas:" %}
+        {% trans "Paseo" %} {% if precios_activos.paseo %}<strong class="text-slate-700">${{ precios_activos.paseo.precioCOP|formato_cop }} COP/h</strong>{% else %}<strong class="text-slate-700">{% trans "No activo" %}</strong>{% endif %}
+        · {% trans "Guardería" %} {% if precios_activos.guarderia %}<strong class="text-slate-700">${{ precios_activos.guarderia.precioCOP|formato_cop }} COP/h</strong>{% else %}<strong class="text-slate-700">{% trans "No activo" %}</strong>{% endif %}
       </div>
     </article>
   </section>
@@ -101,10 +101,10 @@
     <article class="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden">
       <header class="px-5 py-4 border-b border-slate-100 flex items-center justify-between">
         <div>
-          <h2 class="text-base font-bold text-slate-800">Próximas citas</h2>
-          <p class="text-xs text-slate-500">Servicios aceptados para ejecutar</p>
+          <h2 class="text-base font-bold text-slate-800">{% trans "Próximas citas" %}</h2>
+          <p class="text-xs text-slate-500">{% trans "Servicios aceptados para ejecutar" %}</p>
         </div>
-        <a href="{% url 'cuidador_calendario' %}" class="text-xs font-semibold text-pw-orange hover:underline">Ver agenda</a>
+        <a href="{% url 'cuidador_calendario' %}" class="text-xs font-semibold text-pw-orange hover:underline">{% trans "Ver agenda" %}</a>
       </header>
       {% if agendamientos_futuros_resumen %}
       <div class="divide-y divide-slate-100">
@@ -117,7 +117,7 @@
       </div>
       {% else %}
       <div class="px-5 py-10 text-center">
-        <p class="text-sm font-semibold text-slate-700">No tienes citas próximas</p>
+        <p class="text-sm font-semibold text-slate-700">{% trans "No tienes citas próximas" %}</p>
       </div>
       {% endif %}
     </article>
@@ -125,10 +125,10 @@
     <article class="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden">
       <header class="px-5 py-4 border-b border-slate-100 flex items-center justify-between">
         <div>
-          <h2 class="text-base font-bold text-slate-800">Notificaciones recientes</h2>
-          <p class="text-xs text-slate-500">Alertas de reservas y sistema</p>
+          <h2 class="text-base font-bold text-slate-800">{% trans "Notificaciones recientes" %}</h2>
+          <p class="text-xs text-slate-500">{% trans "Alertas de reservas y sistema" %}</p>
         </div>
-        <a href="{% url 'cuidador_notificaciones' %}" class="text-xs font-semibold text-pw-orange hover:underline">Ver todas</a>
+        <a href="{% url 'cuidador_notificaciones' %}" class="text-xs font-semibold text-pw-orange hover:underline">{% trans "Ver todas" %}</a>
       </header>
       {% if notificaciones_items %}
       <div class="divide-y divide-slate-100">
@@ -141,7 +141,7 @@
       </div>
       {% else %}
       <div class="px-5 py-10 text-center">
-        <p class="text-sm font-semibold text-slate-700">No hay notificaciones recientes</p>
+        <p class="text-sm font-semibold text-slate-700">{% trans "No hay notificaciones recientes" %}</p>
       </div>
       {% endif %}
     </article>

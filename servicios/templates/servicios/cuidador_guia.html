@@ -1,38 +1,38 @@
 {% extends "servicios/base_dashboard.html" %}
-{% block title %}Guía de uso – Cuidador{% endblock %}
+{% block title %}{% trans "Guía de uso" %} – Cuidador{% endblock %}
 
 {% block top_greeting %}
-<h1 class="page-header__title">Guía de uso</h1>
-<p class="page-header__subtitle">Cómo usar Paws & Walks como cuidador</p>
+<h1 class="page-header__title">{% trans "Guía de uso" %}</h1>
+<p class="page-header__subtitle">{% trans "Cómo usar Paws & Walks como cuidador" %}</p>
 {% endblock %}
 
 {% block sidebar_links %}
-<div class="sidebar-section">Principal</div>
-<a class="nav-link" href="{% url 'dashboard_cuidador' %}"><i class="bi bi-house-door"></i> Panel</a>
-<div class="sidebar-section">Gestión</div>
-<a class="nav-link" href="{% url 'cuidador_calendario' %}"><i class="bi bi-calendar3"></i> Mi calendario</a>
-<a class="nav-link" href="{% url 'cuidador_servicios' %}"><i class="bi bi-gear-wide-connected"></i> Mis servicios</a>
-<div class="sidebar-section">Cuenta</div>
-<a class="nav-link" href="{% url 'cuidador_mi_perfil' %}"><i class="bi bi-person"></i> Mi perfil</a>
+<div class="sidebar-section">{% trans "Principal" %}</div>
+<a class="nav-link" href="{% url 'dashboard_cuidador' %}"><i class="bi bi-house-door"></i> {% trans "Panel" %}</a>
+<div class="sidebar-section">{% trans "Gestión" %}</div>
+<a class="nav-link" href="{% url 'cuidador_calendario' %}"><i class="bi bi-calendar3"></i> {% trans "Mi calendario" %}</a>
+<a class="nav-link" href="{% url 'cuidador_servicios' %}"><i class="bi bi-gear-wide-connected"></i> {% trans "Mis servicios" %}</a>
+<div class="sidebar-section">{% trans "Cuenta" %}</div>
+<a class="nav-link" href="{% url 'cuidador_mi_perfil' %}"><i class="bi bi-person"></i> {% trans "Mi perfil" %}</a>
 {% endblock %}
 
 {% block content %}
 <div class="max-w-3xl mx-auto prose prose-slate">
   <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 lg:p-8 space-y-6">
-    <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2"><i class="bi bi-1-circle text-pw-orange"></i>Configura tu perfil</h2>
-    <p class="text-slate-600">Completa tu perfil en <strong>Mi perfil</strong> con foto, datos de contacto y ciudad. Los dueños te encontrarán más fácilmente.</p>
+    <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2"><i class="bi bi-1-circle text-pw-orange"></i>{% trans "Configura tu perfil" %}</h2>
+    <p class="text-slate-600">{% trans "Completa tu perfil en" %} <strong>{% trans "Mi perfil" %}</strong> {% trans "con foto, datos de contacto y ciudad. Los dueños te encontrarán más fácilmente." %}</p>
 
-    <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2"><i class="bi bi-2-circle text-pw-orange"></i>Activa tus servicios</h2>
-    <p class="text-slate-600">En <strong>Paseo</strong> y <strong>Guarderías</strong> activa los servicios que ofreces. Define tu zona de cobertura (para paseos), tarifas y horarios disponibles. Cada reunión puede tener su propio lugar y precio.</p>
+    <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2"><i class="bi bi-2-circle text-pw-orange"></i>{% trans "Activa tus servicios" %}</h2>
+    <p class="text-slate-600">{% trans "En" %} <strong>{% trans "Paseo" %}</strong> {% trans "y" %} <strong>{% trans "Guarderías" %}</strong> {% trans "activa los servicios que ofreces. Define tu zona de cobertura (para paseos), tarifas y horarios disponibles. Cada reunión puede tener su propio lugar y precio." %}</p>
 
-    <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2"><i class="bi bi-3-circle text-pw-orange"></i>Gestiona solicitudes</h2>
-    <p class="text-slate-600">En <strong>Mi calendario</strong> verás las solicitudes pendientes. Acepta o rechaza según tu disponibilidad. Una vez aceptada, podrás chatear con el dueño y ver su perfil.</p>
+    <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2"><i class="bi bi-3-circle text-pw-orange"></i>{% trans "Gestiona solicitudes" %}</h2>
+    <p class="text-slate-600">{% trans "En" %} <strong>{% trans "Mi calendario" %}</strong> {% trans "verás las solicitudes pendientes. Acepta o rechaza según tu disponibilidad. Una vez aceptada, podrás chatear con el dueño y ver su perfil." %}</p>
 
-    <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2"><i class="bi bi-4-circle text-pw-orange"></i>Realiza el servicio</h2>
-    <p class="text-slate-600">El día acordado, realiza el paseo o guardería. Al finalizar, marca el servicio como <strong>finalizado</strong>. El pago aparecerá en <strong>Mis pagos</strong>.</p>
+    <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2"><i class="bi bi-4-circle text-pw-orange"></i>{% trans "Realiza el servicio" %}</h2>
+    <p class="text-slate-600">{% trans "El día acordado, realiza el paseo o guardería. Al finalizar, marca el servicio como" %} <strong>{% trans "finalizado" %}</strong>. {% trans "El pago aparecerá en" %} <strong>{% trans "Mis pagos" %}</strong>.</p>
 
-    <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2"><i class="bi bi-5-circle text-pw-orange"></i>Recibe tus pagos</h2>
-    <p class="text-slate-600">Consulta <strong>Mis pagos</strong> para ver transacciones, resúmenes diarios y mensuales de lo que has recibido.</p>
+    <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2"><i class="bi bi-5-circle text-pw-orange"></i>{% trans "Recibe tus pagos" %}</h2>
+    <p class="text-slate-600">{% trans "Consulta" %} <strong>{% trans "Mis pagos" %}</strong> {% trans "para ver transacciones, resúmenes diarios y mensuales de lo que has recibido." %}</p>
   </div>
 </div>
 {% endblock %}

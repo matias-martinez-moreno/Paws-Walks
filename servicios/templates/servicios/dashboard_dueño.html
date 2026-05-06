@@ -1,46 +1,46 @@
 {% extends "servicios/base_dashboard.html" %}
-{% load servicios_extras %}
+{% load servicios_extras i18n %}
 
 {% block title %}Panel – Dueño{% endblock %}
 
 {% block top_greeting %}
-<h1 class="page-header__title">Panel de dueño</h1>
-<p class="page-header__subtitle">Tu resumen de mascotas, reservas y notificaciones</p>
+<h1 class="page-header__title">{% trans "Panel de dueño" %}</h1>
+<p class="page-header__subtitle">{% trans "Tu resumen de mascotas, reservas y notificaciones" %}</p>
 {% endblock %}
 
 {% block sidebar_links %}
-<div class="sidebar-section">Principal</div>
-<a class="nav-link active" href="{% url 'dashboard_dueño' %}"><i class="bi bi-house-door"></i> Panel</a>
-<div class="sidebar-section">Gestión</div>
-<a class="nav-link" href="{% url 'dueño_nueva_reserva' %}"><i class="bi bi-plus-circle"></i> Hacer reserva</a>
-<a class="nav-link" href="{% url 'dueño_mis_reservas' %}"><i class="bi bi-calendar3"></i> Mis reservas</a>
-<a class="nav-link" href="{% url 'dueño_mis_mascotas' %}"><i class="bi bi-heart"></i> Mis mascotas</a>
-<div class="sidebar-section">Cuenta</div>
-<a class="nav-link" href="{% url 'dueño_mi_perfil' %}"><i class="bi bi-person"></i> Mi perfil</a>
+<div class="sidebar-section">{% trans "Principal" %}</div>
+<a class="nav-link active" href="{% url 'dashboard_dueño' %}"><i class="bi bi-house-door"></i> {% trans "Panel" %}</a>
+<div class="sidebar-section">{% trans "Gestión" %}</div>
+<a class="nav-link" href="{% url 'dueño_nueva_reserva' %}"><i class="bi bi-plus-circle"></i> {% trans "Hacer reserva" %}</a>
+<a class="nav-link" href="{% url 'dueño_mis_reservas' %}"><i class="bi bi-calendar3"></i> {% trans "Mis reservas" %}</a>
+<a class="nav-link" href="{% url 'dueño_mis_mascotas' %}"><i class="bi bi-heart"></i> {% trans "Mis mascotas" %}</a>
+<div class="sidebar-section">{% trans "Cuenta" %}</div>
+<a class="nav-link" href="{% url 'dueño_mi_perfil' %}"><i class="bi bi-person"></i> {% trans "Mi perfil" %}</a>
 {% endblock %}
 
 {% block content %}
 <div class="space-y-6">
   <section class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
     <article class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
-      <p class="text-xs uppercase tracking-wide text-slate-500">Reservas próximas</p>
+      <p class="text-xs uppercase tracking-wide text-slate-500">{% trans "Reservas próximas" %}</p>
       <p class="mt-1 text-3xl font-extrabold text-slate-800">{{ solicitudes_futuras|length }}</p>
-      <p class="text-xs text-slate-500">Pendientes {{ reservas_pendientes }} · Aceptadas {{ reservas_aceptadas }}</p>
+      <p class="text-xs text-slate-500">{% blocktrans with pend=reservas_pendientes acep=reservas_aceptadas %}Pendientes {{ pend }} · Aceptadas {{ acep }}{% endblocktrans %}</p>
     </article>
     <article class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
-      <p class="text-xs uppercase tracking-wide text-slate-500">Reservas hechas</p>
+      <p class="text-xs uppercase tracking-wide text-slate-500">{% trans "Reservas hechas" %}</p>
       <p class="mt-1 text-3xl font-extrabold text-slate-800">{{ reservas_totales }}</p>
-      <p class="text-xs text-slate-500">Historial total dentro de la app</p>
+      <p class="text-xs text-slate-500">{% trans "Historial total dentro de la app" %}</p>
     </article>
     <article class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
-      <p class="text-xs uppercase tracking-wide text-slate-500">Mascotas registradas</p>
+      <p class="text-xs uppercase tracking-wide text-slate-500">{% trans "Mascotas registradas" %}</p>
       <p class="mt-1 text-3xl font-extrabold text-slate-800">{{ mascotas|length }}</p>
-      <a class="text-xs font-semibold text-pw-orange hover:underline" href="{% url 'dueño_mis_mascotas' %}">Gestionar mascotas</a>
+      <a class="text-xs font-semibold text-pw-orange hover:underline" href="{% url 'dueño_mis_mascotas' %}">{% trans "Gestionar mascotas" %}</a>
     </article>
     <article class="rounded-2xl border border-red-200 bg-white p-4 shadow-sm">
-      <p class="text-xs uppercase tracking-wide text-red-500">Notificaciones no leídas</p>
+      <p class="text-xs uppercase tracking-wide text-red-500">{% trans "Notificaciones no leídas" %}</p>
       <p class="mt-1 text-3xl font-extrabold text-red-600">{{ notificaciones_no_leidas }}</p>
-      <a class="text-xs font-semibold text-pw-orange hover:underline" href="{% url 'dueño_notificaciones' %}">Ver notificaciones</a>
+      <a class="text-xs font-semibold text-pw-orange hover:underline" href="{% url 'dueño_notificaciones' %}">{% trans "Ver notificaciones" %}</a>
     </article>
   </section>
 
@@ -48,11 +48,11 @@
     <article class="xl:col-span-2 rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden">
       <header class="px-5 py-4 border-b border-slate-100 flex items-center justify-between gap-3">
         <div>
-          <h2 class="text-base font-bold text-slate-800">Próximas reservas</h2>
-          <p class="text-xs text-slate-500">Prioriza primero las pendientes de confirmación</p>
+          <h2 class="text-base font-bold text-slate-800">{% trans "Próximas reservas" %}</h2>
+          <p class="text-xs text-slate-500">{% trans "Prioriza primero las pendientes de confirmación" %}</p>
         </div>
         <a href="{% url 'dueño_nueva_reserva' %}" class="rounded-lg bg-pw-orange px-3 py-2 text-sm font-semibold text-white hover:bg-pw-orange-dark">
-          <i class="bi bi-plus-lg mr-1"></i>Nueva reserva
+          <i class="bi bi-plus-lg mr-1"></i>{% trans "Nueva reserva" %}
         </a>
       </header>
       {% if solicitudes_futuras_resumen %}
@@ -71,23 +71,23 @@
       </div>
       {% else %}
       <div class="px-5 py-10 text-center">
-        <p class="text-sm font-semibold text-slate-700">No tienes reservas próximas</p>
-        <p class="text-xs text-slate-500 mt-1">Agenda un paseo o guardería para tu mascota.</p>
+        <p class="text-sm font-semibold text-slate-700">{% trans "No tienes reservas próximas" %}</p>
+        <p class="text-xs text-slate-500 mt-1">{% trans "Agenda un paseo o guardería para tu mascota." %}</p>
       </div>
       {% endif %}
     </article>
 
     <article class="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden">
       <header class="px-5 py-4 border-b border-slate-100">
-        <h2 class="text-base font-bold text-slate-800">Atajos rápidos</h2>
-        <p class="text-xs text-slate-500">Accede a lo que más usas</p>
+        <h2 class="text-base font-bold text-slate-800">{% trans "Atajos rápidos" %}</h2>
+        <p class="text-xs text-slate-500">{% trans "Accede a lo que más usas" %}</p>
       </header>
       <div class="p-4 grid grid-cols-1 gap-2">
-        <a href="{% url 'dueño_nueva_reserva' %}" class="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-100"><i class="bi bi-plus-circle mr-1 text-pw-orange"></i>Crear reserva</a>
-        <a href="{% url 'dueño_mis_reservas' %}" class="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-100"><i class="bi bi-calendar3 mr-1 text-pw-orange"></i>Revisar reservas</a>
-        <a href="{% url 'dueño_mis_mascotas' %}" class="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-100"><i class="bi bi-heart mr-1 text-pw-orange"></i>Gestionar mascotas</a>
-        <a href="{% url 'dueño_notificaciones' %}" class="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-100"><i class="bi bi-bell mr-1 text-pw-orange"></i>Ver notificaciones</a>
-        <a href="{% url 'dueño_mi_perfil' %}" class="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-100"><i class="bi bi-person mr-1 text-pw-orange"></i>Actualizar perfil</a>
+        <a href="{% url 'dueño_nueva_reserva' %}" class="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-100"><i class="bi bi-plus-circle mr-1 text-pw-orange"></i>{% trans "Crear reserva" %}</a>
+        <a href="{% url 'dueño_mis_reservas' %}" class="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-100"><i class="bi bi-calendar3 mr-1 text-pw-orange"></i>{% trans "Revisar reservas" %}</a>
+        <a href="{% url 'dueño_mis_mascotas' %}" class="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-100"><i class="bi bi-heart mr-1 text-pw-orange"></i>{% trans "Gestionar mascotas" %}</a>
+        <a href="{% url 'dueño_notificaciones' %}" class="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-100"><i class="bi bi-bell mr-1 text-pw-orange"></i>{% trans "Ver notificaciones" %}</a>
+        <a href="{% url 'dueño_mi_perfil' %}" class="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-100"><i class="bi bi-person mr-1 text-pw-orange"></i>{% trans "Actualizar perfil" %}</a>
       </div>
     </article>
   </section>
@@ -96,10 +96,10 @@
     <article class="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden">
       <header class="px-5 py-4 border-b border-slate-100 flex items-center justify-between">
         <div>
-          <h2 class="text-base font-bold text-slate-800">Notificaciones recientes</h2>
-          <p class="text-xs text-slate-500">Lo más nuevo de reservas y sistema</p>
+          <h2 class="text-base font-bold text-slate-800">{% trans "Notificaciones recientes" %}</h2>
+          <p class="text-xs text-slate-500">{% trans "Lo más nuevo de reservas y sistema" %}</p>
         </div>
-        <a href="{% url 'dueño_notificaciones' %}" class="text-xs font-semibold text-pw-orange hover:underline">Ver todas</a>
+        <a href="{% url 'dueño_notificaciones' %}" class="text-xs font-semibold text-pw-orange hover:underline">{% trans "Ver todas" %}</a>
       </header>
       {% if notificaciones_items %}
       <div class="divide-y divide-slate-100">
@@ -112,7 +112,7 @@
       </div>
       {% else %}
       <div class="px-5 py-10 text-center">
-        <p class="text-sm font-semibold text-slate-700">No hay notificaciones recientes</p>
+        <p class="text-sm font-semibold text-slate-700">{% trans "No hay notificaciones recientes" %}</p>
       </div>
       {% endif %}
     </article>
@@ -120,10 +120,10 @@
     <article class="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden">
       <header class="px-5 py-4 border-b border-slate-100 flex items-center justify-between">
         <div>
-          <h2 class="text-base font-bold text-slate-800">Mascotas</h2>
-          <p class="text-xs text-slate-500">Perfil y reputación de tus mascotas</p>
+          <h2 class="text-base font-bold text-slate-800">{% trans "Mascotas" %}</h2>
+          <p class="text-xs text-slate-500">{% trans "Perfil y reputación de tus mascotas" %}</p>
         </div>
-        <a href="{% url 'dueño_mis_mascotas' %}" class="text-xs font-semibold text-pw-orange hover:underline">Gestionar</a>
+        <a href="{% url 'dueño_mis_mascotas' %}" class="text-xs font-semibold text-pw-orange hover:underline">{% trans "Gestionar" %}</a>
       </header>
       {% if mascotas_resumen %}
       <div class="divide-y divide-slate-100">
@@ -134,15 +134,15 @@
           {% if m.calificacion_count %}
           <p class="text-xs text-amber-600 mt-1"><i class="bi bi-star-fill"></i> {{ m.calificacion_promedio }} ({{ m.calificacion_count }})</p>
           {% else %}
-          <p class="text-xs text-slate-500 mt-1"><i class="bi bi-star"></i> Sin calificaciones aún</p>
+          <p class="text-xs text-slate-500 mt-1"><i class="bi bi-star"></i> {% trans "Sin calificaciones aún" %}</p>
           {% endif %}
         </div>
         {% endfor %}
       </div>
       {% else %}
       <div class="px-5 py-10 text-center">
-        <p class="text-sm font-semibold text-slate-700">Aún no registras mascotas</p>
-        <a href="{% url 'dueño_mis_mascotas' %}" class="mt-2 inline-flex text-xs font-semibold text-pw-orange hover:underline">Agregar mascota</a>
+        <p class="text-sm font-semibold text-slate-700">{% trans "Aún no registras mascotas" %}</p>
+        <a href="{% url 'dueño_mis_mascotas' %}" class="mt-2 inline-flex text-xs font-semibold text-pw-orange hover:underline">{% trans "Agregar mascota" %}</a>
       </div>
       {% endif %}
     </article>

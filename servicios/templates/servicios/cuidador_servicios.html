@@ -1,20 +1,20 @@
 {% extends "servicios/base_dashboard.html" %}
-{% load servicios_extras %}
-{% block title %}Mis servicios{% endblock %}
+{% load servicios_extras i18n %}
+{% block title %}{% trans "Mis servicios" %}{% endblock %}
 
 {% block top_greeting %}
-<h1 class="page-header__title">Mis servicios</h1>
-<p class="page-header__subtitle">Configura paseos y guarderías disponibles</p>
+<h1 class="page-header__title">{% trans "Mis servicios" %}</h1>
+<p class="page-header__subtitle">{% trans "Configura paseos y guarderías disponibles" %}</p>
 {% endblock %}
 
 {% block sidebar_links %}
-<div class="sidebar-section">Principal</div>
-<a class="nav-link" href="{% url 'dashboard_cuidador' %}"><i class="bi bi-house-door"></i> Panel</a>
-<div class="sidebar-section">Gestión</div>
-<a class="nav-link" href="{% url 'cuidador_calendario' %}"><i class="bi bi-calendar3"></i> Mi calendario</a>
-<a class="nav-link active" href="{% url 'cuidador_servicios' %}"><i class="bi bi-gear-wide-connected"></i> Mis servicios</a>
-<div class="sidebar-section">Cuenta</div>
-<a class="nav-link" href="{% url 'cuidador_mi_perfil' %}"><i class="bi bi-person"></i> Mi perfil</a>
+<div class="sidebar-section">{% trans "Principal" %}</div>
+<a class="nav-link" href="{% url 'dashboard_cuidador' %}"><i class="bi bi-house-door"></i> {% trans "Panel" %}</a>
+<div class="sidebar-section">{% trans "Gestión" %}</div>
+<a class="nav-link" href="{% url 'cuidador_calendario' %}"><i class="bi bi-calendar3"></i> {% trans "Mi calendario" %}</a>
+<a class="nav-link active" href="{% url 'cuidador_servicios' %}"><i class="bi bi-gear-wide-connected"></i> {% trans "Mis servicios" %}</a>
+<div class="sidebar-section">{% trans "Cuenta" %}</div>
+<a class="nav-link" href="{% url 'cuidador_mi_perfil' %}"><i class="bi bi-person"></i> {% trans "Mi perfil" %}</a>
 {% endblock %}
 
 {% block extra_css %}
@@ -34,10 +34,10 @@
   <!-- Tabs separadores: Paseo / Guardería -->
   <div class="mb-6 border-b border-slate-200 flex gap-6">
     <button class="tab-btn active py-3 text-sm font-semibold text-slate-800 border-b-4 border-pw-orange" data-tab="paseo">
-      <i class="bi bi-walking mr-2"></i>Paseos
+      <i class="bi bi-walking mr-2"></i>{% trans "Paseos" %}
     </button>
     <button class="tab-btn py-3 text-sm font-semibold text-slate-600 border-b-4 border-transparent hover:text-slate-800" data-tab="guarderia">
-      <i class="bi bi-house-heart mr-2"></i>Guarderías
+      <i class="bi bi-house-heart mr-2"></i>{% trans "Guarderías" %}
     </button>
   </div>
 
@@ -49,21 +49,21 @@
           <h3 class="text-base font-bold text-slate-800">Paseo</h3>
           <p class="text-xs text-slate-600">${{ precios_activos.paseo.precioCOP|formato_cop }} COP/hora</p>
         </div>
-        <span class="px-2.5 py-1 bg-emerald-100 text-emerald-700 text-xs font-bold rounded-full">Activo</span>
+        <span class="px-2.5 py-1 bg-emerald-100 text-emerald-700 text-xs font-bold rounded-full">{% trans "Activo" %}</span>
       </div>
 
       <!-- Estadísticas compactas -->
       <div class="grid grid-cols-3 gap-2 mb-4 p-3 bg-slate-50 rounded-lg border border-slate-200">
         <div class="text-center">
-          <p class="text-xs text-slate-500 font-semibold">Bloques</p>
+          <p class="text-xs text-slate-500 font-semibold">{% trans "Bloques" %}</p>
           <p class="text-lg font-bold text-slate-800">{{ total_horarios_paseo }}</p>
         </div>
         <div class="text-center">
-          <p class="text-xs text-slate-500 font-semibold">Cupos</p>
+          <p class="text-xs text-slate-500 font-semibold">{% trans "Cupos" %}</p>
           <p class="text-lg font-bold text-slate-800">{{ resumen_paseo.capacidad_maxima }}</p>
         </div>
         <div class="text-center">
-          <p class="text-xs text-slate-500 font-semibold">Horario</p>
+          <p class="text-xs text-slate-500 font-semibold">{% trans "Horario" %}</p>
           <p class="text-xs font-semibold text-slate-700">{% if resumen_paseo.hora_inicio_min %}{{ resumen_paseo.hora_inicio_min|hora_corta }}-{{ resumen_paseo.hora_fin_max|hora_corta }}{% else %}—{% endif %}</p>
         </div>
       </div>
@@ -92,29 +92,29 @@
         {% endfor %}
       {% else %}
       <div class="p-4 bg-slate-50 rounded-lg border border-slate-200 text-center">
-        <p class="text-xs text-slate-500">Sin horarios configurados</p>
+        <p class="text-xs text-slate-500">{% trans "Sin horarios configurados" %}</p>
       </div>
       {% endif %}
 
       <!-- Acciones paseo -->
       <div class="flex gap-2 pt-2 border-t border-slate-200">
         <a href="{% url 'cuidador_servicios' %}?editar=paseo" class="flex-1 inline-flex items-center justify-center gap-2 rounded-lg bg-pw-orange text-white px-3 py-2 text-xs font-semibold hover:bg-pw-orange-dark transition">
-          <i class="bi bi-pencil-square"></i>Editar
+          <i class="bi bi-pencil-square"></i>{% trans "Editar" %}
         </a>
         <form method="post" class="flex-1" onsubmit="return confirm('¿Eliminar servicio?');">
           {% csrf_token %}
           <input type="hidden" name="action" value="eliminar_servicio">
           <input type="hidden" name="tipoServicio" value="paseo">
           <button type="submit" class="w-full inline-flex items-center justify-center gap-2 rounded-lg border border-red-300 text-red-700 px-3 py-2 text-xs font-semibold hover:bg-red-50 transition">
-            <i class="bi bi-trash"></i>Eliminar todo
+            <i class="bi bi-trash"></i>{% trans "Eliminar todo" %}
           </button>
         </form>
       </div>
     {% else %}
     <div class="p-6 text-center bg-slate-50 rounded-lg border border-slate-200">
-      <p class="text-sm text-slate-600 mb-3">Aún no tienes paseos configurados</p>
+      <p class="text-sm text-slate-600 mb-3">{% trans "Aún no tienes paseos configurados" %}</p>
       <a href="{% url 'cuidador_servicios' %}?editar=paseo" class="inline-flex items-center gap-2 rounded-lg bg-pw-orange text-white px-4 py-2 text-sm font-semibold hover:bg-pw-orange-dark transition">
-        <i class="bi bi-plus-circle"></i>Agregar paseo
+        <i class="bi bi-plus-circle"></i>{% trans "Agregar paseo" %}
       </a>
     </div>
     {% endif %}
@@ -128,21 +128,21 @@
           <h3 class="text-base font-bold text-slate-800">Guardería</h3>
           <p class="text-xs text-slate-600">${{ precios_activos.guarderia.precioCOP|formato_cop }} COP/hora</p>
         </div>
-        <span class="px-2.5 py-1 bg-emerald-100 text-emerald-700 text-xs font-bold rounded-full">Activo</span>
+        <span class="px-2.5 py-1 bg-emerald-100 text-emerald-700 text-xs font-bold rounded-full">{% trans "Activo" %}</span>
       </div>
 
       <!-- Estadísticas compactas -->
       <div class="grid grid-cols-3 gap-2 mb-4 p-3 bg-slate-50 rounded-lg border border-slate-200">
         <div class="text-center">
-          <p class="text-xs text-slate-500 font-semibold">Bloques</p>
+          <p class="text-xs text-slate-500 font-semibold">{% trans "Bloques" %}</p>
           <p class="text-lg font-bold text-slate-800">{{ total_horarios_guarderia }}</p>
         </div>
         <div class="text-center">
-          <p class="text-xs text-slate-500 font-semibold">Cupos</p>
+          <p class="text-xs text-slate-500 font-semibold">{% trans "Cupos" %}</p>
           <p class="text-lg font-bold text-slate-800">{{ resumen_guarderia.capacidad_maxima }}</p>
         </div>
         <div class="text-center">
-          <p class="text-xs text-slate-500 font-semibold">Horario</p>
+          <p class="text-xs text-slate-500 font-semibold">{% trans "Horario" %}</p>
           <p class="text-xs font-semibold text-slate-700">{% if resumen_guarderia.hora_inicio_min %}{{ resumen_guarderia.hora_inicio_min|hora_corta }}-{{ resumen_guarderia.hora_fin_max|hora_corta }}{% else %}—{% endif %}</p>
         </div>
       </div>
@@ -171,29 +171,29 @@
         {% endfor %}
       {% else %}
       <div class="p-4 bg-slate-50 rounded-lg border border-slate-200 text-center">
-        <p class="text-xs text-slate-500">Sin horarios configurados</p>
+        <p class="text-xs text-slate-500">{% trans "Sin horarios configurados" %}</p>
       </div>
       {% endif %}
 
       <!-- Acciones guardería -->
       <div class="flex gap-2 pt-2 border-t border-slate-200">
         <a href="{% url 'cuidador_servicios' %}?editar=guarderia" class="flex-1 inline-flex items-center justify-center gap-2 rounded-lg bg-pw-orange text-white px-3 py-2 text-xs font-semibold hover:bg-pw-orange-dark transition">
-          <i class="bi bi-pencil-square"></i>Editar
+          <i class="bi bi-pencil-square"></i>{% trans "Editar" %}
         </a>
         <form method="post" class="flex-1" onsubmit="return confirm('¿Eliminar servicio?');">
           {% csrf_token %}
           <input type="hidden" name="action" value="eliminar_servicio">
           <input type="hidden" name="tipoServicio" value="guarderia">
           <button type="submit" class="w-full inline-flex items-center justify-center gap-2 rounded-lg border border-red-300 text-red-700 px-3 py-2 text-xs font-semibold hover:bg-red-50 transition">
-            <i class="bi bi-trash"></i>Eliminar todo
+            <i class="bi bi-trash"></i>{% trans "Eliminar todo" %}
           </button>
         </form>
       </div>
     {% else %}
     <div class="p-6 text-center bg-slate-50 rounded-lg border border-slate-200">
-      <p class="text-sm text-slate-600 mb-3">Aún no tienes guarderías configuradas</p>
+      <p class="text-sm text-slate-600 mb-3">{% trans "Aún no tienes guarderías configuradas" %}</p>
       <a href="{% url 'cuidador_servicios' %}?editar=guarderia" class="inline-flex items-center gap-2 rounded-lg bg-pw-orange text-white px-4 py-2 text-sm font-semibold hover:bg-pw-orange-dark transition">
-        <i class="bi bi-plus-circle"></i>Agregar guardería
+        <i class="bi bi-plus-circle"></i>{% trans "Agregar guardería" %}
       </a>
     </div>
     {% endif %}
@@ -205,7 +205,7 @@
     <!-- Header de edición -->
     <div class="border-b border-slate-200 px-6 py-4 flex items-center justify-between">
       <h2 class="text-lg font-bold text-slate-800">
-        {% if editar_tipo == 'paseo' %}Configurar paseo{% else %}Configurar guardería{% endif %}
+        {% if editar_tipo == 'paseo' %}{% trans "Configurar paseo" %}{% else %}{% trans "Configurar guardería" %}{% endif %}
       </h2>
       <a href="{% url 'cuidador_servicios' %}" class="inline-flex items-center gap-2 text-slate-600 hover:text-pw-orange transition text-xl">
         <i class="bi bi-x-lg"></i>
@@ -225,7 +225,7 @@
   <!-- Botón volver -->
   <div class="mt-4">
     <a href="{% url 'cuidador_servicios' %}" class="inline-flex items-center gap-2 text-slate-600 hover:text-slate-800 text-sm font-semibold">
-      <i class="bi bi-arrow-left"></i>Volver a mis servicios
+      <i class="bi bi-arrow-left"></i>{% trans "Volver a mis servicios" %}
     </a>
   </div>
   {% endif %}
