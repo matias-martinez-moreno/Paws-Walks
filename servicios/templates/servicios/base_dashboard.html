@@ -89,7 +89,7 @@
     {% endif %}
     {% block sidebar_extra %}
     {% if usuario.rol == 'cuidador' %}{% include "servicios/includes/sidebar_cuidador_extra.html" %}
-    {% elif usuario.rol == 'dueño' %}{% include "servicios/includes/sidebar_dueño_extra.html" %}{% endif %}
+    {% elif usuario.rol == 'dueño' %}{% include "servicios/includes/sidebar_dueno_extra.html" %}{% endif %}
     {% endblock %}
   </nav>
   <div class="p-4 border-t border-slate-200 shrink-0">

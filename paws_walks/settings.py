@@ -165,6 +165,11 @@ DISPONIBILIDAD_SERVICE_URL = os.environ.get("DISPONIBILIDAD_SERVICE_URL", "")
 # Vacío = ClimaAdapterMock (datos simulados para desarrollo).
 OPENWEATHER_API_KEY = os.environ.get("OPENWEATHER_API_KEY", "")
 
+# API del equipo aliado (Patrón Adapter — consumo de servicio externo entre equipos).
+# Cuando el aliado entregue su URL: setear ALIADO_API_URL en .env / docker-compose.
+# Vacío = AliadoMockAdapter (datos de demostración).
+ALIADO_API_URL = os.environ.get("ALIADO_API_URL", "")
+
 # Celery — Message Broker (Redis)
 CELERY_BROKER_URL = os.environ.get("CELERY_BROKER_URL", "redis://localhost:6379/0")
 CELERY_RESULT_BACKEND = os.environ.get("CELERY_BROKER_URL", "redis://localhost:6379/0")

@@ -1,0 +1,80 @@
+{% extends "servicios/base_dashboard.html" %}
+{% load i18n %}
+
+{% block title %}Paws & Walks – {% trans "Integración aliado" %}{% endblock %}
+
+{% block sidebar_links %}{% endblock %}
+
+{% block content %}
+<header class="page-header mb-6">
+  <h1 class="page-header__title">{% trans "Integración con equipo aliado" %}</h1>
+  <p class="page-header__subtitle">
+    {% trans "Estado del servicio externo consumido vía Adapter Pattern" %}
+  </p>
+</header>
+
+<div class="grid gap-6 md:grid-cols-3">
+
+  <div class="md:col-span-2 bg-white border border-slate-200 rounded-2xl shadow-sm p-6">
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="text-lg font-bold text-slate-800">
+        <i class="bi bi-link-45deg text-pw-orange mr-1"></i>
+        {{ aliado.fuente }}
+      </h2>
+      {% if aliado.disponible %}
+        <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-emerald-100 text-emerald-700 text-xs font-semibold">
+          <i class="bi bi-check-circle-fill"></i> {% trans "Disponible" %}
+        </span>
+      {% else %}
+        <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-red-100 text-red-700 text-xs font-semibold">
+          <i class="bi bi-exclamation-triangle-fill"></i> {% trans "No disponible" %}
+        </span>
+      {% endif %}
+    </div>
+
+    <p class="text-sm text-slate-500 mb-4">
+      {% trans "Última consulta:" %}
+      <span class="font-mono text-slate-700">{{ aliado.consultado_en|default:"—" }}</span>
+    </p>
+
+    <div class="bg-slate-50 border border-slate-200 rounded-xl p-4">
+      <h3 class="text-xs uppercase tracking-wide text-slate-500 font-semibold mb-2">
+        {% trans "Datos recibidos" %}
+      </h3>
+      <pre class="text-xs text-slate-700 overflow-x-auto whitespace-pre-wrap break-words">{{ aliado.datos|pprint }}</pre>
+    </div>
+  </div>
+
+  <aside class="bg-white border border-slate-200 rounded-2xl shadow-sm p-6">
+    <h3 class="text-sm font-bold text-slate-800 mb-3">
+      <i class="bi bi-info-circle text-pw-orange"></i>
+      {% trans "Sobre esta integración" %}
+    </h3>
+    <ul class="text-xs text-slate-600 space-y-2 leading-relaxed">
+      <li>
+        <span class="font-semibold text-slate-700">{% trans "Patrón:" %}</span>
+        Adapter (Inversión de Dependencias)
+      </li>
+      <li>
+        <span class="font-semibold text-slate-700">{% trans "Interfaz:" %}</span>
+        <code class="font-mono">AliadoPort</code>
+      </li>
+      <li>
+        <span class="font-semibold text-slate-700">{% trans "Implementación:" %}</span>
+        <code class="font-mono">AliadoHttpAdapter</code>
+        {% trans "(real)" %} /
+        <code class="font-mono">AliadoMockAdapter</code>
+        {% trans "(fallback)" %}
+      </li>
+      <li>
+        <span class="font-semibold text-slate-700">{% trans "Selector:" %}</span>
+        <code class="font-mono">AliadoAdapterFactory</code>
+      </li>
+      <li>
+        <span class="font-semibold text-slate-700">{% trans "Configuración:" %}</span>
+        {% trans "variable de entorno" %} <code class="font-mono">ALIADO_API_URL</code>
+      </li>
+    </ul>
+  </aside>
+</div>
+{% endblock %}

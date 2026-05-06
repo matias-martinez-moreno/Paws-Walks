@@ -123,6 +123,18 @@ class ClimaAPIView(BaseServiciosAPIView):
         return Response(resultado, status=status.HTTP_200_OK)
 
 
+class AliadoAPIView(APIView):
+    """Consume el endpoint del equipo aliado vía AliadoPort (Adapter pattern).
+
+    Si ALIADO_API_URL no está configurada, usa AliadoMockAdapter.
+    """
+    permission_classes = [AllowAny]
+
+    def get(self, request):
+        gateway = ServiciosApiGatewayService()
+        return Response(gateway.obtener_estado_aliado(), status=status.HTTP_200_OK)
+
+
 class DisponibilidadCuidadoresAPIView(BaseServiciosAPIView):
     # endpoint drf para buscar cuidadores disponibles
 
@@ -166,7 +178,7 @@ class SistemaEstadoAPIView(APIView):
     permission_classes = [AllowAny]
 
     def get(self, request):
-        from servicios.models import Usuario, SolicitudServicio, Resena
+        from servicios.models import Usuario, SolicitudServicio, Calificacion
         from datetime import timedelta
 
         try:
@@ -178,8 +190,7 @@ class SistemaEstadoAPIView(APIView):
             solicitudes_completadas = SolicitudServicio.objects.filter(estado='completado').count()
             solicitudes_pendientes = SolicitudServicio.objects.filter(estado='pendiente').count()
 
-            total_resenas = Resena.objects.count()
-            promedio_rating = Resena.objects.aggregate(avg=Count('estrellas'))
+            total_resenas = Calificacion.objects.count()
 
             hoy = timezone.now().date()
             hace_30_dias = hoy - timedelta(days=30)
@@ -218,21 +229,16 @@ class CuidadoresListadoAPIView(APIView):
     permission_classes = [AllowAny]
 
     def get(self, request):
-        from servicios.models import Usuario, Resena
-        from servicios.api.serializers import UsuarioPublicoSerializer
+        from django.db.models import Avg
+        from servicios.models import Usuario, Calificacion
 
         try:
-            cuidadores = Usuario.objects.filter(
-                rol='cuidador',
-                verificado=True
-            ).prefetch_related('resena_set')
+            cuidadores = Usuario.objects.filter(rol='cuidador', verificado=True)
 
             result = []
             for cuidador in cuidadores:
-                resenas = Resena.objects.filter(idPara=cuidador)
-                promedio = resenas.aggregate(
-                    avg_estrellas=Count('estrellas')
-                )['avg_estrellas'] or 0
+                resenas = Calificacion.objects.filter(idParaUsuario=cuidador)
+                promedio = resenas.aggregate(avg=Avg('estrellas'))['avg'] or 0
 
                 result.append({
                     "id": str(cuidador.idUsuario),
@@ -241,7 +247,7 @@ class CuidadoresListadoAPIView(APIView):
                     "foto": cuidador.fotoPerfil.url if cuidador.fotoPerfil else None,
                     "verificado": cuidador.verificado,
                     "total_reseñas": resenas.count(),
-                    "rating_promedio": round(promedio, 2),
+                    "rating_promedio": round(float(promedio), 2),
                 })
 
             return Response({

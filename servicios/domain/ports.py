@@ -25,3 +25,27 @@ class ClimaPort(ABC):
         Raises:
             ExternalServiceError si el proveedor no responde.
         """
+
+
+class AliadoPort(ABC):
+    """Abstracción para consumir el endpoint JSON del equipo aliado.
+
+    Aplica el Patrón Adapter: el service layer y las vistas dependen de
+    esta interfaz; cambiar el proveedor (URL, esquema JSON, autenticación)
+    solo requiere crear otro Adapter que implemente este contrato.
+    """
+
+    @abstractmethod
+    def obtener_estado_sistema(self) -> dict:
+        """Retorna el estado del sistema del equipo aliado en formato uniforme.
+
+        Returns:
+            {
+              "fuente": str,           # nombre del equipo/servicio aliado
+              "disponible": bool,      # si la respuesta fue exitosa
+              "datos": dict | list,    # payload original normalizado
+              "consultado_en": str,    # ISO timestamp del consumo
+            }
+        Raises:
+            ExternalServiceError si el aliado no responde.
+        """

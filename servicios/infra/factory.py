@@ -11,6 +11,7 @@
 #   instancian un Notificador directamente. Esto cumple OCP y DIP (SOLID).
 
 from django.conf import settings
+from servicios.infra.aliado_adapter import AliadoHttpAdapter, AliadoMockAdapter
 from servicios.infra.notificador import NotificadorAsync, NotificadorLogOnly, NotificadorMock, NotificadorReal
 from servicios.infra.weather_adapter import ClimaAdapterMock, OpenWeatherAdapter
 
@@ -55,3 +56,18 @@ class ClimaAdapterFactory:
         if api_key:
             return OpenWeatherAdapter(api_key)
         return ClimaAdapterMock()
+
+
+class AliadoAdapterFactory:
+    """Crea el adapter del equipo aliado correcto según configuración.
+
+    Si ALIADO_API_URL está definida → AliadoHttpAdapter (real).
+    Si no → AliadoMockAdapter (desarrollo sin URL configurada).
+    """
+
+    @classmethod
+    def crear(cls):
+        url = getattr(settings, "ALIADO_API_URL", "")
+        if url:
+            return AliadoHttpAdapter(url)
+        return AliadoMockAdapter()

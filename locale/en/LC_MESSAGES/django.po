@@ -1,2034 +1,4274 @@
-# English — Paws & Walks
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
 msgid ""
 msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-05-06 18:48-0500\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Paws & Walks team\n"
+"Language-Team: English\n"
 "Language: en\n"
+"MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-# ── Auth
-# ──────────────────────────────────────────────────────────────────────
-msgid "Iniciar sesión"
-msgstr "Log in"
-
-msgid "Bienvenido de nuevo"
-msgstr "Welcome back"
-
-msgid "Ingresa con tu usuario y contraseña para continuar."
-msgstr "Enter your username and password to continue."
-
-msgid "Usuario"
-msgstr "Username"
-
-msgid "Contraseña"
-msgstr "Password"
-
-msgid "¿No tienes cuenta?"
-msgstr "Don't have an account?"
-
-msgid "Crear una cuenta"
-msgstr "Create an account"
-
-msgid "¿Olvidaste tu contraseña?"
-msgstr "Forgot your password?"
-
-msgid "Crear cuenta"
-msgstr "Create account"
-
-msgid "Completa los datos para registrarte en Paws & Walks."
-msgstr "Fill in your details to register on Paws & Walks."
-
-msgid "Nombre"
-msgstr "First name"
-
-msgid "Apellido"
-msgstr "Last name"
-
-msgid "Correo"
-msgstr "Email"
-
-msgid "Tipo de cuenta"
-msgstr "Account type"
-
-# ── Base layout
-# ───────────────────────────────────────────────────────────────
-msgid "Cerrar sesión"
-msgstr "Log out"
-
-msgid "Panel de control"
-msgstr "Dashboard"
-
-msgid "Idioma"
-msgstr "Language"
-
+#: .\paws_walks\settings.py:130
 msgid "Español"
 msgstr "Spanish"
 
+#: .\paws_walks\settings.py:131
 msgid "English"
 msgstr "English"
 
-msgid "Notificaciones"
-msgstr "Notifications"
-
-# ── Sidebar
-# ───────────────────────────────────────────────────────────────────
-msgid "Principal"
-msgstr "Main"
-
-msgid "Gestión"
-msgstr "Management"
-
-msgid "Cuenta"
-msgstr "Account"
-
-msgid "Panel"
-msgstr "Dashboard"
-
-msgid "Hacer reserva"
-msgstr "New booking"
-
-msgid "Mis reservas"
-msgstr "My bookings"
-
-msgid "Mis mascotas"
-msgstr "My pets"
-
-msgid "Mi perfil"
-msgstr "My profile"
-
-msgid "Mi calendario"
-msgstr "My calendar"
-
-msgid "Mis servicios"
-msgstr "My services"
-
-# ── Dashboard headers
-# ─────────────────────────────────────────────────────────
-msgid "Panel de dueño"
-msgstr "Owner dashboard"
-
-msgid "Tu resumen de mascotas, reservas y notificaciones"
-msgstr "Your summary of pets, bookings and notifications"
-
-msgid "Panel de cuidador"
-msgstr "Caregiver dashboard"
-
-msgid "Prioridades del día: solicitudes, citas y notificaciones"
-msgstr "Today's priorities: requests, appointments and notifications"
-
-msgid "Historial, finalizaciones y calificaciones"
-msgstr "History, completions and ratings"
-
-msgid "Gestiona su ficha de cuidado y salud"
-msgstr "Manage their care and health profile"
-
-msgid "Información de tu cuenta"
-msgstr "Your account information"
-
-msgid "Datos personales y cuenta"
-msgstr "Personal data and account"
-
-msgid "Configura paseos y guarderías disponibles"
-msgstr "Configure available walks and daycare services"
-
-msgid "Citas programadas y finalizadas"
-msgstr "Scheduled and completed appointments"
-
-msgid "Nueva reserva"
-msgstr "New booking"
-
-msgid "Busca por día y elige los horarios disponibles del cuidador"
-msgstr "Search by day and choose the caregiver's available slots"
-
-# ── Reservas (mis reservas)
-# ───────────────────────────────────────────────────
-msgid "Próximas"
-msgstr "Upcoming"
-
-msgid "Mascota"
-msgstr "Pet"
-
-msgid "Servicio"
-msgstr "Service"
-
-msgid "Cuidador"
-msgstr "Caregiver"
-
-msgid "Cuándo"
-msgstr "When"
-
-msgid "Estado y pago"
-msgstr "Status & payment"
-
-msgid "Acciones"
-msgstr "Actions"
-
-msgid "Monto pendiente"
-msgstr "Amount pending"
-
-msgid "Sin franja horaria"
-msgstr "No time slot"
-
-msgid "Pago pendiente"
-msgstr "Payment pending"
-
-msgid "Ver detalles completos"
-msgstr "View full details"
-
-msgid "Ver perfil"
-msgstr "View profile"
-
-msgid "Chat"
-msgstr "Chat"
-
-msgid "Cancelar"
-msgstr "Cancel"
-
-msgid "Detalle del servicio"
-msgstr "Service detail"
-
-msgid "Logística"
-msgstr "Logistics"
-
-msgid "Pago y seguimiento"
-msgstr "Payment & tracking"
-
-msgid "Anotaciones del cuidador"
-msgstr "Caregiver notes"
-
-msgid "Sin reservas próximas"
-msgstr "No upcoming bookings"
-
-msgid "Crear reserva"
-msgstr "Create booking"
-
-msgid "Historial"
-msgstr "History"
-
-msgid "Estado"
-msgstr "Status"
-
-msgid "resultados"
-msgstr "results"
-
-msgid "Monto no registrado"
-msgstr "Amount not recorded"
-
-msgid "Pendiente de finalizar por cuidador"
-msgstr "Pending completion by caregiver"
-
-msgid "Calificar cuidador"
-msgstr "Rate caregiver"
-
-msgid "Sin historial aún"
-msgstr "No history yet"
-
-msgid "¿Cómo fue tu experiencia?"
-msgstr "How was your experience?"
-
-msgid "Comentario (opcional)"
-msgstr "Comment (optional)"
-
-msgid "Cuéntanos más..."
-msgstr "Tell us more..."
-
-msgid "Enviar"
-msgstr "Send"
-
-msgid "Conversación con contexto de la reserva"
-msgstr "Conversation in booking context"
-
-msgid "Escribe un mensaje..."
-msgstr "Write a message..."
-
-# ── Notificaciones
-# ────────────────────────────────────────────────────────────
-msgid "no leídas"
-msgstr "unread"
-
-msgid "total"
-msgstr "total"
-
-msgid "Todas las categorías"
-msgstr "All categories"
-
-msgid "Todas"
-msgstr "All"
-
-msgid "No leídas"
-msgstr "Unread"
-
-msgid "Leídas"
-msgstr "Read"
-
-msgid "Filtrar"
-msgstr "Filter"
-
-msgid "Limpiar"
-msgstr "Clear"
-
-msgid "Seleccionar todas"
-msgstr "Select all"
-
-msgid "seleccionadas"
-msgstr "selected"
-
-msgid "Marcar leídas"
-msgstr "Mark as read"
-
-msgid "Eliminar seleccionadas"
-msgstr "Delete selected"
-
-# ── TextChoices (models.py)
-# ───────────────────────────────────────────────────
+#: .\servicios\models.py:10
 msgid "Perro"
 msgstr "Dog"
 
+#: .\servicios\models.py:11
 msgid "Gato"
 msgstr "Cat"
 
+#: .\servicios\models.py:15
 msgid "Macho"
 msgstr "Male"
 
+#: .\servicios\models.py:16
 msgid "Hembra"
 msgstr "Female"
 
+#: .\servicios\models.py:20
 msgid "Pequeño"
 msgstr "Small"
 
+#: .\servicios\models.py:21
 msgid "Mediano"
 msgstr "Medium"
 
+#: .\servicios\models.py:22
 msgid "Grande"
 msgstr "Large"
 
+#: .\servicios\models.py:26
+#: .\servicios\templates\servicios\crear_solicitud.html:40
+#: .\servicios\templates\servicios\cuidador_calendario.html:28
+#: .\servicios\templates\servicios\cuidador_calendario.html:92
+#: .\servicios\templates\servicios\cuidador_calendario.html:181
+#: .\servicios\templates\servicios\cuidador_calendario.html:217
+#: .\servicios\templates\servicios\cuidador_mis_pagos.html:61
+#: .\servicios\templates\servicios\signup.html:118
 msgid "Dueño"
 msgstr "Owner"
 
+#: .\servicios\models.py:27
+#: .\servicios\templates\servicios\crear_solicitud.html:49
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:29
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:152
+#: .\servicios\templates\servicios\signup.html:121
+msgid "Cuidador"
+msgstr "Caregiver"
+
+#: .\servicios\models.py:31
+#: .\servicios\templates\servicios\crear_solicitud.html:70
+#: .\servicios\templates\servicios\cuidador_guia.html:26
+#: .\servicios\templates\servicios\dashboard_cuidador.html:94
+#: .\servicios\templates\servicios\dueno_nueva_reserva.html:44
 msgid "Paseo"
 msgstr "Walk"
 
+#: .\servicios\models.py:32
+#: .\servicios\templates\servicios\crear_solicitud.html:71
+#: .\servicios\templates\servicios\dashboard_cuidador.html:95
+#: .\servicios\templates\servicios\dueno_nueva_reserva.html:45
 msgid "Guardería"
 msgstr "Daycare"
 
+#: .\servicios\models.py:36
 msgid "Lunes"
 msgstr "Monday"
 
+#: .\servicios\models.py:37
 msgid "Martes"
 msgstr "Tuesday"
 
+#: .\servicios\models.py:38
 msgid "Miércoles"
 msgstr "Wednesday"
 
+#: .\servicios\models.py:39
 msgid "Jueves"
 msgstr "Thursday"
 
+#: .\servicios\models.py:40
 msgid "Viernes"
 msgstr "Friday"
 
+#: .\servicios\models.py:41
 msgid "Sábado"
 msgstr "Saturday"
 
+#: .\servicios\models.py:42
 msgid "Domingo"
 msgstr "Sunday"
 
+#: .\servicios\models.py:46 .\servicios\models.py:249
+#: .\servicios\templates\servicios\dashboard_cuidador.html:69
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:89
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:216
 msgid "Pendiente"
 msgstr "Pending"
 
+#: .\servicios\models.py:47
 msgid "Aceptado"
 msgstr "Accepted"
 
+#: .\servicios\models.py:48 .\servicios\models.py:252
 msgid "Rechazado"
 msgstr "Rejected"
 
+#: .\servicios\models.py:49
 msgid "Cancelado"
 msgstr "Cancelled"
 
+#: .\servicios\models.py:50
+#: .\servicios\templates\servicios\cuidador_calendario.html:198
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:160
 msgid "Finalizado"
 msgstr "Completed"
 
+#: .\servicios\models.py:250
 msgid "Procesando"
 msgstr "Processing"
 
+#: .\servicios\models.py:251
 msgid "Completado"
 msgstr "Done"
 
+#: .\servicios\models.py:253
 msgid "Reembolsado"
 msgstr "Refunded"
 
+#: .\servicios\models.py:321
+#: .\servicios\templates\servicios\notificaciones.html:42
 msgid "Negocio"
 msgstr "Business"
 
+#: .\servicios\models.py:322
+#: .\servicios\templates\servicios\notificaciones.html:43
 msgid "Sistema"
 msgstr "System"
 
+#: .\servicios\models.py:326
+#: .\servicios\templates\servicios\dashboard_dueno.html:55
+#: .\servicios\templates\servicios\dueno_nueva_reserva.html:3
+#: .\servicios\templates\servicios\dueno_nueva_reserva.html:10
+msgid "Nueva reserva"
+msgstr "New booking"
+
+#: .\servicios\models.py:327
 msgid "Reserva aceptada"
 msgstr "Booking accepted"
 
+#: .\servicios\models.py:328
 msgid "Reserva rechazada"
 msgstr "Booking rejected"
 
+#: .\servicios\models.py:329
 msgid "Reserva cancelada"
 msgstr "Booking cancelled"
 
+#: .\servicios\models.py:330
+#: .\servicios\templates\servicios\includes\resenas_recibidas_mi_perfil.html:55
 msgid "Servicio completado"
 msgstr "Service completed"
 
+#: .\servicios\models.py:331
 msgid "Reseña pendiente"
 msgstr "Review pending"
 
+#: .\servicios\models.py:332
 msgid "Mensaje de chat"
 msgstr "Chat message"
 
+#: .\servicios\models.py:333
 msgid "Mascota creada"
 msgstr "Pet added"
 
+#: .\servicios\models.py:334
 msgid "Mascota editada"
 msgstr "Pet updated"
 
+#: .\servicios\models.py:335
 msgid "Mascota eliminada"
 msgstr "Pet removed"
 
+#: .\servicios\models.py:336
 msgid "Perfil actualizado"
 msgstr "Profile updated"
 
-# ── Dashboard dueño
-# ───────────────────────────────────────────────────────────
-msgid "Reservas próximas"
-msgstr "Upcoming bookings"
-
-msgid "Pendientes %(pend)s · Aceptadas %(acep)s"
-msgstr "Pending %(pend)s · Accepted %(acep)s"
-
-msgid "Reservas hechas"
-msgstr "Bookings made"
-
-msgid "Historial total dentro de la app"
-msgstr "Total history in the app"
-
-msgid "Mascotas registradas"
-msgstr "Registered pets"
-
-msgid "Gestionar mascotas"
-msgstr "Manage pets"
-
-msgid "Notificaciones no leídas"
-msgstr "Unread notifications"
-
-msgid "Ver notificaciones"
-msgstr "View notifications"
-
-msgid "Próximas reservas"
-msgstr "Upcoming bookings"
-
-msgid "Prioriza primero las pendientes de confirmación"
-msgstr "Prioritize pending confirmations first"
-
-msgid "No tienes reservas próximas"
-msgstr "You have no upcoming bookings"
-
-msgid "Agenda un paseo o guardería para tu mascota."
-msgstr "Schedule a walk or daycare for your pet."
-
-msgid "Atajos rápidos"
-msgstr "Quick links"
-
-msgid "Accede a lo que más usas"
-msgstr "Access what you use most"
-
-msgid "Revisar reservas"
-msgstr "Review bookings"
-
-msgid "Actualizar perfil"
-msgstr "Update profile"
-
-msgid "Notificaciones recientes"
-msgstr "Recent notifications"
-
-msgid "Lo más nuevo de reservas y sistema"
-msgstr "Latest from bookings and system"
-
-msgid "Ver todas"
-msgstr "See all"
-
-msgid "No hay notificaciones recientes"
-msgstr "No recent notifications"
-
-msgid "Mascotas"
-msgstr "Pets"
-
-msgid "Perfil y reputación de tus mascotas"
-msgstr "Profile and ratings of your pets"
-
-msgid "Gestionar"
-msgstr "Manage"
-
-msgid "Sin calificaciones aún"
-msgstr "No ratings yet"
-
-msgid "Aún no registras mascotas"
-msgstr "You haven't registered any pets yet"
-
-msgid "Agregar mascota"
-msgstr "Add pet"
-
-# ── Dashboard cuidador
-# ────────────────────────────────────────────────────────
-msgid "Tu cuenta está en revisión."
-msgstr "Your account is under review."
-
-msgid "Los dueños podrán reservarte cuando finalice la verificación."
-msgstr "Owners will be able to book you once verification is complete."
-
-msgid "Citas próximas"
-msgstr "Upcoming appointments"
-
-msgid "Abrir calendario"
-msgstr "Open calendar"
-
-msgid "Solicitudes pendientes"
-msgstr "Pending requests"
-
-msgid "Por aceptar o rechazar"
-msgstr "To accept or reject"
-
-msgid "Servicios activos"
-msgstr "Active services"
-
-msgid "Gestionar servicios"
-msgstr "Manage services"
-
-msgid "Responde rápido para mantener tu tasa de aceptación"
-msgstr "Respond quickly to maintain your acceptance rate"
-
-msgid "No tienes solicitudes pendientes"
-msgstr "You have no pending requests"
-
-msgid "Accesos clave del día"
-msgstr "Key daily shortcuts"
-
-msgid "Responder pendientes"
-msgstr "Respond to pending"
-
-msgid "Finalizar arrendamientos"
-msgstr "Complete rentals"
-
-msgid "Editar servicios"
-msgstr "Edit services"
-
-msgid "Revisar alertas"
-msgstr "Review alerts"
-
-msgid "Tarifas activas:"
-msgstr "Active rates:"
-
-msgid "No activo"
-msgstr "Inactive"
-
-msgid "Próximas citas"
-msgstr "Upcoming appointments"
-
-msgid "Servicios aceptados para ejecutar"
-msgstr "Accepted services to perform"
-
-msgid "Ver agenda"
-msgstr "View schedule"
-
-msgid "No tienes citas próximas"
-msgstr "You have no upcoming appointments"
-
-msgid "Alertas de reservas y sistema"
-msgstr "Booking and system alerts"
-
-# ── Perfil
-# ────────────────────────────────────────────────────────────────────
-msgid "Verificado"
-msgstr "Verified"
-
-msgid "Editar perfil"
-msgstr "Edit profile"
-
-msgid "Información personal"
+#: .\servicios\templates\servicios\aliado_estado.html:4
+#: .\servicios\templates\servicios\includes\sidebar_cuidador_extra.html:6
+#: .\servicios\templates\servicios\includes\sidebar_dueno_extra.html:4
+#, fuzzy
+#| msgid "Información personal"
+msgid "Integración aliado"
 msgstr "Personal information"
 
-msgid "Teléfono"
-msgstr "Phone"
-
-msgid "Ciudad"
-msgstr "City"
-
-msgid "Dirección"
-msgstr "Address"
-
-msgid "No configurada"
-msgstr "Not set"
-
-msgid "Cédula"
-msgstr "ID number"
-
-msgid "Fecha de nacimiento"
-msgstr "Date of birth"
-
-msgid "Cambiar foto"
-msgstr "Change photo"
-
-msgid "País"
-msgstr "Country"
-
-msgid ""
-"Los campos nombre de usuario, fecha de nacimiento y rol no son editables."
-msgstr "The username, date of birth and role fields are not editable."
-
-msgid "Guardar cambios"
-msgstr "Save changes"
-
-msgid "Datos personales"
-msgstr "Personal data"
-
-msgid "Experiencia"
-msgstr "Experience"
-
-msgid "No registrada"
-msgstr "Not registered"
-
-# ── Mascotas
-# ──────────────────────────────────────────────────────────────────
-msgid "Perfil de tus mascotas"
-msgstr "Your pets' profiles"
-
-msgid "Gestiona fichas y filtra rápido."
-msgstr "Manage profiles and filter quickly."
-
-msgid "Total:"
-msgstr "Total:"
-
-msgid "Agregar"
-msgstr "Add"
-
-msgid "Nombre o raza"
-msgstr "Name or breed"
-
-msgid "Tipo"
-msgstr "Type"
-
-msgid "Todos"
-msgstr "All"
-
-msgid "Sexo"
-msgstr "Gender"
-
-msgid "Tamaño"
-msgstr "Size"
-
-msgid "Vacunas"
-msgstr "Vaccines"
-
-msgid "Al día"
-msgstr "Up to date"
-
-msgid "Vacunas pendientes"
-msgstr "Vaccines pending"
-
-msgid "Esterilizado"
-msgstr "Neutered"
-
-msgid "Reseñas"
-msgstr "Reviews"
-
-msgid "Con reseñas"
-msgstr "With reviews"
-
-msgid "Sin reseñas"
-msgstr "Without reviews"
-
-msgid "Sexo no indicado"
-msgstr "Gender not specified"
-
-msgid "Tamaño no indicado"
-msgstr "Size not specified"
-
-msgid "Vacunas al día"
-msgstr "Vaccines up to date"
-
-msgid "Edad:"
-msgstr "Age:"
-
-msgid "Peso:"
-msgstr "Weight:"
-
-msgid "No indicado"
-msgstr "Not specified"
-
-msgid "Esterilizado:"
-msgstr "Neutered:"
-
-msgid "Reseñas recientes de cuidadores"
-msgstr "Recent caregiver reviews"
-
-msgid "Ver reseñas detalladas"
-msgstr "View detailed reviews"
-
-msgid "Aún no hay comentarios para esta mascota."
-msgstr "No comments yet for this pet."
-
-msgid "Condiciones médicas:"
-msgstr "Medical conditions:"
-
-msgid "Notas:"
-msgstr "Notes:"
-
-msgid "Editar"
-msgstr "Edit"
-
-msgid "Eliminar"
-msgstr "Delete"
-
-msgid "No hay mascotas que coincidan con los filtros"
-msgstr "No pets match the filters"
-
-msgid "Ajusta los criterios o usa Limpiar para volver a ver todas."
-msgstr "Adjust filters or clear to see all."
-
-msgid "Aún no has registrado mascotas"
-msgstr "You haven't added any pets yet"
-
-msgid "Crea su ficha para reservar paseos y guardería más rápido."
-msgstr "Create their profile to book walks and daycare faster."
-
-msgid "Agregar primera mascota"
-msgstr "Add first pet"
-
-msgid "Foto"
-msgstr "Photo"
-
-msgid "Sube una foto para completar el registro."
-msgstr "Upload a photo to complete the registration."
-
-msgid "Selecciona tipo"
-msgstr "Select type"
-
-msgid "Raza"
-msgstr "Breed"
-
-msgid "Selecciona sexo"
-msgstr "Select gender"
-
-msgid "Selecciona tamaño"
-msgstr "Select size"
-
-msgid "Edad (años)"
-msgstr "Age (years)"
-
-msgid "Peso (kg)"
-msgstr "Weight (kg)"
-
-msgid "Selecciona una opción"
-msgstr "Select an option"
-
-msgid "Condiciones médicas o alergias"
-msgstr "Medical conditions or allergies"
-
-msgid "Notas de comportamiento"
-msgstr "Behavior notes"
-
-msgid "Guardar mascota"
-msgstr "Save pet"
-
-msgid "No especificar"
-msgstr "Don't specify"
-
-msgid "Promedio"
-msgstr "Average"
-
-msgid "Total reseñas"
-msgstr "Total reviews"
-
-msgid "Comentarios visibles"
-msgstr "Visible comments"
-
-msgid "Esta mascota tiene calificaciones, pero sin comentarios escritos."
-msgstr "This pet has ratings but no written comments."
-
-msgid "Esta mascota aún no tiene reseñas."
-msgstr "This pet has no reviews yet."
-
-msgid "Sí"
-msgstr "Yes"
-
-msgid "No"
-msgstr "No"
-
-# ── Calendario
-# ────────────────────────────────────────────────────────────────
-msgid "Solicitudes pendientes de confirmar"
-msgstr "Requests pending confirmation"
-
+#: .\servicios\templates\servicios\aliado_estado.html:10
+msgid "Integración con equipo aliado"
+msgstr "Partner team integration"
+
+#: .\servicios\templates\servicios\aliado_estado.html:12
+msgid "Estado del servicio externo consumido vía Adapter Pattern"
+msgstr "External service status consumed via Adapter Pattern"
+
+#: .\servicios\templates\servicios\aliado_estado.html:26
+#, fuzzy
+#| msgid "Bloque disponible:"
+msgid "Disponible"
+msgstr "Available block:"
+
+#: .\servicios\templates\servicios\aliado_estado.html:30
+#, fuzzy
+#| msgid "Bloque disponible:"
+msgid "No disponible"
+msgstr "Available block:"
+
+#: .\servicios\templates\servicios\aliado_estado.html:36
+#, fuzzy
+#| msgid "Último mensaje:"
+msgid "Última consulta:"
+msgstr "Last message:"
+
+#: .\servicios\templates\servicios\aliado_estado.html:42
+#, fuzzy
+#| msgid "Total recibido"
+msgid "Datos recibidos"
+msgstr "Total received"
+
+#: .\servicios\templates\servicios\aliado_estado.html:51
+msgid "Sobre esta integración"
+msgstr "About this integration"
+
+#: .\servicios\templates\servicios\aliado_estado.html:55
+msgid "Patrón:"
+msgstr "Pattern:"
+
+#: .\servicios\templates\servicios\aliado_estado.html:59
+msgid "Interfaz:"
+msgstr "Interface:"
+
+#: .\servicios\templates\servicios\aliado_estado.html:63
+msgid "Implementación:"
+msgstr "Implementation:"
+
+#: .\servicios\templates\servicios\aliado_estado.html:65
+msgid "(real)"
+msgstr "(real)"
+
+#: .\servicios\templates\servicios\aliado_estado.html:67
+msgid "(fallback)"
+msgstr "(fallback)"
+
+#: .\servicios\templates\servicios\aliado_estado.html:70
+#, fuzzy
+#| msgid "Seleccionar..."
+msgid "Selector:"
+msgstr "Select..."
+
+#: .\servicios\templates\servicios\aliado_estado.html:74
+#, fuzzy
+#| msgid "Configuración de paseo"
+msgid "Configuración:"
+msgstr "Walk configuration"
+
+#: .\servicios\templates\servicios\aliado_estado.html:75
+msgid "variable de entorno"
+msgstr "environment variable"
+
+#: .\servicios\templates\servicios\base_dashboard.html:60
+msgid "Abrir menú"
+msgstr "Open menu"
+
+#: .\servicios\templates\servicios\base_dashboard.html:76
+#: .\servicios\templates\servicios\base_dashboard.html:84
+#: .\servicios\templates\servicios\notificaciones.html:4
+#: .\servicios\templates\servicios\notificaciones.html:7
+msgid "Notificaciones"
+msgstr "Notifications"
+
+#: .\servicios\templates\servicios\base_dashboard.html:112
+msgid "Cerrar sesión"
+msgstr "Log out"
+
+#: .\servicios\templates\servicios\base_dashboard.html:117
+msgid "Plegar o desplegar menú"
+msgstr "Toggle menu"
+
+#: .\servicios\templates\servicios\base_dashboard.html:127
+#, python-format
+msgid "Hola, %(nombre)s"
+msgstr ""
+
+#: .\servicios\templates\servicios\base_dashboard.html:128
+msgid "Panel de control"
+msgstr "Dashboard"
+
+#: .\servicios\templates\servicios\base_dashboard.html:137
+msgid "Idioma"
+msgstr "Language"
+
+#: .\servicios\templates\servicios\crear_solicitud.html:7
+msgid "Nueva Solicitud"
+msgstr "New Request"
+
+#: .\servicios\templates\servicios\crear_solicitud.html:26
+msgid "Solicitud de Servicio"
+msgstr "Service Request"
+
+#: .\servicios\templates\servicios\crear_solicitud.html:27
+msgid "Reserva un servicio con un cuidador verificado."
+msgstr "Book a service with a verified caregiver."
+
+#: .\servicios\templates\servicios\crear_solicitud.html:42
+#: .\servicios\templates\servicios\crear_solicitud.html:51
+#: .\servicios\templates\servicios\crear_solicitud.html:60
+#: .\servicios\templates\servicios\crear_solicitud.html:69
+#: .\servicios\templates\servicios\crear_solicitud.html:109
+msgid "— Seleccione —"
+msgstr "— Select —"
+
+#: .\servicios\templates\servicios\crear_solicitud.html:58
+#: .\servicios\templates\servicios\cuidador_calendario.html:28
+#: .\servicios\templates\servicios\cuidador_calendario.html:92
+#: .\servicios\templates\servicios\cuidador_calendario.html:181
+#: .\servicios\templates\servicios\cuidador_calendario.html:224
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:29
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:152
+#: .\servicios\templates\servicios\dueno_nueva_reserva.html:49
+msgid "Mascota"
+msgstr "Pet"
+
+#: .\servicios\templates\servicios\crear_solicitud.html:67
+#: .\servicios\templates\servicios\dueno_nueva_reserva.html:42
+msgid "Tipo de servicio"
+msgstr "Service type"
+
+#: .\servicios\templates\servicios\crear_solicitud.html:75
+#: .\servicios\templates\servicios\cuidador_calendario.html:28
+#: .\servicios\templates\servicios\cuidador_calendario.html:92
+#: .\servicios\templates\servicios\cuidador_calendario.html:181
+#: .\servicios\templates\servicios\cuidador_mis_pagos.html:61
+#: .\servicios\templates\servicios\dueno_nueva_reserva.html:62
 msgid "Fecha"
 msgstr "Date"
 
+#: .\servicios\templates\servicios\crear_solicitud.html:79
+msgid "Fecha fin (guardería)"
+msgstr "End date (daycare)"
+
+#: .\servicios\templates\servicios\crear_solicitud.html:84
+msgid "Evento / Horario"
+msgstr "Event / Schedule"
+
+#: .\servicios\templates\servicios\crear_solicitud.html:86
+msgid "— Seleccione cuidador, tipo y fecha —"
+msgstr "— Select caregiver, type and date —"
+
+#: .\servicios\templates\servicios\crear_solicitud.html:88
+msgid "Para paseo con slots, el sistema asignará la hora según proximidad."
+msgstr "For walks with slots, the system assigns time by proximity."
+
+#: .\servicios\templates\servicios\crear_solicitud.html:91
+msgid "Ventana (paseo, legacy)"
+msgstr "Window (walk, legacy)"
+
+#: .\servicios\templates\servicios\crear_solicitud.html:93
+#: .\servicios\templates\servicios\crear_solicitud.html:99
+msgid "— Seleccione cuidador y fecha —"
+msgstr ""
+
+#: .\servicios\templates\servicios\crear_solicitud.html:97
+msgid "Bloque horario (legacy)"
+msgstr "Time block (legacy)"
+
+#: .\servicios\templates\servicios\crear_solicitud.html:102
+msgid "Se cargan al elegir cuidador, tipo y fecha."
+msgstr "Loaded when you pick caregiver, type and date."
+
+#: .\servicios\templates\servicios\crear_solicitud.html:103
+msgid "Crear Solicitud"
+msgstr "Create Request"
+
+#: .\servicios\templates\servicios\crear_solicitud.html:110
+msgid "Seleccione un cuidador."
+msgstr "Select a caregiver."
+
+#: .\servicios\templates\servicios\crear_solicitud.html:111
+msgid "Seleccione el tipo de servicio."
+msgstr "Select service type."
+
+#: .\servicios\templates\servicios\crear_solicitud.html:112
+msgid "— Sin disponibilidad —"
+msgstr "— No availability —"
+
+#: .\servicios\templates\servicios\crear_solicitud.html:113
+msgid "No hay horarios para este día."
+msgstr "No schedules for this day."
+
+#: .\servicios\templates\servicios\crear_solicitud.html:114
+msgid "opción(es) disponible(s)"
+msgstr "available option(s)"
+
+#: .\servicios\templates\servicios\cuidador_calendario.html:3
+#: .\servicios\templates\servicios\cuidador_calendario.html:6
+#: .\servicios\templates\servicios\cuidador_calendario.html:14
+#: .\servicios\templates\servicios\cuidador_guia.html:13
+#: .\servicios\templates\servicios\cuidador_guia.html:29
+#: .\servicios\templates\servicios\cuidador_mi_perfil.html:14
+#: .\servicios\templates\servicios\cuidador_mis_pagos.html:14
+#: .\servicios\templates\servicios\cuidador_servicios.html:14
+#: .\servicios\templates\servicios\cuidador_soporte.html:13
+#: .\servicios\templates\servicios\dashboard_cuidador.html:14
+#: .\servicios\templates\servicios\notificaciones.html:25
+#: .\servicios\templates\servicios\ver_perfil_otro.html:15
+msgid "Mi calendario"
+msgstr "My calendar"
+
+#: .\servicios\templates\servicios\cuidador_calendario.html:7
+msgid "Citas programadas y finalizadas"
+msgstr "Scheduled and completed appointments"
+
+#: .\servicios\templates\servicios\cuidador_calendario.html:11
+#: .\servicios\templates\servicios\cuidador_guia.html:10
+#: .\servicios\templates\servicios\cuidador_mi_perfil.html:11
+#: .\servicios\templates\servicios\cuidador_mis_pagos.html:11
+#: .\servicios\templates\servicios\cuidador_servicios.html:11
+#: .\servicios\templates\servicios\cuidador_soporte.html:10
+#: .\servicios\templates\servicios\dashboard_cuidador.html:11
+#: .\servicios\templates\servicios\dashboard_dueno.html:12
+#: .\servicios\templates\servicios\dueno_guia.html:10
+#: .\servicios\templates\servicios\dueno_mi_perfil.html:11
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:11
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:11
+#: .\servicios\templates\servicios\dueno_nueva_reserva.html:15
+#: .\servicios\templates\servicios\dueno_soporte.html:10
+#: .\servicios\templates\servicios\notificaciones.html:13
+#: .\servicios\templates\servicios\notificaciones.html:22
+#: .\servicios\templates\servicios\ver_perfil_otro.html:12
+#: .\servicios\templates\servicios\ver_perfil_otro.html:20
+msgid "Principal"
+msgstr "Main"
+
+#: .\servicios\templates\servicios\cuidador_calendario.html:12
+#: .\servicios\templates\servicios\cuidador_guia.html:11
+#: .\servicios\templates\servicios\cuidador_mi_perfil.html:12
+#: .\servicios\templates\servicios\cuidador_mis_pagos.html:12
+#: .\servicios\templates\servicios\cuidador_servicios.html:12
+#: .\servicios\templates\servicios\cuidador_soporte.html:11
+#: .\servicios\templates\servicios\dashboard_cuidador.html:12
+#: .\servicios\templates\servicios\dashboard_dueno.html:13
+#: .\servicios\templates\servicios\dueno_guia.html:11
+#: .\servicios\templates\servicios\dueno_mi_perfil.html:12
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:12
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:12
+#: .\servicios\templates\servicios\dueno_nueva_reserva.html:16
+#: .\servicios\templates\servicios\dueno_soporte.html:11
+#: .\servicios\templates\servicios\notificaciones.html:14
+#: .\servicios\templates\servicios\notificaciones.html:23
+#: .\servicios\templates\servicios\ver_perfil_otro.html:13
+#: .\servicios\templates\servicios\ver_perfil_otro.html:21
+msgid "Panel"
+msgstr "Dashboard"
+
+#: .\servicios\templates\servicios\cuidador_calendario.html:13
+#: .\servicios\templates\servicios\cuidador_guia.html:12
+#: .\servicios\templates\servicios\cuidador_mi_perfil.html:13
+#: .\servicios\templates\servicios\cuidador_mis_pagos.html:13
+#: .\servicios\templates\servicios\cuidador_servicios.html:13
+#: .\servicios\templates\servicios\cuidador_soporte.html:12
+#: .\servicios\templates\servicios\dashboard_cuidador.html:13
+#: .\servicios\templates\servicios\dashboard_dueno.html:14
+#: .\servicios\templates\servicios\dueno_guia.html:12
+#: .\servicios\templates\servicios\dueno_mi_perfil.html:13
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:13
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:13
+#: .\servicios\templates\servicios\dueno_nueva_reserva.html:17
+#: .\servicios\templates\servicios\dueno_soporte.html:12
+#: .\servicios\templates\servicios\notificaciones.html:15
+#: .\servicios\templates\servicios\notificaciones.html:24
+#: .\servicios\templates\servicios\ver_perfil_otro.html:14
+#: .\servicios\templates\servicios\ver_perfil_otro.html:22
+msgid "Gestión"
+msgstr "Management"
+
+#: .\servicios\templates\servicios\cuidador_calendario.html:15
+#: .\servicios\templates\servicios\cuidador_guia.html:14
+#: .\servicios\templates\servicios\cuidador_mi_perfil.html:15
+#: .\servicios\templates\servicios\cuidador_mis_pagos.html:15
+#: .\servicios\templates\servicios\cuidador_servicios.html:3
+#: .\servicios\templates\servicios\cuidador_servicios.html:6
+#: .\servicios\templates\servicios\cuidador_servicios.html:15
+#: .\servicios\templates\servicios\cuidador_soporte.html:14
+#: .\servicios\templates\servicios\dashboard_cuidador.html:15
+#: .\servicios\templates\servicios\notificaciones.html:26
+#: .\servicios\templates\servicios\ver_perfil_otro.html:16
+msgid "Mis servicios"
+msgstr "My services"
+
+#: .\servicios\templates\servicios\cuidador_calendario.html:16
+#: .\servicios\templates\servicios\cuidador_guia.html:15
+#: .\servicios\templates\servicios\cuidador_mi_perfil.html:16
+#: .\servicios\templates\servicios\cuidador_mis_pagos.html:16
+#: .\servicios\templates\servicios\cuidador_servicios.html:16
+#: .\servicios\templates\servicios\cuidador_soporte.html:15
+#: .\servicios\templates\servicios\dashboard_cuidador.html:16
+#: .\servicios\templates\servicios\dashboard_dueno.html:18
+#: .\servicios\templates\servicios\dueno_guia.html:16
+#: .\servicios\templates\servicios\dueno_mi_perfil.html:17
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:17
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:17
+#: .\servicios\templates\servicios\dueno_nueva_reserva.html:21
+#: .\servicios\templates\servicios\dueno_soporte.html:16
+#: .\servicios\templates\servicios\notificaciones.html:19
+#: .\servicios\templates\servicios\notificaciones.html:27
+#: .\servicios\templates\servicios\ver_perfil_otro.html:17
+#: .\servicios\templates\servicios\ver_perfil_otro.html:26
+msgid "Cuenta"
+msgstr "Account"
+
+#: .\servicios\templates\servicios\cuidador_calendario.html:17
+#: .\servicios\templates\servicios\cuidador_guia.html:16
+#: .\servicios\templates\servicios\cuidador_guia.html:23
+#: .\servicios\templates\servicios\cuidador_mi_perfil.html:3
+#: .\servicios\templates\servicios\cuidador_mi_perfil.html:6
+#: .\servicios\templates\servicios\cuidador_mi_perfil.html:17
+#: .\servicios\templates\servicios\cuidador_mis_pagos.html:17
+#: .\servicios\templates\servicios\cuidador_servicios.html:17
+#: .\servicios\templates\servicios\cuidador_soporte.html:16
+#: .\servicios\templates\servicios\dashboard_cuidador.html:17
+#: .\servicios\templates\servicios\dashboard_dueno.html:19
+#: .\servicios\templates\servicios\dueno_guia.html:17
+#: .\servicios\templates\servicios\dueno_mi_perfil.html:3
+#: .\servicios\templates\servicios\dueno_mi_perfil.html:6
+#: .\servicios\templates\servicios\dueno_mi_perfil.html:18
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:18
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:18
+#: .\servicios\templates\servicios\dueno_nueva_reserva.html:22
+#: .\servicios\templates\servicios\dueno_soporte.html:17
+#: .\servicios\templates\servicios\notificaciones.html:20
+#: .\servicios\templates\servicios\notificaciones.html:28
+#: .\servicios\templates\servicios\ver_perfil_otro.html:18
+#: .\servicios\templates\servicios\ver_perfil_otro.html:27
+msgid "Mi perfil"
+msgstr "My profile"
+
+#: .\servicios\templates\servicios\cuidador_calendario.html:24
+msgid "Solicitudes pendientes de confirmar"
+msgstr "Requests pending confirmation"
+
+#: .\servicios\templates\servicios\cuidador_calendario.html:28
+#: .\servicios\templates\servicios\cuidador_calendario.html:92
+#: .\servicios\templates\servicios\cuidador_calendario.html:163
+#: .\servicios\templates\servicios\cuidador_calendario.html:181
+#: .\servicios\templates\servicios\cuidador_mis_pagos.html:61
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:29
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:134
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:152
+msgid "Servicio"
+msgstr "Service"
+
+#: .\servicios\templates\servicios\cuidador_calendario.html:28
+#: .\servicios\templates\servicios\cuidador_calendario.html:92
+#: .\servicios\templates\servicios\cuidador_calendario.html:181
 msgid "Hora"
 msgstr "Time"
 
+#: .\servicios\templates\servicios\cuidador_calendario.html:28
+#: .\servicios\templates\servicios\cuidador_calendario.html:92
+#: .\servicios\templates\servicios\cuidador_calendario.html:181
+#: .\servicios\templates\servicios\cuidador_mis_pagos.html:61
 msgid "Monto"
 msgstr "Amount"
 
+#: .\servicios\templates\servicios\cuidador_calendario.html:28
+#: .\servicios\templates\servicios\cuidador_calendario.html:92
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:29
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:152
+msgid "Acciones"
+msgstr "Actions"
+
+#: .\servicios\templates\servicios\cuidador_calendario.html:37
+#: .\servicios\templates\servicios\cuidador_calendario.html:101
+#: .\servicios\templates\servicios\cuidador_calendario.html:190
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:85
+msgid "Sin reseñas"
+msgstr "Without reviews"
+
+#: .\servicios\templates\servicios\cuidador_calendario.html:45
 msgid "Sin reseñas de cuidadores"
 msgstr "No caregiver reviews"
 
+#: .\servicios\templates\servicios\cuidador_calendario.html:63
 msgid "Ver perfil dueño"
 msgstr "View owner profile"
 
+#: .\servicios\templates\servicios\cuidador_calendario.html:68
 msgid "Aceptar"
 msgstr "Accept"
 
+#: .\servicios\templates\servicios\cuidador_calendario.html:74
 msgid "Rechazar"
 msgstr "Reject"
 
+#: .\servicios\templates\servicios\cuidador_calendario.html:86
 msgid "Citas como reuniones"
 msgstr "Appointments"
 
+#: .\servicios\templates\servicios\cuidador_calendario.html:88
 msgid "Tus paseos y guarderías programados"
 msgstr "Your scheduled walks and daycares"
 
-msgid "Finalizar arrendamiento"
-msgstr "Complete rental"
+#: .\servicios\templates\servicios\cuidador_calendario.html:92
+#: .\servicios\templates\servicios\cuidador_calendario.html:155
+#: .\servicios\templates\servicios\cuidador_calendario.html:181
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:126
+msgid "Estado"
+msgstr "Status"
 
+#: .\servicios\templates\servicios\cuidador_calendario.html:111
+#: .\servicios\templates\servicios\cuidador_calendario.html:200
+#: .\servicios\templates\servicios\dueno_guia.html:33
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:41
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:164
+msgid "Ver perfil"
+msgstr "View profile"
+
+#: .\servicios\templates\servicios\cuidador_calendario.html:112
+#: .\servicios\templates\servicios\cuidador_calendario.html:202
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:43
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:166
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:291
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:328
+msgid "Chat"
+msgstr "Chat"
+
+#: .\servicios\templates\servicios\cuidador_calendario.html:118
+#: .\servicios\templates\servicios\cuidador_calendario.html:209
+msgid "Finalizar arrendamiento"
+msgstr "Complete service"
+
+#: .\servicios\templates\servicios\cuidador_calendario.html:121
 msgid "Espera fin de la franja"
 msgstr "Waiting for slot to end"
 
+#: .\servicios\templates\servicios\cuidador_calendario.html:127
 msgid "Finalizar (prueba)"
 msgstr "Complete (test)"
 
+#: .\servicios\templates\servicios\cuidador_calendario.html:133
+#: .\servicios\templates\servicios\cuidador_calendario.html:270
+#: .\servicios\templates\servicios\cuidador_calendario.html:305
+#: .\servicios\templates\servicios\cuidador_mi_perfil.html:63
+#: .\servicios\templates\servicios\dueno_mi_perfil.html:66
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:49
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:275
+msgid "Cancelar"
+msgstr "Cancel"
+
+#: .\servicios\templates\servicios\cuidador_calendario.html:144
 msgid "Sin citas próximas"
 msgstr "No upcoming appointments"
 
+#: .\servicios\templates\servicios\cuidador_calendario.html:170
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:141
+#: .\servicios\templates\servicios\notificaciones.html:56
+msgid "Filtrar"
+msgstr "Filter"
+
+#: .\servicios\templates\servicios\cuidador_calendario.html:172
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:91
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:143
+#: .\servicios\templates\servicios\includes\form_editar_paseo.html:101
+#: .\servicios\templates\servicios\notificaciones.html:59
+msgid "Limpiar"
+msgstr "Clear"
+
+#: .\servicios\templates\servicios\cuidador_calendario.html:214
+#: .\servicios\templates\servicios\cuidador_calendario.html:247
 msgid "Calificar dueño"
 msgstr "Rate owner"
 
-msgid "¿Cómo fue tu experiencia con el dueño?"
-msgstr "How was your experience with the owner?"
-
-msgid "¿Cómo fue tu experiencia con la mascota?"
-msgstr "How was your experience with the pet?"
-
+#: .\servicios\templates\servicios\cuidador_calendario.html:221
+#: .\servicios\templates\servicios\cuidador_calendario.html:282
 msgid "Calificar mascota"
 msgstr "Rate pet"
 
-# ── Servicios cuidador
-# ────────────────────────────────────────────────────────
-msgid "Paseos"
-msgstr "Walks"
+#: .\servicios\templates\servicios\cuidador_calendario.html:235
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:241
+msgid "Sin historial aún"
+msgstr "No history yet"
 
+#: .\servicios\templates\servicios\cuidador_calendario.html:255
+msgid "¿Cómo fue tu experiencia con el dueño?"
+msgstr "How was your experience with the owner?"
+
+#: .\servicios\templates\servicios\cuidador_calendario.html:266
+#: .\servicios\templates\servicios\cuidador_calendario.html:301
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:271
+msgid "Comentario (opcional)"
+msgstr "Comment (optional)"
+
+#: .\servicios\templates\servicios\cuidador_calendario.html:267
+#: .\servicios\templates\servicios\cuidador_calendario.html:302
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:272
+msgid "Cuéntanos más..."
+msgstr "Tell us more..."
+
+#: .\servicios\templates\servicios\cuidador_calendario.html:271
+#: .\servicios\templates\servicios\cuidador_calendario.html:306
+#: .\servicios\templates\servicios\cuidador_soporte.html:44
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:276
+#: .\servicios\templates\servicios\dueno_soporte.html:45
+msgid "Enviar"
+msgstr "Send"
+
+#: .\servicios\templates\servicios\cuidador_calendario.html:290
+msgid "¿Cómo fue tu experiencia con la mascota?"
+msgstr "How was your experience with the pet?"
+
+#: .\servicios\templates\servicios\cuidador_calendario.html:330
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:313
+msgid "Escribe un mensaje..."
+msgstr "Write a message..."
+
+#: .\servicios\templates\servicios\cuidador_guia.html:2
+#: .\servicios\templates\servicios\cuidador_guia.html:5
+#: .\servicios\templates\servicios\dueno_guia.html:2
+#: .\servicios\templates\servicios\dueno_guia.html:5
+#: .\servicios\templates\servicios\includes\sidebar_cuidador_extra.html:4
+#: .\servicios\templates\servicios\includes\sidebar_dueno_extra.html:2
+msgid "Guía de uso"
+msgstr "User guide"
+
+#: .\servicios\templates\servicios\cuidador_guia.html:6
+msgid "Cómo usar Paws & Walks como cuidador"
+msgstr "How to use Paws & Walks as a caregiver"
+
+#: .\servicios\templates\servicios\cuidador_guia.html:22
+msgid "Configura tu perfil"
+msgstr "Set up your profile"
+
+#: .\servicios\templates\servicios\cuidador_guia.html:23
+msgid "Completa tu perfil en"
+msgstr "Complete your profile in"
+
+#: .\servicios\templates\servicios\cuidador_guia.html:23
+msgid ""
+"con foto, datos de contacto y ciudad. Los dueños te encontrarán más "
+"fácilmente."
+msgstr "with photo, contact info and city. Owners will find you more easily."
+
+#: .\servicios\templates\servicios\cuidador_guia.html:25
+msgid "Activa tus servicios"
+msgstr "Activate your services"
+
+#: .\servicios\templates\servicios\cuidador_guia.html:26
+#: .\servicios\templates\servicios\cuidador_guia.html:29
+#: .\servicios\templates\servicios\dueno_guia.html:24
+#: .\servicios\templates\servicios\dueno_guia.html:27
+#: .\servicios\templates\servicios\dueno_guia.html:33
+msgid "En"
+msgstr "In"
+
+#: .\servicios\templates\servicios\cuidador_guia.html:26
+msgid "y"
+msgstr "and"
+
+#: .\servicios\templates\servicios\cuidador_guia.html:26
+#: .\servicios\templates\servicios\cuidador_servicios.html:40
 msgid "Guarderías"
 msgstr "Daycares"
 
+#: .\servicios\templates\servicios\cuidador_guia.html:26
+msgid ""
+"activa los servicios que ofreces. Define tu zona de cobertura (para paseos),"
+" tarifas y horarios disponibles. Cada reunión puede tener su propio lugar y "
+"precio."
+msgstr ""
+"activate the services you offer. Define coverage area (for walks), rates and"
+" available schedules. Each session can have its own location and price."
+
+#: .\servicios\templates\servicios\cuidador_guia.html:28
+msgid "Gestiona solicitudes"
+msgstr "Manage requests"
+
+#: .\servicios\templates\servicios\cuidador_guia.html:29
+msgid ""
+"verás las solicitudes pendientes. Acepta o rechaza según tu disponibilidad. "
+"Una vez aceptada, podrás chatear con el dueño y ver su perfil."
+msgstr ""
+"you'll see pending requests. Accept or reject based on your availability. "
+"Once accepted, you can chat with the owner and see their profile."
+
+#: .\servicios\templates\servicios\cuidador_guia.html:31
+msgid "Realiza el servicio"
+msgstr "Perform the service"
+
+#: .\servicios\templates\servicios\cuidador_guia.html:32
+msgid ""
+"El día acordado, realiza el paseo o guardería. Al finalizar, marca el "
+"servicio como"
+msgstr ""
+"On the agreed day, perform the walk or daycare. When done, mark the service "
+"as"
+
+#: .\servicios\templates\servicios\cuidador_guia.html:32
+msgid "finalizado"
+msgstr "completed"
+
+#: .\servicios\templates\servicios\cuidador_guia.html:32
+msgid "El pago aparecerá en"
+msgstr "The payment will appear in"
+
+#: .\servicios\templates\servicios\cuidador_guia.html:32
+#: .\servicios\templates\servicios\cuidador_guia.html:35
+#: .\servicios\templates\servicios\cuidador_mis_pagos.html:3
+#: .\servicios\templates\servicios\cuidador_mis_pagos.html:6
+#: .\servicios\templates\servicios\includes\sidebar_cuidador_extra.html:2
+msgid "Mis pagos"
+msgstr "My payments"
+
+#: .\servicios\templates\servicios\cuidador_guia.html:34
+msgid "Recibe tus pagos"
+msgstr "Receive your payments"
+
+#: .\servicios\templates\servicios\cuidador_guia.html:35
+msgid "Consulta"
+msgstr "Check"
+
+#: .\servicios\templates\servicios\cuidador_guia.html:35
+msgid ""
+"para ver transacciones, resúmenes diarios y mensuales de lo que has "
+"recibido."
+msgstr ""
+"to view transactions, daily and monthly summaries of what you've received."
+
+#: .\servicios\templates\servicios\cuidador_mi_perfil.html:7
+msgid "Datos personales y cuenta"
+msgstr "Personal data and account"
+
+#: .\servicios\templates\servicios\cuidador_mi_perfil.html:34
+#: .\servicios\templates\servicios\dueno_mi_perfil.html:36
+#: .\servicios\templates\servicios\ver_perfil_otro.html:46
+msgid "Verificado"
+msgstr "Verified"
+
+#: .\servicios\templates\servicios\cuidador_mi_perfil.html:36
+#: .\servicios\templates\servicios\dueno_mi_perfil.html:38
+#: .\servicios\templates\servicios\dueno_mi_perfil.html:65
+msgid "Editar perfil"
+msgstr "Edit profile"
+
+#: .\servicios\templates\servicios\cuidador_mi_perfil.html:39
+#: .\servicios\templates\servicios\dueno_mi_perfil.html:41
+msgid "Información personal"
+msgstr "Personal information"
+
+#: .\servicios\templates\servicios\cuidador_mi_perfil.html:42
+#: .\servicios\templates\servicios\cuidador_mi_perfil.html:82
+#: .\servicios\templates\servicios\dueno_mi_perfil.html:44
+#: .\servicios\templates\servicios\dueno_mi_perfil.html:87
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:240
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:327
+#: .\servicios\templates\servicios\signup.html:64
+msgid "Nombre"
+msgstr "First name"
+
+#: .\servicios\templates\servicios\cuidador_mi_perfil.html:43
+#: .\servicios\templates\servicios\cuidador_mi_perfil.html:83
+#: .\servicios\templates\servicios\dueno_mi_perfil.html:45
+#: .\servicios\templates\servicios\dueno_mi_perfil.html:91
+#: .\servicios\templates\servicios\signup.html:68
+msgid "Apellido"
+msgstr "Last name"
+
+#: .\servicios\templates\servicios\cuidador_mi_perfil.html:44
+#: .\servicios\templates\servicios\cuidador_mi_perfil.html:84
+#: .\servicios\templates\servicios\dueno_mi_perfil.html:46
+#: .\servicios\templates\servicios\dueno_mi_perfil.html:95
+#: .\servicios\templates\servicios\signup.html:76
+#: .\servicios\templates\servicios\ver_perfil_otro.html:50
+msgid "Correo"
+msgstr "Email"
+
+#: .\servicios\templates\servicios\cuidador_mi_perfil.html:45
+#: .\servicios\templates\servicios\cuidador_mi_perfil.html:89
+#: .\servicios\templates\servicios\dueno_mi_perfil.html:47
+#: .\servicios\templates\servicios\dueno_mi_perfil.html:115
+#: .\servicios\templates\servicios\signup.html:84
+#: .\servicios\templates\servicios\ver_perfil_otro.html:51
+msgid "Teléfono"
+msgstr "Phone"
+
+#: .\servicios\templates\servicios\cuidador_mi_perfil.html:46
+#: .\servicios\templates\servicios\cuidador_mi_perfil.html:86
+#: .\servicios\templates\servicios\dueno_mi_perfil.html:48
+#: .\servicios\templates\servicios\dueno_mi_perfil.html:103
+#: .\servicios\templates\servicios\signup.html:103
+#: .\servicios\templates\servicios\ver_perfil_otro.html:52
+msgid "Ciudad"
+msgstr "City"
+
+#: .\servicios\templates\servicios\cuidador_mi_perfil.html:47
+#: .\servicios\templates\servicios\cuidador_mi_perfil.html:87
+#: .\servicios\templates\servicios\dueno_mi_perfil.html:49
+#: .\servicios\templates\servicios\dueno_mi_perfil.html:107
+msgid "Dirección"
+msgstr "Address"
+
+#: .\servicios\templates\servicios\cuidador_mi_perfil.html:47
+#: .\servicios\templates\servicios\dueno_mi_perfil.html:49
+msgid "No configurada"
+msgstr "Not set"
+
+#: .\servicios\templates\servicios\cuidador_mi_perfil.html:48
+#: .\servicios\templates\servicios\cuidador_mi_perfil.html:103
+msgid "Experiencia"
+msgstr "Experience"
+
+#: .\servicios\templates\servicios\cuidador_mi_perfil.html:48
+msgid "No registrada"
+msgstr "Not registered"
+
+#: .\servicios\templates\servicios\cuidador_mi_perfil.html:49
+#: .\servicios\templates\servicios\cuidador_mi_perfil.html:85
+#: .\servicios\templates\servicios\dueno_mi_perfil.html:50
+#: .\servicios\templates\servicios\dueno_mi_perfil.html:99
+#: .\servicios\templates\servicios\signup.html:80
+msgid "Cédula"
+msgstr "ID number"
+
+#: .\servicios\templates\servicios\cuidador_mi_perfil.html:50
+#: .\servicios\templates\servicios\dueno_mi_perfil.html:51
+msgid "Fecha de nacimiento"
+msgstr "Date of birth"
+
+#: .\servicios\templates\servicios\cuidador_mi_perfil.html:62
+msgid "Datos personales"
+msgstr "Personal data"
+
+#: .\servicios\templates\servicios\cuidador_mi_perfil.html:77
+#: .\servicios\templates\servicios\dueno_mi_perfil.html:80
+msgid "Cambiar foto"
+msgstr "Change photo"
+
+#: .\servicios\templates\servicios\cuidador_mi_perfil.html:107
+#: .\servicios\templates\servicios\dueno_mi_perfil.html:124
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:391
+msgid "Guardar cambios"
+msgstr "Save changes"
+
+#: .\servicios\templates\servicios\cuidador_mis_pagos.html:7
+msgid "Transacciones y resúmenes cuando recibes pagos"
+msgstr "Transactions and summaries when you receive payments"
+
+#: .\servicios\templates\servicios\cuidador_mis_pagos.html:24
+msgid "Total recibido"
+msgstr "Total received"
+
+#: .\servicios\templates\servicios\cuidador_mis_pagos.html:28
+msgid "Transacciones"
+msgstr "Transactions"
+
+#: .\servicios\templates\servicios\cuidador_mis_pagos.html:32
+msgid "Este mes"
+msgstr "This month"
+
+#: .\servicios\templates\servicios\cuidador_mis_pagos.html:38
+msgid "Resumen mensual"
+msgstr "Monthly summary"
+
+#: .\servicios\templates\servicios\cuidador_mis_pagos.html:50
+#: .\servicios\templates\servicios\cuidador_mis_pagos.html:77
+msgid "Sin transacciones aún"
+msgstr "No transactions yet"
+
+#: .\servicios\templates\servicios\cuidador_mis_pagos.html:56
+msgid "Últimas transacciones"
+msgstr "Latest transactions"
+
+#: .\servicios\templates\servicios\cuidador_mis_pagos.html:78
+msgid "Los pagos aparecerán aquí cuando completes servicios"
+msgstr "Payments will appear here when you complete services"
+
+#: .\servicios\templates\servicios\cuidador_servicios.html:7
+msgid "Configura paseos y guarderías disponibles"
+msgstr "Configure available walks and daycare services"
+
+#: .\servicios\templates\servicios\cuidador_servicios.html:37
+msgid "Paseos"
+msgstr "Walks"
+
+#: .\servicios\templates\servicios\cuidador_servicios.html:52
+#: .\servicios\templates\servicios\cuidador_servicios.html:131
 msgid "Activo"
 msgstr "Active"
 
+#: .\servicios\templates\servicios\cuidador_servicios.html:58
+#: .\servicios\templates\servicios\cuidador_servicios.html:137
 msgid "Bloques"
 msgstr "Slots"
 
+#: .\servicios\templates\servicios\cuidador_servicios.html:62
+#: .\servicios\templates\servicios\cuidador_servicios.html:141
 msgid "Cupos"
 msgstr "Spots"
 
+#: .\servicios\templates\servicios\cuidador_servicios.html:66
+#: .\servicios\templates\servicios\cuidador_servicios.html:145
 msgid "Horario"
 msgstr "Schedule"
 
+#: .\servicios\templates\servicios\cuidador_servicios.html:95
+#: .\servicios\templates\servicios\cuidador_servicios.html:174
 msgid "Sin horarios configurados"
 msgstr "No schedules configured"
 
+#: .\servicios\templates\servicios\cuidador_servicios.html:102
+#: .\servicios\templates\servicios\cuidador_servicios.html:181
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:190
+msgid "Editar"
+msgstr "Edit"
+
+#: .\servicios\templates\servicios\cuidador_servicios.html:109
+#: .\servicios\templates\servicios\cuidador_servicios.html:188
 msgid "Eliminar todo"
 msgstr "Delete all"
 
+#: .\servicios\templates\servicios\cuidador_servicios.html:115
 msgid "Aún no tienes paseos configurados"
 msgstr "You have no walks configured yet"
 
+#: .\servicios\templates\servicios\cuidador_servicios.html:117
 msgid "Agregar paseo"
 msgstr "Add walk"
 
+#: .\servicios\templates\servicios\cuidador_servicios.html:194
 msgid "Aún no tienes guarderías configuradas"
 msgstr "You have no daycares configured yet"
 
+#: .\servicios\templates\servicios\cuidador_servicios.html:196
 msgid "Agregar guardería"
 msgstr "Add daycare"
 
+#: .\servicios\templates\servicios\cuidador_servicios.html:208
 msgid "Configurar paseo"
 msgstr "Configure walk"
 
+#: .\servicios\templates\servicios\cuidador_servicios.html:208
 msgid "Configurar guardería"
 msgstr "Configure daycare"
 
+#: .\servicios\templates\servicios\cuidador_servicios.html:228
 msgid "Volver a mis servicios"
 msgstr "Back to my services"
 
-# ── Nueva reserva
-# ─────────────────────────────────────────────────────────────
+#: .\servicios\templates\servicios\cuidador_soporte.html:2
+#: .\servicios\templates\servicios\cuidador_soporte.html:5
+#: .\servicios\templates\servicios\dueno_soporte.html:2
+#: .\servicios\templates\servicios\dueno_soporte.html:5
+#: .\servicios\templates\servicios\includes\sidebar_cuidador_extra.html:5
+#: .\servicios\templates\servicios\includes\sidebar_dueno_extra.html:3
+msgid "Soporte"
+msgstr "Support"
+
+#: .\servicios\templates\servicios\cuidador_soporte.html:6
+#: .\servicios\templates\servicios\dueno_soporte.html:6
+msgid "¿Necesitas ayuda? Chatea con nosotros"
+msgstr "Need help? Chat with us"
+
+#: .\servicios\templates\servicios\cuidador_soporte.html:23
+#: .\servicios\templates\servicios\dueno_soporte.html:24
+msgid "Chat de soporte"
+msgstr "Support chat"
+
+#: .\servicios\templates\servicios\cuidador_soporte.html:24
+#: .\servicios\templates\servicios\dueno_soporte.html:25
+msgid "En línea"
+msgstr "Online"
+
+#: .\servicios\templates\servicios\cuidador_soporte.html:29
+#: .\servicios\templates\servicios\dueno_soporte.html:30
+msgid "¡Hola! Soy el equipo de Paws & Walks. ¿En qué podemos ayudarte hoy?"
+msgstr "Hello! We're the Paws & Walks team. How can we help you today?"
+
+#: .\servicios\templates\servicios\cuidador_soporte.html:30
+#: .\servicios\templates\servicios\cuidador_soporte.html:36
+#: .\servicios\templates\servicios\cuidador_soporte.html:70
+msgid "Ahora"
+msgstr "Now"
+
+#: .\servicios\templates\servicios\cuidador_soporte.html:35
+msgid "Puedes consultar nuestra"
+msgstr "You can check our"
+
+#: .\servicios\templates\servicios\cuidador_soporte.html:35
+msgid "para cuidadores o escribirnos aquí si tienes dudas."
+msgstr "for caregivers or write to us here if you have questions."
+
+#: .\servicios\templates\servicios\cuidador_soporte.html:42
+#: .\servicios\templates\servicios\dueno_soporte.html:43
+msgid "Escribe tu mensaje..."
+msgstr "Write your message..."
+
+#: .\servicios\templates\servicios\cuidador_soporte.html:47
+#: .\servicios\templates\servicios\dueno_soporte.html:48
+msgid ""
+"Este es un chat de demostración. En producción se conectaría con un sistema "
+"de soporte real."
+msgstr ""
+"This is a demo chat. In production it would connect to a real support "
+"system."
+
+#: .\servicios\templates\servicios\cuidador_soporte.html:70
+msgid ""
+"Gracias por tu mensaje. Un agente te responderá pronto. ¿Hay algo más en lo "
+"que podamos ayudarte?"
+msgstr ""
+"Thanks for your message. An agent will respond soon. Anything else we can "
+"help with?"
+
+#: .\servicios\templates\servicios\dashboard_cuidador.html:6
+msgid "Panel de cuidador"
+msgstr "Caregiver dashboard"
+
+#: .\servicios\templates\servicios\dashboard_cuidador.html:7
+msgid "Prioridades del día: solicitudes, citas y notificaciones"
+msgstr "Today's priorities: requests, appointments and notifications"
+
+#: .\servicios\templates\servicios\dashboard_cuidador.html:24
+msgid "Tu cuenta está en revisión."
+msgstr "Your account is under review."
+
+#: .\servicios\templates\servicios\dashboard_cuidador.html:24
+msgid "Los dueños podrán reservarte cuando finalice la verificación."
+msgstr "Owners can book you once verification is complete."
+
+#: .\servicios\templates\servicios\dashboard_cuidador.html:31
+msgid "Citas próximas"
+msgstr "Upcoming appointments"
+
+#: .\servicios\templates\servicios\dashboard_cuidador.html:33
+msgid "Abrir calendario"
+msgstr "Open calendar"
+
+#: .\servicios\templates\servicios\dashboard_cuidador.html:36
+#: .\servicios\templates\servicios\dashboard_cuidador.html:56
+msgid "Solicitudes pendientes"
+msgstr "Pending requests"
+
+#: .\servicios\templates\servicios\dashboard_cuidador.html:38
+msgid "Por aceptar o rechazar"
+msgstr "To accept or reject"
+
+#: .\servicios\templates\servicios\dashboard_cuidador.html:41
+#: .\servicios\templates\servicios\notificaciones.html:50
+msgid "No leídas"
+msgstr "Unread"
+
+#: .\servicios\templates\servicios\dashboard_cuidador.html:43
+#: .\servicios\templates\servicios\dashboard_dueno.html:43
+#: .\servicios\templates\servicios\dashboard_dueno.html:89
+msgid "Ver notificaciones"
+msgstr "View notifications"
+
+#: .\servicios\templates\servicios\dashboard_cuidador.html:46
+msgid "Servicios activos"
+msgstr "Active services"
+
+#: .\servicios\templates\servicios\dashboard_cuidador.html:48
+msgid "Gestionar servicios"
+msgstr "Manage services"
+
+#: .\servicios\templates\servicios\dashboard_cuidador.html:57
+msgid "Responde rápido para mantener tu tasa de aceptación"
+msgstr "Respond quickly to maintain your acceptance rate"
+
+#: .\servicios\templates\servicios\dashboard_cuidador.html:59
+#: .\servicios\templates\servicios\dashboard_dueno.html:126
+msgid "Gestionar"
+msgstr "Manage"
+
+#: .\servicios\templates\servicios\dashboard_cuidador.html:75
+msgid "No tienes solicitudes pendientes"
+msgstr "You have no pending requests"
+
+#: .\servicios\templates\servicios\dashboard_cuidador.html:82
+#: .\servicios\templates\servicios\dashboard_dueno.html:82
+msgid "Atajos rápidos"
+msgstr "Quick shortcuts"
+
+#: .\servicios\templates\servicios\dashboard_cuidador.html:83
+msgid "Accesos clave del día"
+msgstr "Key daily shortcuts"
+
+#: .\servicios\templates\servicios\dashboard_cuidador.html:86
+msgid "Responder pendientes"
+msgstr "Respond to pending"
+
+#: .\servicios\templates\servicios\dashboard_cuidador.html:87
+msgid "Finalizar arrendamientos"
+msgstr "Complete services"
+
+#: .\servicios\templates\servicios\dashboard_cuidador.html:88
+msgid "Editar servicios"
+msgstr "Edit services"
+
+#: .\servicios\templates\servicios\dashboard_cuidador.html:89
+#: .\servicios\templates\servicios\dashboard_dueno.html:90
+msgid "Actualizar perfil"
+msgstr "Update profile"
+
+#: .\servicios\templates\servicios\dashboard_cuidador.html:90
+msgid "Revisar alertas"
+msgstr "Review alerts"
+
+#: .\servicios\templates\servicios\dashboard_cuidador.html:93
+msgid "Tarifas activas:"
+msgstr "Active rates:"
+
+#: .\servicios\templates\servicios\dashboard_cuidador.html:94
+#: .\servicios\templates\servicios\dashboard_cuidador.html:95
+msgid "No activo"
+msgstr "Inactive"
+
+#: .\servicios\templates\servicios\dashboard_cuidador.html:104
+msgid "Próximas citas"
+msgstr "Upcoming appointments"
+
+#: .\servicios\templates\servicios\dashboard_cuidador.html:105
+msgid "Servicios aceptados para ejecutar"
+msgstr "Accepted services to perform"
+
+#: .\servicios\templates\servicios\dashboard_cuidador.html:107
+msgid "Ver agenda"
+msgstr "View schedule"
+
+#: .\servicios\templates\servicios\dashboard_cuidador.html:120
+msgid "No tienes citas próximas"
+msgstr "You have no upcoming appointments"
+
+#: .\servicios\templates\servicios\dashboard_cuidador.html:128
+#: .\servicios\templates\servicios\dashboard_dueno.html:99
+msgid "Notificaciones recientes"
+msgstr "Recent notifications"
+
+#: .\servicios\templates\servicios\dashboard_cuidador.html:129
+msgid "Alertas de reservas y sistema"
+msgstr "Booking and system alerts"
+
+#: .\servicios\templates\servicios\dashboard_cuidador.html:131
+#: .\servicios\templates\servicios\dashboard_dueno.html:102
+msgid "Ver todas"
+msgstr "See all"
+
+#: .\servicios\templates\servicios\dashboard_cuidador.html:144
+#: .\servicios\templates\servicios\dashboard_dueno.html:115
+msgid "No hay notificaciones recientes"
+msgstr "No recent notifications"
+
+#: .\servicios\templates\servicios\dashboard_dueno.html:7
+msgid "Panel de dueño"
+msgstr "Owner dashboard"
+
+#: .\servicios\templates\servicios\dashboard_dueno.html:8
+msgid "Tu resumen de mascotas, reservas y notificaciones"
+msgstr "Your summary of pets, bookings and notifications"
+
+#: .\servicios\templates\servicios\dashboard_dueno.html:15
+#: .\servicios\templates\servicios\dueno_guia.html:13
+#: .\servicios\templates\servicios\dueno_guia.html:27
+#: .\servicios\templates\servicios\dueno_mi_perfil.html:14
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:14
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:14
+#: .\servicios\templates\servicios\dueno_nueva_reserva.html:18
+#: .\servicios\templates\servicios\dueno_soporte.html:13
+#: .\servicios\templates\servicios\notificaciones.html:16
+#: .\servicios\templates\servicios\ver_perfil_otro.html:23
+msgid "Hacer reserva"
+msgstr "New booking"
+
+#: .\servicios\templates\servicios\dashboard_dueno.html:16
+#: .\servicios\templates\servicios\dueno_guia.html:14
+#: .\servicios\templates\servicios\dueno_guia.html:33
+#: .\servicios\templates\servicios\dueno_mi_perfil.html:15
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:15
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:3
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:6
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:15
+#: .\servicios\templates\servicios\dueno_nueva_reserva.html:19
+#: .\servicios\templates\servicios\dueno_soporte.html:14
+#: .\servicios\templates\servicios\notificaciones.html:17
+#: .\servicios\templates\servicios\ver_perfil_otro.html:24
+msgid "Mis reservas"
+msgstr "My bookings"
+
+#: .\servicios\templates\servicios\dashboard_dueno.html:17
+#: .\servicios\templates\servicios\dueno_guia.html:15
+#: .\servicios\templates\servicios\dueno_guia.html:24
+#: .\servicios\templates\servicios\dueno_mi_perfil.html:16
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:3
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:6
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:16
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:16
+#: .\servicios\templates\servicios\dueno_nueva_reserva.html:20
+#: .\servicios\templates\servicios\dueno_soporte.html:15
+#: .\servicios\templates\servicios\notificaciones.html:18
+#: .\servicios\templates\servicios\ver_perfil_otro.html:25
+msgid "Mis mascotas"
+msgstr "My pets"
+
+#: .\servicios\templates\servicios\dashboard_dueno.html:26
+msgid "Reservas próximas"
+msgstr "Upcoming bookings"
+
+#: .\servicios\templates\servicios\dashboard_dueno.html:28
+#, python-format
+msgid "Pendientes %(pend)s · Aceptadas %(acep)s"
+msgstr ""
+
+#: .\servicios\templates\servicios\dashboard_dueno.html:31
+msgid "Reservas hechas"
+msgstr "Bookings made"
+
+#: .\servicios\templates\servicios\dashboard_dueno.html:33
+msgid "Historial total dentro de la app"
+msgstr "Total history in the app"
+
+#: .\servicios\templates\servicios\dashboard_dueno.html:36
+msgid "Mascotas registradas"
+msgstr "Registered pets"
+
+#: .\servicios\templates\servicios\dashboard_dueno.html:38
+#: .\servicios\templates\servicios\dashboard_dueno.html:88
+msgid "Gestionar mascotas"
+msgstr "Manage pets"
+
+#: .\servicios\templates\servicios\dashboard_dueno.html:41
+msgid "Notificaciones no leídas"
+msgstr "Unread notifications"
+
+#: .\servicios\templates\servicios\dashboard_dueno.html:51
+msgid "Próximas reservas"
+msgstr "Upcoming bookings"
+
+#: .\servicios\templates\servicios\dashboard_dueno.html:52
+msgid "Prioriza primero las pendientes de confirmación"
+msgstr "Prioritize pending confirmations first"
+
+#: .\servicios\templates\servicios\dashboard_dueno.html:74
+msgid "No tienes reservas próximas"
+msgstr "You have no upcoming bookings"
+
+#: .\servicios\templates\servicios\dashboard_dueno.html:75
+msgid "Agenda un paseo o guardería para tu mascota."
+msgstr "Schedule a walk or daycare for your pet."
+
+#: .\servicios\templates\servicios\dashboard_dueno.html:83
+msgid "Accede a lo que más usas"
+msgstr "Access what you use most"
+
+#: .\servicios\templates\servicios\dashboard_dueno.html:86
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:115
+msgid "Crear reserva"
+msgstr "Create booking"
+
+#: .\servicios\templates\servicios\dashboard_dueno.html:87
+msgid "Revisar reservas"
+msgstr "Review bookings"
+
+#: .\servicios\templates\servicios\dashboard_dueno.html:100
+msgid "Lo más nuevo de reservas y sistema"
+msgstr "Latest from bookings and system"
+
+#: .\servicios\templates\servicios\dashboard_dueno.html:123
+msgid "Mascotas"
+msgstr "Pets"
+
+#: .\servicios\templates\servicios\dashboard_dueno.html:124
+msgid "Perfil y reputación de tus mascotas"
+msgstr "Profile and ratings of your pets"
+
+#: .\servicios\templates\servicios\dashboard_dueno.html:137
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:138
+#: .\servicios\templates\servicios\dueno_nueva_reserva.html:211
+msgid "Sin calificaciones aún"
+msgstr "No ratings yet"
+
+#: .\servicios\templates\servicios\dashboard_dueno.html:144
+msgid "Aún no registras mascotas"
+msgstr "You haven't registered any pets yet"
+
+#: .\servicios\templates\servicios\dashboard_dueno.html:145
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:225
+msgid "Agregar mascota"
+msgstr "Add pet"
+
+#: .\servicios\templates\servicios\dueno_guia.html:6
+msgid "Cómo usar Paws & Walks como dueño de mascota"
+msgstr "How to use Paws & Walks as a pet owner"
+
+#: .\servicios\templates\servicios\dueno_guia.html:23
+msgid "Registra tus mascotas"
+msgstr "Register your pets"
+
+#: .\servicios\templates\servicios\dueno_guia.html:24
+msgid ""
+"agrega cada mascota con su nombre, tipo, raza, edad y foto. Necesitarás esta"
+" información para hacer reservas."
+msgstr ""
+"add each pet with name, type, breed, age and photo. You'll need this info to"
+" book."
+
+#: .\servicios\templates\servicios\dueno_guia.html:26
+msgid "Busca cuidadores"
+msgstr "Search caregivers"
+
+#: .\servicios\templates\servicios\dueno_guia.html:27
+msgid ""
+"elige el tipo de servicio (Paseo o Guardería), la mascota, fecha y horario. "
+"La app te mostrará cuidadores disponibles cerca de ti."
+msgstr ""
+"choose service type (Walk or Daycare), pet, date and time. The app will show"
+" available caregivers near you."
+
+#: .\servicios\templates\servicios\dueno_guia.html:29
+msgid "Envía tu solicitud"
+msgstr "Send your request"
+
+#: .\servicios\templates\servicios\dueno_guia.html:30
+msgid ""
+"Selecciona un cuidador y envía la solicitud. El cuidador la revisará y la "
+"aceptará o rechazará. Puedes ver su perfil antes de reservar."
+msgstr ""
+"Pick a caregiver and send the request. They will review and accept or reject"
+" it. You can see their profile before booking."
+
+#: .\servicios\templates\servicios\dueno_guia.html:32
+msgid "Comunícate y coordina"
+msgstr "Communicate and coordinate"
+
+#: .\servicios\templates\servicios\dueno_guia.html:33
+msgid ""
+"verás cada reunión programada. Usa el chat para coordinar con el cuidador y "
+"el botón"
+msgstr ""
+"you'll see each scheduled meeting. Use chat to coordinate with the caregiver"
+" and the button"
+
+#: .\servicios\templates\servicios\dueno_guia.html:33
+msgid "para ver sus datos de contacto."
+msgstr "to see their contact info."
+
+#: .\servicios\templates\servicios\dueno_guia.html:35
+msgid "Califica el servicio"
+msgstr "Rate the service"
+
+#: .\servicios\templates\servicios\dueno_guia.html:36
+msgid ""
+"Cuando el servicio se complete, podrás calificar al cuidador con estrellas y"
+" un comentario. ¡Tu opinión ayuda a otros dueños!"
+msgstr ""
+"When the service completes, you can rate the caregiver with stars and a "
+"comment. Your feedback helps other owners!"
+
+#: .\servicios\templates\servicios\dueno_mi_perfil.html:7
+msgid "Información de tu cuenta"
+msgstr "Your account information"
+
+#: .\servicios\templates\servicios\dueno_mi_perfil.html:52
+#: .\servicios\templates\servicios\login.html:74
+#: .\servicios\templates\servicios\signup.html:72
+msgid "Usuario"
+msgstr "Username"
+
+#: .\servicios\templates\servicios\dueno_mi_perfil.html:111
+msgid "País"
+msgstr "Country"
+
+#: .\servicios\templates\servicios\dueno_mi_perfil.html:121
+msgid ""
+"Los campos nombre de usuario, fecha de nacimiento y rol no son editables."
+msgstr "Username, date of birth and role fields are not editable."
+
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:7
+msgid "Gestiona su ficha de cuidado y salud"
+msgstr "Manage their care and health profile"
+
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:26
+msgid "Perfil de tus mascotas"
+msgstr "Your pets' profiles"
+
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:27
+msgid "Gestiona fichas y filtra rápido."
+msgstr "Manage profiles and filter quickly."
+
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:31
+msgid "Total:"
+msgstr "Total:"
+
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:33
+msgid "Agregar"
+msgstr "Add"
+
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:40
+msgid "Nombre o raza"
+msgstr "Name or breed"
+
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:44
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:244
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:331
+msgid "Tipo"
+msgstr "Type"
+
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:46
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:53
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:60
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:75
+msgid "Todos"
+msgstr "All"
+
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:51
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:255
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:341
+msgid "Sexo"
+msgstr "Gender"
+
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:58
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:262
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:348
+msgid "Tamaño"
+msgstr "Size"
+
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:65
+msgid "Vacunas"
+msgstr "Vaccines"
+
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:67
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:83
+#: .\servicios\templates\servicios\notificaciones.html:49
+msgid "Todas"
+msgstr "All"
+
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:68
+msgid "Al día"
+msgstr "Up to date"
+
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:69
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:148
+msgid "Vacunas pendientes"
+msgstr "Vaccines pending"
+
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:73
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:280
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:366
+#: .\servicios\templates\servicios\ver_perfil_otro.html:97
+msgid "Esterilizado"
+msgstr "Neutered"
+
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:76
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:155
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:284
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:291
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:368
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:375
+#: .\servicios\templates\servicios\ver_perfil_otro.html:97
+#: .\servicios\templates\servicios\ver_perfil_otro.html:98
+msgid "Sí"
+msgstr "Yes"
+
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:77
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:155
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:283
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:292
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:369
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:376
+#: .\servicios\templates\servicios\ver_perfil_otro.html:97
+#: .\servicios\templates\servicios\ver_perfil_otro.html:98
+#: .\servicios\venv\Lib\site-packages\django\forms\widgets.py:868
+msgid "No"
+msgstr "No"
+
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:81
+msgid "Reseñas"
+msgstr "Reviews"
+
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:84
+msgid "Con reseñas"
+msgstr "With reviews"
+
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:145
+msgid "Sexo no indicado"
+msgstr "Gender not specified"
+
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:146
+msgid "Tamaño no indicado"
+msgstr "Size not specified"
+
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:148
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:288
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:373
+#: .\servicios\templates\servicios\ver_perfil_otro.html:98
+msgid "Vacunas al día"
+msgstr "Vaccines up to date"
+
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:153
+msgid "Edad:"
+msgstr "Age:"
+
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:154
+msgid "Peso:"
+msgstr "Weight:"
+
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:154
+#: .\servicios\templates\servicios\ver_perfil_otro.html:96
+msgid "No indicado"
+msgstr "Not specified"
+
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:155
+msgid "Esterilizado:"
+msgstr "Neutered:"
+
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:159
+msgid "Reseñas recientes de cuidadores"
+msgstr "Recent caregiver reviews"
+
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:168
+msgid "Ver reseñas detalladas"
+msgstr "View detailed reviews"
+
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:172
+msgid "Aún no hay comentarios para esta mascota."
+msgstr "No comments yet for this pet."
+
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:178
+#: .\servicios\templates\servicios\ver_perfil_otro.html:103
+msgid "Condiciones médicas:"
+msgstr "Medical conditions:"
+
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:184
+#: .\servicios\templates\servicios\ver_perfil_otro.html:109
+msgid "Notas:"
+msgstr "Notes:"
+
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:197
+#: .\servicios\templates\servicios\notificaciones.html:166
+msgid "Eliminar"
+msgstr "Delete"
+
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:207
+msgid "No hay mascotas que coincidan con los filtros"
+msgstr "No pets match the filters"
+
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:208
+msgid "Ajusta los criterios o usa Limpiar para volver a ver todas."
+msgstr "Adjust filters or clear to see all."
+
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:215
+msgid "Aún no has registrado mascotas"
+msgstr "You haven't added any pets yet"
+
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:216
+msgid "Crea su ficha para reservar paseos y guardería más rápido."
+msgstr "Create their profile to book walks and daycare faster."
+
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:217
+msgid "Agregar primera mascota"
+msgstr "Add first pet"
+
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:233
+msgid "Foto"
+msgstr "Photo"
+
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:235
+msgid "Sube una foto para completar el registro."
+msgstr "Upload a photo to complete the registration."
+
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:246
+msgid "Selecciona tipo"
+msgstr "Select type"
+
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:251
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:337
+msgid "Raza"
+msgstr "Breed"
+
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:257
+msgid "Selecciona sexo"
+msgstr "Select gender"
+
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:264
+msgid "Selecciona tamaño"
+msgstr "Select size"
+
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:272
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:358
+msgid "Edad (años)"
+msgstr "Age (years)"
+
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:276
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:362
+msgid "Peso (kg)"
+msgstr "Weight (kg)"
+
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:282
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:290
+msgid "Selecciona una opción"
+msgstr "Select an option"
+
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:298
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:382
+msgid "Condiciones médicas o alergias"
+msgstr "Medical conditions or allergies"
+
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:303
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:387
+msgid "Notas de comportamiento"
+msgstr "Behavior notes"
+
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:307
+msgid "Guardar mascota"
+msgstr "Save pet"
+
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:343
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:350
+msgid "No especificar"
+msgstr "Don't specify"
+
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:406
+#: .\servicios\templates\servicios\includes\resenas_recibidas_mi_perfil.html:20
+#: .\servicios\templates\servicios\ver_perfil_otro.html:123
+msgid "Promedio"
+msgstr "Average"
+
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:410
+#: .\servicios\templates\servicios\includes\resenas_recibidas_mi_perfil.html:24
+#: .\servicios\templates\servicios\ver_perfil_otro.html:127
+msgid "Total reseñas"
+msgstr "Total reviews"
+
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:414
+#: .\servicios\templates\servicios\ver_perfil_otro.html:131
+msgid "Comentarios visibles"
+msgstr "Visible comments"
+
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:437
+#: .\servicios\templates\servicios\ver_perfil_otro.html:154
+msgid "Esta mascota tiene calificaciones, pero sin comentarios escritos."
+msgstr "This pet has ratings but no written comments."
+
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:441
+msgid "Esta mascota aún no tiene reseñas."
+msgstr "This pet has no reviews yet."
+
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:7
+msgid "Historial, finalizaciones y calificaciones"
+msgstr "History, completions and ratings"
+
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:24
+msgid "Próximas"
+msgstr "Upcoming"
+
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:29
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:152
+msgid "Cuándo"
+msgstr "When"
+
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:29
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:152
+msgid "Estado y pago"
+msgstr "Status & payment"
+
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:34
+msgid "Monto pendiente"
+msgstr "Amount pending"
+
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:36
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:159
+msgid "Sin franja horaria"
+msgstr "No time slot"
+
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:37
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:88
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:160
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:215
+msgid "Pago pendiente"
+msgstr "Payment pending"
+
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:40
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:163
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:324
+msgid "Ver detalles completos"
+msgstr "View full details"
+
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:59
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:186
+msgid "Detalle del servicio"
+msgstr "Service detail"
+
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:61
+#, python-format
+msgid "Paseo programado para %(fecha)s."
+msgstr ""
+
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:62
+msgid "Próximamente saldrá el mapa del recorrido que hizo tu cachorro."
+msgstr "Soon you'll see the map of your puppy's route."
+
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:64
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:191
+#, python-format
+msgid "Guardería del %(fecha)s"
+msgstr ""
+
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:64
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:191
+#, python-format
+msgid "al %(fechaFin)s"
+msgstr ""
+
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:65
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:192
+#, python-format
+msgid "Tiempo reservado: %(dias)s día%(dias|pluralize)s."
+msgstr ""
+
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:71
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:198
+msgid "Logística"
+msgstr "Logistics"
+
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:73
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:200
+msgid "Recogida:"
+msgstr "Pickup:"
+
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:75
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:202
+msgid "Hora asignada:"
+msgstr "Assigned time:"
+
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:77
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:204
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:302
+msgid "Franja:"
+msgstr "Time slot:"
+
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:79
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:206
+msgid "Sin franja horaria registrada."
+msgstr "No time slot recorded."
+
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:81
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:208
+msgid "Cupos del bloque:"
+msgstr "Block spots:"
+
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:82
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:209
+msgid "Lugar:"
+msgstr "Location:"
+
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:83
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:210
+msgid "Ubicación:"
+msgstr "Location:"
+
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:86
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:213
+msgid "Pago y seguimiento"
+msgstr "Payment & tracking"
+
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:87
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:214
+msgid "Estado servicio:"
+msgstr "Service status:"
+
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:88
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:215
+msgid "Estado pago:"
+msgstr "Payment status:"
+
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:89
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:216
+msgid "Monto:"
+msgstr "Amount:"
+
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:90
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:217
+msgid "Referencia:"
+msgstr "Reference:"
+
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:91
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:218
+msgid "Mensajes en chat:"
+msgstr "Chat messages:"
+
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:92
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:219
+msgid "Último mensaje:"
+msgstr "Last message:"
+
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:96
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:223
+msgid "Anotaciones del cuidador"
+msgstr "Caregiver notes"
+
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:99
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:226
+msgid "Última actualización:"
+msgstr "Last update:"
+
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:101
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:228
+msgid "Aún no hay anotaciones del cuidador para este servicio."
+msgstr "No caregiver notes for this service yet."
+
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:114
+msgid "Sin reservas próximas"
+msgstr "No upcoming bookings"
+
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:123
+msgid "Historial"
+msgstr "History"
+
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:145
+msgid "resultados"
+msgstr "results"
+
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:157
+msgid "Monto no registrado"
+msgstr "Amount not recorded"
+
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:169
+msgid "Pendiente de finalizar por cuidador"
+msgstr "Pending completion by caregiver"
+
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:173
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:252
+msgid "Calificar cuidador"
+msgstr "Rate caregiver"
+
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:188
+#, python-format
+msgid "Paseo realizado el %(fecha)s."
+msgstr ""
+
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:189
+msgid "Próximamente podrás ver el mapa completo del recorrido de tu cachorro."
+msgstr "Soon you'll see the full map of your puppy's route."
+
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:260
+msgid "¿Cómo fue tu experiencia?"
+msgstr "How was your experience?"
+
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:263
+#, python-format
+msgid "%(i_val)s estrella"
+msgid_plural "%(i_val)s estrellas"
+msgstr[0] ""
+msgstr[1] ""
+
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:292
+msgid "Conversación con contexto de la reserva"
+msgstr "Conversation in booking context"
+
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:297
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:327
+msgid "Destinatario:"
+msgstr "Recipient:"
+
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:299
+msgid "Mascota:"
+msgstr "Pet:"
+
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:300
+msgid "Servicio:"
+msgstr "Service:"
+
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:301
+msgid "Fecha:"
+msgstr "Date:"
+
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:303
+msgid "Estado:"
+msgstr "Status:"
+
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:304
+msgid "Pago:"
+msgstr "Payment:"
+
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:325
+msgid "Ocultar detalles"
+msgstr "Hide details"
+
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:326
+msgid "Sin mensajes aún. Escribe el primero."
+msgstr "No messages yet. Write the first one."
+
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:400
+msgid "con"
+msgstr "with"
+
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:401
+msgid "Solicitud"
+msgstr "Request"
+
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:415
+msgid "Tú"
+msgstr "You"
+
+#: .\servicios\templates\servicios\dueno_nueva_reserva.html:11
+msgid "Busca por día y elige los horarios disponibles del cuidador"
+msgstr "Search by day and choose the caregiver's available slots"
+
+#: .\servicios\templates\servicios\dueno_nueva_reserva.html:31
 msgid "Buscar disponibilidad"
 msgstr "Search availability"
 
+#: .\servicios\templates\servicios\dueno_nueva_reserva.html:32
 msgid ""
 "Paseo: fecha y ubicación. Guarderia: fecha inicio/fin y luego eliges bloque "
 "completo o tiempo personalizado."
 msgstr ""
-"Walk: date and location. Daycare: start/end date, then choose full block or "
-"custom time."
 
-msgid "Tipo de servicio"
-msgstr "Service type"
-
-msgid "Mascota"
-msgstr "Pet"
-
+#: .\servicios\templates\servicios\dueno_nueva_reserva.html:51
 msgid "Seleccionar..."
 msgstr "Select..."
 
+#: .\servicios\templates\servicios\dueno_nueva_reserva.html:56
 msgid "Para paseo solo se muestran mascotas tipo perro."
 msgstr "Only dog-type pets are shown for walks."
 
+#: .\servicios\templates\servicios\dueno_nueva_reserva.html:66
 msgid "Ubicacion del paseo"
 msgstr "Walk location"
 
+#: .\servicios\templates\servicios\dueno_nueva_reserva.html:75
 msgid "Mi ubicacion"
 msgstr "My location"
 
+#: .\servicios\templates\servicios\dueno_nueva_reserva.html:80
 msgid ""
 "1) Escribe un barrio, dirección o referencia y pulsa la lupa. 2) También "
 "puedes usar Mi ubicación. 3) Si prefieres, haz clic en el mapa para marcar "
 "el punto exacto."
 msgstr ""
-"1) Type a neighborhood, address or reference and press the magnifier. 2) You"
-" can also use My location. 3) Or click the map to pin the exact point."
 
+#: .\servicios\templates\servicios\dueno_nueva_reserva.html:87
 msgid "Consultando clima..."
 msgstr "Checking weather..."
 
+#: .\servicios\templates\servicios\dueno_nueva_reserva.html:95
 msgid "Humedad:"
 msgstr "Humidity:"
 
+#: .\servicios\templates\servicios\dueno_nueva_reserva.html:103
 msgid ""
 "Solo se mostrarán cuidadores que cubren esa zona según su radio configurado."
 msgstr "Only caregivers whose configured radius covers that area will appear."
 
+#: .\servicios\templates\servicios\dueno_nueva_reserva.html:109
 msgid "Fecha inicio"
 msgstr "Start date"
 
+#: .\servicios\templates\servicios\dueno_nueva_reserva.html:113
 msgid "Fecha fin"
 msgstr "End date"
 
+#: .\servicios\templates\servicios\dueno_nueva_reserva.html:117
 msgid "Lugar de referencia para guardería"
 msgstr "Reference location for daycare"
 
+#: .\servicios\templates\servicios\dueno_nueva_reserva.html:126
 msgid "Mi ubicación"
 msgstr "My location"
 
+#: .\servicios\templates\servicios\dueno_nueva_reserva.html:128
 msgid "Km máx"
 msgstr "Max km"
 
+#: .\servicios\templates\servicios\dueno_nueva_reserva.html:132
 msgid ""
 "1) Escribe la zona o dirección de referencia y pulsa la lupa. 2) También "
 "puedes usar Mi ubicación. 3) Opcional: escribe los km máximos para ver solo "
 "guarderías cercanas a ese punto."
 msgstr ""
-"1) Type the reference area or address and press the magnifier. 2) You can "
-"also use My location. 3) Optional: enter the max km to show only daycares "
-"near that point."
 
+#: .\servicios\templates\servicios\dueno_nueva_reserva.html:135
 msgid ""
 "En el resultado eliges si reservas todo el bloque de guardería o solo un "
 "tiempo dentro del bloque."
 msgstr ""
-"In the results you choose whether to book the full daycare block or just a "
-"custom time within it."
 
+#: .\servicios\templates\servicios\dueno_nueva_reserva.html:142
 msgid "Filtros rápidos"
 msgstr "Quick filters"
 
+#: .\servicios\templates\servicios\dueno_nueva_reserva.html:146
 msgid "Duración de paseo"
 msgstr "Walk duration"
 
+#: .\servicios\templates\servicios\dueno_nueva_reserva.html:147
+#: .\servicios\templates\servicios\includes\form_editar_paseo.html:124
 msgid "Duración"
 msgstr "Duration"
 
+#: .\servicios\templates\servicios\dueno_nueva_reserva.html:148
+#: .\servicios\templates\servicios\includes\form_editar_paseo.html:127
 msgid "1 hora"
 msgstr "1 hour"
 
+#: .\servicios\templates\servicios\dueno_nueva_reserva.html:149
+#: .\servicios\templates\servicios\includes\form_editar_paseo.html:128
 msgid "1.5 horas"
 msgstr "1.5 hours"
 
+#: .\servicios\templates\servicios\dueno_nueva_reserva.html:150
+#: .\servicios\templates\servicios\includes\form_editar_paseo.html:129
 msgid "2 horas"
 msgstr "2 hours"
 
+#: .\servicios\templates\servicios\dueno_nueva_reserva.html:151
+#: .\servicios\templates\servicios\includes\form_editar_paseo.html:130
 msgid "2.5 horas"
 msgstr "2.5 hours"
 
+#: .\servicios\templates\servicios\dueno_nueva_reserva.html:152
+#: .\servicios\templates\servicios\includes\form_editar_paseo.html:131
 msgid "3 horas"
 msgstr "3 hours"
 
+#: .\servicios\templates\servicios\dueno_nueva_reserva.html:155
 msgid "Precio mín/h"
 msgstr "Min price/h"
 
+#: .\servicios\templates\servicios\dueno_nueva_reserva.html:156
 msgid "Precio máx/h"
 msgstr "Max price/h"
 
+#: .\servicios\templates\servicios\dueno_nueva_reserva.html:157
 msgid "Hora inicio desde"
 msgstr "Start time from"
 
+#: .\servicios\templates\servicios\dueno_nueva_reserva.html:158
 msgid "Hora fin hasta"
 msgstr "End time until"
 
+#: .\servicios\templates\servicios\dueno_nueva_reserva.html:160
 msgid "Estos filtros aparecen después de la primera búsqueda."
 msgstr "These filters appear after the first search."
 
+#: .\servicios\templates\servicios\dueno_nueva_reserva.html:166
 msgid "Buscar cuidadores"
 msgstr "Search caregivers"
 
+#: .\servicios\templates\servicios\dueno_nueva_reserva.html:175
 msgid "Resultados disponibles"
 msgstr "Available results"
 
+#: .\servicios\templates\servicios\dueno_nueva_reserva.html:178
 msgid "todas las franjas horarias"
 msgstr "all time slots"
 
+#: .\servicios\templates\servicios\dueno_nueva_reserva.html:195
 msgid "Horario disponible:"
 msgstr "Available schedule:"
 
+#: .\servicios\templates\servicios\dueno_nueva_reserva.html:197
 msgid "Bloque disponible:"
 msgstr "Available block:"
 
+#: .\servicios\templates\servicios\dueno_nueva_reserva.html:201
 msgid "Cupos disponibles:"
 msgstr "Available spots:"
 
+#: .\servicios\templates\servicios\dueno_nueva_reserva.html:204
 msgid "Rango consultado:"
 msgstr "Date range:"
 
+#: .\servicios\templates\servicios\dueno_nueva_reserva.html:205
 msgid "Slots disponibles en el rango:"
 msgstr "Available slots in range:"
 
+#: .\servicios\templates\servicios\dueno_nueva_reserva.html:206
 msgid "Slot sugerido:"
 msgstr "Suggested slot:"
 
+#: .\servicios\templates\servicios\dueno_nueva_reserva.html:206
+#: .\servicios\templates\servicios\dueno_nueva_reserva.html:260
 msgid "cupos"
 msgstr "spots"
 
+#: .\servicios\templates\servicios\dueno_nueva_reserva.html:226
 msgid "Valor estimado para el slot seleccionado"
 msgstr "Estimated value for the selected slot"
 
+#: .\servicios\templates\servicios\dueno_nueva_reserva.html:250
 msgid "Slot de guarderia disponible"
 msgstr "Available daycare slot"
 
+#: .\servicios\templates\servicios\dueno_nueva_reserva.html:264
 msgid "Cupos del slot elegido:"
 msgstr "Spots in chosen slot:"
 
+#: .\servicios\templates\servicios\dueno_nueva_reserva.html:266
 msgid "Tiempo de guarderia"
 msgstr "Daycare time"
 
+#: .\servicios\templates\servicios\dueno_nueva_reserva.html:268
 msgid "Reservar todo el bloque"
 msgstr "Book entire block"
 
+#: .\servicios\templates\servicios\dueno_nueva_reserva.html:269
 msgid "Reservar tiempo personalizado"
 msgstr "Book custom time"
 
+#: .\servicios\templates\servicios\dueno_nueva_reserva.html:276
 msgid ""
 "Si eliges tiempo personalizado, se aplica por día dentro del bloque "
 "disponible."
 msgstr ""
-"If you choose custom time, it applies per day within the available block."
 
+#: .\servicios\templates\servicios\dueno_nueva_reserva.html:282
 msgid "Reservar"
 msgstr "Book"
 
+#: .\servicios\templates\servicios\dueno_nueva_reserva.html:291
 msgid "No encontramos cuidadores para ese filtro."
 msgstr "No caregivers found for that filter."
 
+#: .\servicios\templates\servicios\dueno_nueva_reserva.html:293
 msgid "Prueba con otro rango de fechas u horario de guardería."
 msgstr "Try a different date range or daycare schedule."
 
+#: .\servicios\templates\servicios\dueno_nueva_reserva.html:295
 msgid "Prueba con otra fecha, duración o ubicación del paseo."
 msgstr "Try a different date, duration or walk location."
 
+#: .\servicios\templates\servicios\dueno_nueva_reserva.html:309
 msgid "✓ Apto para pasear"
-msgstr "✓ Good for walking"
+msgstr ""
 
+#: .\servicios\templates\servicios\dueno_nueva_reserva.html:310
 msgid "✗ Clima poco favorable"
-msgstr "✗ Unfavorable weather"
+msgstr ""
 
+#: .\servicios\templates\servicios\dueno_nueva_reserva.html:311
 msgid "Condiciones actuales de la zona"
 msgstr "Current conditions for the area"
 
+#: .\servicios\templates\servicios\dueno_nueva_reserva.html:312
 msgid "Referencia para"
 msgstr "Reference for"
 
+#: .\servicios\templates\servicios\dueno_nueva_reserva.html:313
 msgid "Escribe una ubicación primero"
 msgstr "Enter a location first"
 
+#: .\servicios\templates\servicios\dueno_nueva_reserva.html:314
 msgid "No encontramos esa ubicación"
 msgstr "Location not found"
 
+#: .\servicios\templates\servicios\dueno_nueva_reserva.html:315
 msgid "Tu navegador no soporta geolocalizacion"
 msgstr "Your browser does not support geolocation"
 
-msgid "Próximamente saldrá el mapa del recorrido que hizo tu cachorro."
-msgstr ""
-
-msgid "Sin franja horaria registrada."
-msgstr ""
-
-msgid "Cupos del bloque:"
-msgstr ""
-
-msgid "Lugar:"
-msgstr ""
-
-msgid "Ubicación:"
-msgstr ""
-
-msgid "Recogida:"
-msgstr ""
-
-msgid "Hora asignada:"
-msgstr ""
-
-msgid "Franja:"
-msgstr ""
-
-msgid "Estado servicio:"
-msgstr ""
-
-msgid "Estado pago:"
-msgstr ""
-
-msgid "Monto:"
-msgstr ""
-
-msgid "Referencia:"
-msgstr ""
-
-msgid "Mensajes en chat:"
-msgstr ""
-
-msgid "Última actualización:"
-msgstr ""
-
-msgid "Último mensaje:"
-msgstr ""
-
-msgid "Aún no hay anotaciones del cuidador para este servicio."
-msgstr ""
-
-msgid "Próximamente podrás ver el mapa completo del recorrido de tu cachorro."
-msgstr ""
-
-msgid "Destinatario:"
-msgstr ""
-
-msgid "Mascota:"
-msgstr ""
-
-msgid "Servicio:"
-msgstr ""
-
-msgid "Fecha:"
-msgstr ""
-
-msgid "Estado:"
-msgstr ""
-
-msgid "Pago:"
-msgstr ""
-
-msgid "Ocultar detalles"
-msgstr ""
-
-msgid "Sin mensajes aún. Escribe el primero."
-msgstr ""
-
-msgid "con"
-msgstr ""
-
-msgid "Solicitud"
-msgstr ""
-
-msgid "Tú"
-msgstr ""
-
-msgid "Leída"
-msgstr ""
-
-msgid "Nueva"
-msgstr ""
-
-msgid "Ver"
-msgstr ""
-
-msgid "Marcar leída"
-msgstr ""
-
-msgid "¿Eliminar?"
-msgstr ""
-
-msgid "Sin notificaciones"
-msgstr ""
-
-msgid "Ajusta los filtros o vuelve después para nuevas alertas"
-msgstr ""
-
-msgid "¿Eliminar seleccionadas?"
-msgstr ""
-
-msgid "Configuración de paseo"
-msgstr ""
-
-msgid "Tarifa por hora, radio de cobertura y perfil visible."
-msgstr ""
-
-msgid "Tarifa por hora (COP)"
-msgstr ""
-
-msgid "Ej: 18000"
-msgstr ""
-
-msgid "Descripción del servicio"
-msgstr ""
-
-msgid "Cuenta cómo es tu paseo, zonas favoritas y condiciones."
-msgstr ""
-
-msgid "Ubicación"
-msgstr ""
-
-msgid "Ej: Medellín"
-msgstr ""
-
-msgid "Buscar ubicación escrita"
-msgstr ""
-
-msgid "Radio de cobertura (km)"
-msgstr ""
-
-msgid "Usar mi ubicación"
-msgstr ""
-
-msgid "Paseo disponible solo para perros."
-msgstr ""
-
-msgid "Guardar configuración de paseo"
-msgstr ""
-
-msgid "¿Eliminar servicio de paseo?"
-msgstr ""
-
-msgid "Eliminar paseo"
-msgstr ""
-
-msgid "Agregar bloque de paseo"
-msgstr ""
-
-msgid ""
-"Solo eliges hora de inicio y duración. No necesitas fecha de fin ni volver a"
-" escribir el lugar."
-msgstr ""
-
-msgid "Añadir rápido (opcional)"
-msgstr ""
-
-msgid "Entre semana"
-msgstr ""
-
-msgid "Fines de semana"
-msgstr ""
-
-msgid "Todos los días"
-msgstr ""
-
-msgid "Sin atajo seleccionado"
-msgstr ""
-
-msgid "Se aplican al pulsar \"Agregar un día\" con la hora y duración elegidas."
-msgstr ""
-
-msgid "Día"
-msgstr ""
-
-msgid "Selecciona un día"
-msgstr ""
-
-msgid "Inicio"
-msgstr ""
-
-msgid "Selecciona duración"
-msgstr ""
-
-msgid "Cupo máximo del bloque"
-msgstr ""
-
-msgid "1 perro"
-msgstr ""
-
-msgid "2 perros"
-msgstr ""
-
-msgid "3 perros"
-msgstr ""
-
-msgid "4 perros"
-msgstr ""
-
-msgid "Para paseo el cupo permitido es de 1 a 4 perros."
-msgstr ""
-
-msgid "Agregar bloque (pendiente)"
-msgstr ""
-
-msgid "Pendientes por guardar"
-msgstr ""
-
-msgid "Bloques configurados"
-msgstr ""
-
-msgid "Cupo máximo:"
-msgstr ""
-
-msgid "¿Eliminar bloque?"
-msgstr ""
-
-msgid "Todavía no has agregado bloques de paseo."
-msgstr ""
-
-msgid "Atajo activo: Entre semana"
-msgstr ""
-
-msgid "Atajo activo: Fines de semana"
-msgstr ""
-
-msgid "Atajo activo: Todos los días"
-msgstr ""
-
-msgid "Atajo"
-msgstr ""
-
-msgid "min"
-msgstr ""
-
-msgid "Quitar"
-msgstr ""
-
-msgid "Completa hora de inicio y duración antes de agregar."
-msgstr ""
-
-msgid "Selecciona un día o usa un atajo de días."
-msgstr ""
-
+#: .\servicios\templates\servicios\dueno_soporte.html:36
+msgid "para dueños o escribirnos aquí si tienes dudas."
+msgstr "for owners or write to us here if you have questions."
+
+#: .\servicios\templates\servicios\includes\form_editar_guarderia.html:9
 msgid "Configuración de guardería"
-msgstr ""
+msgstr "Daycare configuration"
 
+#: .\servicios\templates\servicios\includes\form_editar_guarderia.html:10
 msgid "Tarifa por hora y disponibilidad flexible por bloques."
-msgstr ""
+msgstr "Hourly rate and flexible availability by blocks."
 
+#: .\servicios\templates\servicios\includes\form_editar_guarderia.html:25
+#: .\servicios\templates\servicios\includes\form_editar_paseo.html:25
+msgid "Tarifa por hora (COP)"
+msgstr "Hourly rate (COP)"
+
+#: .\servicios\templates\servicios\includes\form_editar_guarderia.html:26
 msgid "Ej: 14000"
-msgstr ""
+msgstr "E.g: 14000"
 
+#: .\servicios\templates\servicios\includes\form_editar_guarderia.html:30
+#: .\servicios\templates\servicios\includes\form_editar_paseo.html:30
+msgid "Descripción del servicio"
+msgstr "Service description"
+
+#: .\servicios\templates\servicios\includes\form_editar_guarderia.html:31
 msgid "Describe el espacio, cuidados y condiciones."
-msgstr ""
+msgstr "Describe the space, care and conditions."
 
+#: .\servicios\templates\servicios\includes\form_editar_guarderia.html:35
+#: .\servicios\templates\servicios\includes\form_editar_paseo.html:36
+msgid "Ubicación"
+msgstr "Location"
+
+#: .\servicios\templates\servicios\includes\form_editar_guarderia.html:37
+#: .\servicios\templates\servicios\includes\form_editar_paseo.html:38
+msgid "Ej: Medellín"
+msgstr "E.g: Medellín"
+
+#: .\servicios\templates\servicios\includes\form_editar_guarderia.html:38
+#: .\servicios\templates\servicios\includes\form_editar_paseo.html:39
+msgid "Buscar ubicación escrita"
+msgstr "Search written location"
+
+#: .\servicios\templates\servicios\includes\form_editar_guarderia.html:48
+#: .\servicios\templates\servicios\includes\form_editar_paseo.html:58
+msgid "Usar mi ubicación"
+msgstr "Use my location"
+
+#: .\servicios\templates\servicios\includes\form_editar_guarderia.html:54
 msgid "Tipo de mascota para guardería"
-msgstr ""
+msgstr "Pet type for daycare"
 
+#: .\servicios\templates\servicios\includes\form_editar_guarderia.html:55
 msgid "Perros"
-msgstr ""
+msgstr "Dogs"
 
+#: .\servicios\templates\servicios\includes\form_editar_guarderia.html:56
 msgid "Gatos"
-msgstr ""
+msgstr "Cats"
 
+#: .\servicios\templates\servicios\includes\form_editar_guarderia.html:60
 msgid "Guardar configuración de guardería"
-msgstr ""
+msgstr "Save daycare configuration"
 
+#: .\servicios\templates\servicios\includes\form_editar_guarderia.html:69
 msgid "¿Eliminar servicio de guardería?"
-msgstr ""
+msgstr "Delete daycare service?"
 
+#: .\servicios\templates\servicios\includes\form_editar_guarderia.html:69
 msgid "Eliminar guardería"
-msgstr ""
+msgstr "Delete daycare"
 
+#: .\servicios\templates\servicios\includes\form_editar_guarderia.html:76
 msgid "Agregar bloque de guardería"
-msgstr ""
+msgstr "Add daycare block"
 
+#: .\servicios\templates\servicios\includes\form_editar_guarderia.html:77
 msgid ""
 "Define tu disponibilidad en una sola acción: por rango de días, por un solo "
 "día o día completo."
 msgstr ""
 
+#: .\servicios\templates\servicios\includes\form_editar_guarderia.html:83
 msgid ""
 "Ejemplos: lunes 08:00 a sábado 21:00, domingo todo el día, o solo martes por"
 " unas horas."
 msgstr ""
 
+#: .\servicios\templates\servicios\includes\form_editar_guarderia.html:88
 msgid "Desde"
-msgstr ""
+msgstr "From"
 
+#: .\servicios\templates\servicios\includes\form_editar_guarderia.html:90
+#: .\servicios\templates\servicios\includes\form_editar_guarderia.html:97
+#: .\servicios\templates\servicios\includes\form_editar_paseo.html:109
+msgid "Selecciona un día"
+msgstr "Select a day"
+
+#: .\servicios\templates\servicios\includes\form_editar_guarderia.html:95
 msgid "Hasta"
-msgstr ""
+msgstr "To"
 
+#: .\servicios\templates\servicios\includes\form_editar_guarderia.html:104
 msgid "Solo este día"
-msgstr ""
+msgstr "Only this day"
 
+#: .\servicios\templates\servicios\includes\form_editar_guarderia.html:108
 msgid "Horario del bloque"
-msgstr ""
+msgstr "Block schedule"
 
+#: .\servicios\templates\servicios\includes\form_editar_guarderia.html:111
 msgid "Por horas"
-msgstr ""
+msgstr "By hours"
 
+#: .\servicios\templates\servicios\includes\form_editar_guarderia.html:112
 msgid "Todo el día"
-msgstr ""
+msgstr "All day"
 
+#: .\servicios\templates\servicios\includes\form_editar_guarderia.html:114
 msgid "Por horas: define inicio y fin. Todo el día: se usa 00:00 a 23:30."
-msgstr ""
+msgstr "By hours: set start and end. All day: uses 00:00 to 23:30."
 
+#: .\servicios\templates\servicios\includes\form_editar_guarderia.html:119
 msgid "Hora inicial"
-msgstr ""
+msgstr "Start time"
 
+#: .\servicios\templates\servicios\includes\form_editar_guarderia.html:123
 msgid "Hora final"
-msgstr ""
+msgstr "End time"
 
+#: .\servicios\templates\servicios\includes\form_editar_guarderia.html:128
 msgid "Mañana"
-msgstr ""
+msgstr "Morning"
 
+#: .\servicios\templates\servicios\includes\form_editar_guarderia.html:129
 msgid "Tarde"
-msgstr ""
+msgstr "Afternoon"
 
+#: .\servicios\templates\servicios\includes\form_editar_guarderia.html:130
 msgid "Largo"
-msgstr ""
+msgstr "Long"
 
+#: .\servicios\templates\servicios\includes\form_editar_guarderia.html:134
+#: .\servicios\templates\servicios\includes\form_editar_paseo.html:142
+msgid "Cupo máximo del bloque"
+msgstr "Maximum block spots"
+
+#: .\servicios\templates\servicios\includes\form_editar_guarderia.html:136
 msgid "1 mascota"
-msgstr ""
+msgstr "1 pet"
 
+#: .\servicios\templates\servicios\includes\form_editar_guarderia.html:137
 msgid "2 mascotas"
-msgstr ""
+msgstr "2 pets"
 
+#: .\servicios\templates\servicios\includes\form_editar_guarderia.html:138
 msgid "3 mascotas"
-msgstr ""
+msgstr "3 pets"
 
+#: .\servicios\templates\servicios\includes\form_editar_guarderia.html:139
 msgid "4 mascotas"
-msgstr ""
+msgstr "4 pets"
 
+#: .\servicios\templates\servicios\includes\form_editar_guarderia.html:140
 msgid "5 mascotas"
-msgstr ""
+msgstr "5 pets"
 
+#: .\servicios\templates\servicios\includes\form_editar_guarderia.html:143
+#: .\servicios\templates\servicios\includes\form_editar_paseo.html:151
+msgid "Agregar bloque (pendiente)"
+msgstr "Add block (pending)"
+
+#: .\servicios\templates\servicios\includes\form_editar_guarderia.html:147
+#: .\servicios\templates\servicios\includes\form_editar_paseo.html:155
+msgid "Pendientes por guardar"
+msgstr "Pending save"
+
+#: .\servicios\templates\servicios\includes\form_editar_guarderia.html:153
+#: .\servicios\templates\servicios\includes\form_editar_paseo.html:161
+msgid "Bloques configurados"
+msgstr "Configured blocks"
+
+#: .\servicios\templates\servicios\includes\form_editar_guarderia.html:167
+#: .\servicios\templates\servicios\includes\form_editar_paseo.html:175
+msgid "Cupo máximo:"
+msgstr "Maximum spots:"
+
+#: .\servicios\templates\servicios\includes\form_editar_guarderia.html:174
+#: .\servicios\templates\servicios\includes\form_editar_paseo.html:182
+msgid "¿Eliminar bloque?"
+msgstr "Delete block?"
+
+#: .\servicios\templates\servicios\includes\form_editar_guarderia.html:185
 msgid "Todavía no has agregado bloques de guardería."
-msgstr ""
+msgstr "You haven't added daycare blocks yet."
 
+#: .\servicios\templates\servicios\includes\form_editar_guarderia.html:193
 msgid ""
 "Todo el día deja el bloque listo para estancias largas (00:00 a 23:30)."
 msgstr ""
 
+#: .\servicios\templates\servicios\includes\form_editar_guarderia.html:194
 msgid "Por horas: define el intervalo exacto en que recibes mascotas."
-msgstr ""
+msgstr "By hours: define the exact interval when you receive pets."
 
+#: .\servicios\templates\servicios\includes\form_editar_guarderia.html:195
+#: .\servicios\templates\servicios\includes\form_editar_paseo.html:207
+msgid "Quitar"
+msgstr "Remove"
+
+#: .\servicios\templates\servicios\includes\form_editar_guarderia.html:196
 msgid "Completa día(s) y horario antes de agregar."
+msgstr "Complete day(s) and schedule before adding."
+
+#: .\servicios\templates\servicios\includes\form_editar_paseo.html:9
+msgid "Configuración de paseo"
+msgstr "Walk configuration"
+
+#: .\servicios\templates\servicios\includes\form_editar_paseo.html:10
+msgid "Tarifa por hora, radio de cobertura y perfil visible."
+msgstr "Hourly rate, coverage radius and visible profile."
+
+#: .\servicios\templates\servicios\includes\form_editar_paseo.html:26
+msgid "Ej: 18000"
+msgstr "E.g: 18000"
+
+#: .\servicios\templates\servicios\includes\form_editar_paseo.html:31
+msgid "Cuenta cómo es tu paseo, zonas favoritas y condiciones."
+msgstr "Tell us about your walk, favorite areas and conditions."
+
+#: .\servicios\templates\servicios\includes\form_editar_paseo.html:45
+msgid "Radio de cobertura (km)"
+msgstr "Coverage radius (km)"
+
+#: .\servicios\templates\servicios\includes\form_editar_paseo.html:65
+msgid "Paseo disponible solo para perros."
+msgstr "Walk available for dogs only."
+
+#: .\servicios\templates\servicios\includes\form_editar_paseo.html:69
+msgid "Guardar configuración de paseo"
+msgstr "Save walk configuration"
+
+#: .\servicios\templates\servicios\includes\form_editar_paseo.html:78
+msgid "¿Eliminar servicio de paseo?"
+msgstr "Delete walk service?"
+
+#: .\servicios\templates\servicios\includes\form_editar_paseo.html:78
+msgid "Eliminar paseo"
+msgstr "Delete walk"
+
+#: .\servicios\templates\servicios\includes\form_editar_paseo.html:85
+msgid "Agregar bloque de paseo"
+msgstr "Add walk block"
+
+#: .\servicios\templates\servicios\includes\form_editar_paseo.html:86
+msgid ""
+"Solo eliges hora de inicio y duración. No necesitas fecha de fin ni volver a"
+" escribir el lugar."
 msgstr ""
 
+#: .\servicios\templates\servicios\includes\form_editar_paseo.html:93
+msgid "Añadir rápido (opcional)"
+msgstr "Quick add (optional)"
+
+#: .\servicios\templates\servicios\includes\form_editar_paseo.html:95
+msgid "Entre semana"
+msgstr "Weekdays"
+
+#: .\servicios\templates\servicios\includes\form_editar_paseo.html:96
+msgid "Fines de semana"
+msgstr "Weekends"
+
+#: .\servicios\templates\servicios\includes\form_editar_paseo.html:97
+msgid "Todos los días"
+msgstr "Every day"
+
+#: .\servicios\templates\servicios\includes\form_editar_paseo.html:100
+#: .\servicios\templates\servicios\includes\form_editar_paseo.html:204
+msgid "Sin atajo seleccionado"
+msgstr "No shortcut selected"
+
+#: .\servicios\templates\servicios\includes\form_editar_paseo.html:103
+msgid "Se aplican al pulsar \\"
+msgstr ""
+
+#: .\servicios\templates\servicios\includes\form_editar_paseo.html:107
+msgid "Día"
+msgstr "Day"
+
+#: .\servicios\templates\servicios\includes\form_editar_paseo.html:115
+msgid "Inicio"
+msgstr "Start"
+
+#: .\servicios\templates\servicios\includes\form_editar_paseo.html:126
+msgid "Selecciona duración"
+msgstr "Select duration"
+
+#: .\servicios\templates\servicios\includes\form_editar_paseo.html:144
+msgid "1 perro"
+msgstr "1 dog"
+
+#: .\servicios\templates\servicios\includes\form_editar_paseo.html:145
+msgid "2 perros"
+msgstr "2 dogs"
+
+#: .\servicios\templates\servicios\includes\form_editar_paseo.html:146
+msgid "3 perros"
+msgstr "3 dogs"
+
+#: .\servicios\templates\servicios\includes\form_editar_paseo.html:147
+msgid "4 perros"
+msgstr "4 dogs"
+
+#: .\servicios\templates\servicios\includes\form_editar_paseo.html:149
+msgid "Para paseo el cupo permitido es de 1 a 4 perros."
+msgstr "For walks, allowed spots are 1 to 4 dogs."
+
+#: .\servicios\templates\servicios\includes\form_editar_paseo.html:193
+msgid "Todavía no has agregado bloques de paseo."
+msgstr "You haven't added walk blocks yet."
+
+#: .\servicios\templates\servicios\includes\form_editar_paseo.html:201
+msgid "Atajo activo: Entre semana"
+msgstr "Active shortcut: Weekdays"
+
+#: .\servicios\templates\servicios\includes\form_editar_paseo.html:202
+msgid "Atajo activo: Fines de semana"
+msgstr "Active shortcut: Weekends"
+
+#: .\servicios\templates\servicios\includes\form_editar_paseo.html:203
+msgid "Atajo activo: Todos los días"
+msgstr "Active shortcut: Every day"
+
+#: .\servicios\templates\servicios\includes\form_editar_paseo.html:205
+msgid "Atajo"
+msgstr "Shortcut"
+
+#: .\servicios\templates\servicios\includes\form_editar_paseo.html:206
+msgid "min"
+msgstr "min"
+
+#: .\servicios\templates\servicios\includes\form_editar_paseo.html:208
+msgid "Completa hora de inicio y duración antes de agregar."
+msgstr "Complete start time and duration before adding."
+
+#: .\servicios\templates\servicios\includes\form_editar_paseo.html:209
+msgid "Selecciona un día o usa un atajo de días."
+msgstr "Select a day or use a day shortcut."
+
+#: .\servicios\templates\servicios\includes\resenas_recibidas_mi_perfil.html:4
 msgid "Calificaciones y reseñas recibidas"
-msgstr ""
+msgstr "Ratings and reviews received"
 
+#: .\servicios\templates\servicios\includes\resenas_recibidas_mi_perfil.html:5
 msgid "Opiniones de otros usuarios después de completar servicios."
-msgstr ""
+msgstr "Opinions from other users after completing services."
 
+#: .\servicios\templates\servicios\includes\resenas_recibidas_mi_perfil.html:8
 msgid "Ordenar:"
-msgstr ""
+msgstr "Sort:"
 
+#: .\servicios\templates\servicios\includes\resenas_recibidas_mi_perfil.html:28
 msgid "Con comentario"
-msgstr ""
+msgstr "With comment"
 
+#: .\servicios\templates\servicios\includes\resenas_recibidas_mi_perfil.html:36
 msgid "Distribución de estrellas"
-msgstr ""
+msgstr "Star distribution"
 
+#: .\servicios\templates\servicios\includes\resenas_recibidas_mi_perfil.html:39
 msgid "estrellas"
-msgstr ""
+msgstr "stars"
 
+#: .\servicios\templates\servicios\includes\resenas_recibidas_mi_perfil.html:53
 msgid "Servicio para"
-msgstr ""
+msgstr "Service for"
 
+#: .\servicios\templates\servicios\includes\resenas_recibidas_mi_perfil.html:70
 msgid "Sin comentario escrito."
-msgstr ""
+msgstr "No written comment."
 
+#: .\servicios\templates\servicios\includes\resenas_recibidas_mi_perfil.html:78
 msgid "Aún no hay calificaciones recibidas."
-msgstr ""
+msgstr "No ratings received yet."
 
+#: .\servicios\templates\servicios\includes\resenas_recibidas_mi_perfil.html:79
 msgid "Cuando completes servicios, las reseñas aparecerán aquí."
-msgstr ""
+msgstr "When you complete services, reviews will appear here."
 
-msgid "Ayuda"
-msgstr ""
-
-msgid "Guía de uso"
-msgstr ""
-
-msgid "Soporte"
-msgstr ""
-
+#: .\servicios\templates\servicios\includes\sidebar_cuidador_extra.html:1
 msgid "Finanzas"
-msgstr ""
+msgstr "Finance"
 
-msgid "Mis pagos"
-msgstr ""
+#: .\servicios\templates\servicios\includes\sidebar_cuidador_extra.html:3
+#: .\servicios\templates\servicios\includes\sidebar_dueno_extra.html:1
+msgid "Ayuda"
+msgstr "Help"
 
-msgid "Abrir menú"
-msgstr ""
+#: .\servicios\templates\servicios\login.html:7
+#: .\servicios\templates\servicios\login.html:95
+#: .\servicios\templates\servicios\signup.html:129
+msgid "Iniciar sesión"
+msgstr "Log in"
 
-msgid "Plegar o desplegar menú"
-msgstr ""
-
-msgid "Hola, %(nombre)s"
-msgstr ""
-
-#: servicios/templates/servicios/login.html
+#: .\servicios\templates\servicios\login.html:30
 msgid "Tu aliado confiable para el cuidado diario de tus mascotas."
-msgstr "Tu aliado confiable para el cuidado diario de tus mascotas."
+msgstr "Your trusted ally for daily pet care."
 
-#: servicios/templates/servicios/login.html
+#: .\servicios\templates\servicios\login.html:31
 msgid ""
-"Conectamos dueños con cuidadores verificados para paseos y guardería, con "
-"seguimiento claro de cada reserva, horarios y estado del servicio."
+"Conectamos <strong>dueños</strong> con <strong>cuidadores verificados</strong> para paseos y guardería,\n"
+"          con seguimiento claro de cada reserva, horarios y estado del servicio."
 msgstr ""
-"Conectamos dueños con cuidadores verificados para paseos y guardería, con "
-"seguimiento claro de cada reserva, horarios y estado del servicio."
 
-#: servicios/templates/servicios/login.html
+#: .\servicios\templates\servicios\login.html:38
 msgid "Cuidadores verificados"
-msgstr "Cuidadores verificados"
+msgstr "Verified caregivers"
 
-#: servicios/templates/servicios/login.html
+#: .\servicios\templates\servicios\login.html:39
 msgid ""
 "Perfiles con datos completos y reputación visible para elegir con confianza."
-msgstr ""
-"Perfiles con datos completos y reputación visible para elegir con confianza."
+msgstr "Complete profiles and visible reputation to choose with confidence."
 
-#: servicios/templates/servicios/login.html
+#: .\servicios\templates\servicios\login.html:45
 msgid "Reserva y seguimiento en tiempo real"
-msgstr "Reserva y seguimiento en tiempo real"
+msgstr "Booking and real-time tracking"
 
-#: servicios/templates/servicios/login.html
+#: .\servicios\templates\servicios\login.html:46
 msgid ""
 "Agenda por día, consulta disponibilidad y revisa cada cambio desde tu panel."
 msgstr ""
-"Agenda por día, consulta disponibilidad y revisa cada cambio desde tu panel."
+"Schedule by day, check availability and review every change from your "
+"dashboard."
 
-#: servicios/templates/servicios/login.html
+#: .\servicios\templates\servicios\login.html:52
 msgid "Tranquilidad garantizada"
-msgstr "Tranquilidad garantizada"
+msgstr "Guaranteed peace of mind"
 
-#: servicios/templates/servicios/login.html
+#: .\servicios\templates\servicios\login.html:53
 msgid "Toda la información de tu mascota y tus reservas en un solo lugar."
-msgstr "Toda la información de tu mascota y tus reservas en un solo lugar."
+msgstr "All your pet info and bookings in one place."
 
-#: servicios/templates/servicios/login.html
+#: .\servicios\templates\servicios\login.html:62
+msgid "Bienvenido de nuevo"
+msgstr "Welcome back"
+
+#: .\servicios\templates\servicios\login.html:63
+msgid "Ingresa con tu usuario y contraseña para continuar."
+msgstr "Enter your username and password to continue."
+
+#: .\servicios\templates\servicios\login.html:84
+#: .\servicios\templates\servicios\signup.html:107
+msgid "Contraseña"
+msgstr "Password"
+
+#: .\servicios\templates\servicios\login.html:101
+msgid "¿No tienes cuenta?"
+msgstr "Don't have an account?"
+
+#: .\servicios\templates\servicios\login.html:102
+msgid "Crear una cuenta"
+msgstr "Create an account"
+
+#: .\servicios\templates\servicios\login.html:106
+msgid "¿Olvidaste tu contraseña?"
+msgstr "Forgot your password?"
+
+#: .\servicios\templates\servicios\login.html:116
+#: .\servicios\templates\servicios\password_reset_request.html:104
+#: .\servicios\templates\servicios\signup.html:137
+#: .\servicios\templates\servicios\terminos_condiciones.html:7
+#: .\servicios\templates\servicios\terminos_condiciones.html:26
 msgid "Términos y condiciones"
-msgstr "Términos y condiciones"
+msgstr "Terms and conditions"
 
-#: servicios/templates/servicios/login.html
+#: .\servicios\templates\servicios\login.html:117
+#: .\servicios\templates\servicios\password_reset_request.html:105
+#: .\servicios\templates\servicios\signup.html:137
 msgid "Política de privacidad"
-msgstr "Política de privacidad"
+msgstr "Privacy policy"
 
-#: servicios/templates/servicios/login.html
+#: .\servicios\templates\servicios\login.html:118
+#: .\servicios\templates\servicios\login.html:120
+#: .\servicios\templates\servicios\password_reset_request.html:106
+#: .\servicios\templates\servicios\password_reset_request.html:108
+#: .\servicios\templates\servicios\signup.html:137
+#: .\servicios\templates\servicios\signup.html:138
 msgid "Contacto"
-msgstr "Contacto"
+msgstr "Contact"
 
-#: servicios/templates/servicios/signup.html
-msgid ""
-"Crea tu cuenta y gestiona reservas de paseo y guardería desde un solo lugar."
+#: .\servicios\templates\servicios\notificaciones.html:8
+msgid "no leídas"
+msgstr "unread"
+
+#: .\servicios\templates\servicios\notificaciones.html:8
+msgid "total"
+msgstr "total"
+
+#: .\servicios\templates\servicios\notificaciones.html:41
+msgid "Todas las categorías"
+msgstr "All categories"
+
+#: .\servicios\templates\servicios\notificaciones.html:51
+msgid "Leídas"
+msgstr "Read"
+
+#: .\servicios\templates\servicios\notificaciones.html:68
+msgid "Seleccionar todas"
+msgstr "Select all"
+
+#: .\servicios\templates\servicios\notificaciones.html:71
+msgid "seleccionadas"
+msgstr "selected"
+
+#: .\servicios\templates\servicios\notificaciones.html:80
+msgid "Marcar leídas"
+msgstr "Mark as read"
+
+#: .\servicios\templates\servicios\notificaciones.html:84
+msgid "¿Eliminar seleccionadas?"
+msgstr "Delete selected?"
+
+#: .\servicios\templates\servicios\notificaciones.html:91
+msgid "Eliminar seleccionadas"
+msgstr "Delete selected"
+
+#: .\servicios\templates\servicios\notificaciones.html:119
+msgid "Leída"
+msgstr "Read"
+
+#: .\servicios\templates\servicios\notificaciones.html:119
+msgid "Nueva"
+msgstr "New"
+
+#: .\servicios\templates\servicios\notificaciones.html:143
+msgid "Ver"
+msgstr "View"
+
+#: .\servicios\templates\servicios\notificaciones.html:155
+msgid "Marcar leída"
+msgstr "Mark as read"
+
+#: .\servicios\templates\servicios\notificaciones.html:159
+msgid "¿Eliminar?"
+msgstr "Delete?"
+
+#: .\servicios\templates\servicios\notificaciones.html:180
+msgid "Sin notificaciones"
+msgstr "No notifications"
+
+#: .\servicios\templates\servicios\notificaciones.html:181
+msgid "Ajusta los filtros o vuelve después para nuevas alertas"
+msgstr "Adjust filters or come back later for new alerts"
+
+#: .\servicios\templates\servicios\password_reset_request.html:7
+#: .\servicios\templates\servicios\password_reset_request.html:55
+msgid "Recuperar contraseña"
 msgstr ""
-"Crea tu cuenta y gestiona reservas de paseo y guardería desde un solo lugar."
 
-#: servicios/templates/servicios/signup.html
-msgid "Perfiles confiables"
-msgstr "Perfiles confiables"
-
-#: servicios/templates/servicios/signup.html
-msgid "Dueños y cuidadores con historial visible dentro de la plataforma."
-msgstr "Dueños y cuidadores con historial visible dentro de la plataforma."
-
-#: servicios/templates/servicios/signup.html
-msgid "Reservas organizadas"
-msgstr "Reservas organizadas"
-
-#: servicios/templates/servicios/signup.html
-msgid "Consulta disponibilidad, agenda servicios y sigue cada solicitud."
-msgstr "Consulta disponibilidad, agenda servicios y sigue cada solicitud."
-
-#: servicios/templates/servicios/signup.html
-msgid "Nacimiento"
-msgstr "Nacimiento"
-
-#: servicios/templates/servicios/signup.html
-msgid "Mayor 15 años"
-msgstr "Mayor 15 años"
-
-#: servicios/templates/servicios/signup.html
-msgid "Repetir contraseña"
-msgstr "Repetir contraseña"
-
-#: servicios/templates/servicios/signup.html
-msgid "¿Ya tienes cuenta?"
-msgstr "¿Ya tienes cuenta?"
-
-#: servicios/templates/servicios/password_reset_request.html
+#: .\servicios\templates\servicios\password_reset_request.html:30
 msgid ""
 "Recupera tu acceso para seguir gestionando reservas, mascotas y servicios."
-msgstr ""
-"Recupera tu acceso para seguir gestionando reservas, mascotas y servicios."
+msgstr "Recover your access to keep managing bookings, pets and services."
 
-#: servicios/templates/servicios/password_reset_request.html
+#: .\servicios\templates\servicios\password_reset_request.html:36
 msgid "Cuenta protegida"
-msgstr "Cuenta protegida"
+msgstr "Protected account"
 
-#: servicios/templates/servicios/password_reset_request.html
+#: .\servicios\templates\servicios\password_reset_request.html:37
 msgid "Te ayudamos a restablecer tu contraseña de forma segura."
-msgstr "Te ayudamos a restablecer tu contraseña de forma segura."
+msgstr "We help you reset your password securely."
 
-#: servicios/templates/servicios/password_reset_request.html
+#: .\servicios\templates\servicios\password_reset_request.html:43
 msgid "Vuelve al control"
-msgstr "Vuelve al control"
+msgstr "Back in control"
 
-#: servicios/templates/servicios/password_reset_request.html
+#: .\servicios\templates\servicios\password_reset_request.html:44
 msgid "Recupera acceso para revisar citas, reservas y notificaciones."
-msgstr "Recupera acceso para revisar citas, reservas y notificaciones."
+msgstr "Recover access to review appointments, bookings and notifications."
 
-#: servicios/templates/servicios/password_reset_request.html
+#: .\servicios\templates\servicios\password_reset_request.html:58
 msgid ""
-"Escribe tu correo o usuario. Si existe una cuenta asociada, te enviaremos "
-"instrucciones para restablecer tu contraseña."
+"Escribe tu <strong>correo</strong> o <strong>usuario</strong>. Si existe una cuenta asociada, te enviaremos\n"
+"          instrucciones para restablecer tu contraseña."
 msgstr ""
-"Escribe tu correo o usuario. Si existe una cuenta asociada, te enviaremos "
-"instrucciones para restablecer tu contraseña."
 
-#: servicios/templates/servicios/password_reset_request.html
+#: .\servicios\templates\servicios\password_reset_request.html:77
 msgid "Correo o usuario"
-msgstr "Correo o usuario"
+msgstr "Email or username"
 
-#: servicios/templates/servicios/password_reset_request.html
+#: .\servicios\templates\servicios\password_reset_request.html:82
 msgid "tucorreo@ejemplo.com o tu_usuario"
-msgstr "tucorreo@ejemplo.com o tu_usuario"
+msgstr "your@email.com or your_username"
 
-#: servicios/templates/servicios/password_reset_request.html
+#: .\servicios\templates\servicios\password_reset_request.html:89
 msgid "Enviar instrucciones"
-msgstr "Enviar instrucciones"
+msgstr "Send instructions"
 
-#: servicios/templates/servicios/password_reset_request.html
+#: .\servicios\templates\servicios\password_reset_request.html:95
 msgid "Volver a iniciar sesión"
-msgstr "Volver a iniciar sesión"
+msgstr "Back to login"
 
-#: servicios/templates/servicios/ver_perfil_otro.html
-msgid "Perfil de {{ nombre }}"
-msgstr "Perfil de {{ nombre }}"
+#: .\servicios\templates\servicios\signup.html:7
+#: .\servicios\templates\servicios\signup.html:53
+#: .\servicios\templates\servicios\signup.html:128
+msgid "Crear cuenta"
+msgstr "Create account"
 
-#: servicios/templates/servicios/ver_perfil_otro.html
-msgid "Datos de contacto"
-msgstr "Datos de contacto"
+#: .\servicios\templates\servicios\signup.html:30
+msgid ""
+"Crea tu cuenta y gestiona reservas de paseo y guardería desde un solo lugar."
+msgstr ""
+"Create your account and manage walk and daycare bookings in one place."
 
-#: servicios/templates/servicios/ver_perfil_otro.html
-msgid "Servicios"
-msgstr "Servicios"
+#: .\servicios\templates\servicios\signup.html:36
+msgid "Perfiles confiables"
+msgstr "Trusted profiles"
 
-#: servicios/templates/servicios/ver_perfil_otro.html
-msgid "Sin descripción"
-msgstr "Sin descripción"
+#: .\servicios\templates\servicios\signup.html:37
+msgid "Dueños y cuidadores con historial visible dentro de la plataforma."
+msgstr "Owners and caregivers with visible history on the platform."
 
-#: servicios/templates/servicios/ver_perfil_otro.html
-msgid "Mascota asignada al servicio"
-msgstr "Mascota asignada al servicio"
+#: .\servicios\templates\servicios\signup.html:43
+msgid "Reservas organizadas"
+msgstr "Organized bookings"
 
-#: servicios/templates/servicios/ver_perfil_otro.html
-msgid "Información inicial de la mascota para esta reserva."
-msgstr "Información inicial de la mascota para esta reserva."
+#: .\servicios\templates\servicios\signup.html:44
+msgid "Consulta disponibilidad, agenda servicios y sigue cada solicitud."
+msgstr "Check availability, schedule services and track each request."
 
-#: servicios/templates/servicios/ver_perfil_otro.html
-msgid "Edad"
-msgstr "Edad"
+#: .\servicios\templates\servicios\signup.html:54
+msgid "Completa los datos para registrarte en Paws & Walks."
+msgstr "Fill in your details to register on Paws & Walks."
 
-#: servicios/templates/servicios/ver_perfil_otro.html
-msgid "año"
-msgstr "año"
+#: .\servicios\templates\servicios\signup.html:99
+msgid "Nacimiento"
+msgstr "Date of birth"
 
-#: servicios/templates/servicios/ver_perfil_otro.html
-msgid "Peso"
-msgstr "Peso"
+#: .\servicios\templates\servicios\signup.html:100
+msgid "Mayor 15 años"
+msgstr "Over 15 years old"
 
-#: servicios/templates/servicios/ver_perfil_otro.html
-msgid "Calificaciones y reseñas de la mascota"
-msgstr "Calificaciones y reseñas de la mascota"
+#: .\servicios\templates\servicios\signup.html:111
+msgid "Repetir contraseña"
+msgstr "Repeat password"
 
-#: servicios/templates/servicios/ver_perfil_otro.html
-msgid "Opiniones de cuidadores que ya atendieron a {{ mascota }}."
-msgstr "Opiniones de cuidadores que ya atendieron a {{ mascota }}."
+#: .\servicios\templates\servicios\signup.html:115
+msgid "Tipo de cuenta"
+msgstr "Account type"
 
-#: servicios/templates/servicios/ver_perfil_otro.html
-msgid "Aún no hay calificaciones para esta mascota."
-msgstr "Aún no hay calificaciones para esta mascota."
+#: .\servicios\templates\servicios\signup.html:129
+msgid "¿Ya tienes cuenta?"
+msgstr "Already have an account?"
 
-#: servicios/templates/servicios/ver_perfil_otro.html
+#: .\servicios\templates\servicios\terminos_condiciones.html:24
+#: .\servicios\templates\servicios\ver_perfil_otro.html:167
 msgid "Volver"
-msgstr "Volver"
+msgstr "Back"
 
-#: servicios/templates/servicios/crear_solicitud.html
-msgid "Nueva Solicitud"
-msgstr "Nueva Solicitud"
-
-#: servicios/templates/servicios/crear_solicitud.html
-msgid "Solicitud de Servicio"
-msgstr "Solicitud de Servicio"
-
-#: servicios/templates/servicios/crear_solicitud.html
-msgid "Reserva un servicio con un cuidador verificado."
-msgstr "Reserva un servicio con un cuidador verificado."
-
-#: servicios/templates/servicios/crear_solicitud.html
-msgid "— Seleccione —"
-msgstr "— Seleccione —"
-
-#: servicios/templates/servicios/crear_solicitud.html
-msgid "Fecha fin (guardería)"
-msgstr "Fecha fin (guardería)"
-
-#: servicios/templates/servicios/crear_solicitud.html
-msgid "Evento / Horario"
-msgstr "Evento / Horario"
-
-#: servicios/templates/servicios/crear_solicitud.html
-msgid "— Seleccione cuidador, tipo y fecha —"
-msgstr "— Seleccione cuidador, tipo y fecha —"
-
-#: servicios/templates/servicios/crear_solicitud.html
-msgid "Para paseo con slots, el sistema asignará la hora según proximidad."
-msgstr "Para paseo con slots, el sistema asignará la hora según proximidad."
-
-#: servicios/templates/servicios/crear_solicitud.html
-msgid "Ventana (paseo, legacy)"
-msgstr "Ventana (paseo, legacy)"
-
-#: servicios/templates/servicios/crear_solicitud.html
-msgid "Bloque horario (legacy)"
-msgstr "Bloque horario (legacy)"
-
-#: servicios/templates/servicios/crear_solicitud.html
-msgid "Se cargan al elegir cuidador, tipo y fecha."
-msgstr "Se cargan al elegir cuidador, tipo y fecha."
-
-#: servicios/templates/servicios/crear_solicitud.html
-msgid "Crear Solicitud"
-msgstr "Crear Solicitud"
-
-#: servicios/templates/servicios/crear_solicitud.html
-msgid "Seleccione un cuidador."
-msgstr "Seleccione un cuidador."
-
-#: servicios/templates/servicios/crear_solicitud.html
-msgid "Seleccione el tipo de servicio."
-msgstr "Seleccione el tipo de servicio."
-
-#: servicios/templates/servicios/crear_solicitud.html
-msgid "— Sin disponibilidad —"
-msgstr "— Sin disponibilidad —"
-
-#: servicios/templates/servicios/crear_solicitud.html
-msgid "No hay horarios para este día."
-msgstr "No hay horarios para este día."
-
-#: servicios/templates/servicios/crear_solicitud.html
-msgid "opción(es) disponible(s)"
-msgstr "opción(es) disponible(s)"
-
-#: servicios/templates/servicios/terminos_condiciones.html
+#: .\servicios\templates\servicios\terminos_condiciones.html:27
 msgid ""
 "Última actualización: marzo 2026. Al usar Paws & Walks usted acepta los "
 "siguientes términos y el marco legal indicado."
 msgstr ""
-"Última actualización: marzo 2026. Al usar Paws & Walks usted acepta los "
-"siguientes términos y el marco legal indicado."
 
-#: servicios/templates/servicios/terminos_condiciones.html
+#: .\servicios\templates\servicios\terminos_condiciones.html:30
 msgid "Aviso importante:"
-msgstr "Aviso importante:"
+msgstr "Important notice:"
 
-#: servicios/templates/servicios/terminos_condiciones.html
+#: .\servicios\templates\servicios\terminos_condiciones.html:30
 msgid ""
 "Paws & Walks actúa como intermediario entre dueños de mascotas y cuidadores."
 " No somos responsables de los servicios prestados entre usuarios. El uso de "
 "la plataforma implica la aceptación de nuestros términos."
 msgstr ""
-"Paws & Walks actúa como intermediario entre dueños de mascotas y cuidadores."
-" No somos responsables de los servicios prestados entre usuarios. El uso de "
-"la plataforma implica la aceptación de nuestros términos."
 
-#: servicios/templates/servicios/terminos_condiciones.html
+#: .\servicios\templates\servicios\terminos_condiciones.html:33
 msgid "1. Objeto y aceptación"
-msgstr "1. Objeto y aceptación"
+msgstr "1. Purpose and acceptance"
 
-#: servicios/templates/servicios/terminos_condiciones.html
+#: .\servicios\templates\servicios\terminos_condiciones.html:36
 msgid "2. Marco legal colombiano aplicable"
-msgstr "2. Marco legal colombiano aplicable"
+msgstr "2. Applicable Colombian legal framework"
 
-#: servicios/templates/servicios/terminos_condiciones.html
+#: .\servicios\templates\servicios\terminos_condiciones.html:46
 msgid "3. Naturaleza del servicio e intermediación"
-msgstr "3. Naturaleza del servicio e intermediación"
+msgstr "3. Nature of service and intermediation"
 
-#: servicios/templates/servicios/terminos_condiciones.html
+#: .\servicios\templates\servicios\terminos_condiciones.html:49
 msgid "4. Registro y obligaciones del usuario"
-msgstr "4. Registro y obligaciones del usuario"
+msgstr "4. Registration and user obligations"
 
-#: servicios/templates/servicios/terminos_condiciones.html
+#: .\servicios\templates\servicios\terminos_condiciones.html:52
 msgid "5. Protección de datos personales"
-msgstr "5. Protección de datos personales"
+msgstr "5. Personal data protection"
 
-#: servicios/templates/servicios/terminos_condiciones.html
+#: .\servicios\templates\servicios\terminos_condiciones.html:55
 msgid "6. Limitación de responsabilidad"
-msgstr "6. Limitación de responsabilidad"
+msgstr "6. Liability limitation"
 
-#: servicios/templates/servicios/terminos_condiciones.html
+#: .\servicios\templates\servicios\terminos_condiciones.html:58
 msgid "7. Propiedad intelectual y uso de la Plataforma"
-msgstr "7. Propiedad intelectual y uso de la Plataforma"
+msgstr "7. Intellectual property and platform usage"
 
-#: servicios/templates/servicios/terminos_condiciones.html
+#: .\servicios\templates\servicios\terminos_condiciones.html:61
 msgid "8. Modificaciones y ley aplicable"
-msgstr "8. Modificaciones y ley aplicable"
+msgstr "8. Modifications and applicable law"
 
-#: servicios/templates/servicios/terminos_condiciones.html
+#: .\servicios\templates\servicios\terminos_condiciones.html:64
 msgid "9. Contacto"
-msgstr "9. Contacto"
+msgstr "9. Contact"
 
-#: servicios/templates/servicios/remaining_templates.html
-msgid "Transacciones y resúmenes cuando recibes pagos"
-msgstr "Transacciones y resúmenes cuando recibes pagos"
-
-#: servicios/templates/servicios/remaining_templates.html
-msgid "Total recibido"
-msgstr "Total recibido"
-
-#: servicios/templates/servicios/remaining_templates.html
-msgid "Transacciones"
-msgstr "Transacciones"
-
-#: servicios/templates/servicios/remaining_templates.html
-msgid "Este mes"
-msgstr "Este mes"
-
-#: servicios/templates/servicios/remaining_templates.html
-msgid "Resumen mensual"
-msgstr "Resumen mensual"
-
-#: servicios/templates/servicios/remaining_templates.html
-msgid "Sin transacciones aún"
-msgstr "Sin transacciones aún"
-
-#: servicios/templates/servicios/remaining_templates.html
-msgid "Últimas transacciones"
-msgstr "Últimas transacciones"
-
-#: servicios/templates/servicios/remaining_templates.html
-msgid "Los pagos aparecerán aquí cuando completes servicios"
-msgstr "Los pagos aparecerán aquí cuando completes servicios"
-
-#: servicios/templates/servicios/remaining_templates.html
-msgid "¿Necesitas ayuda? Chatea con nosotros"
-msgstr "¿Necesitas ayuda? Chatea con nosotros"
-
-#: servicios/templates/servicios/remaining_templates.html
-msgid "Chat de soporte"
-msgstr "Chat de soporte"
-
-#: servicios/templates/servicios/remaining_templates.html
-msgid "En línea"
-msgstr "En línea"
-
-#: servicios/templates/servicios/remaining_templates.html
-msgid "¡Hola! Soy el equipo de Paws & Walks. ¿En qué podemos ayudarte hoy?"
-msgstr "¡Hola! Soy el equipo de Paws & Walks. ¿En qué podemos ayudarte hoy?"
-
-#: servicios/templates/servicios/remaining_templates.html
-msgid "Puedes consultar nuestra"
-msgstr "Puedes consultar nuestra"
-
-#: servicios/templates/servicios/remaining_templates.html
-msgid "para cuidadores o escribirnos aquí si tienes dudas."
-msgstr "para cuidadores o escribirnos aquí si tienes dudas."
-
-#: servicios/templates/servicios/remaining_templates.html
-msgid "Escribe tu mensaje..."
-msgstr "Escribe tu mensaje..."
-
-#: servicios/templates/servicios/remaining_templates.html
-msgid ""
-"Este es un chat de demostración. En producción se conectaría con un sistema "
-"de soporte real."
+#: .\servicios\templates\servicios\ver_perfil_otro.html:3
+#: .\servicios\templates\servicios\ver_perfil_otro.html:6
+#, python-format
+msgid "Perfil de %(nombre)s"
 msgstr ""
-"Este es un chat de demostración. En producción se conectaría con un sistema "
-"de soporte real."
 
-#: servicios/templates/servicios/remaining_templates.html
-msgid ""
-"Gracias por tu mensaje. Un agente te responderá pronto. ¿Hay algo más en lo "
-"que podamos ayudarte?"
+#: .\servicios\templates\servicios\ver_perfil_otro.html:7
+msgid "Datos de contacto"
+msgstr "Contact info"
+
+#: .\servicios\templates\servicios\ver_perfil_otro.html:56
+msgid "Servicios"
+msgstr "Services"
+
+#: .\servicios\templates\servicios\ver_perfil_otro.html:66
+msgid "Mascota asignada al servicio"
+msgstr "Pet assigned to service"
+
+#: .\servicios\templates\servicios\ver_perfil_otro.html:67
+msgid "Información inicial de la mascota para esta reserva."
+msgstr "Initial pet info for this booking."
+
+#: .\servicios\templates\servicios\ver_perfil_otro.html:95
+msgid "Edad"
+msgstr "Age"
+
+#: .\servicios\templates\servicios\ver_perfil_otro.html:95
+msgid "año"
+msgstr "year"
+
+#: .\servicios\templates\servicios\ver_perfil_otro.html:96
+msgid "Peso"
+msgstr "Weight"
+
+#: .\servicios\templates\servicios\ver_perfil_otro.html:117
+msgid "Calificaciones y reseñas de la mascota"
+msgstr "Pet ratings and reviews"
+
+#: .\servicios\templates\servicios\ver_perfil_otro.html:118
+#, python-format
+msgid "Opiniones de cuidadores que ya atendieron a %(mascota)s."
 msgstr ""
-"Gracias por tu mensaje. Un agente te responderá pronto. ¿Hay algo más en lo "
-"que podamos ayudarte?"
 
-#: servicios/templates/servicios/remaining_templates.html
-msgid "para dueños o escribirnos aquí si tienes dudas."
-msgstr "para dueños o escribirnos aquí si tienes dudas."
+#: .\servicios\templates\servicios\ver_perfil_otro.html:158
+msgid "Aún no hay calificaciones para esta mascota."
+msgstr "No ratings for this pet yet."
 
-#: servicios/templates/servicios/remaining_templates.html
-msgid "Cómo usar Paws & Walks como dueño de mascota"
-msgstr "Cómo usar Paws & Walks como dueño de mascota"
-
-#: servicios/templates/servicios/remaining_templates.html
-msgid "Registra tus mascotas"
-msgstr "Registra tus mascotas"
-
-#: servicios/templates/servicios/remaining_templates.html
-msgid "En"
-msgstr "En"
-
-#: servicios/templates/servicios/remaining_templates.html
-msgid ""
-"agrega cada mascota con su nombre, tipo, raza, edad y foto. Necesitarás esta"
-" información para hacer reservas."
+#: .\servicios\venv\Lib\site-packages\django\contrib\messages\apps.py:16
+msgid "Messages"
 msgstr ""
-"agrega cada mascota con su nombre, tipo, raza, edad y foto. Necesitarás esta"
-" información para hacer reservas."
 
-#: servicios/templates/servicios/remaining_templates.html
-msgid "Busca cuidadores"
-msgstr "Busca cuidadores"
-
-#: servicios/templates/servicios/remaining_templates.html
-msgid ""
-"elige el tipo de servicio (Paseo o Guardería), la mascota, fecha y horario. "
-"La app te mostrará cuidadores disponibles cerca de ti."
+#: .\servicios\venv\Lib\site-packages\django\contrib\sitemaps\apps.py:8
+msgid "Site Maps"
 msgstr ""
-"elige el tipo de servicio (Paseo o Guardería), la mascota, fecha y horario. "
-"La app te mostrará cuidadores disponibles cerca de ti."
 
-#: servicios/templates/servicios/remaining_templates.html
-msgid "Envía tu solicitud"
-msgstr "Envía tu solicitud"
-
-#: servicios/templates/servicios/remaining_templates.html
-msgid ""
-"Selecciona un cuidador y envía la solicitud. El cuidador la revisará y la "
-"aceptará o rechazará. Puedes ver su perfil antes de reservar."
+#: .\servicios\venv\Lib\site-packages\django\contrib\staticfiles\apps.py:9
+msgid "Static Files"
 msgstr ""
-"Selecciona un cuidador y envía la solicitud. El cuidador la revisará y la "
-"aceptará o rechazará. Puedes ver su perfil antes de reservar."
 
-#: servicios/templates/servicios/remaining_templates.html
-msgid "Comunícate y coordina"
-msgstr "Comunícate y coordina"
-
-#: servicios/templates/servicios/remaining_templates.html
-msgid ""
-"verás cada reunión programada. Usa el chat para coordinar con el cuidador y "
-"el botón"
+#: .\servicios\venv\Lib\site-packages\django\contrib\syndication\apps.py:7
+msgid "Syndication"
 msgstr ""
-"verás cada reunión programada. Usa el chat para coordinar con el cuidador y "
-"el botón"
 
-#: servicios/templates/servicios/remaining_templates.html
-msgid "para ver sus datos de contacto."
-msgstr "para ver sus datos de contacto."
-
-#: servicios/templates/servicios/remaining_templates.html
-msgid "Califica el servicio"
-msgstr "Califica el servicio"
-
-#: servicios/templates/servicios/remaining_templates.html
-msgid ""
-"Cuando el servicio se complete, podrás calificar al cuidador con estrellas y"
-" un comentario. ¡Tu opinión ayuda a otros dueños!"
+#. Translators: String used to replace omitted page numbers in elided page
+#. range generated by paginators, e.g. [1, 2, '…', 5, 6, 7, '…', 9, 10].
+#: .\servicios\venv\Lib\site-packages\django\core\paginator.py:30
+msgid "…"
 msgstr ""
-"Cuando el servicio se complete, podrás calificar al cuidador con estrellas y"
-" un comentario. ¡Tu opinión ayuda a otros dueños!"
 
-#: servicios/templates/servicios/remaining_templates.html
-msgid "Cómo usar Paws & Walks como cuidador"
-msgstr "Cómo usar Paws & Walks como cuidador"
-
-#: servicios/templates/servicios/remaining_templates.html
-msgid "Configura tu perfil"
-msgstr "Configura tu perfil"
-
-#: servicios/templates/servicios/remaining_templates.html
-msgid "Completa tu perfil en"
-msgstr "Completa tu perfil en"
-
-#: servicios/templates/servicios/remaining_templates.html
-msgid ""
-"con foto, datos de contacto y ciudad. Los dueños te encontrarán más "
-"fácilmente."
+#: .\servicios\venv\Lib\site-packages\django\core\paginator.py:32
+msgid "That page number is not an integer"
 msgstr ""
-"con foto, datos de contacto y ciudad. Los dueños te encontrarán más "
-"fácilmente."
 
-#: servicios/templates/servicios/remaining_templates.html
-msgid "Activa tus servicios"
-msgstr "Activa tus servicios"
-
-#: servicios/templates/servicios/remaining_templates.html
-msgid "y"
-msgstr "y"
-
-#: servicios/templates/servicios/remaining_templates.html
-msgid ""
-"activa los servicios que ofreces. Define tu zona de cobertura (para paseos),"
-" tarifas y horarios disponibles. Cada reunión puede tener su propio lugar y "
-"precio."
+#: .\servicios\venv\Lib\site-packages\django\core\paginator.py:33
+msgid "That page number is less than 1"
 msgstr ""
-"activa los servicios que ofreces. Define tu zona de cobertura (para paseos),"
-" tarifas y horarios disponibles. Cada reunión puede tener su propio lugar y "
-"precio."
 
-#: servicios/templates/servicios/remaining_templates.html
-msgid "Gestiona solicitudes"
-msgstr "Gestiona solicitudes"
-
-#: servicios/templates/servicios/remaining_templates.html
-msgid ""
-"verás las solicitudes pendientes. Acepta o rechaza según tu disponibilidad. "
-"Una vez aceptada, podrás chatear con el dueño y ver su perfil."
+#: .\servicios\venv\Lib\site-packages\django\core\paginator.py:34
+msgid "That page contains no results"
 msgstr ""
-"verás las solicitudes pendientes. Acepta o rechaza según tu disponibilidad. "
-"Una vez aceptada, podrás chatear con el dueño y ver su perfil."
 
-#: servicios/templates/servicios/remaining_templates.html
-msgid "Realiza el servicio"
-msgstr "Realiza el servicio"
-
-#: servicios/templates/servicios/remaining_templates.html
-msgid ""
-"El día acordado, realiza el paseo o guardería. Al finalizar, marca el "
-"servicio como"
+#: .\servicios\venv\Lib\site-packages\django\core\validators.py:22
+msgid "Enter a valid value."
 msgstr ""
-"El día acordado, realiza el paseo o guardería. Al finalizar, marca el "
-"servicio como"
 
-#: servicios/templates/servicios/remaining_templates.html
-msgid "finalizado"
-msgstr "finalizado"
-
-#: servicios/templates/servicios/remaining_templates.html
-msgid "El pago aparecerá en"
-msgstr "El pago aparecerá en"
-
-#: servicios/templates/servicios/remaining_templates.html
-msgid "Recibe tus pagos"
-msgstr "Recibe tus pagos"
-
-#: servicios/templates/servicios/remaining_templates.html
-msgid "Consulta"
-msgstr "Consulta"
-
-#: servicios/templates/servicios/remaining_templates.html
-msgid ""
-"para ver transacciones, resúmenes diarios y mensuales de lo que has "
-"recibido."
+#: .\servicios\venv\Lib\site-packages\django\core\validators.py:70
+msgid "Enter a valid domain name."
 msgstr ""
-"para ver transacciones, resúmenes diarios y mensuales de lo que has "
-"recibido."
 
-#: servicios/templates/servicios/remaining_templates.html
-msgid "Ahora"
-msgstr "Ahora"
+#: .\servicios\venv\Lib\site-packages\django\core\validators.py:153
+#: .\servicios\venv\Lib\site-packages\django\forms\fields.py:775
+msgid "Enter a valid URL."
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\core\validators.py:200
+msgid "Enter a valid integer."
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\core\validators.py:211
+msgid "Enter a valid email address."
+msgstr ""
+
+#. Translators: "letters" means latin letters: a-z and A-Z.
+#: .\servicios\venv\Lib\site-packages\django\core\validators.py:289
+msgid ""
+"Enter a valid “slug” consisting of letters, numbers, underscores or hyphens."
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\core\validators.py:297
+msgid ""
+"Enter a valid “slug” consisting of Unicode letters, numbers, underscores, or"
+" hyphens."
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\core\validators.py:309
+#: .\servicios\venv\Lib\site-packages\django\core\validators.py:318
+#: .\servicios\venv\Lib\site-packages\django\core\validators.py:332
+#: .\servicios\venv\Lib\site-packages\django\db\models\fields\__init__.py:2220
+#, python-format
+msgid "Enter a valid %(protocol)s address."
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\core\validators.py:311
+msgid "IPv4"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\core\validators.py:320
+#: .\servicios\venv\Lib\site-packages\django\utils\ipv6.py:43
+msgid "IPv6"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\core\validators.py:334
+msgid "IPv4 or IPv6"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\core\validators.py:375
+msgid "Enter only digits separated by commas."
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\core\validators.py:381
+#, python-format
+msgid "Ensure this value is %(limit_value)s (it is %(show_value)s)."
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\core\validators.py:416
+#, python-format
+msgid "Ensure this value is less than or equal to %(limit_value)s."
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\core\validators.py:425
+#, python-format
+msgid "Ensure this value is greater than or equal to %(limit_value)s."
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\core\validators.py:434
+#, python-format
+msgid "Ensure this value is a multiple of step size %(limit_value)s."
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\core\validators.py:441
+#, python-format
+msgid ""
+"Ensure this value is a multiple of step size %(limit_value)s, starting from "
+"%(offset)s, e.g. %(offset)s, %(valid_value1)s, %(valid_value2)s, and so on."
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\core\validators.py:473
+#, python-format
+msgid ""
+"Ensure this value has at least %(limit_value)d character (it has "
+"%(show_value)d)."
+msgid_plural ""
+"Ensure this value has at least %(limit_value)d characters (it has "
+"%(show_value)d)."
+msgstr[0] ""
+msgstr[1] ""
+
+#: .\servicios\venv\Lib\site-packages\django\core\validators.py:491
+#, python-format
+msgid ""
+"Ensure this value has at most %(limit_value)d character (it has "
+"%(show_value)d)."
+msgid_plural ""
+"Ensure this value has at most %(limit_value)d characters (it has "
+"%(show_value)d)."
+msgstr[0] ""
+msgstr[1] ""
+
+#: .\servicios\venv\Lib\site-packages\django\core\validators.py:514
+#: .\servicios\venv\Lib\site-packages\django\forms\fields.py:366
+#: .\servicios\venv\Lib\site-packages\django\forms\fields.py:405
+msgid "Enter a number."
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\core\validators.py:516
+#, python-format
+msgid "Ensure that there are no more than %(max)s digit in total."
+msgid_plural "Ensure that there are no more than %(max)s digits in total."
+msgstr[0] ""
+msgstr[1] ""
+
+#: .\servicios\venv\Lib\site-packages\django\core\validators.py:521
+#, python-format
+msgid "Ensure that there are no more than %(max)s decimal place."
+msgid_plural "Ensure that there are no more than %(max)s decimal places."
+msgstr[0] ""
+msgstr[1] ""
+
+#: .\servicios\venv\Lib\site-packages\django\core\validators.py:526
+#, python-format
+msgid ""
+"Ensure that there are no more than %(max)s digit before the decimal point."
+msgid_plural ""
+"Ensure that there are no more than %(max)s digits before the decimal point."
+msgstr[0] ""
+msgstr[1] ""
+
+#: .\servicios\venv\Lib\site-packages\django\core\validators.py:597
+#, python-format
+msgid ""
+"File extension “%(extension)s” is not allowed. Allowed extensions are: "
+"%(allowed_extensions)s."
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\core\validators.py:659
+msgid "Null characters are not allowed."
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\db\models\base.py:1600
+#: .\servicios\venv\Lib\site-packages\django\forms\models.py:908
+msgid "and"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\db\models\base.py:1602
+#, python-format
+msgid "%(model_name)s with this %(field_labels)s already exists."
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\db\models\constraints.py:22
+#, python-format
+msgid "Constraint “%(name)s” is violated."
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\db\models\fields\__init__.py:134
+#, python-format
+msgid "Value %(value)r is not a valid choice."
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\db\models\fields\__init__.py:135
+msgid "This field cannot be null."
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\db\models\fields\__init__.py:136
+msgid "This field cannot be blank."
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\db\models\fields\__init__.py:137
+#, python-format
+msgid "%(model_name)s with this %(field_label)s already exists."
+msgstr ""
+
+#. Translators: The 'lookup_type' is one of 'date', 'year' or
+#. 'month'. Eg: "Title must be unique for pub_date year"
+#: .\servicios\venv\Lib\site-packages\django\db\models\fields\__init__.py:141
+#, python-format
+msgid ""
+"%(field_label)s must be unique for %(date_field_label)s %(lookup_type)s."
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\db\models\fields\__init__.py:180
+#, python-format
+msgid "Field of type: %(field_type)s"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\db\models\fields\__init__.py:1162
+#, python-format
+msgid "“%(value)s” value must be either True or False."
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\db\models\fields\__init__.py:1163
+#, python-format
+msgid "“%(value)s” value must be either True, False, or None."
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\db\models\fields\__init__.py:1165
+msgid "Boolean (Either True or False)"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\db\models\fields\__init__.py:1215
+#, python-format
+msgid "String (up to %(max_length)s)"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\db\models\fields\__init__.py:1217
+msgid "String (unlimited)"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\db\models\fields\__init__.py:1326
+msgid "Comma-separated integers"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\db\models\fields\__init__.py:1427
+#, python-format
+msgid ""
+"“%(value)s” value has an invalid date format. It must be in YYYY-MM-DD "
+"format."
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\db\models\fields\__init__.py:1431
+#: .\servicios\venv\Lib\site-packages\django\db\models\fields\__init__.py:1566
+#, python-format
+msgid ""
+"“%(value)s” value has the correct format (YYYY-MM-DD) but it is an invalid "
+"date."
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\db\models\fields\__init__.py:1435
+msgid "Date (without time)"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\db\models\fields\__init__.py:1562
+#, python-format
+msgid ""
+"“%(value)s” value has an invalid format. It must be in YYYY-MM-DD "
+"HH:MM[:ss[.uuuuuu]][TZ] format."
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\db\models\fields\__init__.py:1570
+#, python-format
+msgid ""
+"“%(value)s” value has the correct format (YYYY-MM-DD "
+"HH:MM[:ss[.uuuuuu]][TZ]) but it is an invalid date/time."
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\db\models\fields\__init__.py:1575
+msgid "Date (with time)"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\db\models\fields\__init__.py:1702
+#, python-format
+msgid "“%(value)s” value must be a decimal number."
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\db\models\fields\__init__.py:1704
+msgid "Decimal number"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\db\models\fields\__init__.py:1864
+#, python-format
+msgid ""
+"“%(value)s” value has an invalid format. It must be in [DD] "
+"[[HH:]MM:]ss[.uuuuuu] format."
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\db\models\fields\__init__.py:1868
+msgid "Duration"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\db\models\fields\__init__.py:1920
+msgid "Email address"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\db\models\fields\__init__.py:1945
+msgid "File path"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\db\models\fields\__init__.py:2023
+#, python-format
+msgid "“%(value)s” value must be a float."
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\db\models\fields\__init__.py:2025
+msgid "Floating point number"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\db\models\fields\__init__.py:2065
+#, python-format
+msgid "“%(value)s” value must be an integer."
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\db\models\fields\__init__.py:2067
+msgid "Integer"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\db\models\fields\__init__.py:2163
+msgid "Big (8 byte) integer"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\db\models\fields\__init__.py:2180
+msgid "Small integer"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\db\models\fields\__init__.py:2188
+msgid "IPv4 address"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\db\models\fields\__init__.py:2219
+msgid "IP address"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\db\models\fields\__init__.py:2310
+#: .\servicios\venv\Lib\site-packages\django\db\models\fields\__init__.py:2311
+#, python-format
+msgid "“%(value)s” value must be either None, True or False."
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\db\models\fields\__init__.py:2313
+msgid "Boolean (Either True, False or None)"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\db\models\fields\__init__.py:2364
+msgid "Positive big integer"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\db\models\fields\__init__.py:2379
+msgid "Positive integer"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\db\models\fields\__init__.py:2394
+msgid "Positive small integer"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\db\models\fields\__init__.py:2410
+#, python-format
+msgid "Slug (up to %(max_length)s)"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\db\models\fields\__init__.py:2446
+msgid "Text"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\db\models\fields\__init__.py:2526
+#, python-format
+msgid ""
+"“%(value)s” value has an invalid format. It must be in HH:MM[:ss[.uuuuuu]] "
+"format."
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\db\models\fields\__init__.py:2530
+#, python-format
+msgid ""
+"“%(value)s” value has the correct format (HH:MM[:ss[.uuuuuu]]) but it is an "
+"invalid time."
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\db\models\fields\__init__.py:2534
+msgid "Time"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\db\models\fields\__init__.py:2642
+msgid "URL"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\db\models\fields\__init__.py:2666
+msgid "Raw binary data"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\db\models\fields\__init__.py:2731
+#, python-format
+msgid "“%(value)s” is not a valid UUID."
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\db\models\fields\__init__.py:2733
+msgid "Universally unique identifier"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\db\models\fields\files.py:244
+msgid "File"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\db\models\fields\files.py:420
+msgid "Image"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\db\models\fields\json.py:24
+msgid "A JSON object"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\db\models\fields\json.py:26
+msgid "Value must be valid JSON."
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\db\models\fields\related.py:979
+#, python-format
+msgid "%(model)s instance with %(field)s %(value)r is not a valid choice."
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\db\models\fields\related.py:982
+msgid "Foreign Key (type determined by related field)"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\db\models\fields\related.py:1276
+msgid "One-to-one relationship"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\db\models\fields\related.py:1333
+#, python-format
+msgid "%(from)s-%(to)s relationship"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\db\models\fields\related.py:1335
+#, python-format
+msgid "%(from)s-%(to)s relationships"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\db\models\fields\related.py:1383
+msgid "Many-to-many relationship"
+msgstr ""
+
+#. Translators: If found as last label character, these punctuation
+#. characters will prevent the default label_suffix to be appended to the
+#. label
+#: .\servicios\venv\Lib\site-packages\django\forms\boundfield.py:185
+msgid ":?.!"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\forms\fields.py:95
+msgid "This field is required."
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\forms\fields.py:315
+msgid "Enter a whole number."
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\forms\fields.py:486
+#: .\servicios\venv\Lib\site-packages\django\forms\fields.py:1267
+msgid "Enter a valid date."
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\forms\fields.py:509
+#: .\servicios\venv\Lib\site-packages\django\forms\fields.py:1268
+msgid "Enter a valid time."
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\forms\fields.py:536
+msgid "Enter a valid date/time."
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\forms\fields.py:570
+msgid "Enter a valid duration."
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\forms\fields.py:571
+#, python-brace-format
+msgid "The number of days must be between {min_days} and {max_days}."
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\forms\fields.py:640
+msgid "No file was submitted. Check the encoding type on the form."
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\forms\fields.py:641
+msgid "No file was submitted."
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\forms\fields.py:642
+msgid "The submitted file is empty."
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\forms\fields.py:644
+#, python-format
+msgid ""
+"Ensure this filename has at most %(max)d character (it has %(length)d)."
+msgid_plural ""
+"Ensure this filename has at most %(max)d characters (it has %(length)d)."
+msgstr[0] ""
+msgstr[1] ""
+
+#: .\servicios\venv\Lib\site-packages\django\forms\fields.py:649
+msgid "Please either submit a file or check the clear checkbox, not both."
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\forms\fields.py:717
+msgid ""
+"Upload a valid image. The file you uploaded was either not an image or a "
+"corrupted image."
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\forms\fields.py:889
+#: .\servicios\venv\Lib\site-packages\django\forms\fields.py:975
+#: .\servicios\venv\Lib\site-packages\django\forms\models.py:1592
+#, python-format
+msgid "Select a valid choice. %(value)s is not one of the available choices."
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\forms\fields.py:977
+#: .\servicios\venv\Lib\site-packages\django\forms\fields.py:1096
+#: .\servicios\venv\Lib\site-packages\django\forms\models.py:1590
+msgid "Enter a list of values."
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\forms\fields.py:1097
+msgid "Enter a complete value."
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\forms\fields.py:1339
+msgid "Enter a valid UUID."
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\forms\fields.py:1369
+msgid "Enter a valid JSON."
+msgstr ""
+
+#. Translators: This is the default suffix added to form field labels
+#: .\servicios\venv\Lib\site-packages\django\forms\forms.py:97
+msgid ":"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\forms\forms.py:239
+#, python-format
+msgid "(Hidden field %(name)s) %(error)s"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\forms\formsets.py:61
+#, python-format
+msgid ""
+"ManagementForm data is missing or has been tampered with. Missing fields: "
+"%(field_names)s. You may need to file a bug report if the issue persists."
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\forms\formsets.py:65
+#, python-format
+msgid "Please submit at most %(num)d form."
+msgid_plural "Please submit at most %(num)d forms."
+msgstr[0] ""
+msgstr[1] ""
+
+#: .\servicios\venv\Lib\site-packages\django\forms\formsets.py:70
+#, python-format
+msgid "Please submit at least %(num)d form."
+msgid_plural "Please submit at least %(num)d forms."
+msgstr[0] ""
+msgstr[1] ""
+
+#: .\servicios\venv\Lib\site-packages\django\forms\formsets.py:484
+#: .\servicios\venv\Lib\site-packages\django\forms\formsets.py:491
+msgid "Order"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\forms\formsets.py:499
+msgid "Delete"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\forms\models.py:901
+#, python-format
+msgid "Please correct the duplicate data for %(field)s."
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\forms\models.py:906
+#, python-format
+msgid "Please correct the duplicate data for %(field)s, which must be unique."
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\forms\models.py:913
+#, python-format
+msgid ""
+"Please correct the duplicate data for %(field_name)s which must be unique "
+"for the %(lookup)s in %(date_field)s."
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\forms\models.py:922
+msgid "Please correct the duplicate values below."
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\forms\models.py:1359
+msgid "The inline value did not match the parent instance."
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\forms\models.py:1450
+msgid ""
+"Select a valid choice. That choice is not one of the available choices."
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\forms\models.py:1594
+#, python-format
+msgid "“%(pk)s” is not a valid value."
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\forms\utils.py:229
+#, python-format
+msgid ""
+"%(datetime)s couldn’t be interpreted in time zone %(current_timezone)s; it "
+"may be ambiguous or it may not exist."
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\forms\widgets.py:527
+msgid "Clear"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\forms\widgets.py:528
+msgid "Currently"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\forms\widgets.py:529
+msgid "Change"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\forms\widgets.py:866
+msgid "Unknown"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\forms\widgets.py:867
+msgid "Yes"
+msgstr ""
+
+#. Translators: Please do not add spaces around commas.
+#: .\servicios\venv\Lib\site-packages\django\template\defaultfilters.py:873
+msgid "yes,no,maybe"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\template\defaultfilters.py:903
+#: .\servicios\venv\Lib\site-packages\django\template\defaultfilters.py:920
+#, python-format
+msgid "%(size)d byte"
+msgid_plural "%(size)d bytes"
+msgstr[0] ""
+msgstr[1] ""
+
+#: .\servicios\venv\Lib\site-packages\django\template\defaultfilters.py:922
+#, python-format
+msgid "%s KB"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\template\defaultfilters.py:924
+#, python-format
+msgid "%s MB"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\template\defaultfilters.py:926
+#, python-format
+msgid "%s GB"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\template\defaultfilters.py:928
+#, python-format
+msgid "%s TB"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\template\defaultfilters.py:930
+#, python-format
+msgid "%s PB"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\utils\dateformat.py:74
+msgid "p.m."
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\utils\dateformat.py:75
+msgid "a.m."
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\utils\dateformat.py:80
+msgid "PM"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\utils\dateformat.py:81
+msgid "AM"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\utils\dateformat.py:153
+msgid "midnight"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\utils\dateformat.py:155
+msgid "noon"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\utils\dates.py:7
+msgid "Monday"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\utils\dates.py:8
+msgid "Tuesday"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\utils\dates.py:9
+msgid "Wednesday"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\utils\dates.py:10
+msgid "Thursday"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\utils\dates.py:11
+msgid "Friday"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\utils\dates.py:12
+msgid "Saturday"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\utils\dates.py:13
+msgid "Sunday"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\utils\dates.py:16
+msgid "Mon"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\utils\dates.py:17
+msgid "Tue"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\utils\dates.py:18
+msgid "Wed"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\utils\dates.py:19
+msgid "Thu"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\utils\dates.py:20
+msgid "Fri"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\utils\dates.py:21
+msgid "Sat"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\utils\dates.py:22
+msgid "Sun"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\utils\dates.py:25
+msgid "January"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\utils\dates.py:26
+msgid "February"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\utils\dates.py:27
+msgid "March"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\utils\dates.py:28
+msgid "April"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\utils\dates.py:29
+msgid "May"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\utils\dates.py:30
+msgid "June"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\utils\dates.py:31
+msgid "July"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\utils\dates.py:32
+msgid "August"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\utils\dates.py:33
+msgid "September"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\utils\dates.py:34
+msgid "October"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\utils\dates.py:35
+msgid "November"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\utils\dates.py:36
+msgid "December"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\utils\dates.py:39
+msgid "jan"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\utils\dates.py:40
+msgid "feb"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\utils\dates.py:41
+msgid "mar"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\utils\dates.py:42
+msgid "apr"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\utils\dates.py:43
+msgid "may"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\utils\dates.py:44
+msgid "jun"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\utils\dates.py:45
+msgid "jul"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\utils\dates.py:46
+msgid "aug"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\utils\dates.py:47
+msgid "sep"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\utils\dates.py:48
+msgid "oct"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\utils\dates.py:49
+msgid "nov"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\utils\dates.py:50
+msgid "dec"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\utils\dates.py:53
+msgctxt "abbrev. month"
+msgid "Jan."
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\utils\dates.py:54
+msgctxt "abbrev. month"
+msgid "Feb."
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\utils\dates.py:55
+msgctxt "abbrev. month"
+msgid "March"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\utils\dates.py:56
+msgctxt "abbrev. month"
+msgid "April"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\utils\dates.py:57
+msgctxt "abbrev. month"
+msgid "May"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\utils\dates.py:58
+msgctxt "abbrev. month"
+msgid "June"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\utils\dates.py:59
+msgctxt "abbrev. month"
+msgid "July"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\utils\dates.py:60
+msgctxt "abbrev. month"
+msgid "Aug."
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\utils\dates.py:61
+msgctxt "abbrev. month"
+msgid "Sept."
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\utils\dates.py:62
+msgctxt "abbrev. month"
+msgid "Oct."
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\utils\dates.py:63
+msgctxt "abbrev. month"
+msgid "Nov."
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\utils\dates.py:64
+msgctxt "abbrev. month"
+msgid "Dec."
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\utils\dates.py:67
+msgctxt "alt. month"
+msgid "January"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\utils\dates.py:68
+msgctxt "alt. month"
+msgid "February"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\utils\dates.py:69
+msgctxt "alt. month"
+msgid "March"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\utils\dates.py:70
+msgctxt "alt. month"
+msgid "April"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\utils\dates.py:71
+msgctxt "alt. month"
+msgid "May"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\utils\dates.py:72
+msgctxt "alt. month"
+msgid "June"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\utils\dates.py:73
+msgctxt "alt. month"
+msgid "July"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\utils\dates.py:74
+msgctxt "alt. month"
+msgid "August"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\utils\dates.py:75
+msgctxt "alt. month"
+msgid "September"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\utils\dates.py:76
+msgctxt "alt. month"
+msgid "October"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\utils\dates.py:77
+msgctxt "alt. month"
+msgid "November"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\utils\dates.py:78
+msgctxt "alt. month"
+msgid "December"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\utils\ipv6.py:20
+msgid "This is not a valid IPv6 address."
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\utils\text.py:76
+#, python-format
+msgctxt "String to return when truncating text"
+msgid "%(truncated_text)s…"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\utils\text.py:288
+msgid "or"
+msgstr ""
+
+#. Translators: This string is used as a separator between list elements
+#: .\servicios\venv\Lib\site-packages\django\utils\text.py:307
+#: .\servicios\venv\Lib\site-packages\django\utils\timesince.py:135
+msgid ", "
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\utils\timesince.py:8
+#, python-format
+msgid "%(num)d year"
+msgid_plural "%(num)d years"
+msgstr[0] ""
+msgstr[1] ""
+
+#: .\servicios\venv\Lib\site-packages\django\utils\timesince.py:9
+#, python-format
+msgid "%(num)d month"
+msgid_plural "%(num)d months"
+msgstr[0] ""
+msgstr[1] ""
+
+#: .\servicios\venv\Lib\site-packages\django\utils\timesince.py:10
+#, python-format
+msgid "%(num)d week"
+msgid_plural "%(num)d weeks"
+msgstr[0] ""
+msgstr[1] ""
+
+#: .\servicios\venv\Lib\site-packages\django\utils\timesince.py:11
+#, python-format
+msgid "%(num)d day"
+msgid_plural "%(num)d days"
+msgstr[0] ""
+msgstr[1] ""
+
+#: .\servicios\venv\Lib\site-packages\django\utils\timesince.py:12
+#, python-format
+msgid "%(num)d hour"
+msgid_plural "%(num)d hours"
+msgstr[0] ""
+msgstr[1] ""
+
+#: .\servicios\venv\Lib\site-packages\django\utils\timesince.py:13
+#, python-format
+msgid "%(num)d minute"
+msgid_plural "%(num)d minutes"
+msgstr[0] ""
+msgstr[1] ""
+
+#: .\servicios\venv\Lib\site-packages\django\views\csrf.py:29
+msgid "Forbidden"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\views\csrf.py:30
+msgid "CSRF verification failed. Request aborted."
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\views\csrf.py:34
+msgid ""
+"You are seeing this message because this HTTPS site requires a “Referer "
+"header” to be sent by your web browser, but none was sent. This header is "
+"required for security reasons, to ensure that your browser is not being "
+"hijacked by third parties."
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\views\csrf.py:40
+msgid ""
+"If you have configured your browser to disable “Referer” headers, please re-"
+"enable them, at least for this site, or for HTTPS connections, or for “same-"
+"origin” requests."
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\views\csrf.py:45
+msgid ""
+"If you are using the <meta name=\"referrer\" content=\"no-referrer\"> tag or"
+" including the “Referrer-Policy: no-referrer” header, please remove them. "
+"The CSRF protection requires the “Referer” header to do strict referer "
+"checking. If you’re concerned about privacy, use alternatives like <a "
+"rel=\"noreferrer\" …> for links to third-party sites."
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\views\csrf.py:54
+msgid ""
+"You are seeing this message because this site requires a CSRF cookie when "
+"submitting forms. This cookie is required for security reasons, to ensure "
+"that your browser is not being hijacked by third parties."
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\views\csrf.py:60
+msgid ""
+"If you have configured your browser to disable cookies, please re-enable "
+"them, at least for this site, or for “same-origin” requests."
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\views\csrf.py:66
+msgid "More information is available with DEBUG=True."
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\views\generic\dates.py:44
+msgid "No year specified"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\views\generic\dates.py:64
+#: .\servicios\venv\Lib\site-packages\django\views\generic\dates.py:115
+#: .\servicios\venv\Lib\site-packages\django\views\generic\dates.py:214
+msgid "Date out of range"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\views\generic\dates.py:94
+msgid "No month specified"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\views\generic\dates.py:147
+msgid "No day specified"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\views\generic\dates.py:194
+msgid "No week specified"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\views\generic\dates.py:353
+#: .\servicios\venv\Lib\site-packages\django\views\generic\dates.py:384
+#, python-format
+msgid "No %(verbose_name_plural)s available"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\views\generic\dates.py:680
+#, python-format
+msgid ""
+"Future %(verbose_name_plural)s not available because "
+"%(class_name)s.allow_future is False."
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\views\generic\dates.py:720
+#, python-format
+msgid "Invalid date string “%(datestr)s” given format “%(format)s”"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\views\generic\detail.py:56
+#, python-format
+msgid "No %(verbose_name)s found matching the query"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\views\generic\list.py:70
+msgid "Page is not “last”, nor can it be converted to an int."
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\views\generic\list.py:77
+#, python-format
+msgid "Invalid page (%(page_number)s): %(message)s"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\views\generic\list.py:173
+#, python-format
+msgid "Empty list and “%(class_name)s.allow_empty” is False."
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\views\static.py:49
+msgid "Directory indexes are not allowed here."
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\views\static.py:51
+#, python-format
+msgid "“%(path)s” does not exist"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\views\static.py:68
+#: .\servicios\venv\Lib\site-packages\django\views\templates\directory_index.html:8
+#: .\servicios\venv\Lib\site-packages\django\views\templates\directory_index.html:11
+#, python-format
+msgid "Index of %(directory)s"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\views\templates\default_urlconf.html:7
+#: .\servicios\venv\Lib\site-packages\django\views\templates\default_urlconf.html:204
+msgid "The install worked successfully! Congratulations!"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\views\templates\default_urlconf.html:206
+#, python-format
+msgid ""
+"View <a href=\"https://docs.djangoproject.com/en/%(version)s/releases/\" "
+"target=\"_blank\" rel=\"noopener\">release notes</a> for Django %(version)s"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\views\templates\default_urlconf.html:208
+#, python-format
+msgid ""
+"You are seeing this page because <a "
+"href=\"https://docs.djangoproject.com/en/%(version)s/ref/settings/#debug\" "
+"target=\"_blank\" rel=\"noopener\">DEBUG=True</a> is in your settings file "
+"and you have not configured any URLs."
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\views\templates\default_urlconf.html:217
+msgid "Django Documentation"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\views\templates\default_urlconf.html:218
+msgid "Topics, references, &amp; how-to’s"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\views\templates\default_urlconf.html:226
+msgid "Tutorial: A Polling App"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\views\templates\default_urlconf.html:227
+msgid "Get started with Django"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\views\templates\default_urlconf.html:235
+msgid "Django Community"
+msgstr ""
+
+#: .\servicios\venv\Lib\site-packages\django\views\templates\default_urlconf.html:236
+msgid "Connect, get help, or contribute"
+msgstr ""

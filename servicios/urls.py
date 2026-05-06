@@ -1,6 +1,7 @@
 from django.urls import path
 from django.views.generic.base import RedirectView
 from servicios.views import (
+    AliadoEstadoView,
     ClimaJsonView,
     CrearSolicitudServicioView,
     CuidadorCalendarioView,
@@ -55,4 +56,5 @@ urlpatterns = [
 
     path("solicitud/crear/", CrearSolicitudServicioView.as_view(), name="crear_solicitud"),
     path("clima-json/", ClimaJsonView.as_view(), name="clima_json"),
+    path("integraciones/aliado/", AliadoEstadoView.as_view(), name="aliado_estado_web"),
 ]

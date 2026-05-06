@@ -16,8 +16,9 @@ import requests as http_requests
 from django.conf import settings
 from django.core.serializers.json import DjangoJSONEncoder
 
-from servicios.infra.factory import ClimaAdapterFactory
+from servicios.infra.factory import AliadoAdapterFactory, ClimaAdapterFactory
 from servicios.models import SolicitudServicio
+from servicios.service_layer.aliado_servicios import AliadoService
 from servicios.service_layer.api_disponibilidad_servicios import BuscarDisponibilidadDesdeApiService
 from servicios.service_layer.api_servicios import (
     CancelarSolicitudDesdeApiService,
@@ -47,6 +48,7 @@ class ServiciosApiGatewayService:
         validar_creacion_service: ValidarCrearSolicitudApiService | None = None,
         validar_disponibilidad_service: ValidarBusquedaDisponibilidadApiService | None = None,
         clima_service: ClimaService | None = None,
+        aliado_service: AliadoService | None = None,
     ):
         self._crear_solicitud_service = crear_solicitud_service or CrearSolicitudServicioApiAppService()
         self._obtener_solicitud_service = obtener_solicitud_service or ObtenerSolicitudServicioService()
@@ -56,6 +58,7 @@ class ServiciosApiGatewayService:
         self._validar_creacion_service = validar_creacion_service or ValidarCrearSolicitudApiService()
         self._validar_disponibilidad_service = validar_disponibilidad_service or ValidarBusquedaDisponibilidadApiService()
         self._clima_service = clima_service or ClimaService(ClimaAdapterFactory.crear())
+        self._aliado_service = aliado_service or AliadoService(AliadoAdapterFactory.crear())
 
     def crear_solicitud(self, payload: dict) -> SolicitudServicio:
         data = self._validar_creacion_service.validar(payload)
@@ -92,3 +95,6 @@ class ServiciosApiGatewayService:
 
     def obtener_clima_ciudad(self, ciudad: str) -> dict:
         return self._clima_service.obtener_clima_para_paseo(ciudad)
+
+    def obtener_estado_aliado(self) -> dict:
+        return self._aliado_service.obtener_estado_aliado()

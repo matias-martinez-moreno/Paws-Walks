@@ -111,6 +111,22 @@ class PoliticaPrivacidadView(View):
         return render(request, "servicios/politica_privacidad.html")
 
 
+class AliadoEstadoView(LoginRequiredMixin, View):
+    """Vista web que muestra el estado del equipo aliado vía AliadoPort.
+
+    Cumple el requisito de "consumir y mostrar" en la aplicación.
+    Usa el mismo Gateway que la API, así la lógica está centralizada.
+    """
+
+    def get(self, request):
+        gateway = ServiciosApiGatewayService()
+        contexto = {
+            "usuario": _get_usuario(request),
+            "aliado": gateway.obtener_estado_aliado(),
+        }
+        return render(request, "servicios/aliado_estado.html", contexto)
+
+
 def _get_usuario(request):
     return getattr(request.user, "perfil_usuario", None)
 
