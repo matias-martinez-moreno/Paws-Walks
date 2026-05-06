@@ -158,13 +158,13 @@ class DashboardDueñoView(LoginRequiredMixin, View):
             mascotas = ListarMascotasDeDueñoService().listar(usuario)
             notificaciones_ctx = ListarNotificacionesUsuarioService().listar(usuario, limite=6)
         except DomainError as e:
-            return render(request, "servicios/dashboard_dueño.html", {"error": str(e), "usuario": usuario})
+            return render(request, "servicios/dashboard_dueno.html", {"error": str(e), "usuario": usuario})
 
         solicitudes_futuras = list(ctx_sol.get("solicitudes_futuras", []))
 
         return render(
             request,
-            "servicios/dashboard_dueño.html",
+            "servicios/dashboard_dueno.html",
             {
                 **ctx_sol,
                 **notificaciones_ctx,
@@ -196,7 +196,7 @@ class DueñoNuevaReservaView(LoginRequiredMixin, View):
         mascotas = ListarMascotasDeDueñoService().listar(usuario)
         return render(
             request,
-            "servicios/dueño_nueva_reserva.html",
+            "servicios/dueno_nueva_reserva.html",
             {
                 "mascotas": mascotas,
                 "usuario": usuario,
@@ -215,7 +215,7 @@ class DueñoNuevaReservaView(LoginRequiredMixin, View):
         except DomainError as e:
             return render(
                 request,
-                "servicios/dueño_nueva_reserva.html",
+                "servicios/dueno_nueva_reserva.html",
                 {
                     "mascotas": mascotas,
                     "usuario": usuario,
@@ -228,7 +228,7 @@ class DueñoNuevaReservaView(LoginRequiredMixin, View):
         if resultado.get("modo") == "redirect":
             return redirect(resultado.get("ruta", "dueño_mis_reservas"))
 
-        return render(request, "servicios/dueño_nueva_reserva.html", {
+        return render(request, "servicios/dueno_nueva_reserva.html", {
             "mascotas": mascotas,
             "usuario": usuario,
             "cuidadores_disponibles": resultado.get("cuidadores_disponibles"),
@@ -244,7 +244,7 @@ class DueñoMisReservasView(LoginRequiredMixin, View):
         try:
             ctx_sol = ListarSolicitudesDueñoService().listar(usuario)
         except DomainError as e:
-            return render(request, "servicios/dueño_mis_reservas.html", {"error": str(e), "usuario": usuario})
+            return render(request, "servicios/dueno_mis_reservas.html", {"error": str(e), "usuario": usuario})
 
         historial_ctx = ConstruirContextoHistorialSolicitudesService().construir(
             ctx_sol.get("solicitudes_pasadas", []),
@@ -256,7 +256,7 @@ class DueñoMisReservasView(LoginRequiredMixin, View):
 
         return render(
             request,
-            "servicios/dueño_mis_reservas.html",
+            "servicios/dueno_mis_reservas.html",
             {
                 **ctx_sol,
                 "solicitudes_pasadas": historial_ctx["items_filtrados"],
@@ -353,7 +353,7 @@ class DueñoMisMascotasView(LoginRequiredMixin, View):
     @staticmethod
     def _render_con_error(request, usuario, error_texto):
         mascotas = ListarMascotasDeDueñoService().listar(usuario)
-        return render(request, "servicios/dueño_mis_mascotas.html", {
+        return render(request, "servicios/dueno_mis_mascotas.html", {
             "mascotas": mascotas,
             "tipos_mascota": TipoMascota.choices,
             "sexos_mascota": SexoMascota.choices,
@@ -369,8 +369,8 @@ class DueñoMisMascotasView(LoginRequiredMixin, View):
         try:
             mascotas = ListarMascotasDeDueñoService().listar(usuario)
         except DomainError as e:
-            return render(request, "servicios/dueño_mis_mascotas.html", {"error": str(e), "usuario": usuario})
-        return render(request, "servicios/dueño_mis_mascotas.html", {
+            return render(request, "servicios/dueno_mis_mascotas.html", {"error": str(e), "usuario": usuario})
+        return render(request, "servicios/dueno_mis_mascotas.html", {
             "mascotas": mascotas,
             "tipos_mascota": TipoMascota.choices,
             "sexos_mascota": SexoMascota.choices,
@@ -403,7 +403,7 @@ class DueñoMiPerfilView(LoginRequiredMixin, View):
         resenas_ctx = _get_resenas_context(request, usuario)
         return render(
             request,
-            "servicios/dueño_mi_perfil.html",
+            "servicios/dueno_mi_perfil.html",
             {
                 "usuario": usuario,
                 "editing": editing,
@@ -429,7 +429,7 @@ class DueñoMiPerfilView(LoginRequiredMixin, View):
             prefijo, telefono_local = FormatearTelefonoService().separar_prefijo_numero(telefono)
             return render(
                 request,
-                "servicios/dueño_mi_perfil.html",
+                "servicios/dueno_mi_perfil.html",
                 {
                     "usuario": usuario,
                     "editing": True,
@@ -443,7 +443,7 @@ class DueñoMiPerfilView(LoginRequiredMixin, View):
         prefijo, telefono_local = FormatearTelefonoService().separar_prefijo_numero(usuario.telefono)
         return render(
             request,
-            "servicios/dueño_mi_perfil.html",
+            "servicios/dueno_mi_perfil.html",
             {
                 "usuario": usuario,
                 "editing": False,
@@ -571,7 +571,7 @@ class DueñoGuiaView(LoginRequiredMixin, View):
         usuario = _get_usuario(request)
         if usuario is None:
             return redirect("login")
-        return render(request, "servicios/dueño_guia.html", {"usuario": usuario})
+        return render(request, "servicios/dueno_guia.html", {"usuario": usuario})
 
 
 class VerPerfilOtroView(LoginRequiredMixin, View):
