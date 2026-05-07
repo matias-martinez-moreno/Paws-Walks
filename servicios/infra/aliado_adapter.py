@@ -11,6 +11,7 @@ import logging
 from datetime import datetime, timezone
 
 import requests
+from django.utils.translation import gettext as _
 
 from servicios.domain.ports import AliadoPort
 
@@ -39,7 +40,7 @@ class AliadoHttpAdapter(AliadoPort):
         except Exception as exc:
             _logger.warning("Aliado no disponible (%s): %s", url, exc)
             return {
-                "fuente": "Equipo aliado",
+                "fuente": _("Partner team"),
                 "disponible": False,
                 "datos": {"error": str(exc)},
                 "consultado_en": datetime.now(timezone.utc).isoformat(),
@@ -55,16 +56,16 @@ class AliadoMockAdapter(AliadoPort):
 
     def obtener_estado_sistema(self) -> dict:
         return {
-            "fuente": "Equipo aliado (mock)",
+            "fuente": _("Partner team (mock)"),
             "disponible": True,
             "datos": {
-                "sistema": "Servicio aliado de demostración",
-                "estado": "operativo",
+                "sistema": _("Partner demo service"),
+                "estado": _("operational"),
                 "metricas": {
                     "usuarios_activos": 142,
                     "transacciones_dia": 38,
                 },
-                "nota": "Configura ALIADO_API_URL en settings para usar el endpoint real.",
+                "nota": _("Set ALIADO_API_URL in settings to use the real endpoint."),
             },
             "consultado_en": datetime.now(timezone.utc).isoformat(),
         }

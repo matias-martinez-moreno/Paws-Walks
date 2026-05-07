@@ -670,6 +670,30 @@ TRANSLATIONS = {
     "Nuevo mensaje de %(nombre)s": "New message from %(nombre)s",
     "Tienes un nuevo mensaje en tu conversación.": "You have a new message in your conversation.",
 
+    # Filtros historial de reservas (presentation_constants.py)
+    "Todos los estados": "All statuses",
+    "Finalizados": "Completed",
+    "Cancelados": "Cancelled",
+    "Rechazados": "Rejected",
+    "Aceptados": "Accepted",
+    "Pendientes": "Pending",
+    "Todos los servicios": "All services",
+    "Guardería": "Daycare",
+
+    # Filtros orden reseñas (interacciones.py)
+    "Mas recientes": "Most recent",
+    "Mas antiguas": "Oldest",
+    "Mayor puntaje": "Highest rated",
+    "Menor puntaje": "Lowest rated",
+    "Con comentario primero": "With comment first",
+
+    # Aliado mock (aliado_adapter.py)
+    "Partner team (mock)": "Partner team (mock)",
+    "Partner demo service": "Partner demo service",
+    "operational": "operational",
+    "Set ALIADO_API_URL in settings to use the real endpoint.": "Set ALIADO_API_URL in settings to use the real endpoint.",
+    "Partner team": "Partner team",
+
     # Aliado / Integraciones (nuevo)
     "Integración aliado": "Partner integration",
     "Integración con equipo aliado": "Partner team integration",

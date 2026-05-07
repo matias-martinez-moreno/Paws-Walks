@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-06 19:19-0500\n"
+"POT-Creation-Date: 2026-05-06 19:25-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -25,6 +25,26 @@ msgstr ""
 
 #: .\paws_walks\settings.py:131
 msgid "English"
+msgstr ""
+
+#: .\servicios\infra\aliado_adapter.py:43
+msgid "Partner team"
+msgstr ""
+
+#: .\servicios\infra\aliado_adapter.py:59
+msgid "Partner team (mock)"
+msgstr ""
+
+#: .\servicios\infra\aliado_adapter.py:62
+msgid "Partner demo service"
+msgstr ""
+
+#: .\servicios\infra\aliado_adapter.py:63
+msgid "operational"
+msgstr ""
+
+#: .\servicios\infra\aliado_adapter.py:68
+msgid "Set ALIADO_API_URL in settings to use the real endpoint."
 msgstr ""
 
 #: .\servicios\infra\notificador.py:66
@@ -192,7 +212,7 @@ msgstr ""
 msgid "Cuidador"
 msgstr ""
 
-#: .\servicios\models.py:31
+#: .\servicios\models.py:31 .\servicios\presentation_constants.py:18
 #: .\servicios\templates\servicios\crear_solicitud.html:70
 #: .\servicios\templates\servicios\cuidador_guia.html:27
 #: .\servicios\templates\servicios\dashboard_cuidador.html:94
@@ -200,7 +220,7 @@ msgstr ""
 msgid "Paseo"
 msgstr ""
 
-#: .\servicios\models.py:32
+#: .\servicios\models.py:32 .\servicios\presentation_constants.py:19
 #: .\servicios\templates\servicios\crear_solicitud.html:71
 #: .\servicios\templates\servicios\dashboard_cuidador.html:95
 #: .\servicios\templates\servicios\dueno_nueva_reserva.html:45
@@ -312,6 +332,54 @@ msgstr ""
 
 #: .\servicios\models.py:334
 msgid "Mascota editada"
+msgstr ""
+
+#: .\servicios\presentation_constants.py:8
+msgid "Todos los estados"
+msgstr ""
+
+#: .\servicios\presentation_constants.py:9
+msgid "Finalizados"
+msgstr ""
+
+#: .\servicios\presentation_constants.py:10
+msgid "Cancelados"
+msgstr ""
+
+#: .\servicios\presentation_constants.py:11
+msgid "Rechazados"
+msgstr ""
+
+#: .\servicios\presentation_constants.py:12
+msgid "Aceptados"
+msgstr ""
+
+#: .\servicios\presentation_constants.py:13
+msgid "Pendientes"
+msgstr ""
+
+#: .\servicios\presentation_constants.py:17
+msgid "Todos los servicios"
+msgstr ""
+
+#: .\servicios\service_layer\interacciones.py:527
+msgid "Mas recientes"
+msgstr ""
+
+#: .\servicios\service_layer\interacciones.py:531
+msgid "Mas antiguas"
+msgstr ""
+
+#: .\servicios\service_layer\interacciones.py:535
+msgid "Mayor puntaje"
+msgstr ""
+
+#: .\servicios\service_layer\interacciones.py:539
+msgid "Menor puntaje"
+msgstr ""
+
+#: .\servicios\service_layer\interacciones.py:543
+msgid "Con comentario primero"
 msgstr ""
 
 #: .\servicios\templates\servicios\aliado_estado.html:4

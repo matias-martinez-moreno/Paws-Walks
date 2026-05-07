@@ -3,6 +3,8 @@ from __future__ import annotations
 
 from uuid import UUID
 
+from django.utils.translation import gettext_lazy as _
+
 from django.core.exceptions import ValidationError
 from django.db.models import Avg, Case, Count, IntegerField, Q, When
 from django.utils import timezone
@@ -522,23 +524,23 @@ class ListarResenasRecibidasService:
 
     _ORDENES = {
         "recientes": {
-            "label": "Mas recientes",
+            "label": _("Mas recientes"),
             "ordering": ("-created_at", "-pk"),
         },
         "antiguas": {
-            "label": "Mas antiguas",
+            "label": _("Mas antiguas"),
             "ordering": ("created_at", "pk"),
         },
         "estrellas_desc": {
-            "label": "Mayor puntaje",
+            "label": _("Mayor puntaje"),
             "ordering": ("-estrellas", "-created_at", "-pk"),
         },
         "estrellas_asc": {
-            "label": "Menor puntaje",
+            "label": _("Menor puntaje"),
             "ordering": ("estrellas", "-created_at", "-pk"),
         },
         "comentadas": {
-            "label": "Con comentario primero",
+            "label": _("Con comentario primero"),
             "ordering": ("-tiene_comentario", "-created_at", "-pk"),
         },
     }

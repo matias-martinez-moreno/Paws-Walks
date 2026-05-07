@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-06 19:19-0500\n"
+"POT-Creation-Date: 2026-05-06 19:25-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Paws & Walks team\n"
 "Language-Team: English\n"
@@ -24,6 +24,30 @@ msgstr "Spanish"
 #: .\paws_walks\settings.py:131
 msgid "English"
 msgstr "English"
+
+#: .\servicios\infra\aliado_adapter.py:43
+msgid "Partner team"
+msgstr "Partner team"
+
+#: .\servicios\infra\aliado_adapter.py:59
+msgid "Partner team (mock)"
+msgstr "Partner team (mock)"
+
+#: .\servicios\infra\aliado_adapter.py:62
+#, fuzzy
+#| msgid "Detalle del servicio"
+msgid "Partner demo service"
+msgstr "Service detail"
+
+#: .\servicios\infra\aliado_adapter.py:63
+#, fuzzy
+#| msgid "Gestionar"
+msgid "operational"
+msgstr "Manage"
+
+#: .\servicios\infra\aliado_adapter.py:68
+msgid "Set ALIADO_API_URL in settings to use the real endpoint."
+msgstr "Set ALIADO_API_URL in settings to use the real endpoint."
 
 #: .\servicios\infra\notificador.py:66
 #, fuzzy, python-format
@@ -205,7 +229,7 @@ msgstr "Owner"
 msgid "Cuidador"
 msgstr "Caregiver"
 
-#: .\servicios\models.py:31
+#: .\servicios\models.py:31 .\servicios\presentation_constants.py:18
 #: .\servicios\templates\servicios\crear_solicitud.html:70
 #: .\servicios\templates\servicios\cuidador_guia.html:27
 #: .\servicios\templates\servicios\dashboard_cuidador.html:94
@@ -213,7 +237,7 @@ msgstr "Caregiver"
 msgid "Paseo"
 msgstr "Walk"
 
-#: .\servicios\models.py:32
+#: .\servicios\models.py:32 .\servicios\presentation_constants.py:19
 #: .\servicios\templates\servicios\crear_solicitud.html:71
 #: .\servicios\templates\servicios\dashboard_cuidador.html:95
 #: .\servicios\templates\servicios\dueno_nueva_reserva.html:45
@@ -326,6 +350,72 @@ msgstr "Chat message"
 #: .\servicios\models.py:334
 msgid "Mascota editada"
 msgstr "Pet updated"
+
+#: .\servicios\presentation_constants.py:8
+#, fuzzy
+#| msgid "Todos los días"
+msgid "Todos los estados"
+msgstr "Every day"
+
+#: .\servicios\presentation_constants.py:9
+#, fuzzy
+#| msgid "Finalizado"
+msgid "Finalizados"
+msgstr "Completed"
+
+#: .\servicios\presentation_constants.py:10
+#, fuzzy
+#| msgid "Cancelado"
+msgid "Cancelados"
+msgstr "Cancelled"
+
+#: .\servicios\presentation_constants.py:11
+#, fuzzy
+#| msgid "Rechazado"
+msgid "Rechazados"
+msgstr "Rejected"
+
+#: .\servicios\presentation_constants.py:12
+#, fuzzy
+#| msgid "Aceptado"
+msgid "Aceptados"
+msgstr "Accepted"
+
+#: .\servicios\presentation_constants.py:13
+#, fuzzy
+#| msgid "Pendiente"
+msgid "Pendientes"
+msgstr "Pending"
+
+#: .\servicios\presentation_constants.py:17
+#, fuzzy
+#| msgid "Mis servicios"
+msgid "Todos los servicios"
+msgstr "My services"
+
+#: .\servicios\service_layer\interacciones.py:527
+#, fuzzy
+#| msgid "Notificaciones recientes"
+msgid "Mas recientes"
+msgstr "Recent notifications"
+
+#: .\servicios\service_layer\interacciones.py:531
+msgid "Mas antiguas"
+msgstr "Oldest"
+
+#: .\servicios\service_layer\interacciones.py:535
+msgid "Mayor puntaje"
+msgstr "Highest rated"
+
+#: .\servicios\service_layer\interacciones.py:539
+msgid "Menor puntaje"
+msgstr "Lowest rated"
+
+#: .\servicios\service_layer\interacciones.py:543
+#, fuzzy
+#| msgid "Con comentario"
+msgid "Con comentario primero"
+msgstr "With comment"
 
 #: .\servicios\templates\servicios\aliado_estado.html:4
 #: .\servicios\templates\servicios\includes\sidebar_cuidador_extra.html:6
