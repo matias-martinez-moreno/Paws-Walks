@@ -2,5 +2,4 @@
 <a class="nav-link {% if request.resolver_match.url_name == 'cuidador_mis_pagos' %}active{% endif %}" href="{% url 'cuidador_mis_pagos' %}"><i class="bi bi-currency-dollar"></i> {% trans "Mis pagos" %}</a>
 <div class="sidebar-section mt-4">{% trans "Ayuda" %}</div>
 <a class="nav-link {% if request.resolver_match.url_name == 'cuidador_guia' %}active{% endif %}" href="{% url 'cuidador_guia' %}"><i class="bi bi-book"></i> {% trans "Guía de uso" %}</a>
-<a class="nav-link {% if request.resolver_match.url_name == 'cuidador_soporte' %}active{% endif %}" href="{% url 'cuidador_soporte' %}"><i class="bi bi-chat-dots"></i> {% trans "Soporte" %}</a>
 <a class="nav-link {% if request.resolver_match.url_name == 'aliado_estado_web' %}active{% endif %}" href="{% url 'aliado_estado_web' %}"><i class="bi bi-link-45deg"></i> {% trans "Integración aliado" %}</a>

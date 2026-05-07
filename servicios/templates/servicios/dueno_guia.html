@@ -19,22 +19,121 @@
 {% endblock %}
 
 {% block content %}
-<div class="max-w-3xl mx-auto prose prose-slate">
-  <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 lg:p-8 space-y-6">
-    <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2"><i class="bi bi-1-circle text-pw-orange"></i>{% trans "Registra tus mascotas" %}</h2>
-    <p class="text-slate-600">{% trans "En" %} <strong>{% trans "Mis mascotas" %}</strong> {% trans "agrega cada mascota con su nombre, tipo, raza, edad y foto. Necesitarás esta información para hacer reservas." %}</p>
+<div class="max-w-4xl mx-auto space-y-4">
 
-    <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2"><i class="bi bi-2-circle text-pw-orange"></i>{% trans "Busca cuidadores" %}</h2>
-    <p class="text-slate-600">{% trans "En" %} <strong>{% trans "Hacer reserva" %}</strong> {% trans "elige el tipo de servicio (Paseo o Guardería), la mascota, fecha y horario. La app te mostrará cuidadores disponibles cerca de ti." %}</p>
+  {% with steps="1,2,3,4,5" %}
 
-    <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2"><i class="bi bi-3-circle text-pw-orange"></i>{% trans "Envía tu solicitud" %}</h2>
-    <p class="text-slate-600">{% trans "Selecciona un cuidador y envía la solicitud. El cuidador la revisará y la aceptará o rechazará. Puedes ver su perfil antes de reservar." %}</p>
-
-    <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2"><i class="bi bi-4-circle text-pw-orange"></i>{% trans "Comunícate y coordina" %}</h2>
-    <p class="text-slate-600">{% trans "En" %} <strong>{% trans "Mis reservas" %}</strong> {% trans "verás cada reunión programada. Usa el chat para coordinar con el cuidador y el botón" %} <strong>{% trans "Ver perfil" %}</strong> {% trans "para ver sus datos de contacto." %}</p>
-
-    <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2"><i class="bi bi-5-circle text-pw-orange"></i>{% trans "Califica el servicio" %}</h2>
-    <p class="text-slate-600">{% trans "Cuando el servicio se complete, podrás calificar al cuidador con estrellas y un comentario. ¡Tu opinión ayuda a otros dueños!" %}</p>
+  <div class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+    <div class="flex gap-0">
+      <div class="w-1.5 bg-gradient-to-b from-pw-orange to-pw-orange-dark shrink-0 rounded-l-2xl"></div>
+      <div class="flex gap-5 items-start p-6 w-full">
+        <div class="w-11 h-11 rounded-xl bg-orange-50 border border-orange-100 flex items-center justify-center shrink-0">
+          <span class="text-pw-orange font-extrabold text-lg">1</span>
+        </div>
+        <div class="flex-1 min-w-0">
+          <h2 class="text-base font-bold text-slate-800 mb-1">{% trans "Registra tus mascotas" %}</h2>
+          <p class="text-sm text-slate-600 leading-relaxed">
+            {% trans "En" %} <a href="{% url 'dueño_mis_mascotas' %}" class="font-semibold text-pw-orange hover:underline">{% trans "Mis mascotas" %}</a>
+            {% trans "agrega cada mascota con su nombre, tipo, raza, edad y foto. Necesitarás esta información para hacer reservas." %}
+          </p>
+        </div>
+        <i class="bi bi-heart-fill text-2xl text-orange-100 shrink-0 hidden sm:block"></i>
+      </div>
+    </div>
   </div>
+
+  <div class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+    <div class="flex gap-0">
+      <div class="w-1.5 bg-gradient-to-b from-pw-orange to-pw-orange-dark shrink-0 rounded-l-2xl"></div>
+      <div class="flex gap-5 items-start p-6 w-full">
+        <div class="w-11 h-11 rounded-xl bg-orange-50 border border-orange-100 flex items-center justify-center shrink-0">
+          <span class="text-pw-orange font-extrabold text-lg">2</span>
+        </div>
+        <div class="flex-1 min-w-0">
+          <h2 class="text-base font-bold text-slate-800 mb-1">{% trans "Busca cuidadores" %}</h2>
+          <p class="text-sm text-slate-600 leading-relaxed">
+            {% trans "En" %} <a href="{% url 'dueño_nueva_reserva' %}" class="font-semibold text-pw-orange hover:underline">{% trans "Hacer reserva" %}</a>
+            {% trans "elige el tipo de servicio (Paseo o Guardería), la mascota, fecha y horario. La app te mostrará cuidadores disponibles cerca de ti." %}
+          </p>
+        </div>
+        <i class="bi bi-search text-2xl text-orange-100 shrink-0 hidden sm:block"></i>
+      </div>
+    </div>
+  </div>
+
+  <div class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+    <div class="flex gap-0">
+      <div class="w-1.5 bg-gradient-to-b from-pw-orange to-pw-orange-dark shrink-0 rounded-l-2xl"></div>
+      <div class="flex gap-5 items-start p-6 w-full">
+        <div class="w-11 h-11 rounded-xl bg-orange-50 border border-orange-100 flex items-center justify-center shrink-0">
+          <span class="text-pw-orange font-extrabold text-lg">3</span>
+        </div>
+        <div class="flex-1 min-w-0">
+          <h2 class="text-base font-bold text-slate-800 mb-1">{% trans "Envía tu solicitud" %}</h2>
+          <p class="text-sm text-slate-600 leading-relaxed">
+            {% trans "Selecciona un cuidador y envía la solicitud. El cuidador la revisará y la aceptará o rechazará. Puedes ver su perfil antes de reservar." %}
+          </p>
+        </div>
+        <i class="bi bi-send text-2xl text-orange-100 shrink-0 hidden sm:block"></i>
+      </div>
+    </div>
+  </div>
+
+  <div class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+    <div class="flex gap-0">
+      <div class="w-1.5 bg-gradient-to-b from-pw-orange to-pw-orange-dark shrink-0 rounded-l-2xl"></div>
+      <div class="flex gap-5 items-start p-6 w-full">
+        <div class="w-11 h-11 rounded-xl bg-orange-50 border border-orange-100 flex items-center justify-center shrink-0">
+          <span class="text-pw-orange font-extrabold text-lg">4</span>
+        </div>
+        <div class="flex-1 min-w-0">
+          <h2 class="text-base font-bold text-slate-800 mb-1">{% trans "Comunícate y coordina" %}</h2>
+          <p class="text-sm text-slate-600 leading-relaxed">
+            {% trans "En" %} <a href="{% url 'dueño_mis_reservas' %}" class="font-semibold text-pw-orange hover:underline">{% trans "Mis reservas" %}</a>
+            {% trans "verás cada reunión programada. Usa el chat para coordinar con el cuidador y el botón" %}
+            <strong class="text-slate-700">{% trans "Ver perfil" %}</strong>
+            {% trans "para ver sus datos de contacto." %}
+          </p>
+        </div>
+        <i class="bi bi-chat-dots text-2xl text-orange-100 shrink-0 hidden sm:block"></i>
+      </div>
+    </div>
+  </div>
+
+  <div class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+    <div class="flex gap-0">
+      <div class="w-1.5 bg-gradient-to-b from-pw-orange to-pw-orange-dark shrink-0 rounded-l-2xl"></div>
+      <div class="flex gap-5 items-start p-6 w-full">
+        <div class="w-11 h-11 rounded-xl bg-orange-50 border border-orange-100 flex items-center justify-center shrink-0">
+          <span class="text-pw-orange font-extrabold text-lg">5</span>
+        </div>
+        <div class="flex-1 min-w-0">
+          <h2 class="text-base font-bold text-slate-800 mb-1">{% trans "Califica el servicio" %}</h2>
+          <p class="text-sm text-slate-600 leading-relaxed">
+            {% trans "Cuando el servicio se complete, podrás calificar al cuidador con estrellas y un comentario. ¡Tu opinión ayuda a otros dueños!" %}
+          </p>
+        </div>
+        <i class="bi bi-star-fill text-2xl text-orange-100 shrink-0 hidden sm:block"></i>
+      </div>
+    </div>
+  </div>
+
+  {% endwith %}
+
+  <div class="bg-orange-50 border border-orange-100 rounded-2xl p-5 flex gap-4 items-start">
+    <i class="bi bi-lightbulb-fill text-pw-orange text-xl shrink-0 mt-0.5"></i>
+    <div>
+      <p class="text-sm font-semibold text-slate-800 mb-0.5">{% trans "Atajos rápidos" %}</p>
+      <p class="text-sm text-slate-600">
+        {% trans "Accede a lo que más usas" %} →
+        <a href="{% url 'dueño_nueva_reserva' %}" class="text-pw-orange font-semibold hover:underline">{% trans "Hacer reserva" %}</a>
+        ·
+        <a href="{% url 'dueño_mis_mascotas' %}" class="text-pw-orange font-semibold hover:underline">{% trans "Mis mascotas" %}</a>
+        ·
+        <a href="{% url 'dueño_mis_reservas' %}" class="text-pw-orange font-semibold hover:underline">{% trans "Mis reservas" %}</a>
+      </p>
+    </div>
+  </div>
+
 </div>
 {% endblock %}

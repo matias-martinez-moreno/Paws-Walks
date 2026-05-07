@@ -18,22 +18,118 @@
 {% endblock %}
 
 {% block content %}
-<div class="max-w-3xl mx-auto prose prose-slate">
-  <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 lg:p-8 space-y-6">
-    <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2"><i class="bi bi-1-circle text-pw-orange"></i>{% trans "Configura tu perfil" %}</h2>
-    <p class="text-slate-600">{% trans "Completa tu perfil en" %} <strong>{% trans "Mi perfil" %}</strong> {% trans "con foto, datos de contacto y ciudad. Los dueños te encontrarán más fácilmente." %}</p>
+<div class="max-w-4xl mx-auto space-y-4">
 
-    <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2"><i class="bi bi-2-circle text-pw-orange"></i>{% trans "Activa tus servicios" %}</h2>
-    <p class="text-slate-600">{% trans "En" %} <strong>{% trans "Paseo" %}</strong> {% trans "y" %} <strong>{% trans "Guarderías" %}</strong> {% trans "activa los servicios que ofreces. Define tu zona de cobertura (para paseos), tarifas y horarios disponibles. Cada reunión puede tener su propio lugar y precio." %}</p>
-
-    <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2"><i class="bi bi-3-circle text-pw-orange"></i>{% trans "Gestiona solicitudes" %}</h2>
-    <p class="text-slate-600">{% trans "En" %} <strong>{% trans "Mi calendario" %}</strong> {% trans "verás las solicitudes pendientes. Acepta o rechaza según tu disponibilidad. Una vez aceptada, podrás chatear con el dueño y ver su perfil." %}</p>
-
-    <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2"><i class="bi bi-4-circle text-pw-orange"></i>{% trans "Realiza el servicio" %}</h2>
-    <p class="text-slate-600">{% trans "El día acordado, realiza el paseo o guardería. Al finalizar, marca el servicio como" %} <strong>{% trans "finalizado" %}</strong>. {% trans "El pago aparecerá en" %} <strong>{% trans "Mis pagos" %}</strong>.</p>
-
-    <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2"><i class="bi bi-5-circle text-pw-orange"></i>{% trans "Recibe tus pagos" %}</h2>
-    <p class="text-slate-600">{% trans "Consulta" %} <strong>{% trans "Mis pagos" %}</strong> {% trans "para ver transacciones, resúmenes diarios y mensuales de lo que has recibido." %}</p>
+  <div class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+    <div class="flex gap-0">
+      <div class="w-1.5 bg-gradient-to-b from-pw-orange to-pw-orange-dark shrink-0 rounded-l-2xl"></div>
+      <div class="flex gap-5 items-start p-6 w-full">
+        <div class="w-11 h-11 rounded-xl bg-orange-50 border border-orange-100 flex items-center justify-center shrink-0">
+          <span class="text-pw-orange font-extrabold text-lg">1</span>
+        </div>
+        <div class="flex-1 min-w-0">
+          <h2 class="text-base font-bold text-slate-800 mb-1">{% trans "Configura tu perfil" %}</h2>
+          <p class="text-sm text-slate-600 leading-relaxed">
+            {% trans "Completa tu perfil en" %} <a href="{% url 'cuidador_mi_perfil' %}" class="font-semibold text-pw-orange hover:underline">{% trans "Mi perfil" %}</a>
+            {% trans "con foto, datos de contacto y ciudad. Los dueños te encontrarán más fácilmente." %}
+          </p>
+        </div>
+        <i class="bi bi-person-circle text-2xl text-orange-100 shrink-0 hidden sm:block"></i>
+      </div>
+    </div>
   </div>
+
+  <div class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+    <div class="flex gap-0">
+      <div class="w-1.5 bg-gradient-to-b from-pw-orange to-pw-orange-dark shrink-0 rounded-l-2xl"></div>
+      <div class="flex gap-5 items-start p-6 w-full">
+        <div class="w-11 h-11 rounded-xl bg-orange-50 border border-orange-100 flex items-center justify-center shrink-0">
+          <span class="text-pw-orange font-extrabold text-lg">2</span>
+        </div>
+        <div class="flex-1 min-w-0">
+          <h2 class="text-base font-bold text-slate-800 mb-1">{% trans "Activa tus servicios" %}</h2>
+          <p class="text-sm text-slate-600 leading-relaxed">
+            {% trans "En" %} <a href="{% url 'cuidador_servicios' %}" class="font-semibold text-pw-orange hover:underline">{% trans "Mis servicios" %}</a>
+            {% trans "activa los servicios que ofreces. Define tu zona de cobertura (para paseos), tarifas y horarios disponibles. Cada reunión puede tener su propio lugar y precio." %}
+          </p>
+        </div>
+        <i class="bi bi-briefcase text-2xl text-orange-100 shrink-0 hidden sm:block"></i>
+      </div>
+    </div>
+  </div>
+
+  <div class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+    <div class="flex gap-0">
+      <div class="w-1.5 bg-gradient-to-b from-pw-orange to-pw-orange-dark shrink-0 rounded-l-2xl"></div>
+      <div class="flex gap-5 items-start p-6 w-full">
+        <div class="w-11 h-11 rounded-xl bg-orange-50 border border-orange-100 flex items-center justify-center shrink-0">
+          <span class="text-pw-orange font-extrabold text-lg">3</span>
+        </div>
+        <div class="flex-1 min-w-0">
+          <h2 class="text-base font-bold text-slate-800 mb-1">{% trans "Gestiona solicitudes" %}</h2>
+          <p class="text-sm text-slate-600 leading-relaxed">
+            {% trans "En" %} <a href="{% url 'cuidador_calendario' %}" class="font-semibold text-pw-orange hover:underline">{% trans "Mi calendario" %}</a>
+            {% trans "verás las solicitudes pendientes. Acepta o rechaza según tu disponibilidad. Una vez aceptada, podrás chatear con el dueño y ver su perfil." %}
+          </p>
+        </div>
+        <i class="bi bi-calendar-check text-2xl text-orange-100 shrink-0 hidden sm:block"></i>
+      </div>
+    </div>
+  </div>
+
+  <div class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+    <div class="flex gap-0">
+      <div class="w-1.5 bg-gradient-to-b from-pw-orange to-pw-orange-dark shrink-0 rounded-l-2xl"></div>
+      <div class="flex gap-5 items-start p-6 w-full">
+        <div class="w-11 h-11 rounded-xl bg-orange-50 border border-orange-100 flex items-center justify-center shrink-0">
+          <span class="text-pw-orange font-extrabold text-lg">4</span>
+        </div>
+        <div class="flex-1 min-w-0">
+          <h2 class="text-base font-bold text-slate-800 mb-1">{% trans "Realiza el servicio" %}</h2>
+          <p class="text-sm text-slate-600 leading-relaxed">
+            {% trans "El día acordado, realiza el paseo o guardería. Al finalizar, marca el servicio como" %}
+            <strong class="text-slate-700">{% trans "finalizado" %}</strong>.
+            {% trans "El pago aparecerá en" %} <a href="{% url 'cuidador_mis_pagos' %}" class="font-semibold text-pw-orange hover:underline">{% trans "Mis pagos" %}</a>.
+          </p>
+        </div>
+        <i class="bi bi-check2-circle text-2xl text-orange-100 shrink-0 hidden sm:block"></i>
+      </div>
+    </div>
+  </div>
+
+  <div class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+    <div class="flex gap-0">
+      <div class="w-1.5 bg-gradient-to-b from-pw-orange to-pw-orange-dark shrink-0 rounded-l-2xl"></div>
+      <div class="flex gap-5 items-start p-6 w-full">
+        <div class="w-11 h-11 rounded-xl bg-orange-50 border border-orange-100 flex items-center justify-center shrink-0">
+          <span class="text-pw-orange font-extrabold text-lg">5</span>
+        </div>
+        <div class="flex-1 min-w-0">
+          <h2 class="text-base font-bold text-slate-800 mb-1">{% trans "Recibe tus pagos" %}</h2>
+          <p class="text-sm text-slate-600 leading-relaxed">
+            {% trans "Consulta" %} <a href="{% url 'cuidador_mis_pagos' %}" class="font-semibold text-pw-orange hover:underline">{% trans "Mis pagos" %}</a>
+            {% trans "para ver transacciones, resúmenes diarios y mensuales de lo que has recibido." %}
+          </p>
+        </div>
+        <i class="bi bi-cash-coin text-2xl text-orange-100 shrink-0 hidden sm:block"></i>
+      </div>
+    </div>
+  </div>
+
+  <div class="bg-orange-50 border border-orange-100 rounded-2xl p-5 flex gap-4 items-start">
+    <i class="bi bi-lightbulb-fill text-pw-orange text-xl shrink-0 mt-0.5"></i>
+    <div>
+      <p class="text-sm font-semibold text-slate-800 mb-0.5">{% trans "Atajos rápidos" %}</p>
+      <p class="text-sm text-slate-600">
+        {% trans "Accede a lo que más usas" %} →
+        <a href="{% url 'cuidador_calendario' %}" class="text-pw-orange font-semibold hover:underline">{% trans "Mi calendario" %}</a>
+        ·
+        <a href="{% url 'cuidador_servicios' %}" class="text-pw-orange font-semibold hover:underline">{% trans "Mis servicios" %}</a>
+        ·
+        <a href="{% url 'cuidador_mis_pagos' %}" class="text-pw-orange font-semibold hover:underline">{% trans "Mis pagos" %}</a>
+      </p>
+    </div>
+  </div>
+
 </div>
 {% endblock %}
