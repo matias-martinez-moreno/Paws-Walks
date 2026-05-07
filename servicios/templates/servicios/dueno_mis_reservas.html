@@ -260,7 +260,7 @@
         <label class="block text-sm font-semibold text-slate-700 mb-2">{% trans "¿Cómo fue tu experiencia?" %}</label>
         <div class="flex gap-2 text-xl" id="estrellasGroup">
           {% for i in "12345" %}
-          <label class="cursor-pointer text-amber-400 hover:text-amber-500 transition" title="{% blocktrans count i_val=i %}{{ i_val }} estrella{% plural %}{{ i_val }} estrellas{% endblocktrans %}">
+          <label class="cursor-pointer text-amber-400 hover:text-amber-500 transition" title="{{ i }} {% if i == '1' %}{% trans "estrella" %}{% else %}{% trans "estrellas" %}{% endif %}">
             <input type="radio" name="estrellas" value="{{ i }}" class="hidden" {% if forloop.counter == 5 %}checked{% endif %}>
             <i class="bi bi-star-fill mr-1" data-val="{{ i }}"></i>
           </label>
