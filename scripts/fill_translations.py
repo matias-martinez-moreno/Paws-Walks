@@ -670,6 +670,9 @@ TRANSLATIONS = {
     "Nuevo mensaje de %(nombre)s": "New message from %(nombre)s",
     "Tienes un nuevo mensaje en tu conversación.": "You have a new message in your conversation.",
 
+    # Login marketing (blocktrans con HTML)
+    "Conectamos <strong>dueños</strong> con <strong>cuidadores verificados</strong> para paseos y guardería,\n          con seguimiento claro de cada reserva, horarios y estado del servicio.": "We connect <strong>owners</strong> with <strong>verified caregivers</strong> for walks and daycare,\n          with clear tracking of every booking, schedule and service status.",
+
     # Clima (weather_adapter.py)
     "Partly cloudy": "Partly cloudy",
 
