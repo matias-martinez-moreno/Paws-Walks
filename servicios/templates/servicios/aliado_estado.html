@@ -3,6 +3,27 @@
 
 {% block title %}Paws & Walks – {% trans "Integración aliado" %}{% endblock %}
 
+{% block sidebar_links %}
+{% if usuario.rol == 'dueño' %}
+<div class="sidebar-section">{% trans "Principal" %}</div>
+<a class="nav-link" href="{% url 'dashboard_dueño' %}"><i class="bi bi-house-door"></i> {% trans "Panel" %}</a>
+<div class="sidebar-section">{% trans "Gestión" %}</div>
+<a class="nav-link" href="{% url 'dueño_nueva_reserva' %}"><i class="bi bi-plus-circle"></i> {% trans "Hacer reserva" %}</a>
+<a class="nav-link" href="{% url 'dueño_mis_reservas' %}"><i class="bi bi-calendar3"></i> {% trans "Mis reservas" %}</a>
+<a class="nav-link" href="{% url 'dueño_mis_mascotas' %}"><i class="bi bi-heart"></i> {% trans "Mis mascotas" %}</a>
+<div class="sidebar-section">{% trans "Cuenta" %}</div>
+<a class="nav-link" href="{% url 'dueño_mi_perfil' %}"><i class="bi bi-person"></i> {% trans "Mi perfil" %}</a>
+{% elif usuario.rol == 'cuidador' %}
+<div class="sidebar-section">{% trans "Principal" %}</div>
+<a class="nav-link" href="{% url 'dashboard_cuidador' %}"><i class="bi bi-house-door"></i> {% trans "Panel" %}</a>
+<div class="sidebar-section">{% trans "Gestión" %}</div>
+<a class="nav-link" href="{% url 'cuidador_calendario' %}"><i class="bi bi-calendar3"></i> {% trans "Mi calendario" %}</a>
+<a class="nav-link" href="{% url 'cuidador_servicios' %}"><i class="bi bi-briefcase"></i> {% trans "Mis servicios" %}</a>
+<div class="sidebar-section">{% trans "Cuenta" %}</div>
+<a class="nav-link" href="{% url 'cuidador_mi_perfil' %}"><i class="bi bi-person"></i> {% trans "Mi perfil" %}</a>
+{% endif %}
+{% endblock %}
+
 {% block content %}
 <header class="page-header mb-6">
   <h1 class="page-header__title">{% trans "Integración con equipo aliado" %}</h1>
