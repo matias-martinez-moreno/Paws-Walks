@@ -2493,11 +2493,11 @@ msgstr "Try a different date, duration or walk location."
 
 #: .\servicios\templates\servicios\dueno_nueva_reserva.html:309
 msgid "✓ Apto para pasear"
-msgstr ""
+msgstr "✓ Good for walking"
 
 #: .\servicios\templates\servicios\dueno_nueva_reserva.html:310
 msgid "✗ Clima poco favorable"
-msgstr ""
+msgstr "✗ Unfavorable weather"
 
 #: .\servicios\templates\servicios\dueno_nueva_reserva.html:311
 msgid "Condiciones actuales de la zona"
