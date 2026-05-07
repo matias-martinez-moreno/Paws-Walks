@@ -1,6 +1,7 @@
 import logging
 
 import requests
+from django.utils.translation import get_language, gettext as _
 
 from servicios.domain.ports import ClimaPort
 
@@ -34,13 +35,14 @@ class OpenWeatherAdapter(ClimaPort):
 
     def obtener_clima(self, ciudad: str) -> dict:
         try:
+            lang = (get_language() or "es")[:2]
             resp = requests.get(
                 _OPENWEATHER_URL,
                 params={
                     "q": ciudad,
                     "appid": self._api_key,
                     "units": "metric",
-                    "lang": "es",
+                    "lang": lang,
                 },
                 timeout=5,
             )
@@ -70,7 +72,7 @@ class ClimaAdapterMock(ClimaPort):
         return {
             "ciudad": ciudad,
             "temperatura": 22.0,
-            "descripcion": "Parcialmente nublado",
+            "descripcion": _("Partly cloudy"),
             "icono": "02d",
             "humedad": 60,
             "apto_para_paseo": True,

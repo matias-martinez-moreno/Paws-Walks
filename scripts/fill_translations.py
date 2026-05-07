@@ -670,6 +670,9 @@ TRANSLATIONS = {
     "Nuevo mensaje de %(nombre)s": "New message from %(nombre)s",
     "Tienes un nuevo mensaje en tu conversación.": "You have a new message in your conversation.",
 
+    # Clima (weather_adapter.py)
+    "Partly cloudy": "Partly cloudy",
+
     # Filtros historial de reservas (presentation_constants.py)
     "Todos los estados": "All statuses",
     "Finalizados": "Completed",

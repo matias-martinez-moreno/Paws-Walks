@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-06 19:25-0500\n"
+"POT-Creation-Date: 2026-05-06 22:46-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Paws & Walks team\n"
 "Language-Team: English\n"
@@ -181,6 +181,10 @@ msgstr "New message from %(nombre)s"
 #: .\servicios\infra\notificador.py:268
 msgid "Tienes un nuevo mensaje en tu conversación."
 msgstr "You have a new message in your conversation."
+
+#: .\servicios\infra\weather_adapter.py:75
+msgid "Partly cloudy"
+msgstr "Partly cloudy"
 
 #: .\servicios\models.py:10
 msgid "Perro"
