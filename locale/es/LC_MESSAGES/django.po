@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-06 18:48-0500\n"
+"POT-Creation-Date: 2026-05-06 19:19-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -25,6 +25,124 @@ msgstr ""
 
 #: .\paws_walks\settings.py:131
 msgid "English"
+msgstr ""
+
+#: .\servicios\infra\notificador.py:66
+#, python-format
+msgid "Nueva reserva de %(nombre)s"
+msgstr ""
+
+#: .\servicios\infra\notificador.py:67
+#, python-format
+msgid "%(servicio)s para %(mascota)s el %(fecha)s"
+msgstr ""
+
+#: .\servicios\infra\notificador.py:81
+msgid "Tu reserva fue aceptada"
+msgstr ""
+
+#: .\servicios\infra\notificador.py:82
+#, python-format
+msgid "%(nombre)s aceptó tu reserva de %(servicio)s."
+msgstr ""
+
+#: .\servicios\infra\notificador.py:96
+msgid "Tu reserva fue rechazada"
+msgstr ""
+
+#: .\servicios\infra\notificador.py:97
+#, python-format
+msgid "%(nombre)s rechazó la reserva de %(servicio)s."
+msgstr ""
+
+#: .\servicios\infra\notificador.py:111 .\servicios\infra\notificador.py:121
+msgid "Servicio finalizado"
+msgstr ""
+
+#: .\servicios\infra\notificador.py:112 .\servicios\infra\notificador.py:122
+#, python-format
+msgid "El servicio de %(servicio)s fue marcado como finalizado."
+msgstr ""
+
+#: .\servicios\infra\notificador.py:141
+msgid "Reseña pendiente del cuidador"
+msgstr ""
+
+#: .\servicios\infra\notificador.py:142
+#, python-format
+msgid ""
+"El servicio finalizó. Califica a %(nombre)s para completar tu experiencia."
+msgstr ""
+
+#: .\servicios\infra\notificador.py:152
+msgid "Reseña pendiente del dueño"
+msgstr ""
+
+#: .\servicios\infra\notificador.py:153
+#, python-format
+msgid "Califica a %(nombre)s para cerrar este servicio."
+msgstr ""
+
+#: .\servicios\infra\notificador.py:163
+msgid "Reseña pendiente de mascota"
+msgstr ""
+
+#: .\servicios\infra\notificador.py:164
+#, python-format
+msgid "Califica a %(nombre)s para completar la reseña del servicio."
+msgstr ""
+
+#: .\servicios\infra\notificador.py:186 .\servicios\models.py:329
+msgid "Reserva cancelada"
+msgstr ""
+
+#: .\servicios\infra\notificador.py:187
+#, python-format
+msgid "%(quien)s canceló la reserva de %(servicio)s."
+msgstr ""
+
+#: .\servicios\infra\notificador.py:201 .\servicios\models.py:333
+msgid "Mascota creada"
+msgstr ""
+
+#: .\servicios\infra\notificador.py:202
+#, python-format
+msgid "Se agregó la mascota %(nombre)s correctamente."
+msgstr ""
+
+#: .\servicios\infra\notificador.py:216
+msgid "Mascota actualizada"
+msgstr ""
+
+#: .\servicios\infra\notificador.py:217
+#, python-format
+msgid "Se actualizó la información de %(nombre)s."
+msgstr ""
+
+#: .\servicios\infra\notificador.py:230 .\servicios\models.py:335
+msgid "Mascota eliminada"
+msgstr ""
+
+#: .\servicios\infra\notificador.py:231
+#, python-format
+msgid "Se eliminó la mascota %(nombre)s."
+msgstr ""
+
+#: .\servicios\infra\notificador.py:245 .\servicios\models.py:336
+msgid "Perfil actualizado"
+msgstr ""
+
+#: .\servicios\infra\notificador.py:246
+msgid "Tus datos de perfil fueron actualizados correctamente."
+msgstr ""
+
+#: .\servicios\infra\notificador.py:267
+#, python-format
+msgid "Nuevo mensaje de %(nombre)s"
+msgstr ""
+
+#: .\servicios\infra\notificador.py:268
+msgid "Tienes un nuevo mensaje en tu conversación."
 msgstr ""
 
 #: .\servicios\models.py:10
@@ -76,7 +194,7 @@ msgstr ""
 
 #: .\servicios\models.py:31
 #: .\servicios\templates\servicios\crear_solicitud.html:70
-#: .\servicios\templates\servicios\cuidador_guia.html:26
+#: .\servicios\templates\servicios\cuidador_guia.html:27
 #: .\servicios\templates\servicios\dashboard_cuidador.html:94
 #: .\servicios\templates\servicios\dueno_nueva_reserva.html:44
 msgid "Paseo"
@@ -179,10 +297,6 @@ msgstr ""
 msgid "Reserva rechazada"
 msgstr ""
 
-#: .\servicios\models.py:329
-msgid "Reserva cancelada"
-msgstr ""
-
 #: .\servicios\models.py:330
 #: .\servicios\templates\servicios\includes\resenas_recibidas_mi_perfil.html:55
 msgid "Servicio completado"
@@ -196,20 +310,8 @@ msgstr ""
 msgid "Mensaje de chat"
 msgstr ""
 
-#: .\servicios\models.py:333
-msgid "Mascota creada"
-msgstr ""
-
 #: .\servicios\models.py:334
 msgid "Mascota editada"
-msgstr ""
-
-#: .\servicios\models.py:335
-msgid "Mascota eliminada"
-msgstr ""
-
-#: .\servicios\models.py:336
-msgid "Perfil actualizado"
 msgstr ""
 
 #: .\servicios\templates\servicios\aliado_estado.html:4
@@ -218,63 +320,260 @@ msgstr ""
 msgid "Integración aliado"
 msgstr ""
 
+#: .\servicios\templates\servicios\aliado_estado.html:8
+#: .\servicios\templates\servicios\aliado_estado.html:17
+#: .\servicios\templates\servicios\cuidador_calendario.html:11
+#: .\servicios\templates\servicios\cuidador_guia.html:11
+#: .\servicios\templates\servicios\cuidador_mi_perfil.html:11
+#: .\servicios\templates\servicios\cuidador_mis_pagos.html:11
+#: .\servicios\templates\servicios\cuidador_servicios.html:11
+#: .\servicios\templates\servicios\cuidador_soporte.html:11
+#: .\servicios\templates\servicios\dashboard_cuidador.html:11
+#: .\servicios\templates\servicios\dashboard_dueno.html:12
+#: .\servicios\templates\servicios\dueno_guia.html:11
+#: .\servicios\templates\servicios\dueno_mi_perfil.html:11
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:11
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:11
+#: .\servicios\templates\servicios\dueno_nueva_reserva.html:15
+#: .\servicios\templates\servicios\dueno_soporte.html:11
+#: .\servicios\templates\servicios\notificaciones.html:13
+#: .\servicios\templates\servicios\notificaciones.html:22
+#: .\servicios\templates\servicios\ver_perfil_otro.html:12
+#: .\servicios\templates\servicios\ver_perfil_otro.html:20
+msgid "Principal"
+msgstr ""
+
+#: .\servicios\templates\servicios\aliado_estado.html:9
+#: .\servicios\templates\servicios\aliado_estado.html:18
+#: .\servicios\templates\servicios\cuidador_calendario.html:12
+#: .\servicios\templates\servicios\cuidador_guia.html:12
+#: .\servicios\templates\servicios\cuidador_mi_perfil.html:12
+#: .\servicios\templates\servicios\cuidador_mis_pagos.html:12
+#: .\servicios\templates\servicios\cuidador_servicios.html:12
+#: .\servicios\templates\servicios\cuidador_soporte.html:12
+#: .\servicios\templates\servicios\dashboard_cuidador.html:12
+#: .\servicios\templates\servicios\dashboard_dueno.html:13
+#: .\servicios\templates\servicios\dueno_guia.html:12
+#: .\servicios\templates\servicios\dueno_mi_perfil.html:12
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:12
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:12
+#: .\servicios\templates\servicios\dueno_nueva_reserva.html:16
+#: .\servicios\templates\servicios\dueno_soporte.html:12
+#: .\servicios\templates\servicios\notificaciones.html:14
+#: .\servicios\templates\servicios\notificaciones.html:23
+#: .\servicios\templates\servicios\ver_perfil_otro.html:13
+#: .\servicios\templates\servicios\ver_perfil_otro.html:21
+msgid "Panel"
+msgstr ""
+
 #: .\servicios\templates\servicios\aliado_estado.html:10
-msgid "Integración con equipo aliado"
+#: .\servicios\templates\servicios\aliado_estado.html:19
+#: .\servicios\templates\servicios\cuidador_calendario.html:13
+#: .\servicios\templates\servicios\cuidador_guia.html:13
+#: .\servicios\templates\servicios\cuidador_mi_perfil.html:13
+#: .\servicios\templates\servicios\cuidador_mis_pagos.html:13
+#: .\servicios\templates\servicios\cuidador_servicios.html:13
+#: .\servicios\templates\servicios\cuidador_soporte.html:13
+#: .\servicios\templates\servicios\dashboard_cuidador.html:13
+#: .\servicios\templates\servicios\dashboard_dueno.html:14
+#: .\servicios\templates\servicios\dueno_guia.html:13
+#: .\servicios\templates\servicios\dueno_mi_perfil.html:13
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:13
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:13
+#: .\servicios\templates\servicios\dueno_nueva_reserva.html:17
+#: .\servicios\templates\servicios\dueno_soporte.html:13
+#: .\servicios\templates\servicios\notificaciones.html:15
+#: .\servicios\templates\servicios\notificaciones.html:24
+#: .\servicios\templates\servicios\ver_perfil_otro.html:14
+#: .\servicios\templates\servicios\ver_perfil_otro.html:22
+msgid "Gestión"
+msgstr ""
+
+#: .\servicios\templates\servicios\aliado_estado.html:11
+#: .\servicios\templates\servicios\dashboard_dueno.html:15
+#: .\servicios\templates\servicios\dueno_guia.html:14
+#: .\servicios\templates\servicios\dueno_guia.html:28
+#: .\servicios\templates\servicios\dueno_mi_perfil.html:14
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:14
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:14
+#: .\servicios\templates\servicios\dueno_nueva_reserva.html:18
+#: .\servicios\templates\servicios\dueno_soporte.html:14
+#: .\servicios\templates\servicios\notificaciones.html:16
+#: .\servicios\templates\servicios\ver_perfil_otro.html:23
+msgid "Hacer reserva"
 msgstr ""
 
 #: .\servicios\templates\servicios\aliado_estado.html:12
+#: .\servicios\templates\servicios\dashboard_dueno.html:16
+#: .\servicios\templates\servicios\dueno_guia.html:15
+#: .\servicios\templates\servicios\dueno_guia.html:34
+#: .\servicios\templates\servicios\dueno_mi_perfil.html:15
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:15
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:3
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:6
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:15
+#: .\servicios\templates\servicios\dueno_nueva_reserva.html:19
+#: .\servicios\templates\servicios\dueno_soporte.html:15
+#: .\servicios\templates\servicios\notificaciones.html:17
+#: .\servicios\templates\servicios\ver_perfil_otro.html:24
+msgid "Mis reservas"
+msgstr ""
+
+#: .\servicios\templates\servicios\aliado_estado.html:13
+#: .\servicios\templates\servicios\dashboard_dueno.html:17
+#: .\servicios\templates\servicios\dueno_guia.html:16
+#: .\servicios\templates\servicios\dueno_guia.html:25
+#: .\servicios\templates\servicios\dueno_mi_perfil.html:16
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:3
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:6
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:16
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:16
+#: .\servicios\templates\servicios\dueno_nueva_reserva.html:20
+#: .\servicios\templates\servicios\dueno_soporte.html:16
+#: .\servicios\templates\servicios\notificaciones.html:18
+#: .\servicios\templates\servicios\ver_perfil_otro.html:25
+msgid "Mis mascotas"
+msgstr ""
+
+#: .\servicios\templates\servicios\aliado_estado.html:14
+#: .\servicios\templates\servicios\aliado_estado.html:22
+#: .\servicios\templates\servicios\cuidador_calendario.html:16
+#: .\servicios\templates\servicios\cuidador_guia.html:16
+#: .\servicios\templates\servicios\cuidador_mi_perfil.html:16
+#: .\servicios\templates\servicios\cuidador_mis_pagos.html:16
+#: .\servicios\templates\servicios\cuidador_servicios.html:16
+#: .\servicios\templates\servicios\cuidador_soporte.html:16
+#: .\servicios\templates\servicios\dashboard_cuidador.html:16
+#: .\servicios\templates\servicios\dashboard_dueno.html:18
+#: .\servicios\templates\servicios\dueno_guia.html:17
+#: .\servicios\templates\servicios\dueno_mi_perfil.html:17
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:17
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:17
+#: .\servicios\templates\servicios\dueno_nueva_reserva.html:21
+#: .\servicios\templates\servicios\dueno_soporte.html:17
+#: .\servicios\templates\servicios\notificaciones.html:19
+#: .\servicios\templates\servicios\notificaciones.html:27
+#: .\servicios\templates\servicios\ver_perfil_otro.html:17
+#: .\servicios\templates\servicios\ver_perfil_otro.html:26
+msgid "Cuenta"
+msgstr ""
+
+#: .\servicios\templates\servicios\aliado_estado.html:15
+#: .\servicios\templates\servicios\aliado_estado.html:23
+#: .\servicios\templates\servicios\cuidador_calendario.html:17
+#: .\servicios\templates\servicios\cuidador_guia.html:17
+#: .\servicios\templates\servicios\cuidador_guia.html:24
+#: .\servicios\templates\servicios\cuidador_mi_perfil.html:3
+#: .\servicios\templates\servicios\cuidador_mi_perfil.html:6
+#: .\servicios\templates\servicios\cuidador_mi_perfil.html:17
+#: .\servicios\templates\servicios\cuidador_mis_pagos.html:17
+#: .\servicios\templates\servicios\cuidador_servicios.html:17
+#: .\servicios\templates\servicios\cuidador_soporte.html:17
+#: .\servicios\templates\servicios\dashboard_cuidador.html:17
+#: .\servicios\templates\servicios\dashboard_dueno.html:19
+#: .\servicios\templates\servicios\dueno_guia.html:18
+#: .\servicios\templates\servicios\dueno_mi_perfil.html:3
+#: .\servicios\templates\servicios\dueno_mi_perfil.html:6
+#: .\servicios\templates\servicios\dueno_mi_perfil.html:18
+#: .\servicios\templates\servicios\dueno_mis_mascotas.html:18
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:18
+#: .\servicios\templates\servicios\dueno_nueva_reserva.html:22
+#: .\servicios\templates\servicios\dueno_soporte.html:18
+#: .\servicios\templates\servicios\notificaciones.html:20
+#: .\servicios\templates\servicios\notificaciones.html:28
+#: .\servicios\templates\servicios\ver_perfil_otro.html:18
+#: .\servicios\templates\servicios\ver_perfil_otro.html:27
+msgid "Mi perfil"
+msgstr ""
+
+#: .\servicios\templates\servicios\aliado_estado.html:20
+#: .\servicios\templates\servicios\cuidador_calendario.html:3
+#: .\servicios\templates\servicios\cuidador_calendario.html:6
+#: .\servicios\templates\servicios\cuidador_calendario.html:14
+#: .\servicios\templates\servicios\cuidador_guia.html:14
+#: .\servicios\templates\servicios\cuidador_guia.html:30
+#: .\servicios\templates\servicios\cuidador_mi_perfil.html:14
+#: .\servicios\templates\servicios\cuidador_mis_pagos.html:14
+#: .\servicios\templates\servicios\cuidador_servicios.html:14
+#: .\servicios\templates\servicios\cuidador_soporte.html:14
+#: .\servicios\templates\servicios\dashboard_cuidador.html:14
+#: .\servicios\templates\servicios\notificaciones.html:25
+#: .\servicios\templates\servicios\ver_perfil_otro.html:15
+msgid "Mi calendario"
+msgstr ""
+
+#: .\servicios\templates\servicios\aliado_estado.html:21
+#: .\servicios\templates\servicios\cuidador_calendario.html:15
+#: .\servicios\templates\servicios\cuidador_guia.html:15
+#: .\servicios\templates\servicios\cuidador_mi_perfil.html:15
+#: .\servicios\templates\servicios\cuidador_mis_pagos.html:15
+#: .\servicios\templates\servicios\cuidador_servicios.html:3
+#: .\servicios\templates\servicios\cuidador_servicios.html:6
+#: .\servicios\templates\servicios\cuidador_servicios.html:15
+#: .\servicios\templates\servicios\cuidador_soporte.html:15
+#: .\servicios\templates\servicios\dashboard_cuidador.html:15
+#: .\servicios\templates\servicios\notificaciones.html:26
+#: .\servicios\templates\servicios\ver_perfil_otro.html:16
+msgid "Mis servicios"
+msgstr ""
+
+#: .\servicios\templates\servicios\aliado_estado.html:29
+msgid "Integración con equipo aliado"
+msgstr ""
+
+#: .\servicios\templates\servicios\aliado_estado.html:31
 msgid "Estado del servicio externo consumido vía Adapter Pattern"
 msgstr ""
 
-#: .\servicios\templates\servicios\aliado_estado.html:26
+#: .\servicios\templates\servicios\aliado_estado.html:45
 msgid "Disponible"
 msgstr ""
 
-#: .\servicios\templates\servicios\aliado_estado.html:30
+#: .\servicios\templates\servicios\aliado_estado.html:49
 msgid "No disponible"
 msgstr ""
 
-#: .\servicios\templates\servicios\aliado_estado.html:36
+#: .\servicios\templates\servicios\aliado_estado.html:55
 msgid "Última consulta:"
 msgstr ""
 
-#: .\servicios\templates\servicios\aliado_estado.html:42
+#: .\servicios\templates\servicios\aliado_estado.html:61
 msgid "Datos recibidos"
 msgstr ""
 
-#: .\servicios\templates\servicios\aliado_estado.html:51
+#: .\servicios\templates\servicios\aliado_estado.html:70
 msgid "Sobre esta integración"
 msgstr ""
 
-#: .\servicios\templates\servicios\aliado_estado.html:55
+#: .\servicios\templates\servicios\aliado_estado.html:74
 msgid "Patrón:"
 msgstr ""
 
-#: .\servicios\templates\servicios\aliado_estado.html:59
+#: .\servicios\templates\servicios\aliado_estado.html:78
 msgid "Interfaz:"
 msgstr ""
 
-#: .\servicios\templates\servicios\aliado_estado.html:63
+#: .\servicios\templates\servicios\aliado_estado.html:82
 msgid "Implementación:"
 msgstr ""
 
-#: .\servicios\templates\servicios\aliado_estado.html:65
+#: .\servicios\templates\servicios\aliado_estado.html:84
 msgid "(real)"
 msgstr ""
 
-#: .\servicios\templates\servicios\aliado_estado.html:67
+#: .\servicios\templates\servicios\aliado_estado.html:86
 msgid "(fallback)"
 msgstr ""
 
-#: .\servicios\templates\servicios\aliado_estado.html:70
+#: .\servicios\templates\servicios\aliado_estado.html:89
 msgid "Selector:"
 msgstr ""
 
-#: .\servicios\templates\servicios\aliado_estado.html:74
+#: .\servicios\templates\servicios\aliado_estado.html:93
 msgid "Configuración:"
 msgstr ""
 
-#: .\servicios\templates\servicios\aliado_estado.html:75
+#: .\servicios\templates\servicios\aliado_estado.html:94
 msgid "variable de entorno"
 msgstr ""
 
@@ -412,147 +711,8 @@ msgstr ""
 msgid "opción(es) disponible(s)"
 msgstr ""
 
-#: .\servicios\templates\servicios\cuidador_calendario.html:3
-#: .\servicios\templates\servicios\cuidador_calendario.html:6
-#: .\servicios\templates\servicios\cuidador_calendario.html:14
-#: .\servicios\templates\servicios\cuidador_guia.html:13
-#: .\servicios\templates\servicios\cuidador_guia.html:29
-#: .\servicios\templates\servicios\cuidador_mi_perfil.html:14
-#: .\servicios\templates\servicios\cuidador_mis_pagos.html:14
-#: .\servicios\templates\servicios\cuidador_servicios.html:14
-#: .\servicios\templates\servicios\cuidador_soporte.html:13
-#: .\servicios\templates\servicios\dashboard_cuidador.html:14
-#: .\servicios\templates\servicios\notificaciones.html:25
-#: .\servicios\templates\servicios\ver_perfil_otro.html:15
-msgid "Mi calendario"
-msgstr ""
-
 #: .\servicios\templates\servicios\cuidador_calendario.html:7
 msgid "Citas programadas y finalizadas"
-msgstr ""
-
-#: .\servicios\templates\servicios\cuidador_calendario.html:11
-#: .\servicios\templates\servicios\cuidador_guia.html:10
-#: .\servicios\templates\servicios\cuidador_mi_perfil.html:11
-#: .\servicios\templates\servicios\cuidador_mis_pagos.html:11
-#: .\servicios\templates\servicios\cuidador_servicios.html:11
-#: .\servicios\templates\servicios\cuidador_soporte.html:10
-#: .\servicios\templates\servicios\dashboard_cuidador.html:11
-#: .\servicios\templates\servicios\dashboard_dueno.html:12
-#: .\servicios\templates\servicios\dueno_guia.html:10
-#: .\servicios\templates\servicios\dueno_mi_perfil.html:11
-#: .\servicios\templates\servicios\dueno_mis_mascotas.html:11
-#: .\servicios\templates\servicios\dueno_mis_reservas.html:11
-#: .\servicios\templates\servicios\dueno_nueva_reserva.html:15
-#: .\servicios\templates\servicios\dueno_soporte.html:10
-#: .\servicios\templates\servicios\notificaciones.html:13
-#: .\servicios\templates\servicios\notificaciones.html:22
-#: .\servicios\templates\servicios\ver_perfil_otro.html:12
-#: .\servicios\templates\servicios\ver_perfil_otro.html:20
-msgid "Principal"
-msgstr ""
-
-#: .\servicios\templates\servicios\cuidador_calendario.html:12
-#: .\servicios\templates\servicios\cuidador_guia.html:11
-#: .\servicios\templates\servicios\cuidador_mi_perfil.html:12
-#: .\servicios\templates\servicios\cuidador_mis_pagos.html:12
-#: .\servicios\templates\servicios\cuidador_servicios.html:12
-#: .\servicios\templates\servicios\cuidador_soporte.html:11
-#: .\servicios\templates\servicios\dashboard_cuidador.html:12
-#: .\servicios\templates\servicios\dashboard_dueno.html:13
-#: .\servicios\templates\servicios\dueno_guia.html:11
-#: .\servicios\templates\servicios\dueno_mi_perfil.html:12
-#: .\servicios\templates\servicios\dueno_mis_mascotas.html:12
-#: .\servicios\templates\servicios\dueno_mis_reservas.html:12
-#: .\servicios\templates\servicios\dueno_nueva_reserva.html:16
-#: .\servicios\templates\servicios\dueno_soporte.html:11
-#: .\servicios\templates\servicios\notificaciones.html:14
-#: .\servicios\templates\servicios\notificaciones.html:23
-#: .\servicios\templates\servicios\ver_perfil_otro.html:13
-#: .\servicios\templates\servicios\ver_perfil_otro.html:21
-msgid "Panel"
-msgstr ""
-
-#: .\servicios\templates\servicios\cuidador_calendario.html:13
-#: .\servicios\templates\servicios\cuidador_guia.html:12
-#: .\servicios\templates\servicios\cuidador_mi_perfil.html:13
-#: .\servicios\templates\servicios\cuidador_mis_pagos.html:13
-#: .\servicios\templates\servicios\cuidador_servicios.html:13
-#: .\servicios\templates\servicios\cuidador_soporte.html:12
-#: .\servicios\templates\servicios\dashboard_cuidador.html:13
-#: .\servicios\templates\servicios\dashboard_dueno.html:14
-#: .\servicios\templates\servicios\dueno_guia.html:12
-#: .\servicios\templates\servicios\dueno_mi_perfil.html:13
-#: .\servicios\templates\servicios\dueno_mis_mascotas.html:13
-#: .\servicios\templates\servicios\dueno_mis_reservas.html:13
-#: .\servicios\templates\servicios\dueno_nueva_reserva.html:17
-#: .\servicios\templates\servicios\dueno_soporte.html:12
-#: .\servicios\templates\servicios\notificaciones.html:15
-#: .\servicios\templates\servicios\notificaciones.html:24
-#: .\servicios\templates\servicios\ver_perfil_otro.html:14
-#: .\servicios\templates\servicios\ver_perfil_otro.html:22
-msgid "Gestión"
-msgstr ""
-
-#: .\servicios\templates\servicios\cuidador_calendario.html:15
-#: .\servicios\templates\servicios\cuidador_guia.html:14
-#: .\servicios\templates\servicios\cuidador_mi_perfil.html:15
-#: .\servicios\templates\servicios\cuidador_mis_pagos.html:15
-#: .\servicios\templates\servicios\cuidador_servicios.html:3
-#: .\servicios\templates\servicios\cuidador_servicios.html:6
-#: .\servicios\templates\servicios\cuidador_servicios.html:15
-#: .\servicios\templates\servicios\cuidador_soporte.html:14
-#: .\servicios\templates\servicios\dashboard_cuidador.html:15
-#: .\servicios\templates\servicios\notificaciones.html:26
-#: .\servicios\templates\servicios\ver_perfil_otro.html:16
-msgid "Mis servicios"
-msgstr ""
-
-#: .\servicios\templates\servicios\cuidador_calendario.html:16
-#: .\servicios\templates\servicios\cuidador_guia.html:15
-#: .\servicios\templates\servicios\cuidador_mi_perfil.html:16
-#: .\servicios\templates\servicios\cuidador_mis_pagos.html:16
-#: .\servicios\templates\servicios\cuidador_servicios.html:16
-#: .\servicios\templates\servicios\cuidador_soporte.html:15
-#: .\servicios\templates\servicios\dashboard_cuidador.html:16
-#: .\servicios\templates\servicios\dashboard_dueno.html:18
-#: .\servicios\templates\servicios\dueno_guia.html:16
-#: .\servicios\templates\servicios\dueno_mi_perfil.html:17
-#: .\servicios\templates\servicios\dueno_mis_mascotas.html:17
-#: .\servicios\templates\servicios\dueno_mis_reservas.html:17
-#: .\servicios\templates\servicios\dueno_nueva_reserva.html:21
-#: .\servicios\templates\servicios\dueno_soporte.html:16
-#: .\servicios\templates\servicios\notificaciones.html:19
-#: .\servicios\templates\servicios\notificaciones.html:27
-#: .\servicios\templates\servicios\ver_perfil_otro.html:17
-#: .\servicios\templates\servicios\ver_perfil_otro.html:26
-msgid "Cuenta"
-msgstr ""
-
-#: .\servicios\templates\servicios\cuidador_calendario.html:17
-#: .\servicios\templates\servicios\cuidador_guia.html:16
-#: .\servicios\templates\servicios\cuidador_guia.html:23
-#: .\servicios\templates\servicios\cuidador_mi_perfil.html:3
-#: .\servicios\templates\servicios\cuidador_mi_perfil.html:6
-#: .\servicios\templates\servicios\cuidador_mi_perfil.html:17
-#: .\servicios\templates\servicios\cuidador_mis_pagos.html:17
-#: .\servicios\templates\servicios\cuidador_servicios.html:17
-#: .\servicios\templates\servicios\cuidador_soporte.html:16
-#: .\servicios\templates\servicios\dashboard_cuidador.html:17
-#: .\servicios\templates\servicios\dashboard_dueno.html:19
-#: .\servicios\templates\servicios\dueno_guia.html:17
-#: .\servicios\templates\servicios\dueno_mi_perfil.html:3
-#: .\servicios\templates\servicios\dueno_mi_perfil.html:6
-#: .\servicios\templates\servicios\dueno_mi_perfil.html:18
-#: .\servicios\templates\servicios\dueno_mis_mascotas.html:18
-#: .\servicios\templates\servicios\dueno_mis_reservas.html:18
-#: .\servicios\templates\servicios\dueno_nueva_reserva.html:22
-#: .\servicios\templates\servicios\dueno_soporte.html:17
-#: .\servicios\templates\servicios\notificaciones.html:20
-#: .\servicios\templates\servicios\notificaciones.html:28
-#: .\servicios\templates\servicios\ver_perfil_otro.html:18
-#: .\servicios\templates\servicios\ver_perfil_otro.html:27
-msgid "Mi perfil"
 msgstr ""
 
 #: .\servicios\templates\servicios\cuidador_calendario.html:24
@@ -630,7 +790,7 @@ msgstr ""
 
 #: .\servicios\templates\servicios\cuidador_calendario.html:111
 #: .\servicios\templates\servicios\cuidador_calendario.html:200
-#: .\servicios\templates\servicios\dueno_guia.html:33
+#: .\servicios\templates\servicios\dueno_guia.html:34
 #: .\servicios\templates\servicios\dueno_mis_reservas.html:41
 #: .\servicios\templates\servicios\dueno_mis_reservas.html:164
 msgid "Ver perfil"
@@ -719,9 +879,9 @@ msgstr ""
 
 #: .\servicios\templates\servicios\cuidador_calendario.html:271
 #: .\servicios\templates\servicios\cuidador_calendario.html:306
-#: .\servicios\templates\servicios\cuidador_soporte.html:44
+#: .\servicios\templates\servicios\cuidador_soporte.html:45
 #: .\servicios\templates\servicios\dueno_mis_reservas.html:276
-#: .\servicios\templates\servicios\dueno_soporte.html:45
+#: .\servicios\templates\servicios\dueno_soporte.html:46
 msgid "Enviar"
 msgstr ""
 
@@ -734,106 +894,106 @@ msgstr ""
 msgid "Escribe un mensaje..."
 msgstr ""
 
-#: .\servicios\templates\servicios\cuidador_guia.html:2
-#: .\servicios\templates\servicios\cuidador_guia.html:5
-#: .\servicios\templates\servicios\dueno_guia.html:2
-#: .\servicios\templates\servicios\dueno_guia.html:5
+#: .\servicios\templates\servicios\cuidador_guia.html:3
+#: .\servicios\templates\servicios\cuidador_guia.html:6
+#: .\servicios\templates\servicios\dueno_guia.html:3
+#: .\servicios\templates\servicios\dueno_guia.html:6
 #: .\servicios\templates\servicios\includes\sidebar_cuidador_extra.html:4
 #: .\servicios\templates\servicios\includes\sidebar_dueno_extra.html:2
 msgid "Guía de uso"
 msgstr ""
 
-#: .\servicios\templates\servicios\cuidador_guia.html:6
+#: .\servicios\templates\servicios\cuidador_guia.html:7
 msgid "Cómo usar Paws & Walks como cuidador"
 msgstr ""
 
-#: .\servicios\templates\servicios\cuidador_guia.html:22
+#: .\servicios\templates\servicios\cuidador_guia.html:23
 msgid "Configura tu perfil"
 msgstr ""
 
-#: .\servicios\templates\servicios\cuidador_guia.html:23
+#: .\servicios\templates\servicios\cuidador_guia.html:24
 msgid "Completa tu perfil en"
 msgstr ""
 
-#: .\servicios\templates\servicios\cuidador_guia.html:23
+#: .\servicios\templates\servicios\cuidador_guia.html:24
 msgid ""
 "con foto, datos de contacto y ciudad. Los dueños te encontrarán más "
 "fácilmente."
 msgstr ""
 
-#: .\servicios\templates\servicios\cuidador_guia.html:25
+#: .\servicios\templates\servicios\cuidador_guia.html:26
 msgid "Activa tus servicios"
 msgstr ""
 
-#: .\servicios\templates\servicios\cuidador_guia.html:26
-#: .\servicios\templates\servicios\cuidador_guia.html:29
-#: .\servicios\templates\servicios\dueno_guia.html:24
-#: .\servicios\templates\servicios\dueno_guia.html:27
-#: .\servicios\templates\servicios\dueno_guia.html:33
+#: .\servicios\templates\servicios\cuidador_guia.html:27
+#: .\servicios\templates\servicios\cuidador_guia.html:30
+#: .\servicios\templates\servicios\dueno_guia.html:25
+#: .\servicios\templates\servicios\dueno_guia.html:28
+#: .\servicios\templates\servicios\dueno_guia.html:34
 msgid "En"
 msgstr ""
 
-#: .\servicios\templates\servicios\cuidador_guia.html:26
+#: .\servicios\templates\servicios\cuidador_guia.html:27
 msgid "y"
 msgstr ""
 
-#: .\servicios\templates\servicios\cuidador_guia.html:26
+#: .\servicios\templates\servicios\cuidador_guia.html:27
 #: .\servicios\templates\servicios\cuidador_servicios.html:40
 msgid "Guarderías"
 msgstr ""
 
-#: .\servicios\templates\servicios\cuidador_guia.html:26
+#: .\servicios\templates\servicios\cuidador_guia.html:27
 msgid ""
 "activa los servicios que ofreces. Define tu zona de cobertura (para paseos), "
 "tarifas y horarios disponibles. Cada reunión puede tener su propio lugar y "
 "precio."
 msgstr ""
 
-#: .\servicios\templates\servicios\cuidador_guia.html:28
+#: .\servicios\templates\servicios\cuidador_guia.html:29
 msgid "Gestiona solicitudes"
 msgstr ""
 
-#: .\servicios\templates\servicios\cuidador_guia.html:29
+#: .\servicios\templates\servicios\cuidador_guia.html:30
 msgid ""
 "verás las solicitudes pendientes. Acepta o rechaza según tu disponibilidad. "
 "Una vez aceptada, podrás chatear con el dueño y ver su perfil."
 msgstr ""
 
-#: .\servicios\templates\servicios\cuidador_guia.html:31
+#: .\servicios\templates\servicios\cuidador_guia.html:32
 msgid "Realiza el servicio"
 msgstr ""
 
-#: .\servicios\templates\servicios\cuidador_guia.html:32
+#: .\servicios\templates\servicios\cuidador_guia.html:33
 msgid ""
 "El día acordado, realiza el paseo o guardería. Al finalizar, marca el "
 "servicio como"
 msgstr ""
 
-#: .\servicios\templates\servicios\cuidador_guia.html:32
+#: .\servicios\templates\servicios\cuidador_guia.html:33
 msgid "finalizado"
 msgstr ""
 
-#: .\servicios\templates\servicios\cuidador_guia.html:32
+#: .\servicios\templates\servicios\cuidador_guia.html:33
 msgid "El pago aparecerá en"
 msgstr ""
 
-#: .\servicios\templates\servicios\cuidador_guia.html:32
-#: .\servicios\templates\servicios\cuidador_guia.html:35
+#: .\servicios\templates\servicios\cuidador_guia.html:33
+#: .\servicios\templates\servicios\cuidador_guia.html:36
 #: .\servicios\templates\servicios\cuidador_mis_pagos.html:3
 #: .\servicios\templates\servicios\cuidador_mis_pagos.html:6
 #: .\servicios\templates\servicios\includes\sidebar_cuidador_extra.html:2
 msgid "Mis pagos"
 msgstr ""
 
-#: .\servicios\templates\servicios\cuidador_guia.html:34
+#: .\servicios\templates\servicios\cuidador_guia.html:35
 msgid "Recibe tus pagos"
 msgstr ""
 
-#: .\servicios\templates\servicios\cuidador_guia.html:35
+#: .\servicios\templates\servicios\cuidador_guia.html:36
 msgid "Consulta"
 msgstr ""
 
-#: .\servicios\templates\servicios\cuidador_guia.html:35
+#: .\servicios\templates\servicios\cuidador_guia.html:36
 msgid ""
 "para ver transacciones, resúmenes diarios y mensuales de lo que has recibido."
 msgstr ""
@@ -1058,62 +1218,62 @@ msgstr ""
 msgid "Volver a mis servicios"
 msgstr ""
 
-#: .\servicios\templates\servicios\cuidador_soporte.html:2
-#: .\servicios\templates\servicios\cuidador_soporte.html:5
-#: .\servicios\templates\servicios\dueno_soporte.html:2
-#: .\servicios\templates\servicios\dueno_soporte.html:5
+#: .\servicios\templates\servicios\cuidador_soporte.html:3
+#: .\servicios\templates\servicios\cuidador_soporte.html:6
+#: .\servicios\templates\servicios\dueno_soporte.html:3
+#: .\servicios\templates\servicios\dueno_soporte.html:6
 #: .\servicios\templates\servicios\includes\sidebar_cuidador_extra.html:5
 #: .\servicios\templates\servicios\includes\sidebar_dueno_extra.html:3
 msgid "Soporte"
 msgstr ""
 
-#: .\servicios\templates\servicios\cuidador_soporte.html:6
-#: .\servicios\templates\servicios\dueno_soporte.html:6
+#: .\servicios\templates\servicios\cuidador_soporte.html:7
+#: .\servicios\templates\servicios\dueno_soporte.html:7
 msgid "¿Necesitas ayuda? Chatea con nosotros"
-msgstr ""
-
-#: .\servicios\templates\servicios\cuidador_soporte.html:23
-#: .\servicios\templates\servicios\dueno_soporte.html:24
-msgid "Chat de soporte"
 msgstr ""
 
 #: .\servicios\templates\servicios\cuidador_soporte.html:24
 #: .\servicios\templates\servicios\dueno_soporte.html:25
+msgid "Chat de soporte"
+msgstr ""
+
+#: .\servicios\templates\servicios\cuidador_soporte.html:25
+#: .\servicios\templates\servicios\dueno_soporte.html:26
 msgid "En línea"
 msgstr ""
 
-#: .\servicios\templates\servicios\cuidador_soporte.html:29
-#: .\servicios\templates\servicios\dueno_soporte.html:30
+#: .\servicios\templates\servicios\cuidador_soporte.html:30
+#: .\servicios\templates\servicios\dueno_soporte.html:31
 msgid "¡Hola! Soy el equipo de Paws & Walks. ¿En qué podemos ayudarte hoy?"
 msgstr ""
 
-#: .\servicios\templates\servicios\cuidador_soporte.html:30
-#: .\servicios\templates\servicios\cuidador_soporte.html:36
-#: .\servicios\templates\servicios\cuidador_soporte.html:70
+#: .\servicios\templates\servicios\cuidador_soporte.html:31
+#: .\servicios\templates\servicios\cuidador_soporte.html:37
+#: .\servicios\templates\servicios\cuidador_soporte.html:71
 msgid "Ahora"
 msgstr ""
 
-#: .\servicios\templates\servicios\cuidador_soporte.html:35
+#: .\servicios\templates\servicios\cuidador_soporte.html:36
 msgid "Puedes consultar nuestra"
 msgstr ""
 
-#: .\servicios\templates\servicios\cuidador_soporte.html:35
+#: .\servicios\templates\servicios\cuidador_soporte.html:36
 msgid "para cuidadores o escribirnos aquí si tienes dudas."
 msgstr ""
 
-#: .\servicios\templates\servicios\cuidador_soporte.html:42
-#: .\servicios\templates\servicios\dueno_soporte.html:43
+#: .\servicios\templates\servicios\cuidador_soporte.html:43
+#: .\servicios\templates\servicios\dueno_soporte.html:44
 msgid "Escribe tu mensaje..."
 msgstr ""
 
-#: .\servicios\templates\servicios\cuidador_soporte.html:47
-#: .\servicios\templates\servicios\dueno_soporte.html:48
+#: .\servicios\templates\servicios\cuidador_soporte.html:48
+#: .\servicios\templates\servicios\dueno_soporte.html:49
 msgid ""
 "Este es un chat de demostración. En producción se conectaría con un sistema "
 "de soporte real."
 msgstr ""
 
-#: .\servicios\templates\servicios\cuidador_soporte.html:70
+#: .\servicios\templates\servicios\cuidador_soporte.html:71
 msgid ""
 "Gracias por tu mensaje. Un agente te responderá pronto. ¿Hay algo más en lo "
 "que podamos ayudarte?"
@@ -1266,49 +1426,6 @@ msgstr ""
 msgid "Tu resumen de mascotas, reservas y notificaciones"
 msgstr ""
 
-#: .\servicios\templates\servicios\dashboard_dueno.html:15
-#: .\servicios\templates\servicios\dueno_guia.html:13
-#: .\servicios\templates\servicios\dueno_guia.html:27
-#: .\servicios\templates\servicios\dueno_mi_perfil.html:14
-#: .\servicios\templates\servicios\dueno_mis_mascotas.html:14
-#: .\servicios\templates\servicios\dueno_mis_reservas.html:14
-#: .\servicios\templates\servicios\dueno_nueva_reserva.html:18
-#: .\servicios\templates\servicios\dueno_soporte.html:13
-#: .\servicios\templates\servicios\notificaciones.html:16
-#: .\servicios\templates\servicios\ver_perfil_otro.html:23
-msgid "Hacer reserva"
-msgstr ""
-
-#: .\servicios\templates\servicios\dashboard_dueno.html:16
-#: .\servicios\templates\servicios\dueno_guia.html:14
-#: .\servicios\templates\servicios\dueno_guia.html:33
-#: .\servicios\templates\servicios\dueno_mi_perfil.html:15
-#: .\servicios\templates\servicios\dueno_mis_mascotas.html:15
-#: .\servicios\templates\servicios\dueno_mis_reservas.html:3
-#: .\servicios\templates\servicios\dueno_mis_reservas.html:6
-#: .\servicios\templates\servicios\dueno_mis_reservas.html:15
-#: .\servicios\templates\servicios\dueno_nueva_reserva.html:19
-#: .\servicios\templates\servicios\dueno_soporte.html:14
-#: .\servicios\templates\servicios\notificaciones.html:17
-#: .\servicios\templates\servicios\ver_perfil_otro.html:24
-msgid "Mis reservas"
-msgstr ""
-
-#: .\servicios\templates\servicios\dashboard_dueno.html:17
-#: .\servicios\templates\servicios\dueno_guia.html:15
-#: .\servicios\templates\servicios\dueno_guia.html:24
-#: .\servicios\templates\servicios\dueno_mi_perfil.html:16
-#: .\servicios\templates\servicios\dueno_mis_mascotas.html:3
-#: .\servicios\templates\servicios\dueno_mis_mascotas.html:6
-#: .\servicios\templates\servicios\dueno_mis_mascotas.html:16
-#: .\servicios\templates\servicios\dueno_mis_reservas.html:16
-#: .\servicios\templates\servicios\dueno_nueva_reserva.html:20
-#: .\servicios\templates\servicios\dueno_soporte.html:15
-#: .\servicios\templates\servicios\notificaciones.html:18
-#: .\servicios\templates\servicios\ver_perfil_otro.html:25
-msgid "Mis mascotas"
-msgstr ""
-
 #: .\servicios\templates\servicios\dashboard_dueno.html:26
 msgid "Reservas próximas"
 msgstr ""
@@ -1395,59 +1512,59 @@ msgstr ""
 msgid "Agregar mascota"
 msgstr ""
 
-#: .\servicios\templates\servicios\dueno_guia.html:6
+#: .\servicios\templates\servicios\dueno_guia.html:7
 msgid "Cómo usar Paws & Walks como dueño de mascota"
 msgstr ""
 
-#: .\servicios\templates\servicios\dueno_guia.html:23
+#: .\servicios\templates\servicios\dueno_guia.html:24
 msgid "Registra tus mascotas"
 msgstr ""
 
-#: .\servicios\templates\servicios\dueno_guia.html:24
+#: .\servicios\templates\servicios\dueno_guia.html:25
 msgid ""
 "agrega cada mascota con su nombre, tipo, raza, edad y foto. Necesitarás esta "
 "información para hacer reservas."
 msgstr ""
 
-#: .\servicios\templates\servicios\dueno_guia.html:26
+#: .\servicios\templates\servicios\dueno_guia.html:27
 msgid "Busca cuidadores"
 msgstr ""
 
-#: .\servicios\templates\servicios\dueno_guia.html:27
+#: .\servicios\templates\servicios\dueno_guia.html:28
 msgid ""
 "elige el tipo de servicio (Paseo o Guardería), la mascota, fecha y horario. "
 "La app te mostrará cuidadores disponibles cerca de ti."
 msgstr ""
 
-#: .\servicios\templates\servicios\dueno_guia.html:29
+#: .\servicios\templates\servicios\dueno_guia.html:30
 msgid "Envía tu solicitud"
 msgstr ""
 
-#: .\servicios\templates\servicios\dueno_guia.html:30
+#: .\servicios\templates\servicios\dueno_guia.html:31
 msgid ""
 "Selecciona un cuidador y envía la solicitud. El cuidador la revisará y la "
 "aceptará o rechazará. Puedes ver su perfil antes de reservar."
 msgstr ""
 
-#: .\servicios\templates\servicios\dueno_guia.html:32
+#: .\servicios\templates\servicios\dueno_guia.html:33
 msgid "Comunícate y coordina"
 msgstr ""
 
-#: .\servicios\templates\servicios\dueno_guia.html:33
+#: .\servicios\templates\servicios\dueno_guia.html:34
 msgid ""
 "verás cada reunión programada. Usa el chat para coordinar con el cuidador y "
 "el botón"
 msgstr ""
 
-#: .\servicios\templates\servicios\dueno_guia.html:33
+#: .\servicios\templates\servicios\dueno_guia.html:34
 msgid "para ver sus datos de contacto."
 msgstr ""
 
-#: .\servicios\templates\servicios\dueno_guia.html:35
+#: .\servicios\templates\servicios\dueno_guia.html:36
 msgid "Califica el servicio"
 msgstr ""
 
-#: .\servicios\templates\servicios\dueno_guia.html:36
+#: .\servicios\templates\servicios\dueno_guia.html:37
 msgid ""
 "Cuando el servicio se complete, podrás calificar al cuidador con estrellas y "
 "un comentario. ¡Tu opinión ayuda a otros dueños!"
@@ -1944,11 +2061,13 @@ msgid "¿Cómo fue tu experiencia?"
 msgstr ""
 
 #: .\servicios\templates\servicios\dueno_mis_reservas.html:263
-#, python-format
-msgid "%(i_val)s estrella"
-msgid_plural "%(i_val)s estrellas"
-msgstr[0] ""
-msgstr[1] ""
+msgid "estrella"
+msgstr ""
+
+#: .\servicios\templates\servicios\dueno_mis_reservas.html:263
+#: .\servicios\templates\servicios\includes\resenas_recibidas_mi_perfil.html:39
+msgid "estrellas"
+msgstr ""
 
 #: .\servicios\templates\servicios\dueno_mis_reservas.html:292
 msgid "Conversación con contexto de la reserva"
@@ -2255,7 +2374,7 @@ msgstr ""
 msgid "Tu navegador no soporta geolocalizacion"
 msgstr ""
 
-#: .\servicios\templates\servicios\dueno_soporte.html:36
+#: .\servicios\templates\servicios\dueno_soporte.html:37
 msgid "para dueños o escribirnos aquí si tienes dudas."
 msgstr ""
 
@@ -2623,10 +2742,6 @@ msgstr ""
 
 #: .\servicios\templates\servicios\includes\resenas_recibidas_mi_perfil.html:36
 msgid "Distribución de estrellas"
-msgstr ""
-
-#: .\servicios\templates\servicios\includes\resenas_recibidas_mi_perfil.html:39
-msgid "estrellas"
 msgstr ""
 
 #: .\servicios\templates\servicios\includes\resenas_recibidas_mi_perfil.html:53

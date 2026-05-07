@@ -5,6 +5,8 @@
 # externo (consola, email, noop) via el hook _log().
 from abc import ABC, abstractmethod
 
+from django.utils.translation import gettext as _
+
 
 def _crear_notificacion(
     *,
@@ -61,8 +63,8 @@ class NotificadorBase(ABC):
             solicitud=solicitud,
             tipo_evento=TipoNotificacion.NUEVA_RESERVA,
             categoria=CategoriaNotificacion.NEGOCIO,
-            titulo=f"Nueva reserva de {solicitud.idDueño.nombre}",
-            descripcion=f"{solicitud.get_tipoServicio_display()} para {solicitud.idMascota.nombreMascota} el {solicitud.fecha}",
+            titulo=_("Nueva reserva de %(nombre)s") % {"nombre": solicitud.idDueño.nombre},
+            descripcion=_("%(servicio)s para %(mascota)s el %(fecha)s") % {"servicio": solicitud.get_tipoServicio_display(), "mascota": solicitud.idMascota.nombreMascota, "fecha": solicitud.fecha},
             url_destino="/cuidador/calendario/",
         )
 
@@ -76,8 +78,8 @@ class NotificadorBase(ABC):
             solicitud=solicitud,
             tipo_evento=TipoNotificacion.RESERVA_ACEPTADA,
             categoria=CategoriaNotificacion.NEGOCIO,
-            titulo="Tu reserva fue aceptada",
-            descripcion=f"{solicitud.idCuidador.nombre} aceptó tu reserva de {solicitud.get_tipoServicio_display()}.",
+            titulo=_("Tu reserva fue aceptada"),
+            descripcion=_("%(nombre)s aceptó tu reserva de %(servicio)s.") % {"nombre": solicitud.idCuidador.nombre, "servicio": solicitud.get_tipoServicio_display()},
             url_destino="/dueño/mis-reservas/",
         )
 
@@ -91,8 +93,8 @@ class NotificadorBase(ABC):
             solicitud=solicitud,
             tipo_evento=TipoNotificacion.RESERVA_RECHAZADA,
             categoria=CategoriaNotificacion.NEGOCIO,
-            titulo="Tu reserva fue rechazada",
-            descripcion=f"{solicitud.idCuidador.nombre} rechazó la reserva de {solicitud.get_tipoServicio_display()}.",
+            titulo=_("Tu reserva fue rechazada"),
+            descripcion=_("%(nombre)s rechazó la reserva de %(servicio)s.") % {"nombre": solicitud.idCuidador.nombre, "servicio": solicitud.get_tipoServicio_display()},
             url_destino="/dueño/mis-reservas/",
         )
 
@@ -106,8 +108,8 @@ class NotificadorBase(ABC):
             solicitud=solicitud,
             tipo_evento=TipoNotificacion.SERVICIO_COMPLETADO,
             categoria=CategoriaNotificacion.NEGOCIO,
-            titulo="Servicio finalizado",
-            descripcion=f"El servicio de {solicitud.get_tipoServicio_display()} fue marcado como finalizado.",
+            titulo=_("Servicio finalizado"),
+            descripcion=_("El servicio de %(servicio)s fue marcado como finalizado.") % {"servicio": solicitud.get_tipoServicio_display()},
             url_destino="/dueño/mis-reservas/",
         )
         _crear_notificacion(
@@ -116,8 +118,8 @@ class NotificadorBase(ABC):
             solicitud=solicitud,
             tipo_evento=TipoNotificacion.SERVICIO_COMPLETADO,
             categoria=CategoriaNotificacion.NEGOCIO,
-            titulo="Servicio finalizado",
-            descripcion=f"El servicio de {solicitud.get_tipoServicio_display()} fue marcado como finalizado.",
+            titulo=_("Servicio finalizado"),
+            descripcion=_("El servicio de %(servicio)s fue marcado como finalizado.") % {"servicio": solicitud.get_tipoServicio_display()},
             url_destino="/cuidador/calendario/",
         )
 
@@ -136,8 +138,8 @@ class NotificadorBase(ABC):
             mascota=solicitud.idMascota,
             tipo_evento=TipoNotificacion.RESENA_PENDIENTE,
             categoria=CategoriaNotificacion.NEGOCIO,
-            titulo="Reseña pendiente del cuidador",
-            descripcion=f"El servicio finalizó. Califica a {solicitud.idCuidador.nombre} para completar tu experiencia.",
+            titulo=_("Reseña pendiente del cuidador"),
+            descripcion=_("El servicio finalizó. Califica a %(nombre)s para completar tu experiencia.") % {"nombre": solicitud.idCuidador.nombre},
             url_destino=url_owner,
         )
         _crear_notificacion(
@@ -147,8 +149,8 @@ class NotificadorBase(ABC):
             mascota=solicitud.idMascota,
             tipo_evento=TipoNotificacion.RESENA_PENDIENTE,
             categoria=CategoriaNotificacion.NEGOCIO,
-            titulo="Reseña pendiente del dueño",
-            descripcion=f"Califica a {solicitud.idDueño.nombre} para cerrar este servicio.",
+            titulo=_("Reseña pendiente del dueño"),
+            descripcion=_("Califica a %(nombre)s para cerrar este servicio.") % {"nombre": solicitud.idDueño.nombre},
             url_destino=url_caregiver_owner,
         )
         _crear_notificacion(
@@ -158,8 +160,8 @@ class NotificadorBase(ABC):
             mascota=solicitud.idMascota,
             tipo_evento=TipoNotificacion.RESENA_PENDIENTE,
             categoria=CategoriaNotificacion.NEGOCIO,
-            titulo="Reseña pendiente de mascota",
-            descripcion=f"Califica a {solicitud.idMascota.nombreMascota} para completar la reseña del servicio.",
+            titulo=_("Reseña pendiente de mascota"),
+            descripcion=_("Califica a %(nombre)s para completar la reseña del servicio.") % {"nombre": solicitud.idMascota.nombreMascota},
             url_destino=url_caregiver_pet,
         )
 
@@ -181,8 +183,8 @@ class NotificadorBase(ABC):
             solicitud=solicitud,
             tipo_evento=TipoNotificacion.RESERVA_CANCELADA,
             categoria=CategoriaNotificacion.NEGOCIO,
-            titulo="Reserva cancelada",
-            descripcion=f"{quien} canceló la reserva de {solicitud.get_tipoServicio_display()}.",
+            titulo=_("Reserva cancelada"),
+            descripcion=_("%(quien)s canceló la reserva de %(servicio)s.") % {"quien": quien, "servicio": solicitud.get_tipoServicio_display()},
             url_destino=destino_url,
         )
 
@@ -196,8 +198,8 @@ class NotificadorBase(ABC):
             mascota=mascota,
             tipo_evento=TipoNotificacion.MASCOTA_CREADA,
             categoria=CategoriaNotificacion.SISTEMA,
-            titulo="Mascota creada",
-            descripcion=f"Se agregó la mascota {mascota.nombreMascota} correctamente.",
+            titulo=_("Mascota creada"),
+            descripcion=_("Se agregó la mascota %(nombre)s correctamente.") % {"nombre": mascota.nombreMascota},
             url_destino="/dueño/mis-mascotas/",
         )
 
@@ -211,8 +213,8 @@ class NotificadorBase(ABC):
             mascota=mascota,
             tipo_evento=TipoNotificacion.MASCOTA_EDITADA,
             categoria=CategoriaNotificacion.SISTEMA,
-            titulo="Mascota actualizada",
-            descripcion=f"Se actualizó la información de {mascota.nombreMascota}.",
+            titulo=_("Mascota actualizada"),
+            descripcion=_("Se actualizó la información de %(nombre)s.") % {"nombre": mascota.nombreMascota},
             url_destino="/dueño/mis-mascotas/",
         )
 
@@ -225,8 +227,8 @@ class NotificadorBase(ABC):
             actor_usuario=actor,
             tipo_evento=TipoNotificacion.MASCOTA_ELIMINADA,
             categoria=CategoriaNotificacion.SISTEMA,
-            titulo="Mascota eliminada",
-            descripcion=f"Se eliminó la mascota {nombre_mascota}.",
+            titulo=_("Mascota eliminada"),
+            descripcion=_("Se eliminó la mascota %(nombre)s.") % {"nombre": nombre_mascota},
             url_destino="/dueño/mis-mascotas/",
         )
 
@@ -240,8 +242,8 @@ class NotificadorBase(ABC):
             actor_usuario=usuario,
             tipo_evento=TipoNotificacion.PERFIL_ACTUALIZADO,
             categoria=CategoriaNotificacion.SISTEMA,
-            titulo="Perfil actualizado",
-            descripcion="Tus datos de perfil fueron actualizados correctamente.",
+            titulo=_("Perfil actualizado"),
+            descripcion=_("Tus datos de perfil fueron actualizados correctamente."),
             url_destino=destino,
         )
 
@@ -262,8 +264,8 @@ class NotificadorBase(ABC):
             solicitud=solicitud,
             tipo_evento=TipoNotificacion.MENSAJE_CHAT,
             categoria=CategoriaNotificacion.NEGOCIO,
-            titulo=f"Nuevo mensaje de {nombre_actor}",
-            descripcion=descripcion or "Tienes un nuevo mensaje en tu conversación.",
+            titulo=_("Nuevo mensaje de %(nombre)s") % {"nombre": nombre_actor},
+            descripcion=descripcion or _("Tienes un nuevo mensaje en tu conversación."),
             url_destino=destino,
         )
 
