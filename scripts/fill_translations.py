@@ -675,6 +675,7 @@ TRANSLATIONS = {
 
     # Clima (weather_adapter.py y template)
     "Partly cloudy": "Partly cloudy",
+    "1) Escribe un barrio, dirección o referencia y pulsa la lupa. 2) También puedes usar Mi ubicación. 3) Si prefieres, haz clic en el mapa para marcar el punto exacto.": "1) Type a neighborhood, address or reference and press the magnifier. 2) You can also use My location. 3) Or click the map to pin the exact point.",
     "✓ Apto para pasear": "✓ Good for walking",
     "✗ Clima poco favorable": "✗ Unfavorable weather",
     "Condiciones actuales de la zona": "Current conditions for the area",

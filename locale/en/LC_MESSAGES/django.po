@@ -2299,6 +2299,8 @@ msgid ""
 "puedes usar Mi ubicación. 3) Si prefieres, haz clic en el mapa para marcar "
 "el punto exacto."
 msgstr ""
+"1) Type a neighborhood, address or reference and press the magnifier. 2) You"
+" can also use My location. 3) Or click the map to pin the exact point."
 
 #: .\servicios\templates\servicios\dueno_nueva_reserva.html:87
 msgid "Consultando clima..."
