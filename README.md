@@ -1,29 +1,60 @@
 # Paws & Walks — Plataforma de Cuidado de Mascotas
 
-Plataforma web para reserva de servicios de cuidado de mascotas (paseos y guarderías). Dueños buscan cuidadores disponibles, realizan reservas y califican el servicio. Cuidadores configuran disponibilidad y gestionan solicitudes entrantes.
+> Plataforma web para la reserva de servicios de cuidado de mascotas (paseos y guarderías). Conecta dueños con cuidadores verificados, gestiona reservas con una máquina de estados robusta y calificaciones del servicio.
 
-Proyecto académico de Arquitectura de Software — Entrega 2. Implementa arquitectura híbrida con patrón Strangler, API Gateway (Nginx), Message Queue (Redis/Celery), Adapter Pattern para APIs externas e internacionalización completa con gettext.
+**Asignatura:** Arquitectura de Software — EAFIT 2026-I  
+**Entrega:** 2 — Arquitectura Híbrida con Patrón Strangler
 
-**Stack:** Django 5 + DRF + Flask (x2) + PostgreSQL + Redis + Celery + Nginx + Docker Compose
+---
+
+## Tabla de Contenidos
+
+- [Características](#características)
+- [Stack Tecnológico](#stack-tecnológico)
+- [Arquitectura](#arquitectura)
+  - [Contenedores](#contenedores)
+  - [Servicios](#servicios)
+  - [Patrones Implementados](#patrones-implementados)
+- [Estructura del Proyecto](#estructura-del-proyecto)
+- [Quick Start](#quick-start)
+  - [Docker Compose (recomendado)](#docker-compose-recomendado)
+  - [Desarrollo Local (sin Docker)](#desarrollo-local-sin-docker)
+- [API REST](#api-rest)
+- [Integraciones Externas](#integraciones-externas)
+- [Internacionalización (i18n)](#internacionalización-i18n)
+- [Tareas Asíncronas (Celery)](#tareas-asíncronas-celery)
+- [Despliegue en AWS EC2](#despliegue-en-aws-ec2)
+- [Troubleshooting](#troubleshooting)
+- [Dependencias Principales](#dependencias-principales)
+- [Integrantes](#integrantes)
 
 ---
 
 ## Características
 
-- Autenticación multi-rol (Dueño/Cuidador) con signup, login y logout
-- Gestión de perfiles de usuarios y mascotas
-- Búsqueda de cuidadores disponibles (motor Flask, fallback Django)
-- Sistema de reservas (paseos y guarderías) con máquina de estados
-- Chat entre dueño y cuidador
-- Calificaciones y reseñas de servicios
-- Notificaciones internas
-- API REST con documentación automática (Swagger/OpenAPI)
-- 2 microservicios Flask (patrón Strangler)
-- Orquestación Docker Compose con Nginx como API Gateway
-- Soporte bilingüe Español/Inglés con gettext (sin textos quemados)
-- Tareas asíncronas con Celery + Redis
-- Adapter Pattern para OpenWeather (clima) y equipo aliado
-- Integración con equipo aliado expuesta en vista web y endpoint API
+| Módulo | Descripción |
+|---|---|
+| **Autenticación multi-rol** | Signup, login y logout para Dueños y Cuidadores |
+| **Gestión de perfiles** | Usuarios y mascotas con imágenes |
+| **Búsqueda de cuidadores** | Motor Flask con fallback automático a Django |
+| **Reservas** | Sistema de paseos y guarderías con máquina de estados |
+| **Chat** | Mensajería directa entre dueño y cuidador |
+| **Calificaciones** | Reseñas y puntuaciones de servicios completados |
+| **Notificaciones** | Sistema interno con tareas asíncronas vía Celery |
+| **API REST** | Documentación automática con Swagger/OpenAPI |
+| **Microservicios** | 2 servicios Flask independientes (patrón Strangler) |
+| **Orquestación** | Docker Compose con Nginx como API Gateway |
+| **i18n** | Soporte bilingüe Español/Inglés con `gettext` (sin textos quemados) |
+| **Adaptadores externos** | OpenWeather (clima) y equipo aliado vía Adapter Pattern |
+
+---
+
+## Stack Tecnológico
+
+```
+Django 5 + DRF  ·  Flask (×2)  ·  PostgreSQL 15  ·  Redis 7
+Celery 5  ·  Nginx  ·  Docker Compose
+```
 
 ---
 
@@ -32,50 +63,52 @@ Proyecto académico de Arquitectura de Software — Entrega 2. Implementa arquit
 ### Contenedores
 
 ```
-         Internet
-             |
-    Elastic IP (AWS EC2)
-             |
-     ┌───────┴────────┐
-     │  Nginx :80     │
-     │  API Gateway   │
-     └──┬──────┬──┬───┘
-        |      |  |
-        v      v  v
-  Django  Flask   Flask
-  :8000  Disp.   Ratings
-         :5001   :5000
-        |      |  |
-        └──────┴──┘
-               |
-        ┌──────┴──────┐
-        | PostgreSQL  |
-        | Redis :6379 |
-        | CeleryWorker|
-        └─────────────┘
+              Internet
+                  │
+       Elastic IP (AWS EC2)
+                  │
+        ┌─────────┴──────────┐
+        │     Nginx :80      │
+        │    API Gateway     │
+        └──┬──────────┬──┬───┘
+           │          │  │
+           ▼          ▼  ▼
+       Django     Flask   Flask
+       :8000      Disp.   Ratings
+                  :5001   :5000
+           │          │  │
+           └──────────┴──┘
+                    │
+         ┌──────────┴──────────┐
+         │   PostgreSQL  :5432 │
+         │   Redis       :6379 │
+         │   Celery Worker     │
+         └─────────────────────┘
 ```
 
-### Componentes
+### Servicios
 
-| Servicio | Tecnologia | Puerto | Rol |
+| Servicio | Tecnología | Puerto | Rol |
 |---|---|---|---|
-| django_web | Django 5 + DRF | 8000 | Monolito principal, vistas, API, modelos |
-| disponibilidad | Flask + SQLAlchemy | 5001 | Busqueda de cuidadores (Strangler) |
-| flask_ratings | Flask + SQLAlchemy | 5000 | Calificaciones CRUD (Strangler) |
-| db | PostgreSQL 15 | 5432 | Persistencia |
-| redis | Redis 7 | 6379 | Broker Celery + cache |
-| celery_worker | Celery 5 | — | Notificaciones async |
-| nginx | Nginx | 80 | API Gateway / reverse proxy |
+| `django_web` | Django 5 + DRF | `8000` | Monolito principal — vistas, API, modelos |
+| `disponibilidad` | Flask + SQLAlchemy | `5001` | Búsqueda de cuidadores (Strangler) |
+| `flask_ratings` | Flask + SQLAlchemy | `5000` | Calificaciones CRUD (Strangler) |
+| `db` | PostgreSQL 15 | `5432` | Persistencia relacional |
+| `redis` | Redis 7 | `6379` | Broker Celery + caché |
+| `celery_worker` | Celery 5 | — | Notificaciones asíncronas |
+| `nginx` | Nginx | `80` | API Gateway / reverse proxy |
 
-### Patrones
+### Patrones Implementados
 
-- **Strangler Pattern**: 2 microservicios Flask extraen funcionalidades del monolito
-- **API Gateway**: Nginx enruta trafico entre servicios
-- **Adapter + DIP**: `ClimaPort` (OpenWeather), `AliadoPort` (equipo aliado) — intercambiables via Factory
-- **Factory Pattern**: `NotificadorFactory`, `ClimaAdapterFactory`, `AliadoAdapterFactory`
-- **Builder Pattern**: `SolicitudServicioBuilder` para entidades complejas
-- **Service Layer**: Presentacion → Service → Domain → Infrastructure
-- **Message Queue**: Redis/Celery para 6 tareas async
+| Patrón | Componente | Descripción |
+|---|---|---|
+| **Strangler** | `disponibilidad`, `flask_ratings` | 2 microservicios Flask extraen funcionalidades del monolito |
+| **API Gateway** | `nginx.conf` | Nginx enruta tráfico entre servicios |
+| **Adapter + DIP** | `weather_adapter.py`, `aliado_adapter.py` | `ClimaPort` y `AliadoPort` intercambiables vía Factory |
+| **Factory** | `factory.py` | `NotificadorFactory`, `ClimaAdapterFactory`, `AliadoAdapterFactory` |
+| **Builder** | `builder.py` | `SolicitudServicioBuilder` para construcción de entidades complejas |
+| **Service Layer** | `service_layer/` | Presentación → Service → Domain → Infrastructure |
+| **Message Queue** | Redis + Celery | 6 tareas asíncronas desacopladas del ciclo request/response |
 
 ---
 
@@ -84,62 +117,62 @@ Proyecto académico de Arquitectura de Software — Entrega 2. Implementa arquit
 ```
 paws_walks/
 ├── manage.py
-├── requirements.txt            # dev (SQLite, sin psycopg2)
-├── requirements-prod.txt       # produccion (con psycopg2-binary)
-├── Dockerfile                  # imagen Django (usa requirements-prod.txt)
-├── docker-compose.yml          # 7 servicios
-├── nginx.conf                  # API Gateway config
-├── C4_DIAGRAMS.md              # diagramas C1-C4 + deployment
+├── requirements.txt                  # Desarrollo (SQLite, sin psycopg2)
+├── requirements-prod.txt             # Producción (con psycopg2-binary)
+├── Dockerfile                        # Imagen Django
+├── docker-compose.yml                # 7 servicios orquestados
+├── nginx.conf                        # Config API Gateway
+├── C4_DIAGRAMS.md                    # Diagramas C1–C4 + deployment
+│
 ├── scripts/
-│   └── fill_translations.py   # rellena msgstr en locale/en (helper dev)
+│   └── fill_translations.py          # Helper: rellena msgstr en locale/en
 │
 ├── paws_walks/
-│   ├── settings.py             # BD, cache, Celery, APIs externas
-│   ├── urls.py                 # rutas principales
-│   └── celery.py               # configuracion Celery
+│   ├── settings.py                   # BD, caché, Celery, APIs externas
+│   ├── urls.py                       # Rutas principales
+│   └── celery.py                     # Configuración Celery
 │
-├── servicios/                  # app principal Django
-│   ├── models.py               # entidades ORM
-│   ├── services.py             # fachada re-exportacion
-│   ├── views.py                # vistas web (thin)
-│   ├── tasks.py                # 6 tareas Celery async
+├── servicios/                        # App principal Django
+│   ├── models.py                     # Entidades ORM
+│   ├── services.py                   # Fachada de re-exportación
+│   ├── views.py                      # Vistas web (thin controllers)
+│   ├── tasks.py                      # 6 tareas Celery asíncronas
 │   │
 │   ├── api/
-│   │   ├── views.py            # DRF APIViews (thin, delegan al Gateway)
-│   │   ├── serializers.py      # validacion estructural
-│   │   └── urls.py             # rutas /api/v1/
+│   │   ├── views.py                  # DRF APIViews (thin, delegan al Gateway)
+│   │   ├── serializers.py            # Validación estructural
+│   │   └── urls.py                   # Rutas /api/v1/
 │   │
 │   ├── domain/
-│   │   ├── ports.py            # ClimaPort, AliadoPort (interfaces ABC)
-│   │   ├── builder.py          # SolicitudServicioBuilder
-│   │   └── exceptions.py       # excepciones de dominio
+│   │   ├── ports.py                  # ClimaPort, AliadoPort (interfaces ABC)
+│   │   ├── builder.py                # SolicitudServicioBuilder
+│   │   └── exceptions.py             # Excepciones de dominio
 │   │
 │   ├── infra/
-│   │   ├── notificador.py      # Mock / LogOnly / Real / Async
-│   │   ├── factory.py          # NotificadorFactory, ClimaAdapterFactory, AliadoAdapterFactory
-│   │   ├── weather_adapter.py  # OpenWeatherAdapter implementa ClimaPort
-│   │   └── aliado_adapter.py   # AliadoHttpAdapter + AliadoMockAdapter implementan AliadoPort
+│   │   ├── notificador.py            # Mock / LogOnly / Real / Async
+│   │   ├── factory.py                # Factories de adaptadores y notificadores
+│   │   ├── weather_adapter.py        # OpenWeatherAdapter implementa ClimaPort
+│   │   └── aliado_adapter.py         # AliadoHttpAdapter + AliadoMockAdapter
 │   │
 │   └── service_layer/
-│       ├── api_gateway.py      # ServiciosApiGatewayService (punto de entrada)
-│       ├── aliado_servicios.py # AliadoService (depende de AliadoPort)
-│       ├── clima_servicios.py  # ClimaService (depende de ClimaPort)
-│       └── ...
+│       ├── api_gateway.py            # ServiciosApiGatewayService (punto de entrada)
+│       ├── aliado_servicios.py       # AliadoService (depende de AliadoPort)
+│       └── clima_servicios.py        # ClimaService (depende de ClimaPort)
 │
-├── microservicio_disponibilidad/  # Flask: busqueda de cuidadores
-│   ├── app.py                     # POST /disponibilidad, GET /health
-│   ├── services.py                # SQLAlchemy query
+├── microservicio_disponibilidad/     # Flask: búsqueda de cuidadores
+│   ├── app.py                        # POST /disponibilidad, GET /health
+│   ├── services.py                   # Queries SQLAlchemy
 │   ├── requirements.txt
 │   └── Dockerfile
 │
-├── flask_ratings_service/         # Flask: calificaciones CRUD
+├── flask_ratings_service/            # Flask: calificaciones CRUD
 │   ├── app.py
 │   ├── requirements.txt
 │   └── Dockerfile
 │
-└── locale/                        # i18n gettext
-    ├── es/LC_MESSAGES/django.po   # fuente espanol
-    └── en/LC_MESSAGES/django.po   # 585 strings traducidos al ingles
+└── locale/                           # i18n gettext
+    ├── es/LC_MESSAGES/django.po      # Fuente español
+    └── en/LC_MESSAGES/django.po      # 585 strings traducidos al inglés
 ```
 
 ---
@@ -149,47 +182,52 @@ paws_walks/
 ### Docker Compose (recomendado)
 
 ```bash
-# 1. Clonar y entrar al proyecto
+# 1. Clonar el repositorio
 git clone <repo-url>
 cd paws_walks
 
-# 2. Variables de entorno opcionales (dev funciona sin ellas)
+# 2. Variables de entorno (el proyecto funciona sin ellas en desarrollo)
 cp .env.example .env
 
-# 3. Levantar todo
+# 3. Levantar todos los servicios
 docker-compose up --build
 
-# 4. Migraciones (primera vez)
+# 4. Migraciones (solo primera vez)
 docker-compose exec django_web python manage.py migrate
 
 # 5. Crear superusuario
 docker-compose exec django_web python manage.py createsuperuser
-
-# Acceso
-# Web:    http://localhost/login/
-# Admin:  http://localhost/admin/
-# Docs:   http://localhost/api/docs/
 ```
 
+**URLs de acceso:**
+
+| Recurso | URL |
+|---|---|
+| Aplicación web | `http://localhost/login/` |
+| Panel de administración | `http://localhost/admin/` |
+| Documentación API (Swagger) | `http://localhost/api/docs/` |
+
 ```bash
-# Detener
+# Detener servicios
 docker-compose down
 
-# Limpiar todo (incluye volumen BD)
+# Limpiar todo (incluye volumen de BD)
 docker-compose down -v
 ```
 
-### Desarrollo local (sin Docker)
+### Desarrollo Local (sin Docker)
+
+> Requiere Redis corriendo localmente para las tareas Celery.
 
 ```bash
 # Instalar dependencias (SQLite, sin psycopg2)
 pip install -r requirements.txt
 
-# Migraciones y servidor
+# Migraciones y servidor de desarrollo
 python manage.py migrate
 python manage.py runserver
 
-# Celery worker (otra terminal, requiere Redis)
+# Celery worker (terminal separada)
 celery -A paws_walks worker -l info
 ```
 
@@ -197,40 +235,40 @@ celery -A paws_walks worker -l info
 
 ## API REST
 
-**Base URL:** `http://localhost/api/` (Docker) o `http://localhost:8000/api/` (local)
+**Base URL:**  
+- Docker: `http://localhost/api/`  
+- Local: `http://localhost:8000/api/`  
+- Documentación interactiva: `GET /api/docs/`
 
-Documentacion interactiva: `GET /api/docs/`
+### Endpoints Públicos (sin autenticación)
 
-### Endpoints publicos (sin autenticacion)
+| Método | Ruta | Descripción |
+|---|---|---|
+| `GET` | `/api/v1/sistema/estado/` | Estado general del sistema |
+| `GET` | `/api/v1/cuidadores/listado/` | Cuidadores verificados |
+| `GET` | `/api/v1/aliado/estado/` | Estado del equipo aliado vía `AliadoPort` |
 
-```
-GET  /api/v1/sistema/estado/        Estado general del sistema (para consumo externo)
-GET  /api/v1/cuidadores/listado/    Listado de cuidadores verificados
-GET  /api/v1/aliado/estado/         Consume el endpoint del equipo aliado via AliadoPort
-```
+### Endpoints Autenticados
 
-### Endpoints autenticados
+| Método | Ruta | Descripción |
+|---|---|---|
+| `POST` | `/api/v1/solicitudes/` | Crear solicitud de servicio |
+| `GET` | `/api/v1/solicitudes/<uuid>/` | Detalle de solicitud |
+| `POST` | `/api/v1/solicitudes/<uuid>/cancelar/` | Cancelar solicitud |
+| `POST` | `/api/v1/disponibilidad/` | Buscar cuidadores disponibles |
+| `GET` | `/api/v1/clima/?ciudad=<ciudad>` | Clima vía OpenWeatherAdapter |
 
-```
-POST /api/v1/solicitudes/                       Crear solicitud de servicio
-GET  /api/v1/solicitudes/<uuid>/                Ver detalle
-POST /api/v1/solicitudes/<uuid>/cancelar/       Cancelar solicitud
-POST /api/v1/disponibilidad/                    Buscar cuidadores disponibles
-GET  /api/v1/clima/?ciudad=<ciudad>             Clima via OpenWeatherAdapter
-```
+### Endpoints Flask (enrutados por Nginx)
 
-### Endpoints Nginx (Flask directo)
+| Método | Ruta | Descripción |
+|---|---|---|
+| `POST` | `/api/v2/calificaciones/` | Crear calificación |
+| `GET` | `/api/v2/calificaciones/<user_id>/` | Calificaciones de un usuario |
+| `GET` | `/health` | Health check Flask Ratings |
 
-```
-POST /api/v2/calificaciones/                    Crear calificacion (Flask Ratings)
-GET  /api/v2/calificaciones/<user_id>/          Ver calificaciones de usuario
-GET  /health                                    Health check Flask Ratings
-```
-
-### Ejemplo consumo aliado
+### Ejemplo — Respuesta del equipo aliado
 
 ```bash
-# Consume el endpoint del equipo aliado (mock sin ALIADO_API_URL configurada)
 curl http://localhost/api/v1/aliado/estado/
 ```
 
@@ -239,68 +277,72 @@ curl http://localhost/api/v1/aliado/estado/
   "fuente": "Equipo aliado (mock)",
   "disponible": true,
   "datos": {
-    "sistema": "Servicio aliado de demostracion",
+    "sistema": "Servicio aliado de demostración",
     "estado": "operativo",
-    "metricas": {"usuarios_activos": 142, "transacciones_dia": 38}
+    "metricas": {
+      "usuarios_activos": 142,
+      "transacciones_dia": 38
+    }
   },
   "consultado_en": "2026-05-06T23:51:22Z"
 }
 ```
 
-Para conectar con el aliado real: setear `ALIADO_API_URL=http://<ip-aliado>/` en docker-compose.yml o `.env`.
+---
+
+## Integraciones Externas
+
+### OpenWeather (Adapter Pattern)
+
+Configura `OPENWEATHER_API_KEY` en las variables de entorno.  
+Sin clave, el sistema usa `ClimaAdapterMock` automáticamente.
+
+### Equipo Aliado
+
+Configura `ALIADO_API_URL` para activar `AliadoHttpAdapter`.  
+Sin URL, usa `AliadoMockAdapter`.  
+La vista `/integraciones/aliado/` expone el estado del aliado en la interfaz web.
 
 ---
 
-## Integraciones externas
+## Internacionalización (i18n)
 
-### OpenWeather (API de terceros — Adapter Pattern)
-
-Setear `OPENWEATHER_API_KEY` en variables de entorno. Sin clave usa `ClimaAdapterMock`.
-
-### Equipo aliado
-
-Setear `ALIADO_API_URL` para activar `AliadoHttpAdapter`. Sin URL usa `AliadoMockAdapter`.
-La vista web en `/integraciones/aliado/` muestra el estado del aliado en la aplicacion.
-
----
-
-## Internacionalizacion (i18n)
-
-Soporte bilingue completo (Espanol/Ingles) via gettext. Sin textos quemados en codigo.
+Soporte bilingüe completo (Español / Inglés) con `gettext`. Sin textos quemados en código ni templates.
 
 ```bash
-# Extraer strings traducibles de templates y Python
-python manage.py makemessages -l es -l en   # requiere GNU gettext
+# Extraer strings traducibles de templates y código Python
+python manage.py makemessages -l es -l en   # requiere GNU gettext instalado
 
-# Despues de editar los .po
+# Compilar archivos .po tras edición
 python manage.py compilemessages
 
-# Helper: rellena traducciones inglesas faltantes
+# Helper: rellena traducciones inglesas faltantes automáticamente
 python scripts/fill_translations.py
 ```
 
-Cambiar idioma en la UI: menu desplegable en el header del dashboard.
+El selector de idioma está disponible en el menú del header del dashboard.
 
 ---
 
-## Tareas Asincronas (Celery)
+## Tareas Asíncronas (Celery)
 
-```python
-# Disparadas automaticamente por el Notificador segun ENV_TYPE=ASYNC
-task_nueva_solicitud(solicitud_id)       # notifica al cuidador
-task_solicitud_aceptada(solicitud_id)    # notifica al dueno
-task_solicitud_rechazada(solicitud_id)   # notifica al dueno
-task_servicio_completado(solicitud_id)   # notifica + dispara resena pendiente
-task_reserva_cancelada(...)              # notifica a la contraparte
-task_mensaje_chat(...)                   # notifica mensaje de chat
-```
+Las siguientes tareas son disparadas automáticamente por el `Notificador` cuando `ENV_TYPE=ASYNC`:
+
+| Tarea | Descripción |
+|---|---|
+| `task_nueva_solicitud(solicitud_id)` | Notifica al cuidador de una nueva solicitud |
+| `task_solicitud_aceptada(solicitud_id)` | Notifica al dueño cuando el cuidador acepta |
+| `task_solicitud_rechazada(solicitud_id)` | Notifica al dueño cuando el cuidador rechaza |
+| `task_servicio_completado(solicitud_id)` | Notifica + dispara solicitud de reseña pendiente |
+| `task_reserva_cancelada(...)` | Notifica a la contraparte de la cancelación |
+| `task_mensaje_chat(...)` | Notifica un nuevo mensaje de chat |
 
 ---
 
-## Despliegue AWS Academy (EC2)
+## Despliegue en AWS EC2
 
 ```bash
-# 1. SSH a la instancia
+# 1. Conectar a la instancia
 ssh -i paws-key.pem ubuntu@<elastic-ip>
 
 # 2. Instalar Docker
@@ -310,18 +352,18 @@ sudo usermod -aG docker ubuntu
 # 3. Clonar y configurar
 git clone <repo-url> && cd paws_walks
 cp .env.example .env
-# editar .env: DATABASE_URL, OPENWEATHER_API_KEY, ALIADO_API_URL
+# Editar .env: DATABASE_URL, OPENWEATHER_API_KEY, ALIADO_API_URL
 
-# 4. Levantar
+# 4. Levantar y migrar
 docker-compose up -d --build
 docker-compose exec django_web python manage.py migrate
 
-# 5. Verificar
+# 5. Verificar servicios
 curl http://localhost/health
 curl http://localhost/api/v1/sistema/estado/
 ```
 
-Puertos abiertos en Security Group: 80 (HTTP), 22 (SSH).
+**Puertos requeridos en Security Group:** `80` (HTTP), `22` (SSH).
 
 ---
 
@@ -334,13 +376,13 @@ docker-compose logs -f celery_worker
 docker-compose logs -f disponibilidad
 docker-compose logs -f flask_ratings
 
-# Redis OK?
-docker-compose exec redis redis-cli ping   # debe responder PONG
+# Verificar Redis
+docker-compose exec redis redis-cli ping        # Esperado: PONG
 
-# Flask disponibilidad OK?
+# Verificar microservicio de disponibilidad
 curl http://localhost:5001/health
 
-# Limpiar y reconstruir
+# Reconstrucción limpia
 docker-compose down -v
 docker-compose build --no-cache
 docker-compose up
@@ -348,26 +390,30 @@ docker-compose up
 
 ---
 
-## Dependencias principales
+## Dependencias Principales
 
-| Libreria | Version | Uso |
+| Librería | Versión | Uso |
 |---|---|---|
-| Django | 5.2.11 | Framework principal |
-| djangorestframework | 3.16.1 | API REST |
-| drf-spectacular | 0.27.0 | OpenAPI / Swagger |
-| celery | 5.4.0 | Task queue async |
-| redis | 5.2.1 | Broker + cache |
-| requests | 2.32.3 | HTTP a microservicios y APIs externas |
-| Pillow | 11.2.1 | Imagenes de perfil |
-| polib | 1.2.0 | Compilacion .po (i18n helper) |
-| psycopg2-binary | 2.9.9 | Driver PostgreSQL (solo requirements-prod.txt) |
+| `Django` | 5.2.11 | Framework principal |
+| `djangorestframework` | 3.16.1 | API REST |
+| `drf-spectacular` | 0.27.0 | OpenAPI / Swagger |
+| `celery` | 5.4.0 | Task queue asíncrono |
+| `redis` | 5.2.1 | Broker + caché |
+| `requests` | 2.32.3 | HTTP a microservicios y APIs externas |
+| `Pillow` | 11.2.1 | Imágenes de perfil |
+| `polib` | 1.2.0 | Compilación `.po` (helper i18n) |
+| `psycopg2-binary` | 2.9.9 | Driver PostgreSQL (solo `requirements-prod.txt`) |
 
 ---
 
 ## Integrantes
 
-- Cristobal Gutierrez Castro
-- Laura Sofia Aceros Monsalve
-- Matias Martinez Moreno
+| Nombre | Rol |
+|---|---|
+| Cristobal Gutierrez Castro | Desarrollo |
+| Laura Sofia Aceros Monsalve | Desarrollo |
+| Matias Martinez Moreno | Desarrollo |
 
-**Asignatura:** Arquitectura de Software — EAFIT 2026-I
+---
+
+*Universidad EAFIT · Arquitectura de Software · 2026-I*
