@@ -27,7 +27,7 @@ SECRET_KEY = "django-insecure-bpa1-)o^&@*gfqscdan0ck1!vbu&e=3v=zqp9-kmgt^o2h0q#h
 DEBUG = True
 
 # Estado vacío para desarrollo local, pero en producción se debe configurar con los dominios permitidos (ej: ["pawswalks.com", "www.pawswalks.com"]).
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", "localhost").split(",")
 
 
 # Application definition
