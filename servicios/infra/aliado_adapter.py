@@ -26,7 +26,7 @@ class AliadoHttpAdapter(AliadoPort):
         self._timeout = timeout
 
     def obtener_estado_sistema(self) -> dict:
-        url = f"{self._base_url}/api/v1/sistema/estado/"
+        url = self._base_url
         try:
             resp = requests.get(url, timeout=self._timeout)
             resp.raise_for_status()

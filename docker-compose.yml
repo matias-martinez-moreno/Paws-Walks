@@ -27,6 +27,7 @@ services:
       DATABASE_URL: postgresql://user:password@db:5432/paws_walks
       OPENWEATHER_API_KEY: ${OPENWEATHER_API_KEY:-}
       CELERY_BROKER_URL: redis://redis:6379/0
+      ALIADO_API_URL: http://3.215.211.155/api/v1/sistema/estadisticas/
     command: python manage.py runserver 0.0.0.0:8000
     depends_on:
       - db
