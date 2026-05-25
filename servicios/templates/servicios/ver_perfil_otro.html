@@ -54,7 +54,7 @@
       {% if perfil_cuidador %}
       <div class="mt-6 pt-6 border-t border-slate-100">
         <h6 class="font-semibold text-slate-800 mb-2">{% trans "Servicios" %}</h6>
-        <p class="text-slate-600 text-sm">{{ perfil_cuidador.descripcion|default:"{% trans "Sin descripción" %}" }}</p>
+        <p class="text-slate-600 text-sm">{% if perfil_cuidador.descripcion %}{{ perfil_cuidador.descripcion }}{% else %}{% trans "Sin descripción" %}{% endif %}</p>
       </div>
       {% endif %}
     </div>
