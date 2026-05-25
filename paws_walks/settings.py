@@ -23,10 +23,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = "django-insecure-bpa1-)o^&@*gfqscdan0ck1!vbu&e=3v=zqp9-kmgt^o2h0q#h"
 
-# SECURITY WARNING: don't run with debug turned on in production!
+# SECURITY WARNING: don't run with debug turned on in production! como estamos en un entorno de desarrollo se deja habilitado el debug, pero en producción se debe deshabilitar y configurar ALLOWED_HOSTS adecuadamente.
 DEBUG = True
 
-ALLOWED_HOSTS = []
+# Estado vacío para desarrollo local, pero en producción se debe configurar con los dominios permitidos (ej: ["pawswalks.com", "www.pawswalks.com"]).
+ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", "localhost").split(",")
 
 
 # Application definition
@@ -56,6 +57,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = "paws_walks.urls"
 
+# Templates config: se agregó el context processor para notificaciones no leídas, que estará disponible en todas las vistas.
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
